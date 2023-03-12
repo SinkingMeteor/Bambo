@@ -29,6 +29,12 @@ namespace Bambo
 		}
 
 		glfwMakeContextCurrent(m_glfwWindow);
+
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		{
+			printf("failed to initialize GLAD");
+			return;
+		}
 	}
 
 	Window::~Window() 

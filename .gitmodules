@@ -1,3 +1,6 @@
 [submodule "Engine/thirdparty/GLFW"]
 	path = Engine/thirdparty/GLFW
 	url = https://github.com/glfw/glfw
+[submodule "Engine/thirdparty/GLAD"]
+	path = Engine/thirdparty/GLAD
+	url = https://github.com/Dav1dde/glad

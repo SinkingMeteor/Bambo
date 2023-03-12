@@ -10,4 +10,5 @@
 #include <assert.h>
 #include <type_traits>
 #include <chrono>
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
