@@ -15,7 +15,8 @@ add_subdirectory(thirdparty/GLAD)
 
 target_include_directories(Bambo 
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLFW/include
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLAD/include)
+PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLAD/include
+PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLM/glm)
 
 find_library(GLFW_LIB NAMES glfw glad HINTS ${CMAKE_CURRENT_BINARY_DIR}/thirdparty/)
 target_link_libraries(Bambo glfw glad)

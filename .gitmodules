@@ -4,3 +4,6 @@
 [submodule "Engine/thirdparty/GLAD"]
 	path = Engine/thirdparty/GLAD
 	url = https://github.com/Dav1dde/glad
+[submodule "Engine/thirdparty/GLM"]
+	path = Engine/thirdparty/GLM
+	url = https://github.com/g-truc/glm
