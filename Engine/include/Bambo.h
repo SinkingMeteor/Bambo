@@ -1,6 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "pch.h"
+#include "Window/Window.h"
 
 namespace Bambo
 {
@@ -13,5 +14,7 @@ namespace Bambo
 		[[nodiscard]] int Run();
 	private:
 		void Initialize();
+
+		Window m_window;
 	};
 }

@@ -1,14 +1,16 @@
 #include "Bambo.h"
-
+#include "GLFW/glfw3.h"
 namespace Bambo
 {
-	Engine::Engine()
+	Engine::Engine() : 
+		m_window()
 	{
-		printf("Hello world!");
+		Initialize();
 	}
 
 	void Engine::Initialize()
 	{
+		m_window.Initialize();
 	}
 
 	int Engine::Run()

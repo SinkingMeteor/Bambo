@@ -1,0 +1,3 @@
+[submodule "Engine/thirdparty/GLFW"]
+	path = Engine/thirdparty/GLFW
+	url = https://github.com/glfw/glfw
