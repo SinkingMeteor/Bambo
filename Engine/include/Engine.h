@@ -2,7 +2,8 @@
 #include "Core.h"
 #include "pch.h"
 #include "Window/Window.h"
-
+#include "Input/Input.h"
+#include "Common/Time/Timer.h"
 namespace Bambo
 {
 	class BAMBO_API Engine 
@@ -14,7 +15,10 @@ namespace Bambo
 		[[nodiscard]] int Run();
 	private:
 		void Initialize();
+		void Update(float deltaTime);
+		void Render();
 
 		Window m_window;
+		Input m_input;
 	};
 }

@@ -37,10 +37,21 @@ namespace Bambo
 			return;
 		}
 
+		glfwSetWindowUserPointer(m_glfwWindow, this);
+		glfwSetFramebufferSizeCallback(m_glfwWindow, [](GLFWwindow* window, int width, int height) 
+		{
+			Window* gameWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			gameWindow->SetViewportSize(width, height);
+		});
+
 	}
 
-	void Window::Update(float deltaTime) 
+	void Window::SetViewportSize(int width, int height)
 	{
+		m_windowSettings.Width = width;
+		m_windowSettings.Height = height;
+
+		glViewport(0, 0, width, height);
 	}
 
 	void Window::CloseWindow()

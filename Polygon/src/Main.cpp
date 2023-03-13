@@ -1,8 +1,7 @@
-#include "Bambo.h"
+#include "Engine.h"
 
 int main()
 {
 	Bambo::Engine engine{};
-	system("pause");
 	return engine.Run();
 }

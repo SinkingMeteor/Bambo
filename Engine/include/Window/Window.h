@@ -20,10 +20,10 @@ namespace Bambo
 		void Initialize();
 		bool WindowShouldClose() const { return glfwWindowShouldClose(m_glfwWindow); }
 
-		void Update(float deltaTime);
 		int GetWidth() const { return m_windowSettings.Width; }
 		int GetHeight() const { return m_windowSettings.Height; }
-
+		GLFWwindow* GetRawWindow() const { return m_glfwWindow; }
+		void SetViewportSize(int width, int height);
 		void CloseWindow();
 	private:
 		WindowSettings m_windowSettings;

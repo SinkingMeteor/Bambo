@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 project(BamboEngine)
 
 set(BAMBO_SOURCES
-${CMAKE_CURRENT_LIST_DIR}/src/Bambo.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Engine.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Window/Window.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Input/Input.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Common/Time/Timer.cpp)
 
 add_library(Bambo SHARED ${BAMBO_SOURCES})
