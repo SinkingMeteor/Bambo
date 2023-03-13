@@ -3,7 +3,8 @@ project(BamboEngine)
 
 set(BAMBO_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Bambo.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Window/Window.cpp)
+${CMAKE_CURRENT_LIST_DIR}/src/Window/Window.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Common/Time/Timer.cpp)
 
 add_library(Bambo SHARED ${BAMBO_SOURCES})
 
@@ -12,6 +13,8 @@ PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
 
 add_subdirectory(thirdparty/GLFW)
 add_subdirectory(thirdparty/GLAD)
+
+target_compile_definitions(Bambo PUBLIC BAMBO_ASSERT_ON)
 
 target_include_directories(Bambo 
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLFW/include

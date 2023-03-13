@@ -2,7 +2,8 @@
 
 namespace Bambo 
 {
-	Window::Window() :
+	Window::Window(const WindowSettings& settings) :
+		m_windowSettings(settings),
 		m_glfwWindow(nullptr)
 	{
 
@@ -20,7 +21,7 @@ namespace Bambo
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		m_glfwWindow = glfwCreateWindow(640, 360, "Hello window", nullptr, nullptr);
+		m_glfwWindow = glfwCreateWindow(m_windowSettings.Width, m_windowSettings.Height, m_windowSettings.Title.c_str(), nullptr, nullptr);
 
 		if (!m_glfwWindow) 
 		{
@@ -35,6 +36,19 @@ namespace Bambo
 			printf("failed to initialize GLAD");
 			return;
 		}
+
+	}
+
+	void Window::Update(float deltaTime) 
+	{
+	}
+
+	void Window::CloseWindow()
+	{
+		if (!m_glfwWindow) return;
+
+		glfwDestroyWindow(m_glfwWindow);
+		m_glfwWindow = nullptr;
 	}
 
 	Window::~Window() 

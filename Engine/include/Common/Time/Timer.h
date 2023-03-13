@@ -1,0 +1,17 @@
+#pragma once
+#include "pch.h"
+
+namespace Bambo 
+{
+	class Timer final
+	{
+	public:
+		Timer() noexcept;
+		float Restart() noexcept;
+		float PeekTime() noexcept;
+	private:
+		using clock = std::chrono::steady_clock;
+
+		clock::time_point m_lastTime;
+	};
+}

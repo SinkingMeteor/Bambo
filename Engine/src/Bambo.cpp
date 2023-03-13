@@ -3,7 +3,7 @@
 namespace Bambo
 {
 	Engine::Engine() : 
-		m_window()
+		m_window(WindowSettings{640, 360, "Hello Window!"})
 	{
 		Initialize();
 	}
