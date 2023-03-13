@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "Core.h"
 namespace Bambo 
 {
 	struct WindowSettings 
@@ -17,7 +16,7 @@ namespace Bambo
 		Window(const WindowSettings& settings);
 		~Window();
 
-		void Initialize();
+		[[nodiscard]] int Initialize();
 		bool WindowShouldClose() const { return glfwWindowShouldClose(m_glfwWindow); }
 
 		int GetWidth() const { return m_windowSettings.Width; }

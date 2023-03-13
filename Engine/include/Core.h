@@ -9,4 +9,7 @@ namespace Bambo
 	#else
 		#define BAMBO_ASSERT(x, msg); 
 	#endif
+
+	#define BAMBO_FALSE 0
+	#define BAMBO_TRUE 1
 }

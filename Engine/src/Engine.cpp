@@ -11,7 +11,8 @@ namespace Bambo
 
 	void Engine::Initialize()
 	{
-		m_window.Initialize();
+		int result = m_window.Initialize();
+		BAMBO_ASSERT(result != BAMBO_FALSE, "Window initialization failed");
 	}
 
 	int Engine::Run()

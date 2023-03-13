@@ -9,12 +9,12 @@ namespace Bambo
 
 	}
 
-	void Window::Initialize() 
+	int Window::Initialize() 
 	{
 		if (glfwInit() == GLFW_FALSE) 
 		{
 			printf("glfw initialization failed");
-			return;
+			return BAMBO_FALSE;
 		}
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -26,7 +26,7 @@ namespace Bambo
 		if (!m_glfwWindow) 
 		{
 			printf("glfw window creation failed");
-			return;
+			return BAMBO_FALSE;
 		}
 
 		glfwMakeContextCurrent(m_glfwWindow);
@@ -34,7 +34,7 @@ namespace Bambo
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
 			printf("failed to initialize GLAD");
-			return;
+			return BAMBO_FALSE;
 		}
 
 		glfwSetWindowUserPointer(m_glfwWindow, this);
@@ -44,6 +44,7 @@ namespace Bambo
 			gameWindow->SetViewportSize(width, height);
 		});
 
+		return BAMBO_TRUE;
 	}
 
 	void Window::SetViewportSize(int width, int height)
