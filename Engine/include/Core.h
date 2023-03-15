@@ -12,4 +12,7 @@ namespace Bambo
 
 	#define BAMBO_FALSE 0
 	#define BAMBO_TRUE 1
+
+	using uint = unsigned int;
+	using uchar = unsigned char;
 }

@@ -4,6 +4,7 @@
 #include "Window/Window.h"
 #include "Input/Input.h"
 #include "Common/Time/Timer.h"
+#include "Utils.h"
 namespace Bambo
 {
 	class BAMBO_API Engine 
