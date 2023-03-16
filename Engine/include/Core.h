@@ -15,4 +15,5 @@ namespace Bambo
 
 	using uint = unsigned int;
 	using uchar = unsigned char;
+	using bambo_id = std::size_t;
 }

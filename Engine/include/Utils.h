@@ -14,4 +14,9 @@ namespace Bambo
 	{
 		printf("[%s]: %s\n", logScope, text);
 	}
+
+	static std::size_t ToId(const std::string& text) 
+	{
+		return std::hash<std::string>{}(text);
+	}
 }

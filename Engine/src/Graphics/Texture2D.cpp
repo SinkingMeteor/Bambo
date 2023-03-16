@@ -3,6 +3,7 @@
 namespace Bambo 
 {
 	Texture2D::Texture2D():
+		m_id(0),
 		m_width(0),
 		m_height(0),
 		m_internalFormat(GL_RGB),

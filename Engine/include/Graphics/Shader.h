@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Utils.h"
+
 namespace Bambo 
 {
 	class Shader 
@@ -14,6 +15,8 @@ namespace Bambo
 
 	public:
 		Shader();
+		Shader(const Shader&) = delete;
+		Shader& operator=(const Shader&) = delete;
 		~Shader();
 		uint GetID() const { return m_id; }
 		void LoadFromFile(const char* vertexSourceFile, const char* fragmentSourceFile);
