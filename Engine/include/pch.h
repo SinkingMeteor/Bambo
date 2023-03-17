@@ -10,6 +10,8 @@
 #include <assert.h>
 #include <type_traits>
 #include <chrono>
+#include <array>
+#include <type_traits>
 #include <fstream>
 #include <sstream>
 #include "glad/glad.h"

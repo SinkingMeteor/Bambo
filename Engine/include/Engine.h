@@ -6,7 +6,6 @@
 #include "Common/Time/Timer.h"
 #include "Utils.h"
 #include "Paths.h"
-#include "Common/Resource/ResourceProvider.h"
 
 namespace Bambo
 {
@@ -24,6 +23,5 @@ namespace Bambo
 
 		Window m_window;
 		Input m_input;
-		TextureProvider m_textureProvider;
 	};
 }

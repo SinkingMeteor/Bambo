@@ -7,6 +7,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Window/Window.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Input/Input.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Shader.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Texture2D.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Sprite.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Common/Resource/ResourceProvider.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Common/Time/Timer.cpp)
 
@@ -33,3 +34,9 @@ target_link_libraries(Bambo glfw glad STBI)
 
 target_compile_features(Bambo PUBLIC cxx_std_17)
 target_precompile_headers(Bambo PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/pch.h)
+
+add_custom_command(TARGET Bambo POST_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy_directory
+${CMAKE_CURRENT_LIST_DIR}/resources
+${CMAKE_BINARY_DIR}/Engine/resources
+COMMENT "Copying resources")

@@ -3,8 +3,7 @@ namespace Bambo
 {
 	Engine::Engine() : 
 		m_window(WindowSettings{640, 360, "Hello Window!"}),
-		m_input(&m_window),
-		m_textureProvider()
+		m_input(&m_window)
 	{
 		Initialize();
 	}

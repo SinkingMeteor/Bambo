@@ -37,6 +37,9 @@ namespace Bambo
 			return BAMBO_FALSE;
 		}
 
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		glfwSetWindowUserPointer(m_glfwWindow, this);
 		glfwSetFramebufferSizeCallback(m_glfwWindow, [](GLFWwindow* window, int width, int height) 
 		{
