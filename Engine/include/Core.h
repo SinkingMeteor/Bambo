@@ -16,4 +16,7 @@ namespace Bambo
 	using uint = unsigned int;
 	using uchar = unsigned char;
 	using bambo_id = std::size_t;
+
+	constexpr float ONE_DEGREE_IN_RADIANS = 0.0174532f;
+	constexpr float ONE_RADIAN_IN_DEGREES = 57.2957795f;
 }
