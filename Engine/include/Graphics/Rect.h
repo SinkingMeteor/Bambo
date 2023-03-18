@@ -20,6 +20,15 @@ namespace Bambo
 	};
 
 	template<typename T>
+	bool operator==(const Rect<T>& rect1, const Rect<T>& rect2) 
+	{
+		return rect1.Left == rect2.Left && 
+				rect1.Top == rect2.Top && 
+				rect1.Width == rect2.Width && 
+				rect1.Height == rect2.Height;
+	}
+
+	template<typename T>
 	Rect<T>::Rect(T left, T top, T width, T height) :
 		Left(left),
 		Top(top),

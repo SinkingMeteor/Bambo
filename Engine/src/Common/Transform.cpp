@@ -2,6 +2,10 @@
 
 namespace Bambo 
 {
+	Matrix::Matrix(const glm::mat3& matrix) : 
+		m_matrix(matrix)
+	{}
+
 	Transform::Transform() : Transform(glm::vec2(0.0f, 0.0f))
 	{}
 
@@ -23,10 +27,10 @@ namespace Bambo
 		m_scale(scale),
 		m_origin(origin),
 		m_isNeedUpdate(true),
-		m_matrix(0.0f)
+		m_matrix()
 	{}
 
-	glm::mat3 Transform::GetMatrix() 
+	Matrix& Transform::GetMatrix()
 	{
 		if (IsNeedUpdate()) 
 		{
@@ -40,7 +44,7 @@ namespace Bambo
 			float tx = -m_origin.x * sxc - m_origin.y * sys + m_position.x;
 			float ty = m_origin.x * sxs - m_origin.y * syc + m_position.y;
 
-			m_matrix = glm::mat3{ sxc, sys, tx, -sxs, syc, ty, 0.0f, 0.0f, 1.0f };
+			m_matrix = Matrix{ glm::mat3{ sxc, sys, tx, -sxs, syc, ty, 0.0f, 0.0f, 1.0f } };
 			m_isNeedUpdate = false;
 		}
 

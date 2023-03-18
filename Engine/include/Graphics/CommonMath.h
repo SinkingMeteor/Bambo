@@ -5,7 +5,7 @@ namespace Bambo
 {
 
 	template<typename T>
-	struct Vector2 
+	struct Vector2
 	{
 		static_assert(std::is_arithmetic<T>::value);
 
@@ -16,19 +16,19 @@ namespace Bambo
 		Vector2() noexcept : Vector2(T(0.0f), T(0.0f)) {}
 		Vector2(T valueX, T valueY) noexcept : X(valueX), Y(valueY) {}
 
-		float Dot(const Vector2<T>& vector) const noexcept;
-		float Magnitude() const noexcept;
-		Vector2<T> GetNormalized() const noexcept;
+		float Dot(const Vector2<T>& vector) const;
+		float Magnitude() const;
+		Vector2<T> GetNormalized() const;
 	};
 
 	template<typename T>
-	inline float Vector2<T>::Dot(const Vector2<T>& vector) const noexcept
+	inline float Vector2<T>::Dot(const Vector2<T>& vector) const
 	{
 		return X * vector.X + Y * vector.Y;
 	}
 
 	template<typename T>
-	inline float Vector2<T>::Magnitude() const noexcept
+	inline float Vector2<T>::Magnitude() const
 	{
 		float x = static_cast<float>(X);
 		float y = static_cast<float>(Y);
@@ -36,7 +36,7 @@ namespace Bambo
 	}
 
 	template<typename T>
-	Vector2<T> Vector2<T>::GetNormalized() const noexcept
+	Vector2<T> Vector2<T>::GetNormalized() const
 	{
 		float length = this->Magnitude();
 		if (length <= 0.0f)
@@ -50,13 +50,13 @@ namespace Bambo
 	}
 
 	template<typename T>
-	Vector2<T> operator+(const Vector2<T>& lVector, const Vector2<T>& rVector) noexcept
+	Vector2<T> operator+(const Vector2<T>& lVector, const Vector2<T>& rVector)
 	{
 		return Vector2<T>(lVector.X + rVector.X, lVector.Y + rVector.Y);
 	}
 
 	template<typename T>
-	Vector2<T> operator-(const Vector2<T>& lVector, const Vector2<T>& rVector) noexcept
+	Vector2<T> operator-(const Vector2<T>& lVector, const Vector2<T>& rVector)
 	{
 		return Vector2<T>(lVector.X - rVector.X, lVector.Y - rVector.Y);
 	}
@@ -67,29 +67,27 @@ namespace Bambo
 	template<typename T>
 	struct Vector3
 	{
-		static_assert(std::is_arithmetic<T>::value);
-
 	public:
 		T X;
 		T Y;
 		T Z;
 
 		Vector3() noexcept : Vector3(T(0.0f), T(0.0f), T(0.0f)) {}
-		Vector3(T valueX, T valueY, T valueZ) noexcept : X(valueX), Y(valueY), Z(valueZ) {}
+		Vector3(T valueX, T valueY, T valueZ) : X(valueX), Y(valueY), Z(valueZ) {}
 
-		float Dot(const Vector3<T>& vector) const noexcept;
-		float Magnitude() const noexcept;
-		Vector3<T> GetNormalized() const noexcept;
+		float Dot(const Vector3<T>& vector) const;
+		float Magnitude() const;
+		Vector3<T> GetNormalized() const;
 	};
 
 	template<typename T>
-	inline float Vector3<T>::Dot(const Vector3<T>& vector) const noexcept
+	inline float Vector3<T>::Dot(const Vector3<T>& vector) const
 	{
 		return X * vector.X + Y * vector.Y + Z * vector.Z;
 	}
 
 	template<typename T>
-	inline float Vector3<T>::Magnitude() const noexcept
+	inline float Vector3<T>::Magnitude() const
 	{
 		float x = static_cast<float>(X);
 		float y = static_cast<float>(Y);
@@ -98,7 +96,7 @@ namespace Bambo
 	}
 
 	template<typename T>
-	Vector3<T> Vector3<T>::GetNormalized() const noexcept
+	Vector3<T> Vector3<T>::GetNormalized() const
 	{
 		float length = this->Magnitude();
 		if (length <= 0.0f)
@@ -113,13 +111,13 @@ namespace Bambo
 	}
 
 	template<typename T>
-	Vector3<T> operator+(const Vector3<T>& lVector, const Vector3<T>& rVector) noexcept
+	Vector3<T> operator+(const Vector3<T>& lVector, const Vector3<T>& rVector)
 	{
 		return Vector3<T>(lVector.X + rVector.X, lVector.Y + rVector.Y, lVector.Z + rVector.Z);
 	}
 
 	template<typename T>
-	Vector3<T> operator-(const Vector3<T>& lVector, const Vector3<T>& rVector) noexcept
+	Vector3<T> operator-(const Vector3<T>& lVector, const Vector3<T>& rVector)
 	{
 		return Vector3<T>(lVector.X - rVector.X, lVector.Y - rVector.Y, lVector.Z - rVector.Z);
 	}

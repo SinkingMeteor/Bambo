@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-
+#include "Graphics/Rect.h"
 namespace Bambo 
 {
 	class Texture2D 
@@ -13,7 +13,7 @@ namespace Bambo
 		void LoadFromFile(const char* file);
 		void SetFormat(uint format);
 		void Use() const;
-
+		RectInt GetTextureRect() const { return RectInt{ 0, 0, m_width, m_height }; }
 	private:
 		uint m_id;
 

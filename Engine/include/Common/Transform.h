@@ -3,6 +3,16 @@
 #include "Utils.h"
 namespace Bambo 
 {
+	class Matrix 
+	{
+	public:
+		Matrix() = default;
+		Matrix(const glm::mat3& m_matrix);
+		glm::mat3& GetInternalMatrix() { return m_matrix; }
+	private:
+		glm::mat3 m_matrix;
+	};
+
 	class Transform 
 	{
 	public:
@@ -17,7 +27,7 @@ namespace Bambo
 		float GetRotation() const { return m_rotation; }
 		glm::vec2 GetScale() const { return m_scale; }
 		glm::vec2 GetOrigin() const { return m_origin; }
-		glm::mat3 GetMatrix();
+		Matrix& GetMatrix();
 
 		bool IsNeedUpdate() const { return m_isNeedUpdate; }
 
@@ -36,7 +46,6 @@ namespace Bambo
 		glm::vec2 m_origin;
 		bool m_isNeedUpdate;
 
-		glm::mat3 m_matrix;
-
+		Matrix m_matrix;
 	};
 }
