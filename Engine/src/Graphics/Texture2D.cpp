@@ -6,12 +6,12 @@ namespace Bambo
 		m_id(0),
 		m_width(0),
 		m_height(0),
-		m_internalFormat(GL_RGB),
-		m_imageFormat(GL_RGB),
+		m_internalFormat(GL_SRGB),
+		m_imageFormat(GL_SRGB),
 		m_wrapS(GL_REPEAT),
 		m_wrapT(GL_REPEAT),
-		m_filterMin(GL_LINEAR),
-		m_filterMax(GL_LINEAR)
+		m_filterMin(GL_NEAREST),
+		m_filterMax(GL_NEAREST)
 	{
 		glGenTextures(1, &m_id);
 	}
@@ -21,17 +21,22 @@ namespace Bambo
 		glDeleteTextures(1, &m_id);
 	}
 
-	void Texture2D::SetFormat(uint format) 
+	void Texture2D::LoadFromFile(const std::string& file)
 	{
-		m_internalFormat = format;
-		m_imageFormat = format;
-	}
+		int channels{};
+		uchar* data = stbi_load(file.c_str(), &m_width, &m_height, &channels, 0);
+		BAMBO_ASSERT(data, "Failed to load image");
 
-	void Texture2D::LoadFromFile(const char* file)
-	{
-		int nrChannels{};
-		uchar* data = stbi_load(file, &m_width, &m_height, &nrChannels, 0);
-		
+		if (channels == 4) {
+			m_internalFormat = GL_RGBA8;
+			m_imageFormat = GL_RGBA;
+		}
+		else
+		{
+			m_internalFormat = GL_RGB8;
+			m_imageFormat = GL_RGB;
+		}
+
 		glBindTexture(GL_TEXTURE_2D, m_id);
 		glTexImage2D(GL_TEXTURE_2D, 0, m_internalFormat, m_width, m_height, 0, m_imageFormat, GL_UNSIGNED_BYTE, data);
 
@@ -48,5 +53,10 @@ namespace Bambo
 	void Texture2D::Use() const 
 	{
 		glBindTexture(GL_TEXTURE_2D, m_id);
+	}
+
+	void Texture2D::StopUse()
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }

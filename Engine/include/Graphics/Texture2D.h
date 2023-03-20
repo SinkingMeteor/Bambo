@@ -3,16 +3,16 @@
 #include "Graphics/Rect.h"
 namespace Bambo 
 {
-	class Texture2D 
+	class BAMBO_API Texture2D 
 	{
 	public:
 		Texture2D();
 		Texture2D(const Texture2D&) = delete;
 		Texture2D& operator=(const Texture2D&) = delete;
 		~Texture2D();
-		void LoadFromFile(const char* file);
-		void SetFormat(uint format);
+		void LoadFromFile(const std::string& file);
 		void Use() const;
+		static void StopUse();
 		RectInt GetTextureRect() const { return RectInt{ 0, 0, m_width, m_height }; }
 	private:
 		uint m_id;

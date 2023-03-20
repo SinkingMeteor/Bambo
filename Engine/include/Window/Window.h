@@ -1,5 +1,7 @@
 #pragma once
 #include "pch.h"
+#include "Graphics/RenderTarget.h"
+#include "Common/Interfaces/IRenderTarget.h"
 namespace Bambo 
 {
 	struct WindowSettings 
@@ -10,10 +12,12 @@ namespace Bambo
 		std::string Title;
 	};
 
-	class BAMBO_API Window 
+	class BAMBO_API Window : public IRenderTarget
 	{
 	public:
 		Window(const WindowSettings& settings);
+		Window(const Window&) = delete;
+		Window& operator=(const Window&) = delete;
 		~Window();
 
 		[[nodiscard]] int Initialize();
@@ -24,8 +28,12 @@ namespace Bambo
 		GLFWwindow* GetRawWindow() const { return m_glfwWindow; }
 		void SetViewportSize(int width, int height);
 		void CloseWindow();
+
+		virtual RenderTarget& GetRenderTarget() override { return m_renderTarget; }
+
 	private:
 		WindowSettings m_windowSettings;
 		GLFWwindow* m_glfwWindow;
+		RenderTarget m_renderTarget;
 	};
 }

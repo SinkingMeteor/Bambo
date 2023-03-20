@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <type_traits>
 #include <chrono>
+#include <iostream>
 #include <array>
 #include <type_traits>
 #include <fstream>

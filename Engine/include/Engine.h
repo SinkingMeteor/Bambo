@@ -6,6 +6,9 @@
 #include "Common/Time/Timer.h"
 #include "Utils.h"
 #include "Paths.h"
+#include "Common/Resource/TextureProvider.h"
+#include "Common/Resource/ShaderProvider.h"
+#include "Graphics/Sprite.h"
 
 namespace Bambo
 {
@@ -23,5 +26,8 @@ namespace Bambo
 
 		Window m_window;
 		Input m_input;
+		TextureProvider m_textureProvider;
+		ShaderProvider m_shaderProvider;
+		std::unique_ptr<Sprite> m_testSprite;
 	};
 }

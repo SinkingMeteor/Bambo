@@ -4,7 +4,8 @@ namespace Bambo
 {
 	Window::Window(const WindowSettings& settings) :
 		m_windowSettings(settings),
-		m_glfwWindow(nullptr)
+		m_glfwWindow(nullptr),
+		m_renderTarget()
 	{
 
 	}
@@ -39,6 +40,9 @@ namespace Bambo
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glViewport(0, 0, m_windowSettings.Width, m_windowSettings.Height);
+
+		m_renderTarget.Initialize();
 
 		glfwSetWindowUserPointer(m_glfwWindow, this);
 		glfwSetFramebufferSizeCallback(m_glfwWindow, [](GLFWwindow* window, int width, int height) 
@@ -46,6 +50,7 @@ namespace Bambo
 			Window* gameWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 			gameWindow->SetViewportSize(width, height);
 		});
+
 
 		return BAMBO_TRUE;
 	}

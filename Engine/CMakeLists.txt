@@ -8,6 +8,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Input/Input.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Shader.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Texture2D.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Sprite.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Graphics/RenderTarget.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Common/Transform.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Common/Resource/ResourceProvider.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Common/Time/Timer.cpp)

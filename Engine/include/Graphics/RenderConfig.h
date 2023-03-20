@@ -1,3 +1,4 @@
+#pragma once
 #include "pch.h"
 #include "Graphics/Shader.h"
 #include "Common/Transform.h"
@@ -5,21 +6,24 @@
 
 namespace Bambo 
 {
-	enum class PrimitiveType 
+	enum class BAMBO_API PrimitiveType 
 	{
 		Triangle = GL_TRIANGLES,
-		Quads = GL_QUADS
+		TriangleStrip = GL_TRIANGLE_STRIP
 	};
 
 	struct BAMBO_API RenderConfig 
 	{
 	public:
-		RenderConfig() = default;
-		RenderConfig& RenderConfig(const RenderConfig& config) = default;
-		RenderConfig& operator=(const RenderConfig& config) = default;
+		RenderConfig() : 
+			Primitive(PrimitiveType::TriangleStrip),
+			ModelMatrix(),
+			Texture(nullptr),
+			Shader(nullptr)
+		{}
 
-		PrimitiveType Primitive{PrivitiveType::Quads};
-		Matrix ModelMatrix;
+		PrimitiveType Primitive{PrimitiveType::TriangleStrip};
+		Matrix ModelMatrix{};
 		std::shared_ptr<Texture2D> Texture;
 		std::shared_ptr<Shader> Shader;
 	};

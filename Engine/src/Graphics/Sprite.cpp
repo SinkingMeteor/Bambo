@@ -46,14 +46,14 @@ namespace Bambo
 		return RectFloat(Vector2f{ 0.f, 0.f }, Vector2f{ width, height });
 	}
 
-	void Sprite::Render(IRenderTarget& renderTarget, const RenderConfig& config) 
+	void Sprite::Render(RenderTarget& renderTarget, const RenderConfig& config) 
 	{
 		if (!m_texture) return;
 
 		RenderConfig spriteConfig{ config };
 
 		spriteConfig.ModelMatrix.GetInternalMatrix() *= m_transform.GetMatrix().GetInternalMatrix();
-		spriteConfig.Primitive = PrimitiveType::Quads;
+		spriteConfig.Primitive = PrimitiveType::TriangleStrip;
 		spriteConfig.Texture = m_texture;
 
 		renderTarget.Draw(m_vertices.data(), m_vertices.size(), spriteConfig);
@@ -71,10 +71,16 @@ namespace Bambo
 
 	void Sprite::UpdateTexCoords()
 	{
-		float left = static_cast<float>(m_spriteRect.Left);
-		float right = left + static_cast<float>(m_spriteRect.Width);
-		float top = static_cast<float>(m_spriteRect.Top);
-		float bottom = top + static_cast<float>(m_spriteRect.Height);
+		if (!m_texture) return;
+
+		RectInt texRect = m_texture->GetTextureRect();
+		float texWidth = static_cast<float>(texRect.Width);
+		float texHeight = static_cast<float>(texRect.Height);
+
+		float left = static_cast<float>(m_spriteRect.Left) / texWidth;
+		float right = (left + static_cast<float>(m_spriteRect.Width)) / texWidth;
+		float bottom = static_cast<float>(m_spriteRect.Top) / texHeight;
+		float top = (bottom + static_cast<float>(m_spriteRect.Height)) / texHeight;
 
 		m_vertices[0].TexCoord = glm::vec2(left, top);
 		m_vertices[1].TexCoord = glm::vec2(left, bottom);

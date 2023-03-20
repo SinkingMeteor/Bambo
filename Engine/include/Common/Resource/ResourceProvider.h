@@ -4,10 +4,6 @@
 
 namespace Bambo 
 {
-	//Test structs
-	
-	//===End test=======
-
 	template<typename Resource, typename Loader>
 	class BAMBO_API ResourceProvider 
 	{

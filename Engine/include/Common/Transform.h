@@ -7,10 +7,10 @@ namespace Bambo
 	{
 	public:
 		Matrix() = default;
-		Matrix(const glm::mat3& m_matrix);
-		glm::mat3& GetInternalMatrix() { return m_matrix; }
+		Matrix(float a00, float a01, float a02, float a10, float a11, float a12, float a20, float a21, float a22);
+		glm::mat4 GetInternalMatrix() const { return m_matrix; }
 	private:
-		glm::mat3 m_matrix;
+		glm::mat4 m_matrix;
 	};
 
 	class Transform 

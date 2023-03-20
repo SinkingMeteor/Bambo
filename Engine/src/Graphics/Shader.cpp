@@ -19,44 +19,36 @@ namespace Bambo
 		return *this;
 	}
 
-	void Shader::LoadFromFile(const char* vertexSourceFile, const char* fragmentSourceFile) 
+	void Shader::StopUse()
 	{
-		std::string vertexCode{};
-		std::string fragmentCode{};
+		glUseProgram(0);
+	}
 
-		std::ifstream vertexShaderFile(vertexSourceFile);
-		BAMBO_ASSERT(!vertexShaderFile.bad(), "Failed opening vertex source file")
-		std::ifstream fragmentShaderFile(fragmentSourceFile);
-		BAMBO_ASSERT(!fragmentShaderFile.bad(), "Failed opening fragment source file")
+	void Shader::LoadFromFile(const std::string& vertexSourceFile, const std::string& fragmentSourceFile) 
+	{
+		std::ifstream tv(vertexSourceFile.c_str());
+		std::stringstream vertexBuffer;
+		vertexBuffer << tv.rdbuf();
 
-		std::stringstream vertexShaderStream{};
-		std::stringstream fragmentShaderStream{};
+		std::ifstream tf(fragmentSourceFile.c_str());
+		std::stringstream fragmentBuffer;
+		fragmentBuffer << tf.rdbuf();
 
-		vertexShaderStream << vertexShaderFile.rdbuf();
-		fragmentShaderStream << fragmentShaderStream.rdbuf();
-
-		vertexShaderFile.close();
-		fragmentShaderFile.close();
-
-		vertexCode = vertexShaderStream.str();
-		fragmentCode = fragmentShaderStream.str();
-
-		Compile(vertexCode.c_str(), fragmentCode.c_str());
+		Compile(vertexBuffer.str().c_str(), fragmentBuffer.str().c_str());
 	}
 
 	void Shader::Compile(const char* vertexSource, const char* fragmentSource)
 	{
-		uint vertexShader{};
-		uint fragmentShader{};
-		uint shader{};
+		GLuint vertexShader{};
+		GLuint fragmentShader{};
 
 		vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertexShader, 1, &vertexSource, nullptr);
+		glShaderSource(vertexShader, 1, &vertexSource, NULL);
 		glCompileShader(vertexShader);
 		CheckErrors(vertexShader, Shader::CheckType::VertexShader);
 
 		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragmentShader, 1, &fragmentSource, nullptr);
+		glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
 		glCompileShader(fragmentShader);
 		CheckErrors(fragmentShader, Shader::CheckType::FragmentShader);
 
@@ -107,7 +99,7 @@ namespace Bambo
 			if (!result) 
 			{
 				glGetProgramInfoLog(id, 1024, nullptr, infoLog);
-				Log("LogShader", "ERROR: Compile-time error: %s", infoLog);
+				Log("LogShader", "ERROR: Compile-time error: %s", (const char*)infoLog);
 				return BAMBO_FALSE;
 			}
 			break;
@@ -116,7 +108,7 @@ namespace Bambo
 			if (!result)
 			{
 				glGetShaderInfoLog(id, 1024, nullptr, infoLog);
-				Log("LogShader", "ERROR: Compile-time error: %s", infoLog);
+				Log("LogShader", "ERROR: Compile-time error: %s", (const char*)infoLog);
 				return BAMBO_FALSE;
 			}
 			break;

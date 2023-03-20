@@ -10,13 +10,13 @@ namespace Bambo
 		#define BAMBO_ASSERT(x, msg); 
 	#endif
 
-	#define BAMBO_FALSE 0
-	#define BAMBO_TRUE 1
+	constexpr const bool BAMBO_FALSE = 0;
+	constexpr const bool BAMBO_TRUE = 1;
 
 	using uint = unsigned int;
 	using uchar = unsigned char;
 	using bambo_id = std::size_t;
 
-	constexpr float ONE_DEGREE_IN_RADIANS = 0.0174532f;
-	constexpr float ONE_RADIAN_IN_DEGREES = 57.2957795f;
+	constexpr const float ONE_DEGREE_IN_RADIANS = 0.0174532f;
+	constexpr const float ONE_RADIAN_IN_DEGREES = 57.2957795f;
 }

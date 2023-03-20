@@ -5,7 +5,7 @@
 #include "Graphics/Vertex.h"
 #include "Common/Interfaces/ITransformable.h"
 #include "Common/Interfaces/IRenderable.h"
-#include "Common/Interfaces/IRenderTarget.h"
+#include "Graphics/RenderTarget.h"
 #include "Graphics/RenderConfig.h"
 namespace Bambo 
 {
@@ -19,7 +19,7 @@ namespace Bambo
 		RectFloat GetLocalBounds() const;
 
 		virtual Transform& GetTransform() override { return m_transform; }
-		virtual void Render(IRenderTarget& renderTarget, const RenderConfig& config) override;
+		virtual void Render(RenderTarget& renderTarget, const RenderConfig& config) override;
 
 
 
