@@ -33,14 +33,6 @@ namespace Bambo
 		}
 		else
 		{
-			/*for (size_t i = 0; i < amount; ++i)
-			{
-				Vertex& vertex = m_vertices[i];
-				vertex.Position = vertices[i].Position;
-				vertex.TexCoord = vertices[i].TexCoord;
-				vertex.Color = vertices[i].Color;
-			}*/
-
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * amount, vertices);
 		}
 
@@ -48,7 +40,7 @@ namespace Bambo
 		{
 			config.Shader->Use();
 			config.Shader->SetMatrix4("model", config.ModelMatrix.GetInternalMatrix());
-			config.Shader->SetMatrix4("projection", glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f));
+			config.Shader->SetMatrix4("projection", glm::ortho(0.0f, 640.0f, 640.0f, 0.0f, -1.0f, 1.0f));
 		}
 
 		if (config.Texture)
@@ -59,11 +51,13 @@ namespace Bambo
 
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
 
 		glDrawArrays(static_cast<GLenum>(config.Primitive), 0, amount);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
 
 		Shader::StopUse();
 		Texture2D::StopUse();

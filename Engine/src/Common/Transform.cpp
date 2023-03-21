@@ -11,16 +11,22 @@ namespace Bambo
 				   a02, a12, 0.f, a22 }
 	{}
 
+	const glm::mat4 Matrix::Identity()
+	{
+		static glm::mat4 mat{ 1.0f };
+		return mat;
+	}
+
 	Transform::Transform() : Transform(glm::vec2(0.0f, 0.0f))
 	{}
 
-	Transform::Transform(const glm::vec2& position) : Transform(position, 0.0f, glm::vec2(0.0f, 0.0f), glm::vec2(0.0f, 0.0f))
+	Transform::Transform(const glm::vec2& position) : Transform(position, 0.0f, glm::vec2(1.0f, 1.0f), glm::vec2(0.0f, 0.0f))
 	{}
 
-	Transform::Transform(const glm::vec2& position, const glm::vec2& origin) : Transform(position, 0.0f, glm::vec2(0.0f, 0.0f), origin)
+	Transform::Transform(const glm::vec2& position, const glm::vec2& origin) : Transform(position, 0.0f, glm::vec2(1.0f, 1.0f), origin)
 	{}
 
-	Transform::Transform(const glm::vec2& position, float rotation) : Transform(position, rotation, glm::vec2(0.0f, 0.0f), glm::vec2(0.0f, 0.0f))
+	Transform::Transform(const glm::vec2& position, float rotation) : Transform(position, rotation, glm::vec2(1.0f, 1.0f), glm::vec2(0.0f, 0.0f))
 	{}
 
 	Transform::Transform(const glm::vec2& position, float rotation, const glm::vec2& scale) : Transform(position, rotation, scale, glm::vec2(0.0f, 0.0f))

@@ -9,7 +9,7 @@
 #include "Graphics/RenderConfig.h"
 namespace Bambo 
 {
-	class Sprite final : public ITransformable, public IRenderable
+	class BAMBO_API Sprite final : public ITransformable, public IRenderable
 	{
 	public:
 		Sprite(std::shared_ptr<Texture2D> texture);
@@ -20,8 +20,6 @@ namespace Bambo
 
 		virtual Transform& GetTransform() override { return m_transform; }
 		virtual void Render(RenderTarget& renderTarget, const RenderConfig& config) override;
-
-
 
 	private:
 		void UpdatePosition();

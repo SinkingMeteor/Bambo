@@ -79,8 +79,8 @@ namespace Bambo
 
 		float left = static_cast<float>(m_spriteRect.Left) / texWidth;
 		float right = (left + static_cast<float>(m_spriteRect.Width)) / texWidth;
-		float bottom = static_cast<float>(m_spriteRect.Top) / texHeight;
-		float top = (bottom + static_cast<float>(m_spriteRect.Height)) / texHeight;
+		float top = static_cast<float>(m_spriteRect.Top) / texHeight;
+		float bottom = (top + static_cast<float>(m_spriteRect.Height)) / texHeight;
 
 		m_vertices[0].TexCoord = glm::vec2(left, top);
 		m_vertices[1].TexCoord = glm::vec2(left, bottom);

@@ -17,7 +17,7 @@ namespace Bambo
 	public:
 		RenderConfig() : 
 			Primitive(PrimitiveType::TriangleStrip),
-			ModelMatrix(),
+			ModelMatrix(Matrix::Identity()),
 			Texture(nullptr),
 			Shader(nullptr)
 		{}

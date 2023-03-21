@@ -3,17 +3,19 @@
 #include "Utils.h"
 namespace Bambo 
 {
-	class Matrix 
+	class BAMBO_API Matrix 
 	{
 	public:
 		Matrix() = default;
+		Matrix(const glm::mat4& mat) : m_matrix(mat) {}
 		Matrix(float a00, float a01, float a02, float a10, float a11, float a12, float a20, float a21, float a22);
 		glm::mat4 GetInternalMatrix() const { return m_matrix; }
+		static const glm::mat4 Identity();
 	private:
 		glm::mat4 m_matrix;
 	};
 
-	class Transform 
+	class BAMBO_API Transform 
 	{
 	public:
 		Transform();
