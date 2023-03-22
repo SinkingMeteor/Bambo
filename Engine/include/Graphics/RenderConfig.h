@@ -3,7 +3,7 @@
 #include "Graphics/Shader.h"
 #include "Common/Transform.h"
 #include "Graphics/Texture2D.h"
-
+#include "Graphics/Camera.h"
 namespace Bambo 
 {
 	enum class BAMBO_API PrimitiveType 
@@ -26,5 +26,6 @@ namespace Bambo
 		Matrix ModelMatrix{};
 		std::shared_ptr<Texture2D> Texture;
 		std::shared_ptr<Shader> Shader;
+		std::shared_ptr<Camera> Camera;
 	};
 }

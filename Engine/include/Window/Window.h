@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Graphics/RenderTarget.h"
 #include "Common/Interfaces/IRenderTarget.h"
+#include "Graphics/Camera.h"
 namespace Bambo 
 {
 	struct WindowSettings 

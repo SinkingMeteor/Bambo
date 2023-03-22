@@ -6,7 +6,8 @@ namespace Bambo
 		m_input(&m_window),
 		m_textureProvider(),
 		m_shaderProvider(),
-		m_testSprite(nullptr)
+		m_testSprite(nullptr),
+		m_camera(std::make_shared<Camera>(glm::vec2{ 0.0f, 0.0f }, glm::vec2{ 640.0f, 640.0f}))
 	{
 		Initialize();
 	}
@@ -48,6 +49,28 @@ namespace Bambo
 
 	void Engine::Update(float deltaTime)
 	{
+		if (m_input.IsKeyPressed(GLFW_KEY_W))
+		{
+			m_camera->GetTransform().AddToPosition(glm::vec2(0.0f, -1.0f));
+		}
+		if (m_input.IsKeyPressed(GLFW_KEY_A))
+		{
+			m_camera->GetTransform().AddToPosition(glm::vec2(-1.0f, 0.0f));
+		}
+		if (m_input.IsKeyPressed(GLFW_KEY_S))
+		{
+			m_camera->GetTransform().AddToPosition(glm::vec2(0.0f, 1.0f));
+		}
+		if (m_input.IsKeyPressed(GLFW_KEY_D))
+		{
+			m_camera->GetTransform().AddToPosition(glm::vec2(1.0f, 0.0f));
+		}
+
+		glm::vec2 pos = m_camera->GetTransform().GetPosition();
+		Log("LogEngine", "Camera pos. X: %f, Y: %f", pos.x, pos.y);
+		glm::vec2 center = m_camera->GetCameraCenter();
+		Log("LogEngine", "Camera center. X: %f, Y: %f", center.x, center.y);
+
 	}
 
 	void Engine::Render() 
@@ -58,6 +81,7 @@ namespace Bambo
 		RenderConfig config{};
 		config.Primitive = PrimitiveType::TriangleStrip;
 		config.Shader = m_shaderProvider.Get(ToId("TestShader"));
+		config.Camera = m_camera;
 		m_testSprite->Render(m_window.GetRenderTarget(), config);
 
 		glfwSwapBuffers(m_window.GetRawWindow());

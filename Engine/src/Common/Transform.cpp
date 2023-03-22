@@ -45,17 +45,12 @@ namespace Bambo
 	{
 		if (IsNeedUpdate()) 
 		{
-			float angle = -DegToRad(m_rotation);
-			float cosine = std::cos(angle);
-			float sine = std::sin(angle);
-			float sxc = m_scale.x * cosine;
-			float syc = m_scale.y * cosine;
-			float sxs = m_scale.x * sine;
-			float sys = m_scale.y * sine;
-			float tx = -m_origin.x * sxc - m_origin.y * sys + m_position.x;
-			float ty = m_origin.x * sxs - m_origin.y * syc + m_position.y;
+			glm::mat4 newMatrix{ Matrix::Identity() };
+			newMatrix = glm::translate(newMatrix, glm::vec3{ m_position.x, m_position.y, 0.0f });
+			newMatrix = glm::rotate(newMatrix, glm::radians(m_rotation), glm::vec3{ 0.0f, 0.0f, 1.0f });
+			newMatrix = glm::scale(newMatrix, glm::vec3{ m_scale.x, m_scale.y, 1.0f });
 
-			m_matrix = Matrix{ sxc, sys, tx, -sxs, syc, ty, 0.0f, 0.0f, 1.0f };
+			m_matrix = Matrix{ newMatrix };
 			m_isNeedUpdate = false;
 		}
 

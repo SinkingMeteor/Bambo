@@ -26,6 +26,11 @@ namespace Bambo
 
 	void RenderTarget::Draw(const Vertex* vertices, int amount, const RenderConfig& config)
 	{
+		if (!config.Camera) return;
+
+		glm::vec2 camSize = config.Camera->GetCameraSize();
+		glViewport(0, 0, camSize.x, camSize.y);
+
 		if (m_bufferSize != amount) 
 		{
 			m_bufferSize = amount;
@@ -40,7 +45,8 @@ namespace Bambo
 		{
 			config.Shader->Use();
 			config.Shader->SetMatrix4("model", config.ModelMatrix.GetInternalMatrix());
-			config.Shader->SetMatrix4("projection", glm::ortho(0.0f, 640.0f, 640.0f, 0.0f, -1.0f, 1.0f));
+			config.Shader->SetMatrix4("view", config.Camera->GetViewMatrix());
+			config.Shader->SetMatrix4("projection", config.Camera->GetProjectionMatrix());
 		}
 
 		if (config.Texture)
