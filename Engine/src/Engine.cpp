@@ -2,12 +2,13 @@
 namespace Bambo
 {
 	Engine::Engine() : 
-		m_window(WindowSettings{640, 640, "Hello Window!"}),
+		m_window(WindowSettings{1280, 720, "Hello Window!"}),
 		m_input(&m_window),
 		m_textureProvider(),
 		m_shaderProvider(),
+		m_renderTarget(m_window.GetCurrentSettings()),
 		m_testSprite(nullptr),
-		m_camera(std::make_shared<Camera>(glm::vec2{ 0.0f, 0.0f }, glm::vec2{ 640.0f, 640.0f}))
+		m_camera(std::make_shared<Camera>(glm::vec2{ 0.0f, 0.0f }, glm::vec2{ 640.0f, 360.0f}))
 	{
 		Initialize();
 	}
@@ -16,6 +17,8 @@ namespace Bambo
 	{
 		int result = m_window.Initialize();
 		BAMBO_ASSERT(result != BAMBO_FALSE, "Window initialization failed");
+
+		m_renderTarget.Initialize();
 
 		std::shared_ptr<Texture2D> texture = m_textureProvider.Load(ToId("TestTexture"), "E:\\projects\\visualstudio\\Bambo\\Engine\\resources\\Textures\\TestImage.png");
 		m_shaderProvider.Load(ToId("TestShader"), 
@@ -82,7 +85,7 @@ namespace Bambo
 		config.Primitive = PrimitiveType::TriangleStrip;
 		config.Shader = m_shaderProvider.Get(ToId("TestShader"));
 		config.Camera = m_camera;
-		m_testSprite->Render(m_window.GetRenderTarget(), config);
+		m_testSprite->Render(m_renderTarget, config);
 
 		glfwSwapBuffers(m_window.GetRawWindow());
 		glfwPollEvents();

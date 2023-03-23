@@ -28,6 +28,7 @@ namespace Bambo
 		Input m_input;
 		TextureProvider m_textureProvider;
 		ShaderProvider m_shaderProvider;
+		RenderTarget m_renderTarget;
 
 		std::unique_ptr<Sprite> m_testSprite;
 		std::shared_ptr<Camera> m_camera;

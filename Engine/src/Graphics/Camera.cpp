@@ -64,6 +64,7 @@ namespace Bambo
 
 	glm::mat4 Camera::GetProjectionMatrix() const
 	{
+		const float aspectRatio = m_size.x / m_size.y;
 		return glm::ortho(0.0f, m_size.x, m_size.y, 0.0f, -1.0f, 1.0f);
 	}
 

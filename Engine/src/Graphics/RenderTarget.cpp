@@ -2,7 +2,8 @@
 
 namespace Bambo
 {
-	RenderTarget::RenderTarget() :
+	RenderTarget::RenderTarget(const WindowSettings* windowSettings) :
+		m_windowSettings(windowSettings),
 		m_vao(0),
 		m_vbo(0),
 		m_bufferSize(4)
@@ -24,12 +25,19 @@ namespace Bambo
 		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(4 * sizeof(float)));
 	}
 
+	void RenderTarget::ApplyViewport(const RenderConfig& config)
+	{
+		const float viewportWidth = m_windowSettings->Width;
+		const float viewportHeight = m_windowSettings->Height;
+
+		glViewport(0, 0, viewportWidth, viewportHeight);
+	}
+
 	void RenderTarget::Draw(const Vertex* vertices, int amount, const RenderConfig& config)
 	{
 		if (!config.Camera) return;
 
-		glm::vec2 camSize = config.Camera->GetCameraSize();
-		glViewport(0, 0, camSize.x, camSize.y);
+		ApplyViewport(config);
 
 		if (m_bufferSize != amount) 
 		{
@@ -78,6 +86,7 @@ namespace Bambo
 	{
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
