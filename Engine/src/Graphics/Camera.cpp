@@ -4,6 +4,7 @@ namespace Bambo
 {
 	Camera::Camera() : 
 		m_transform(),
+		m_projViewMatrix(),
 		m_size(glm::vec2{640.0f, 360.0f})
 	{
 		m_transform.SetOrigin(GetHalfOfCameraSize());
@@ -11,6 +12,7 @@ namespace Bambo
 
 	Camera::Camera(const RectFloat& cameraRect) :
 		m_transform(),
+		m_projViewMatrix(),
 		m_size(glm::vec2(cameraRect.Width, cameraRect.Height))
 	{
 		m_transform.SetPosition(glm::vec2(cameraRect.Left, cameraRect.Top));
@@ -19,12 +21,12 @@ namespace Bambo
 
 	Camera::Camera(const glm::vec2& center, const glm::vec2& size) :
 		m_transform(),
+		m_projViewMatrix(),
 		m_size(size)
 	{
 		m_transform.SetPosition(glm::vec2(center.x - size.x * 0.5f, center.y - size.y * 0.5f));
 		m_transform.SetOrigin(GetHalfOfCameraSize());
 	}
-
 
 	void Camera::SetRect(const RectFloat& cameraRect)
 	{
@@ -71,5 +73,15 @@ namespace Bambo
 	glm::mat4 Camera::GetViewMatrix() const
 	{
 		return glm::inverse(m_transform.GetMatrix().GetInternalMatrix());
+	}
+
+	glm::mat4 Camera::GetProjViewMatrix() const
+	{
+		if (m_transform.IsNeedUpdate())
+		{
+			m_projViewMatrix = Matrix{ GetProjectionMatrix() * GetViewMatrix() };
+		}
+
+		return m_projViewMatrix.GetInternalMatrix();
 	}
 }

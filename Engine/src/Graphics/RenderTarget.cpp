@@ -53,8 +53,7 @@ namespace Bambo
 		{
 			config.Shader->Use();
 			config.Shader->SetMatrix4("model", config.ModelMatrix.GetInternalMatrix());
-			config.Shader->SetMatrix4("view", config.Camera->GetViewMatrix());
-			config.Shader->SetMatrix4("projection", config.Camera->GetProjectionMatrix());
+			config.Shader->SetMatrix4("projView", config.Camera->GetProjViewMatrix());
 		}
 
 		if (config.Texture)
