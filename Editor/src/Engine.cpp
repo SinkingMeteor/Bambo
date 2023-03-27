@@ -1,11 +1,11 @@
 #include "Engine.h"
 
 Engine::Engine() : 
-	m_window(Bambo::WindowSettings{1280, 720, "Hello Window!"}),
+	m_window(std::make_shared<Bambo::WindowSettings>(Bambo::WindowSettings{1280u, 720u, "Hello Window!"})),
 	m_input(&m_window),
 	m_textureProvider(),
 	m_shaderProvider(),
-	m_renderTarget(Bambo::RenderSettings{ m_window.GetCurrentSettings()->Width, m_window.GetCurrentSettings()->Height}),
+	m_renderTarget(m_window.GetSettings()),
 	m_testSprite(nullptr),
 	m_camera(std::make_shared<Bambo::Camera>(glm::vec2{ 0.0f, 0.0f }, glm::vec2{ 640.0f, 360.0f}))
 {

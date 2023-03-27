@@ -3,6 +3,9 @@
 
 namespace Bambo 
 {
+	constexpr const float ONE_DEGREE_IN_RADIANS = 0.0174532f;
+	constexpr const float ONE_RADIAN_IN_DEGREES = 57.2957795f;
+
 	template<typename... Args>
 	static void Log(const char* logScope, const char* format, Args&&...args)
 	{

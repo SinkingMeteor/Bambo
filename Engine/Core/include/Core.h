@@ -8,9 +8,6 @@ namespace Bambo
 	using uint = unsigned int;
 	using uchar = unsigned char;
 	using bambo_id = size_t;
-
-	constexpr const float ONE_DEGREE_IN_RADIANS = 0.0174532f;
-	constexpr const float ONE_RADIAN_IN_DEGREES = 57.2957795f;
 }
 
 	#define BAMBO_API __declspec(dllexport)

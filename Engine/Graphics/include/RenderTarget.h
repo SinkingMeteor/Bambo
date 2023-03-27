@@ -4,19 +4,13 @@
 #include "RenderConfig.h"
 #include "Interfaces/IRenderable.h"
 #include "Vertex.h"
+#include "WindowSettings.h"
 namespace Bambo 
 {
-	struct RenderSettings
-	{
-	public:
-		int Width;
-		int Height;
-	};
-
 	class BAMBO_API RenderTarget 
 	{
 	public:
-		RenderTarget(const RenderSettings& renderSettings);
+		RenderTarget(std::shared_ptr<WindowSettings> windowSettings);
 		RenderTarget(const RenderTarget& v) = delete;
 		RenderTarget& operator=(const RenderTarget& v) = delete;
 		~RenderTarget();
@@ -27,7 +21,7 @@ namespace Bambo
 	private:
 		void ApplyViewport(const RenderConfig& config);
 
-		const RenderSettings m_renderSettings;
+		std::shared_ptr<WindowSettings> m_windowSettings;
 		GLuint m_vao;
 		GLuint m_vbo;
 		uint m_bufferSize;

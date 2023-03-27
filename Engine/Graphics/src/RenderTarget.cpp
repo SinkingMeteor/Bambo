@@ -2,8 +2,8 @@
 
 namespace Bambo
 {
-	RenderTarget::RenderTarget(const RenderSettings& renderSettings) :
-		m_renderSettings(renderSettings),
+	RenderTarget::RenderTarget(std::shared_ptr<WindowSettings> windowSettings) :
+		m_windowSettings(windowSettings),
 		m_vao(0),
 		m_vbo(0),
 		m_bufferSize(4)
@@ -27,8 +27,8 @@ namespace Bambo
 
 	void RenderTarget::ApplyViewport(const RenderConfig& config)
 	{
-		const float viewportWidth = m_renderSettings.Width;
-		const float viewportHeight = m_renderSettings.Height;
+		const float viewportWidth = static_cast<const float>(m_windowSettings->Width);
+		const float viewportHeight = static_cast<const float>(m_windowSettings->Height);
 
 		glViewport(0, 0, viewportWidth, viewportHeight);
 	}

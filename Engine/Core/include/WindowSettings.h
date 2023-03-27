@@ -2,7 +2,7 @@
 #include "pch.h"
 namespace Bambo 
 {
-	struct WindowSettings
+	struct BAMBO_API WindowSettings
 	{
 	public:
 		int Width;

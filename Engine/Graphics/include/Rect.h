@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "CommonMath.h"
+#include "Vectors.h"
 
 namespace Bambo 
 {

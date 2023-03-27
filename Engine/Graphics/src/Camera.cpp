@@ -70,12 +70,12 @@ namespace Bambo
 		return glm::ortho(0.0f, m_size.x, m_size.y, 0.0f, -1.0f, 1.0f);
 	}
 
-	glm::mat4 Camera::GetViewMatrix() const
+	glm::mat4 Camera::GetViewMatrix()
 	{
 		return glm::inverse(m_transform.GetMatrix().GetInternalMatrix());
 	}
 
-	glm::mat4 Camera::GetProjViewMatrix() const
+	glm::mat4 Camera::GetProjViewMatrix()
 	{
 		if (m_transform.IsNeedUpdate())
 		{

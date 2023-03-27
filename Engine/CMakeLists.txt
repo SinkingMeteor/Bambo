@@ -5,7 +5,7 @@ add_subdirectory(thirdparty/GLFW)
 add_subdirectory(thirdparty/STBI)
 add_subdirectory(thirdparty/GLM)
 
-option(BAMBO_ASSERT_OPTION "Enable asserts" Off)
+option(BAMBO_ASSERT_OPTION "Enable asserts" ON)
 
 add_subdirectory(Core)
 if(BAMBO_ASSERT_OPTION)
