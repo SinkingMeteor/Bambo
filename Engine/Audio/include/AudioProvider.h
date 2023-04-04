@@ -10,7 +10,7 @@ namespace Bambo
 		result_type operator()(const std::string& path) const
 		{
 			std::shared_ptr<Audio> audio = std::make_shared<Audio>();
-			audio->LoadFromFile(path);
+			if(!audio->LoadFromFile(path)) return nullptr;
 			return audio;
 		}
 	};
