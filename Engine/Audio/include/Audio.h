@@ -13,7 +13,7 @@ namespace Bambo
 		Audio(const Audio& audio) = delete;
 		Audio& operator=(const Audio& audio) = delete;
 		bool LoadFromFile(const std::string& filePath);
-
+		ALuint GetID() const { return m_id; }
 	private:
 		ALuint m_id;
 	};

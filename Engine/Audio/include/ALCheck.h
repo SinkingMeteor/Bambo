@@ -6,7 +6,7 @@ namespace Bambo
 {
 #ifdef BAMBO_DEBUG_ON
 
-#define alCheck(expr)                                      \
+#define ALCheck(expr)                                      \
     do                                                     \
     {                                                      \
         expr;                                              \
@@ -15,7 +15,7 @@ namespace Bambo
 
 #else
 
-#define alCheck(expr)  (expr)
+#define ALCheck(expr)  (expr)
 
 #endif
 
