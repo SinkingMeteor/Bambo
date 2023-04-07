@@ -7,6 +7,6 @@ namespace Bambo
 	{
 	public:
 		virtual float GetVolume() const = 0;
-		~IAudioListener() {}
+		~AudioListener() {}
 	};
 }
