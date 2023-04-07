@@ -14,13 +14,11 @@ target_compile_definitions(BamboCore PUBLIC BAMBO_DEBUG_ON)
 endif()
 target_compile_features(BamboCore PUBLIC cxx_std_17)
 
-
 add_subdirectory(Window)
 if(BAMBO_DEBUG_OPTION)
 target_compile_definitions(BamboWindow PUBLIC BAMBO_DEBUG_ON)
 endif()
 target_compile_features(BamboWindow PUBLIC cxx_std_17)
-
 
 add_subdirectory(Graphics)
 if(BAMBO_DEBUG_OPTION)
@@ -33,8 +31,5 @@ if(BAMBO_DEBUG_OPTION)
 target_compile_definitions(BamboAudio PUBLIC BAMBO_DEBUG_ON)
 endif()
 target_compile_features(BamboAudio PUBLIC cxx_std_17)
-
-
-
 
 

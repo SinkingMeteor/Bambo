@@ -16,3 +16,4 @@
 #include <fstream>
 #include <sstream>
 #include "Core.h"
+#include "Paths.h"

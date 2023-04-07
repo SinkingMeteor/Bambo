@@ -6,6 +6,10 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Time/Timer.cpp)
 add_library(BamboCore STATIC ${BAMBO_CORE_SOURCES})
 
 target_include_directories(BamboCore 
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
+PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/
+PUBLIC ${CMAKE_BINARY_DIR}/generated/)
+
+add_definitions(-DBAMBO_PROJECT_DIR="${PROJECT_SOURCE_DIR}")
+configure_file(include/Paths.h.in "${CMAKE_BINARY_DIR}/generated/Paths.h")
 
 target_precompile_headers(BamboCore PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/pch.h)

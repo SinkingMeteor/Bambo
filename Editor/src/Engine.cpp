@@ -18,10 +18,12 @@ void Engine::Initialize()
 
 	m_renderTarget.Initialize();
 
-	std::shared_ptr<Bambo::Texture2D> texture = m_textureProvider.Load(Bambo::ToId("TestTexture"), "E:\\projects\\visualstudio\\Bambo\\Engine\\resources\\Textures\\TestImage.png");
+	std::string projectPath = std::string{ BAMBO_PROJECT_DIR};
+
+	std::shared_ptr<Bambo::Texture2D> texture = m_textureProvider.Load(Bambo::ToId("TestTexture"), projectPath + "Engine/resources/Textures/TestImage.png");
 	m_shaderProvider.Load(Bambo::ToId("TestShader"), 
-		"E:\\projects\\visualstudio\\Bambo\\Engine\\resources\\Shaders\\VSpriteDefault.txt",
-		"E:\\projects\\visualstudio\\Bambo\\Engine\\resources\\Shaders\\FSpriteDefault.txt");
+		projectPath + "Engine/resources/Shaders/VSpriteDefault.txt",
+		projectPath + "Engine/resources/Shaders/FSpriteDefault.txt");
 	m_testSprite = std::make_unique<Bambo::Sprite>(texture);
 
 }
