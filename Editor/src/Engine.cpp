@@ -18,19 +18,18 @@ void Engine::Initialize()
 
 	m_renderTarget.Initialize();
 
-	std::string projectPath = std::string{ BAMBO_PROJECT_DIR};
+	std::string projectPath = std::string{ BAMBO_RESOURCE_DIR };
 
-	std::shared_ptr<Bambo::Texture2D> texture = m_textureProvider.Load(Bambo::ToId("TestTexture"), projectPath + "Engine/resources/Textures/TestImage.png");
+	std::shared_ptr<Bambo::Texture2D> texture = m_textureProvider.Load(Bambo::ToId("TestTexture"), projectPath + "Textures/TestImage.png");
 	m_shaderProvider.Load(Bambo::ToId("TestShader"), 
-		projectPath + "Engine/resources/Shaders/VSpriteDefault.txt",
-		projectPath + "Engine/resources/Shaders/FSpriteDefault.txt");
+		projectPath + "Shaders/VSpriteDefault.txt",
+		projectPath + "Shaders/FSpriteDefault.txt");
 	m_testSprite = std::make_unique<Bambo::Sprite>(texture);
 
 }
 
 int Engine::Run()
 {
-
 	Bambo::Timer timer{};
 	const float deltaTime = 1.0f / 60.0f;
 
@@ -52,28 +51,23 @@ int Engine::Run()
 
 void Engine::Update(float deltaTime)
 {
+	float speed = 50.0f;
 	if (m_input.IsKeyPressed(GLFW_KEY_W))
 	{
-		m_camera->GetTransform().AddToPosition(glm::vec2(0.0f, -1.0f));
+		m_camera->GetTransform().AddToPosition(glm::vec2(0.0f, -1.0f) * deltaTime * speed);
 	}
 	if (m_input.IsKeyPressed(GLFW_KEY_A))
 	{
-		m_camera->GetTransform().AddToPosition(glm::vec2(-1.0f, 0.0f));
+		m_camera->GetTransform().AddToPosition(glm::vec2(-1.0f, 0.0f) * deltaTime * speed);
 	}
 	if (m_input.IsKeyPressed(GLFW_KEY_S))
 	{
-		m_camera->GetTransform().AddToPosition(glm::vec2(0.0f, 1.0f));
+		m_camera->GetTransform().AddToPosition(glm::vec2(0.0f, 1.0f) * deltaTime * speed);
 	}
 	if (m_input.IsKeyPressed(GLFW_KEY_D))
 	{
-		m_camera->GetTransform().AddToPosition(glm::vec2(1.0f, 0.0f));
+		m_camera->GetTransform().AddToPosition(glm::vec2(1.0f, 0.0f) * deltaTime * speed);
 	}
-
-	glm::vec2 pos = m_camera->GetTransform().GetPosition();
-	Bambo::Log("LogEngine", "Camera pos. X: %f, Y: %f", pos.x, pos.y);
-	glm::vec2 center = m_camera->GetCameraCenter();
-	Bambo::Log("LogEngine", "Camera center. X: %f, Y: %f", center.x, center.y);
-
 }
 
 void Engine::Render() 

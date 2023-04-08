@@ -8,7 +8,6 @@ namespace Bambo
 	public:
 		Timer() noexcept;
 		float Restart() noexcept;
-		float PeekTime() noexcept;
 	private:
 		using clock = std::chrono::steady_clock;
 
