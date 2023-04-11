@@ -16,16 +16,19 @@ find_package(OpenGL REQUIRED)
 find_library(BAMBO_LIBS 
 NAMES BamboGraphics
 NAMES BamboWindow
+NAMES BamboAudio
 HINTS ${BamboEngine_BINARY_DIR}/Engine/)
 
 target_link_libraries(BamboEditor
 BamboGraphics 
 BamboWindow
+BamboAudio
 ${OPENGL_LIBRARIES})
 
 target_include_directories(BamboEditor 
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/Core/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/Graphics/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/Audio/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/Window/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/OpenAL/include/
 PUBLIC ${OPENGL_INCLUDE_DIRS})
-

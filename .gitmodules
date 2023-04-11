@@ -4,6 +4,6 @@
 [submodule "Engine/thirdparty/GLM"]
 	path = Engine/thirdparty/GLM
 	url = https://github.com/g-truc/glm
-[submodule "Engine/thirdparty/openal-soft"]
-	path = Engine/thirdparty/openal-soft
+[submodule "Engine/thirdparty/OpenAL"]
+	path = Engine/thirdparty/OpenAL
 	url = https://github.com/kcat/openal-soft

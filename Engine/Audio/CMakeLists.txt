@@ -10,17 +10,14 @@ ${CMAKE_CURRENT_LIST_DIR}/src/ALCheck.cpp)
 add_library(BamboAudio STATIC ${BAMBO_GRAPHICS_SOURCES})
 
 target_include_directories(BamboAudio 
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
-
-target_include_directories(BamboAudio 
-PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/openal-soft/include
+PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/OpenAL/include
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/GLM/glm
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/Core/include/)
 
-find_library(EXT_LIBS NAMES OpenAL32 HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/)
-target_link_libraries(BamboAudio OpenAL32 ${OPENGL_LIBRARIES})
+find_library(BamboCore NAMES BamboCore HINTS ${BamboEngine_BINARY_DIR}/Engine/Core)
+find_library(BAMBO_OPENAL_LIB NAMES OpenAL32 HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/OpenAL REQUIRED)
 
-find_library(BAMBO_CORE_LIB NAMES BamboCore HINTS ${BamboEngine_BINARY_DIR}/Engine/Core/)
-target_link_libraries(BamboAudio BamboCore)
+target_link_libraries(BamboAudio PUBLIC BamboCore PUBLIC OpenAL32)
 

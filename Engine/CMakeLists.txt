@@ -4,7 +4,7 @@ add_subdirectory(thirdparty/GLAD)
 add_subdirectory(thirdparty/GLFW)
 add_subdirectory(thirdparty/STBI)
 add_subdirectory(thirdparty/GLM)
-add_subdirectory(thirdparty/openal-soft)
+add_subdirectory(thirdparty/OpenAL)
 
 option(BAMBO_DEBUG_OPTION "Enable asserts" ON)
 

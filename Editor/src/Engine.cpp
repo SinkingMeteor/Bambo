@@ -1,13 +1,17 @@
 #include "Engine.h"
 
-Engine::Engine() : 
-	m_window(std::make_shared<Bambo::WindowSettings>(Bambo::WindowSettings{1280u, 720u, "Hello Window!"})),
+Engine::Engine() :
+	m_window(std::make_shared<Bambo::WindowSettings>(Bambo::WindowSettings{ 1280u, 720u, "Hello Window!" })),
 	m_input(&m_window),
 	m_textureProvider(),
 	m_shaderProvider(),
+	m_audioProvider(),
 	m_renderTarget(m_window.GetSettings()),
 	m_testSprite(nullptr),
-	m_camera(std::make_shared<Bambo::Camera>(glm::vec2{ 0.0f, 0.0f }, glm::vec2{ 640.0f, 360.0f}))
+	m_camera(std::make_shared<Bambo::Camera>(glm::vec2{ 0.0f, 0.0f }, glm::vec2{ 640.0f, 360.0f })),
+	m_audioDevice(std::make_shared<Bambo::AudioDevice>()),
+	m_audioListener(m_audioDevice),
+	m_audioSource()
 {
 	Initialize();
 }
@@ -21,11 +25,12 @@ void Engine::Initialize()
 	std::string projectPath = std::string{ BAMBO_RESOURCE_DIR };
 
 	std::shared_ptr<Bambo::Texture2D> texture = m_textureProvider.Load(Bambo::ToId("TestTexture"), projectPath + "Textures/TestImage.png");
-	m_shaderProvider.Load(Bambo::ToId("TestShader"), 
-		projectPath + "Shaders/VSpriteDefault.txt",
-		projectPath + "Shaders/FSpriteDefault.txt");
-	m_testSprite = std::make_unique<Bambo::Sprite>(texture);
+	m_shaderProvider.Load(Bambo::ToId("TestShader"), projectPath + "Shaders/VSpriteDefault.txt", projectPath + "Shaders/FSpriteDefault.txt");
+	std::shared_ptr<Bambo::Audio> audio = m_audioProvider.Load(Bambo::ToId("TestAudio"), projectPath + "Audio/file_example.wav");
 
+	m_testSprite = std::make_unique<Bambo::Sprite>(texture);
+	m_audioSource.SetAudio(audio);
+	m_audioSource.Play();
 }
 
 int Engine::Run()

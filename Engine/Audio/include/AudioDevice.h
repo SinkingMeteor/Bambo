@@ -10,8 +10,11 @@ namespace Bambo
 	public:
 		AudioDevice();
 		~AudioDevice();
+
 	private:
 		ALCdevice* m_device;
 		ALCcontext* m_context;
+
+		friend class AudioListener;
 	};
 }

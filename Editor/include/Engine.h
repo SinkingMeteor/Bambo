@@ -6,8 +6,13 @@
 #include "Utils.h"
 #include "TextureProvider.h"
 #include "ShaderProvider.h"
+#include "AudioProvider.h"
+#include "AudioSource.h"
+#include "AudioDevice.h"
+#include "AudioListener.h"
 #include "Sprite.h"
 #include "Utils.h"
+
 class Engine 
 {
 public:
@@ -24,8 +29,13 @@ private:
 	Bambo::Input m_input;
 	Bambo::TextureProvider m_textureProvider;
 	Bambo::ShaderProvider m_shaderProvider;
+	Bambo::AudioProvider m_audioProvider;
+
 	Bambo::RenderTarget m_renderTarget;
 
 	std::unique_ptr<Bambo::Sprite> m_testSprite;
 	std::shared_ptr<Bambo::Camera> m_camera;
+	std::shared_ptr<Bambo::AudioDevice> m_audioDevice;
+	Bambo::AudioListener m_audioListener;
+	Bambo::AudioSource m_audioSource;
 };
