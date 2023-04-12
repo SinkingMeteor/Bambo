@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
+option(BAMBO_DEBUG_OPTION "Enable asserts" ON)
+
 add_subdirectory(thirdparty/GLAD)
 add_subdirectory(thirdparty/GLFW)
 add_subdirectory(thirdparty/STBI)
 add_subdirectory(thirdparty/GLM)
 add_subdirectory(thirdparty/OpenAL)
-
-option(BAMBO_DEBUG_OPTION "Enable asserts" ON)
 
 add_subdirectory(Core)
 if(BAMBO_DEBUG_OPTION)
@@ -31,5 +31,6 @@ if(BAMBO_DEBUG_OPTION)
 target_compile_definitions(BamboAudio PUBLIC BAMBO_DEBUG_ON)
 endif()
 target_compile_features(BamboAudio PUBLIC cxx_std_17)
+
 
 

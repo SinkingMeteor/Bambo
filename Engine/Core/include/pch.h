@@ -15,5 +15,7 @@
 #include <type_traits>
 #include <fstream>
 #include <sstream>
+#include <bit>
+#include <numeric>
 #include "Core.h"
 #include "Paths.h"

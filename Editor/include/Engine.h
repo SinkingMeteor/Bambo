@@ -19,6 +19,7 @@ public:
 	Engine();
 	Engine(const Engine& engine) = delete;
 	Engine& operator=(const Engine& engine) = delete;
+	~Engine();
 	[[nodiscard]] int Run();
 private:
 	void Initialize();

@@ -33,4 +33,17 @@ namespace Bambo
 	{
 		return ONE_RADIAN_IN_DEGREES * radians;
 	}
+
+	static bool IsLittleEndian()
+	{
+		short int word = 0x0001;
+		char* b = (char*)&word;
+
+		if (b[0])
+		{
+			return true;
+		}
+		return false;
+
+	}
 }

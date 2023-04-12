@@ -5,22 +5,22 @@ namespace Bambo
 	Audio::Audio() : 
 		m_id(0)
 	{
-		alGenBuffers(1, &m_id);
+		ALCheck(alGenBuffers(1, &m_id));
 	}
 
 	Audio::~Audio()
 	{
-		alDeleteBuffers(1, &m_id);
+		ALCheck(alDeleteBuffers(1, &m_id));
 	}
 
 	bool Audio::LoadFromFile(const std::string& filePath)
 	{
-		std::shared_ptr<AudioFile<double>> audioFile = std::make_shared<AudioFile<double>>();
-		if (!audioFile->load(filePath)) return false;
+		std::shared_ptr<AudioFile> audioFile = std::make_shared<AudioFile>();
+		if (!audioFile->LoadWavFile(filePath)) return false;
 
-		int bitsPerSample = audioFile->getBitDepth();
-		int channels = audioFile->getNumChannels();
-		ALsizei sampleRate = static_cast<ALsizei>(audioFile->getSampleRate());
+		int bitsPerSample = audioFile->GetBitsPerSample();
+		int channels = audioFile->GetChannels();
+		ALsizei sampleRate = static_cast<ALsizei>(audioFile->GetSampleRate());
 		ALenum format{};
 
 		if (channels == 1 && bitsPerSample == 8)
@@ -37,7 +37,7 @@ namespace Bambo
 			return false;
 		}
 
-		alBufferData(m_id, format, audioFile->samples.data(), audioFile->samples.size(), sampleRate);
+		ALCheck(alBufferData(m_id, format, audioFile->GetRawData(), audioFile->GetDataSize(), sampleRate));
 
 		return true;
 	}

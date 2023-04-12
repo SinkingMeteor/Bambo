@@ -75,6 +75,7 @@ namespace Bambo
 
 	AudioSource::~AudioSource()
 	{
+		ALCheck(alSourcei(m_sourceId, AL_BUFFER, 0));
 		ALCheck(alDeleteSources(1, &m_sourceId));
 	}
 }

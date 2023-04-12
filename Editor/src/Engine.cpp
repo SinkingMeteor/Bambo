@@ -16,6 +16,14 @@ Engine::Engine() :
 	Initialize();
 }
 
+Engine::~Engine()
+{
+	if (m_audioSource.IsPlaying())
+	{
+		m_audioSource.Stop();
+	}
+}
+
 void Engine::Initialize()
 {
 	int result = m_window.Initialize();
