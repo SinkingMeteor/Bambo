@@ -43,7 +43,7 @@ namespace Bambo
 		if (!audioResource) return;
 	
 		m_currentAudio = audioResource;
-		ALCheck(alSourcei(m_sourceId, AL_BUFFER, m_currentAudio->GetID()));
+		ALCheck(alSourcei(m_sourceId, AL_BUFFER, m_currentAudio->GetFirstID()));
 	}
 
 	bool AudioSource::IsPlaying() const

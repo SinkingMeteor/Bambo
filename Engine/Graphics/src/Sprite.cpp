@@ -9,6 +9,7 @@ namespace Bambo
 		m_transform()
 	{
 		SetTexture(texture);
+		SetPivot(glm::vec2{ 0.5f, 0.5f });
 	}
 
 	Sprite::Sprite(std::shared_ptr<Texture2D> texture, const RectInt& rect):
@@ -19,6 +20,7 @@ namespace Bambo
 	{
 		UpdatePosition();
 		UpdateTexCoords();
+		SetPivot(glm::vec2{ 0.5f, 0.5f });
 	}
 
 	void Sprite::SetTexture(std::shared_ptr<Texture2D> texture)
@@ -87,4 +89,13 @@ namespace Bambo
 		m_vertices[2].TexCoord = glm::vec2(right, top);
 		m_vertices[3].TexCoord = glm::vec2(right, bottom);
 	}
+
+	void Sprite::SetPivot(const glm::vec2& relativePivot)
+	{
+		if (!m_texture) return;
+
+		RectInt textureRect = m_texture->GetTextureRect();
+		m_transform.SetOrigin(glm::vec2{ textureRect.Width * relativePivot.x, textureRect.Height * relativePivot.y });
+	}
+
 }

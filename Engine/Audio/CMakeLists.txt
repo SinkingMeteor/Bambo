@@ -5,7 +5,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Audio.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/AudioDevice.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/AudioSource.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/AudioListener.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/AudioFile.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/AudioWavLoader.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/ALCheck.cpp)
 
 add_library(BamboAudio STATIC ${BAMBO_GRAPHICS_SOURCES})

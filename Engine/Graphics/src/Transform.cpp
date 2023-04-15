@@ -46,7 +46,7 @@ namespace Bambo
 		if (IsNeedUpdate()) 
 		{
 			glm::mat4 newMatrix{ Matrix::Identity() };
-			newMatrix = glm::translate(newMatrix, glm::vec3{ m_position.x, m_position.y, 0.0f });
+			newMatrix = glm::translate(newMatrix, glm::vec3{ m_position.x + m_origin.x, m_position.y + m_origin.y, 0.0f });
 			newMatrix = glm::rotate(newMatrix, glm::radians(m_rotation), glm::vec3{ 0.0f, 0.0f, 1.0f });
 			newMatrix = glm::scale(newMatrix, glm::vec3{ m_scale.x, m_scale.y, 1.0f });
 

@@ -1,48 +1,47 @@
-#include "AudioFile.h"
+#include "AudioWavLoader.h"
+
+namespace
+{
+	constexpr int WAV_HEADER_SIZE = 12;
+}
+
 namespace Bambo
 {
-	AudioFile::AudioFile() :
-		m_sampleRate(0),
-		m_dataSize(0),
-		m_channels(0),
-		m_bps(0),
-		m_data(nullptr)
-	{}
-
-	AudioFile::~AudioFile()
+	bool AudioWavLoader::IsThatFormat(std::ifstream& dataStream) const
 	{
-		if (m_data != nullptr)
-		{
-			delete[] m_data;
-			m_data = nullptr;
-		}
+		char buffer[WAV_HEADER_SIZE];
+		if (dataStream.read(buffer, WAV_HEADER_SIZE).gcount() < WAV_HEADER_SIZE)
+			return false;
+
+		return (buffer[0] == 'R') && 
+			(buffer[1] == 'I') &&
+			(buffer[2] == 'F') && 
+			(buffer[3] == 'F') && 
+			(buffer[8] == 'W') &&
+			(buffer[9] == 'A') && 
+			(buffer[10] == 'V') && 
+			(buffer[11] == 'E');
 	}
 
-	bool AudioFile::LoadWavFile(const std::string& filename)
+	std::shared_ptr<Audio> AudioWavLoader::LoadAudio(std::ifstream& inStream)
 	{
-		if (m_data != nullptr)
+		ALsizei sampleRate;
+		ALsizei dataSize;
+		int channels;
+		int bps;
+
+		if (!ReadHeaderOfWav(inStream, sampleRate, dataSize, channels, bps))
 		{
-			delete[] m_data;
-			m_data = nullptr;
+			Log("LogAudioFile", "Can't open WAV file");
+			return nullptr;
 		}
 
-		std::ifstream inStream{ filename, std::ios::binary };
-		if (!inStream.is_open())
-		{
-			Log("LogAudioFile", "Can't open WAV file by path: %s", filename.c_str());
-			return false;
-		}
-		if (!ReadHeaderOfWav(inStream))
-		{
-			Log("LogAudioFile", "Can't open WAV file by path: %s", filename.c_str());
-			return false;
-		}
-		m_data = new char[m_dataSize];
-		inStream.read(m_data, m_dataSize);
-		return true;
+		char* data = new char[dataSize];
+		inStream.read(data, dataSize);
+		return std::make_shared<Audio>(data, sampleRate, dataSize, channels, bps);
 	}
 
-	bool AudioFile::ReadHeaderOfWav(std::ifstream& file)
+	bool AudioWavLoader::ReadHeaderOfWav(std::ifstream& file, ALsizei& sampleRate, ALsizei& dataSize, int& channels, int& bps)
 	{
 		char buffer[4];
 		if (!file.is_open())
@@ -102,7 +101,7 @@ namespace Bambo
 			Log("LogAudioFile", "ERROR: could not read number of channels");
 			return false;
 		}
-		m_channels = ConvertToInt(buffer, 2);
+		channels = ConvertToInt(buffer, 2);
 
 		//Sample rate
 		if (!file.read(buffer, 4))
@@ -110,7 +109,7 @@ namespace Bambo
 			Log("LogAudioFile", "ERROR: could not read sample rate");
 			return false;
 		}
-		m_sampleRate = ConvertToInt(buffer, 4);
+		sampleRate = ConvertToInt(buffer, 4);
 
 		if (!file.read(buffer, 4))
 		{
@@ -130,7 +129,7 @@ namespace Bambo
 			Log("LogAudioFile", "ERROR: could not read bits per sample");
 			return false;
 		}
-		m_bps = ConvertToInt(buffer, 2);
+		bps = ConvertToInt(buffer, 2);
 
 		if (!file.read(buffer, 4))
 		{
@@ -149,7 +148,7 @@ namespace Bambo
 			Log("LogAudioFile", "ERROR: could not read data size");
 			return false;
 		}
-		m_dataSize = ConvertToInt(buffer, 4);
+		dataSize = ConvertToInt(buffer, 4);
 
 		if (file.eof())
 		{
@@ -165,22 +164,4 @@ namespace Bambo
 
 		return true;
 	}
-
-	int AudioFile::ConvertToInt(char* buffer, std::size_t len)
-	{
-		std::int32_t a = 0;
-		if (IsLittleEndian())
-		{
-			std::memcpy(&a, buffer, len);
-		}
-		else
-		{
-			for (std::size_t i = 0; i < len; ++i)
-			{
-				reinterpret_cast<char*>(&a)[3 - i] = buffer[i];
-			}
-		}
-		return a;
-	}
-
 }

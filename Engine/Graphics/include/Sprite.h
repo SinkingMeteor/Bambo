@@ -22,7 +22,7 @@ namespace Bambo
 
 		virtual Transform& GetTransform() override { return m_transform; }
 		virtual void Render(RenderTarget& renderTarget, const RenderConfig& config) override;
-
+		void SetPivot(const glm::vec2& relativePivot);
 	private:
 		void UpdatePosition();
 		void UpdateTexCoords();
