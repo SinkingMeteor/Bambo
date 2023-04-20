@@ -38,7 +38,7 @@ namespace Bambo
 
 		char* data = new char[dataSize];
 		inStream.read(data, dataSize);
-		return std::make_shared<Audio>(data, sampleRate, dataSize, channels, bps);
+		return std::make_shared<Audio>(data, dataSize, sampleRate, channels, bps);
 	}
 
 	bool AudioWavLoader::ReadHeaderOfWav(std::ifstream& file, ALsizei& sampleRate, ALsizei& dataSize, int& channels, int& bps)

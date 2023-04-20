@@ -2,7 +2,9 @@
 
 namespace Bambo
 {
-	AudioDevice::AudioDevice()
+	AudioDevice::AudioDevice() :
+		m_device(nullptr),
+		m_context(nullptr)
 	{
 		m_device = alcOpenDevice(nullptr);
 

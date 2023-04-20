@@ -1,7 +1,10 @@
 #pragma once
 
+#pragma warning(push)
 #include <Windows.h>
 #include <synchapi.h>
+#pragma warning(disable: 5105)
+#pragma warning(pop)
 #include <queue>
 #include <vector>
 #include <bitset>
@@ -15,7 +18,6 @@
 #include <type_traits>
 #include <fstream>
 #include <sstream>
-#include <bit>
 #include <numeric>
 #include "Core.h"
 #include "Paths.h"
