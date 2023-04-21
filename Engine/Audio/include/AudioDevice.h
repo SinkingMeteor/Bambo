@@ -5,7 +5,7 @@
 #include "Utils.h"
 namespace Bambo
 {
-	class BAMBO_API AudioDevice
+	class BAMBO_API AudioDevice final
 	{
 	public:
 		AudioDevice();

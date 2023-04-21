@@ -29,7 +29,7 @@ namespace Bambo
 
 	void Sound::SetAudio(std::shared_ptr<Audio> audioResource)
 	{
-		if (!audioResource) return;
+		BAMBO_ASSERT(audioResource, "You're trying to set invalid audio file")
 
 		m_currentAudio = audioResource;
 		ALCheck(alSourcei(m_sourceId, AL_BUFFER, m_currentAudio->GetFirstID()));

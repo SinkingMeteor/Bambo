@@ -37,7 +37,7 @@ void Engine::Initialize()
 
 	std::shared_ptr<Bambo::Texture2D> texture = m_textureProvider.Load(Bambo::ToId("TestTexture"), projectPath + "Textures/TestImage.png");
 	m_shaderProvider.Load(Bambo::ToId("TestShader"), projectPath + "Shaders/VSpriteDefault.txt", projectPath + "Shaders/FSpriteDefault.txt");
-	std::shared_ptr<Bambo::Audio> audio = m_audioProvider.Load(Bambo::ToId("TestAudio"), projectPath + "Audio/file_example.wav");
+	std::shared_ptr<Bambo::StreamingAudio> audio = m_audioProvider.Load(Bambo::ToId("TestAudio"), projectPath + "Audio/file_example.wav");
 
 	m_testSprite = std::make_unique<Bambo::Sprite>(texture);
 	m_audioSource.SetAudio(audio);
@@ -84,6 +84,7 @@ void Engine::Update(float deltaTime)
 	{
 		m_camera->GetTransform().AddToPosition(glm::vec2(1.0f, 0.0f) * deltaTime * speed);
 	}
+	m_audioSource.Update();
 }
 
 void Engine::Render() 

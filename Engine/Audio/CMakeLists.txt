@@ -8,6 +8,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/AudioListener.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/AudioWavLoader.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/StreamingAudio.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Sound.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Music.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/AudioUtils.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/ALCheck.cpp)
 

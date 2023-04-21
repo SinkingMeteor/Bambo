@@ -5,7 +5,7 @@
 
 namespace Bambo
 {
-	class BAMBO_API Sound : public AudioSource
+	class BAMBO_API Sound final : public AudioSource
 	{
 	public:
 		Sound();

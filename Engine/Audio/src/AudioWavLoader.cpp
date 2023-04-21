@@ -23,22 +23,17 @@ namespace Bambo
 			(buffer[11] == 'E');
 	}
 
-	std::shared_ptr<Audio> AudioWavLoader::LoadAudio(std::ifstream& inStream)
+	bool AudioWavLoader::LoadAudio(std::ifstream& inStream, RawAudioData& rawData)
 	{
-		ALsizei sampleRate;
-		ALsizei dataSize;
-		int channels;
-		int bps;
-
-		if (!ReadHeaderOfWav(inStream, sampleRate, dataSize, channels, bps))
+		if (!ReadHeaderOfWav(inStream, rawData.SampleRate, rawData.DataSize, rawData.Channels, rawData.Bps))
 		{
 			Log("LogAudioFile", "Can't open WAV file");
-			return nullptr;
+			return false;
 		}
 
-		char* data = new char[dataSize];
-		inStream.read(data, dataSize);
-		return std::make_shared<Audio>(data, dataSize, sampleRate, channels, bps);
+		rawData.Data = new char[rawData.DataSize];
+		inStream.read(rawData.Data, rawData.DataSize);
+		return true;
 	}
 
 	bool AudioWavLoader::ReadHeaderOfWav(std::ifstream& file, ALsizei& sampleRate, ALsizei& dataSize, int& channels, int& bps)

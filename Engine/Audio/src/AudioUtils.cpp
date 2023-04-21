@@ -2,7 +2,7 @@
 
 namespace Bambo
 {
-	bool GetFormat(int channels, int bps, ALenum& format)
+	bool CalculateAudioFormat(int channels, int bps, ALenum& format)
 	{
 		format = AL_INVALID_ENUM;
 

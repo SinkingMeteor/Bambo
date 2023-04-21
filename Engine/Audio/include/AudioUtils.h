@@ -4,5 +4,5 @@
 
 namespace Bambo
 {
-	bool GetFormat(int channels, int bps, ALenum& format);
+	bool CalculateAudioFormat(int channels, int bps, ALenum& format);
 }

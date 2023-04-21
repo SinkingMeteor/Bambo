@@ -11,7 +11,7 @@ namespace Bambo
 		m_bps(bps)
 	{
 		ALenum format{};
-		BAMBO_ASSERT(GetFormat(channels, bps, format), "Invalid format of audio")
+		BAMBO_ASSERT(CalculateAudioFormat(channels, bps, format), "Invalid format of audio")
 
 		ALCheck(alGenBuffers(1, &m_buffer));
 		ALCheck(alBufferData(m_buffer, format, m_data.get(), dataSize, sampleRate));

@@ -6,7 +6,7 @@
 #include "glm.hpp"
 namespace Bambo
 {
-	class BAMBO_API AudioListener
+	class BAMBO_API AudioListener final
 	{
 	public:
 		AudioListener(std::shared_ptr<AudioDevice> device);

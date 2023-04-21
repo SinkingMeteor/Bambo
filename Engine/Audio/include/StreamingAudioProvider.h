@@ -2,15 +2,16 @@
 #include "pch.h"
 #include "AudioFormatLoader.h"
 #include "AudioWavLoader.h"
-#include "Audio.h"
+#include "StreamingAudio.h"
+
 namespace Bambo
 {
-	struct BAMBO_API AudioLoader
+	struct BAMBO_API StreamingAudioLoader
 	{
-		using result_type = std::shared_ptr<Audio>;
+		using result_type = std::shared_ptr<StreamingAudio>;
 
 	public:
-		AudioLoader() :
+		StreamingAudioLoader() :
 			m_loaders()
 		{
 			m_loaders.emplace_back(std::make_shared<AudioWavLoader>());
@@ -30,7 +31,7 @@ namespace Bambo
 				inStream.clear();
 				inStream.seekg(0, std::ios::beg);
 
-				if (m_loaders[i]->IsThatFormat(inStream)) 
+				if (m_loaders[i]->IsThatFormat(inStream))
 				{
 					inStream.clear();
 					inStream.seekg(0, std::ios::beg);
@@ -40,7 +41,7 @@ namespace Bambo
 					{
 						return nullptr;
 					}
-					return std::make_shared<Audio>(rawData.Data, rawData.DataSize, rawData.SampleRate, rawData.Channels, rawData.Bps);
+					return std::make_shared<StreamingAudio>(rawData.Data, rawData.DataSize, rawData.SampleRate, rawData.Channels, rawData.Bps);
 				}
 			}
 
@@ -51,5 +52,5 @@ namespace Bambo
 		std::vector<std::shared_ptr<AudioFormatLoader>> m_loaders;
 	};
 
-	using AudioProvider = ResourceProvider<Audio, AudioLoader>;
+	using StreamingAudioProvider = ResourceProvider<StreamingAudio, StreamingAudioLoader>;
 }
