@@ -13,7 +13,7 @@ namespace Bambo
 		AudioSource();
 		AudioSource(const AudioSource& source) = delete;
 		AudioSource& operator=(const AudioSource& source) = delete;
-		~AudioSource();
+		virtual ~AudioSource();
 
 		void SetPitch(float value01);
 		float GetPitch() const { return m_pitch; }
@@ -25,19 +25,15 @@ namespace Bambo
 		bool IsLooping() const { return m_isLoop; }
 
 		void SetPosiiton(const glm::vec2& newPosition);
-
-		void SetAudio(std::shared_ptr<Audio> audioResource);
 		bool IsPlaying() const;
-		void Play();
-		void Stop();
 
-	private:
+		virtual void Play() = 0;
+		virtual void Stop() = 0;
+
+	protected:
 		ALuint m_sourceId;
 		float m_pitch;
 		float m_volume;
 		bool m_isLoop;
-
-		std::shared_ptr<Audio> m_currentAudio;
-
 	};
 }

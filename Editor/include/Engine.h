@@ -7,7 +7,7 @@
 #include "TextureProvider.h"
 #include "ShaderProvider.h"
 #include "AudioProvider.h"
-#include "AudioSource.h"
+#include "Sound.h"
 #include "AudioDevice.h"
 #include "AudioListener.h"
 #include "Sprite.h"
@@ -38,5 +38,5 @@ private:
 	std::shared_ptr<Bambo::Camera> m_camera;
 	std::shared_ptr<Bambo::AudioDevice> m_audioDevice;
 	Bambo::AudioListener m_audioListener;
-	Bambo::AudioSource m_audioSource;
+	Bambo::Sound m_audioSource;
 };

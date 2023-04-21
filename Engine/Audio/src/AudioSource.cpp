@@ -6,8 +6,7 @@ namespace Bambo
 		m_sourceId(0),
 		m_pitch(1.0f),
 		m_volume(1.0f),
-		m_isLoop(false),
-		m_currentAudio(nullptr)
+		m_isLoop(false)
 	{
 		ALCheck(alGenSources(1, &m_sourceId));
 		SetPitch(m_pitch);
@@ -38,39 +37,11 @@ namespace Bambo
 		ALCheck(alSource3f(m_sourceId, AL_POSITION, newPosition.x, newPosition.y, 0.0f));
 	}
 
-	void AudioSource::SetAudio(std::shared_ptr<Audio> audioResource) 
-	{
-		if (!audioResource) return;
-	
-		m_currentAudio = audioResource;
-		ALCheck(alSourcei(m_sourceId, AL_BUFFER, m_currentAudio->GetFirstID()));
-	}
-
 	bool AudioSource::IsPlaying() const
 	{
 		ALint state = AL_PLAYING;
 		ALCheck(alGetSourcei(m_sourceId, AL_SOURCE_STATE, &state));
 		return state == AL_PLAYING;
-	}
-
-	void AudioSource::Play()
-	{
-		if (!m_currentAudio)
-		{
-			Log("AudioSourceLog", "There is no sound to play.");
-			return;
-		}
-
-		Stop();
-
-		ALCheck(alSourcePlay(m_sourceId));
-	}
-
-	void AudioSource::Stop()
-	{
-		if (!IsPlaying()) return;
-
-		ALCheck(alSourceStop(m_sourceId));
 	}
 
 	AudioSource::~AudioSource()

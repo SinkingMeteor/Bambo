@@ -18,8 +18,10 @@ namespace Bambo
 		int GetChannels() const { return m_channels; }
 		int GetBitsPerSample() const { return m_bps; }
 		const char* GetRawData() const { return m_data.get(); }
+		std::size_t GetBuffersAmount() const { return m_currentBufferAmount; }
+		ALuint* GetBufferAtIndex(int index);
 	private:
-		constexpr static std::size_t BUFFER_AMOUNT = 4;
+		constexpr static std::size_t DEFAULT_BUFFER_AMOUNT = 4;
 		constexpr static std::size_t BUFFER_SIZE = 65536;
 
 		std::unique_ptr<ALuint[]> m_buffers;
@@ -28,5 +30,6 @@ namespace Bambo
 		ALsizei m_sampleRate;
 		int m_channels;
 		int m_bps;
+		std::size_t m_currentBufferAmount;
 	};
 }
