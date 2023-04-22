@@ -42,7 +42,7 @@ namespace Bambo
 	const char* StreamingAudio::GetRawData(std::size_t offset, std::size_t& sizeWasRead) const
 	{
 		sizeWasRead = 0;
-		if (offset > m_dataSize) return nullptr;
+		if (offset >= m_dataSize) return nullptr;
 
 		std::size_t dataLeft = m_dataSize - offset;
 

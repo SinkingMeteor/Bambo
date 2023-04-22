@@ -21,7 +21,7 @@ namespace Bambo
 		void SetVolume(float value01);
 		float GetVolume() const { return m_volume; }
 
-		void SetLoop(bool isActive);
+		virtual void SetLoop(bool isActive);
 		bool IsLooping() const { return m_isLoop; }
 
 		void SetPosiiton(const glm::vec2& newPosition);

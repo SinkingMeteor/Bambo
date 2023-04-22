@@ -12,6 +12,7 @@ namespace Bambo
 		Music();
 		virtual void Play() override;
 		virtual void Stop() override;
+		virtual void SetLoop(bool isActive) override { m_isLoop = isActive; }
 		void SetAudio(std::shared_ptr<StreamingAudio> streamingAudio);
 		void Update();
 	private:

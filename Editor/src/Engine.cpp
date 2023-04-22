@@ -1,7 +1,7 @@
 #include "Engine.h"
 
 Engine::Engine() :
-	m_window(std::make_shared<Bambo::WindowSettings>(Bambo::WindowSettings{ 1280u, 720u, "Hello Window!" })),
+	m_window(std::make_shared<Bambo::WindowSettings>(Bambo::WindowSettings{ 1280u, 720u, "Bambo" })),
 	m_input(&m_window),
 	m_textureProvider(),
 	m_shaderProvider(),
@@ -41,6 +41,8 @@ void Engine::Initialize()
 
 	m_testSprite = std::make_unique<Bambo::Sprite>(texture);
 	m_audioSource.SetAudio(audio);
+	m_audioSource.SetLoop(true);
+	m_audioSource.SetVolume(0.25f);
 	m_audioSource.Play();
 }
 

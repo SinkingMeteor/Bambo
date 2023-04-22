@@ -45,7 +45,7 @@ namespace Bambo
 
 		m_currentAudio = streamingAudio;
 
-		m_cursor = m_currentAudio->GetBuffersAmount() * m_currentAudio->BUFFER_SIZE;
+		m_cursor = m_currentAudio->GetBuffersAmount() * StreamingAudio::BUFFER_SIZE;
 		ALCheck(alSourceQueueBuffers(m_sourceId, m_currentAudio->GetBuffersAmount(), m_currentAudio->GetBufferAtIndex(0)));
 	}
 
@@ -66,14 +66,23 @@ namespace Bambo
 			std::size_t newChunkSize{};
 			const char* data = m_currentAudio->GetRawData(m_cursor, newChunkSize);
 
-			//@TODO: check nullptr from data
 
-			m_cursor += newChunkSize;
-
-			if (newChunkSize < m_currentAudio->BUFFER_SIZE)
+			if (!data)
 			{
 				m_cursor = 0;
+
+				if (!m_isLoop)
+				{
+					Stop();
+					return;
+				}
+				else
+				{
+					data = m_currentAudio->GetRawData(m_cursor, newChunkSize);
+				}
 			}
+
+			m_cursor += newChunkSize;
 
 			ALCheck(alBufferData(buffer, m_currentAudio->GetFormat(), data, newChunkSize, m_currentAudio->GetSampleRate()));
 			ALCheck(alSourceQueueBuffers(m_sourceId, 1, &buffer));
