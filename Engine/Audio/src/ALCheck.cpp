@@ -9,22 +9,22 @@ namespace Bambo
         switch (error)
         {
         case AL_INVALID_NAME:
-            Log("*ERROR*", "%s | %u | %s", filename.c_str(), line, "AL_INVALID_NAME: a bad name (ID) was passed to an OpenAL function");
+            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "AL_INVALID_NAME: a bad name (ID) was passed to an OpenAL function");
             break;
         case AL_INVALID_ENUM:
-            Log("*ERROR*", "%s | %u | %s", filename.c_str(), line, "AL_INVALID_ENUM: an invalid enum value was passed to an OpenAL function");
+            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "AL_INVALID_ENUM: an invalid enum value was passed to an OpenAL function");
             break;
         case AL_INVALID_VALUE:
-            Log("*ERROR*", "%s | %u | %s", filename.c_str(), line, "AL_INVALID_VALUE: an invalid value was passed to an OpenAL function");
+            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "AL_INVALID_VALUE: an invalid value was passed to an OpenAL function");
             break;
         case AL_INVALID_OPERATION:
-            Log("*ERROR*", "%s | %u | %s", filename.c_str(), line, "AL_INVALID_OPERATION: the requested operation is not valid");
+            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "AL_INVALID_OPERATION: the requested operation is not valid");
             break;
         case AL_OUT_OF_MEMORY:
-            Log("*ERROR*", "%s | %u | %s", filename.c_str(), line, "AL_OUT_OF_MEMORY: the requested operation resulted in OpenAL running out of memory");
+            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "AL_OUT_OF_MEMORY: the requested operation resulted in OpenAL running out of memory");
             break;
         default:
-            Log("*ERROR*", "%s | %u | %s : %i", filename.c_str(), line, "UNKNOWN_ERROR", error);
+            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s : %i", filename.c_str(), line, "UNKNOWN_ERROR", error);
         }
 	}
 

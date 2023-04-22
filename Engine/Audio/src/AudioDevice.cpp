@@ -10,7 +10,7 @@ namespace Bambo
 
 		if (!m_device)
 		{
-			Log("Audio device log", "ERROR: %s", "Can't create an openAL device");
+			Logger::Log("Audio device log", Verbosity::Error, "ERROR: %s", "Can't create an openAL device");
 			return;
 		}
 
@@ -18,13 +18,13 @@ namespace Bambo
 	
 		if (!m_context)
 		{
-			Log("Audio device log", "ERROR: %s", "Can't create an openAL context");
+			Logger::Log("Audio device log", Verbosity::Error, "ERROR: %s", "Can't create an openAL context");
 			return;
 		}
 
 		if (!alcMakeContextCurrent(m_context))
 		{
-			Log("Audio device log", "ERROR: %s", "Can't set current openAL context");
+			Logger::Log("Audio device log", Verbosity::Error, "ERROR: %s", "Can't set current openAL context");
 			return;
 		}
 	}

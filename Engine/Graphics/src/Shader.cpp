@@ -99,7 +99,7 @@ namespace Bambo
 			if (!result) 
 			{
 				glGetProgramInfoLog(id, 1024, nullptr, infoLog);
-				Log("LogShader", "ERROR: Compile-time error: %s", (const char*)infoLog);
+				Logger::Log("LogShader", Verbosity::Error, "ERROR: Compile-time error: %s", (const char*)infoLog);
 				return BAMBO_FALSE;
 			}
 			break;
@@ -108,7 +108,7 @@ namespace Bambo
 			if (!result)
 			{
 				glGetShaderInfoLog(id, 1024, nullptr, infoLog);
-				Log("LogShader", "ERROR: Compile-time error: %s", (const char*)infoLog);
+				Logger::Log("LogShader", Verbosity::Error, "ERROR: Compile-time error: %s", (const char*)infoLog);
 				return BAMBO_FALSE;
 			}
 			break;

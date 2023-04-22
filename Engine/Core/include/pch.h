@@ -21,3 +21,4 @@
 #include <numeric>
 #include "Core.h"
 #include "Paths.h"
+#include "Log.h"

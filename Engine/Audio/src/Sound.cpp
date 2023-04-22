@@ -11,7 +11,7 @@ namespace Bambo
 	{
 		if (!m_currentAudio)
 		{
-			Log("AudioSourceLog", "There is no sound to play.");
+			Logger::Log("AudioSourceLog", Verbosity::Warning, "There is no sound to play.");
 			return;
 		}
 

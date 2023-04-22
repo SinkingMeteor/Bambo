@@ -12,7 +12,7 @@ namespace Bambo
 	{
 		if (!m_currentAudio)
 		{
-			Log("LogMusic", "[WARNING]: Current audio is nullptr");
+			Logger::Log("LogMusic", Verbosity::Warning, "There is no music to play!");
 			return;
 		}
 

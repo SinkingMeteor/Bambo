@@ -42,7 +42,6 @@ void Engine::Initialize()
 	m_testSprite = std::make_unique<Bambo::Sprite>(texture);
 	m_audioSource.SetAudio(audio);
 	m_audioSource.SetLoop(true);
-	m_audioSource.SetVolume(0.25f);
 	m_audioSource.Play();
 }
 

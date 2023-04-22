@@ -22,7 +22,7 @@ namespace Bambo
 			std::ifstream inStream{ path, std::ios::binary };
 			if (!inStream.is_open())
 			{
-				Log("LogAudioFile", "Can't open file by path: %s", path.c_str());
+				Logger::Log("LogAudioFile", Verbosity::Error, "Can't open file by path: %s", path.c_str());
 				return nullptr;
 			}
 

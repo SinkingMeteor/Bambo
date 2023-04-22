@@ -13,7 +13,7 @@ namespace Bambo
 	{
 		if (glfwInit() == GLFW_FALSE) 
 		{
-			Log("LogWindow", "glfw initialization failed");
+			Logger::Log("LogWindow", Verbosity::Fatal, "glfw initialization failed");
 			return BAMBO_FALSE;
 		}
 
@@ -25,7 +25,7 @@ namespace Bambo
 
 		if (!m_glfwWindow) 
 		{
-			Log("LogWindow", "glfw window creation failed");
+			Logger::Log("LogWindow", Verbosity::Fatal, "glfw window creation failed");
 			return BAMBO_FALSE;
 		}
 
@@ -33,7 +33,7 @@ namespace Bambo
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			Log("LogWindow", "failed to initialize GLAD");
+			Logger::Log("LogWindow", Verbosity::Fatal, "failed to initialize GLAD");
 			return BAMBO_FALSE;
 		}
 
