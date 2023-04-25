@@ -13,6 +13,9 @@
 #include "AudioListener.h"
 #include "Sprite.h"
 #include "Utils.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 class Engine 
 {
@@ -40,4 +43,6 @@ private:
 	std::shared_ptr<Bambo::AudioDevice> m_audioDevice;
 	Bambo::AudioListener m_audioListener;
 	Bambo::Music m_audioSource;
+
+	ImGuiContext* m_guiContext;
 };

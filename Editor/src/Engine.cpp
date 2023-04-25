@@ -11,7 +11,8 @@ Engine::Engine() :
 	m_camera(std::make_shared<Bambo::Camera>(glm::vec2{ 0.0f, 0.0f }, glm::vec2{ 640.0f, 360.0f })),
 	m_audioDevice(std::make_shared<Bambo::AudioDevice>()),
 	m_audioListener(m_audioDevice),
-	m_audioSource()
+	m_audioSource(),
+	m_guiContext(nullptr)
 {
 	Initialize();
 }
@@ -21,6 +22,10 @@ Engine::Engine() :
 
 Engine::~Engine()
 {
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext(m_guiContext);
+
 	if (m_audioSource.IsPlaying())
 	{
 		m_audioSource.Stop();
@@ -43,6 +48,11 @@ void Engine::Initialize()
 	m_audioSource.SetAudio(audio);
 	m_audioSource.SetLoop(true);
 	m_audioSource.Play();
+
+	m_guiContext = ImGui::CreateContext();
+	ImGui::SetCurrentContext(m_guiContext);
+	ImGui_ImplGlfw_InitForOpenGL(m_window.GetRawWindow(), true);
+	ImGui_ImplOpenGL3_Init("#version 130");
 }
 
 int Engine::Run()
@@ -93,11 +103,21 @@ void Engine::Render()
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+
 	Bambo::RenderConfig config{};
 	config.Primitive = Bambo::PrimitiveType::TriangleStrip;
 	config.Shader = m_shaderProvider.Get(Bambo::ToId("TestShader"));
 	config.Camera = m_camera;
 	m_testSprite->Render(m_renderTarget, config);
+
+	bool showDemoWindow = true;
+	ImGui::ShowDemoWindow(&showDemoWindow);
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	glfwSwapBuffers(m_window.GetRawWindow());
 	glfwPollEvents();

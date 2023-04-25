@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
+add_subdirectory(thirdparty/imgui)
+
 set(POLYGON_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Main.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Engine.cpp)
@@ -19,10 +21,15 @@ NAMES BamboWindow
 NAMES BamboAudio
 HINTS ${BamboEngine_BINARY_DIR}/Engine/)
 
+find_library(EDITOR_LIBS
+NAMES imgui
+HINTS ${BamboEngine_BINARY_DIR}/Editor/thirdparty/)
+
 target_link_libraries(BamboEditor
 BamboGraphics 
 BamboWindow
 BamboAudio
+imgui
 ${OPENGL_LIBRARIES})
 
 target_include_directories(BamboEditor 
@@ -31,4 +38,5 @@ PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/Graphics/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/Audio/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/Window/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/OpenAL/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Editor/thirdparty/imgui/include/
 PUBLIC ${OPENGL_INCLUDE_DIRS})
