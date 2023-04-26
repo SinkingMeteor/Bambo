@@ -1,7 +1,15 @@
-#include "Engine.h"
+#include "Editor.h"
 
 int main()
 {
-	Engine engine{};
-	return engine.Run();
+	BEditor::BamboEditor editor{};
+
+	if (!editor.Initialize())
+	{
+		return -1;
+	}
+
+	int result = editor.Run();
+
+	return result;
 }

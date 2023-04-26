@@ -5,7 +5,7 @@
 
 namespace Bambo 
 {
-	struct Vertex 
+	struct Vertex final
 	{
 		glm::vec2 Position{};
 		glm::vec2 TexCoord{};

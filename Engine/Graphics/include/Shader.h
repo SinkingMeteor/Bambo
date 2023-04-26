@@ -5,7 +5,7 @@
 
 namespace Bambo 
 {
-	class BAMBO_API Shader 
+	class BAMBO_API Shader final
 	{
 		enum class CheckType 
 		{

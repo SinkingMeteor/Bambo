@@ -5,18 +5,18 @@
 namespace Bambo 
 {
 	template <typename T>
-	struct BAMBO_API Rect 
+	struct BAMBO_API Rect final
 	{
 	public:
-		Rect() : Rect(0.0f, 0.0f, 0.0f, 0.0f) {}
-		Rect(T left, T top, T width, T height);
-		Rect(Vector2<T> leftTop, Vector2<T> size);
-		bool Intersects2D(const Rect<T>& rect1, const Rect<T>& rect2);
-
 		T Left;
 		T Top;
 		T Width;
 		T Height;
+
+		Rect() : Rect(0.0f, 0.0f, 0.0f, 0.0f) {}
+		Rect(T left, T top, T width, T height);
+		Rect(Vector2<T> leftTop, Vector2<T> size);
+		bool Intersects2D(const Rect<T>& rect1, const Rect<T>& rect2);
 	};
 
 	template<typename T>

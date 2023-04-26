@@ -24,13 +24,12 @@ namespace Bambo
 		virtual void Render(RenderTarget& renderTarget, const RenderConfig& config) override;
 		void SetPivot(const glm::vec2& relativePivot);
 	private:
-		void UpdatePosition();
-		void UpdateTexCoords();
-
 		std::array<Vertex, 4> m_vertices;
 		std::shared_ptr<Texture2D> m_texture;
 		RectInt m_spriteRect;
-
 		Transform m_transform;
+
+		void UpdatePosition();
+		void UpdateTexCoords();
 	};
 }

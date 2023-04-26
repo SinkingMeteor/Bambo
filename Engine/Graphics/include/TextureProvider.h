@@ -5,7 +5,7 @@
 #include "Texture2D.h"
 namespace Bambo 
 {
-	struct BAMBO_API TextureLoader
+	struct BAMBO_API TextureLoader final
 	{
 		using result_type = std::shared_ptr<Texture2D>;
 

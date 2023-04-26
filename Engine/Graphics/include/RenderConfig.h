@@ -14,20 +14,20 @@ namespace Bambo
 		TriangleStrip = GL_TRIANGLE_STRIP
 	};
 
-	struct BAMBO_API RenderConfig 
+	struct BAMBO_API RenderConfig final 
 	{
 	public:
-		RenderConfig() : 
-			Primitive(PrimitiveType::TriangleStrip),
-			ModelMatrix(Matrix::Identity()),
-			Texture(nullptr),
-			Shader(nullptr)
-		{}
-
 		PrimitiveType Primitive{PrimitiveType::TriangleStrip};
 		Matrix ModelMatrix{};
 		std::shared_ptr<Texture2D> Texture;
 		std::shared_ptr<Shader> Shader;
 		std::shared_ptr<Camera> Camera;
+	
+		RenderConfig() :
+			Primitive(PrimitiveType::TriangleStrip),
+			ModelMatrix(Matrix::Identity()),
+			Texture(nullptr),
+			Shader(nullptr)
+		{}
 	};
 }

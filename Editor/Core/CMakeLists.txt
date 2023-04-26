@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 set(BAMBO_EDITOR_CORE_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Main.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Engine.cpp)
+${CMAKE_CURRENT_LIST_DIR}/src/Editor.cpp)
 
 add_executable(BamboEditorCore ${BAMBO_EDITOR_CORE_SOURCES})
 

@@ -7,7 +7,7 @@
 #include "WindowSettings.h"
 namespace Bambo 
 {
-	class BAMBO_API RenderTarget 
+	class BAMBO_API RenderTarget final
 	{
 	public:
 		RenderTarget(std::shared_ptr<WindowSettings> windowSettings);
@@ -19,11 +19,12 @@ namespace Bambo
 		void Draw(const Vertex* vertices, int amount, const RenderConfig& config);
 		void Draw(IRenderable& renderable, const RenderConfig& config);
 	private:
-		void ApplyViewport(const RenderConfig& config);
-
 		std::shared_ptr<WindowSettings> m_windowSettings;
 		GLuint m_vao;
 		GLuint m_vbo;
 		uint m_bufferSize;
+
+		void ApplyViewport(const RenderConfig& config);
+
 	};
 }

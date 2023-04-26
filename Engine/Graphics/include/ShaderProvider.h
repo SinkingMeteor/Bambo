@@ -6,7 +6,7 @@
 
 namespace Bambo
 {
-	struct BAMBO_API ShaderLoader
+	struct BAMBO_API ShaderLoader final
 	{
 		using result_type = std::shared_ptr<Shader>;
 

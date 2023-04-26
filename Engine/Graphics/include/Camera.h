@@ -8,7 +8,7 @@
 
 namespace Bambo
 {
-	class BAMBO_API Camera : public ITransformable
+	class BAMBO_API Camera final : public ITransformable
 	{
 	public:
 		Camera();
@@ -27,9 +27,10 @@ namespace Bambo
 		glm::mat4 GetViewMatrix();
 		glm::mat4 GetProjViewMatrix();
 	private:
-		glm::vec2 GetHalfOfCameraSize() const { return glm::vec2{ m_size.x * 0.5f, m_size.y * 0.5f }; }
 		Transform m_transform;
 		Matrix m_projViewMatrix;
 		glm::vec2 m_size;
+
+		glm::vec2 GetHalfOfCameraSize() const { return glm::vec2{ m_size.x * 0.5f, m_size.y * 0.5f }; }
 	};
 }

@@ -4,7 +4,7 @@
 #include "Rect.h"
 namespace Bambo 
 {
-	class BAMBO_API Texture2D 
+	class BAMBO_API Texture2D final
 	{
 	public:
 		Texture2D();

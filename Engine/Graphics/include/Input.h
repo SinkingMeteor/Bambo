@@ -5,7 +5,7 @@
 
 namespace Bambo 
 {
-	class BAMBO_API Input 
+	class BAMBO_API Input final
 	{
 	public:
 		Input(Window* window);
