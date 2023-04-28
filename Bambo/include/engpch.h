@@ -1,10 +1,5 @@
 #pragma once
 
-#pragma warning(push)
-#include <Windows.h>
-#include <synchapi.h>
-#pragma warning(disable: 5105)
-#pragma warning(pop)
 #include <queue>
 #include <vector>
 #include <bitset>
@@ -19,6 +14,5 @@
 #include <fstream>
 #include <sstream>
 #include <numeric>
-#include "Core.h"
-#include "EnginePaths.h"
-#include "Log.h"
+#include "pch.h"
+#include "BamboPaths.h"

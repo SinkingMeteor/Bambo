@@ -1,7 +1,0 @@
-#ifndef PATHS_H
-#define PATHS_H
-
-#define BAMBO_PROJECT_DIR "@PROJECT_SOURCE_DIR@/"
-#define BAMBO_RESOURCE_DIR "@BAMBO_RESOURCE_DIR@/"
-
-#endif

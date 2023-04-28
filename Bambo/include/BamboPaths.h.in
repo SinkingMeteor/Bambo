@@ -1,0 +1,13 @@
+#ifndef BAMBO_PATHS_H
+#define BAMBO_PATHS_H
+
+#include<string>
+
+namespace BamboPaths
+{
+	#define BAMBO_ENGINE_RESOURCE_DIR "@BAMBO_ENGINE_RESOURCE_DIR@/"
+
+	const std::string BamboResourcesDir = BAMBO_ENGINE_RESOURCE_DIR;
+}
+
+#endif
