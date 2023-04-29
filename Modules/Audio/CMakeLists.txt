@@ -16,12 +16,12 @@ add_library(BamboAudio STATIC ${BAMBO_GRAPHICS_SOURCES} "include/AudioUtils.h")
 
 target_include_directories(BamboAudio 
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/
-PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/OpenAL/include
-PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/GLM/glm
-PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/Core/include/)
+PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/thirdparty/OpenAL/include
+PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/thirdparty/GLM/glm
+PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Core/include/)
 
-find_library(BamboCore NAMES BamboCore HINTS ${BamboEngine_BINARY_DIR}/Engine/Core)
-find_library(OPENAL_LIBRARY NAMES OpenAL HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/OpenAL)
+find_library(BamboCore NAMES BamboCore HINTS ${BamboEngine_BINARY_DIR}/Modules/Core)
+find_library(OPENAL_LIBRARY NAMES OpenAL HINTS ${BamboEngine_BINARY_DIR}/Modules/thirdparty/OpenAL)
 
 target_link_libraries(BamboAudio PUBLIC BamboCore OpenAL)
 
