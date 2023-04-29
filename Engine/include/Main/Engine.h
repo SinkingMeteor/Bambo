@@ -1,14 +1,15 @@
 #pragma once
-
-#include "pch.h"
 #include "engpch.h"
 #include "Window.h"
 #include "RenderTarget.h"
 #include "Time/Timer.h"
+#include "Managers/WindowManager.h"
+#include "Managers/AudioManager.h"
+#include "Managers/RenderManager.h"
 
 namespace Bambo
 {
-	class BAMBO_API InitialSettings
+	class InitialSettings final
 	{
 	public:
 		int WindowWidth{ 640 };
@@ -16,7 +17,7 @@ namespace Bambo
 		std::string WindowName{"Engine"};
 	};
 
-	class BAMBO_API Engine final
+	class Engine final
 	{
 	public:
 		Engine(const InitialSettings& settings);
@@ -24,13 +25,11 @@ namespace Bambo
 		Engine& operator=(const Engine& engine) = delete;
 		~Engine();
 
-		bool Initialize();
+		void Initialize();
 		int Run();
 	private:
-		Window m_window;
-		RenderTarget m_renderTarget;
-
 		void Update(float deltaTime);
 		void Render();
+		void Dispose();
 	};
 }

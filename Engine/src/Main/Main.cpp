@@ -1,5 +1,5 @@
 #include "engpch.h"
-#include "Engine.h"
+#include "Main/Engine.h"
 #include "json.hpp"
 
 int main()
@@ -32,11 +32,8 @@ int main()
 
 	Bambo::Engine engine{settings};
 
-	if (!engine.Initialize())
-	{
-		return -1;
-	}
-
+	engine.Initialize();
+	
 	int result = engine.Run();
 
 	return result;

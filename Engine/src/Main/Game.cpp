@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "Main/Game.h"
 
 namespace Bambo
 {

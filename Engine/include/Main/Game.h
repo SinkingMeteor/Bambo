@@ -3,7 +3,7 @@
 
 namespace Bambo
 {
-	class BAMBO_API Game
+	class Game final
 	{
 	public:
 		Game();

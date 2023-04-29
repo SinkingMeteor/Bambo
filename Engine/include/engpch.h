@@ -14,5 +14,4 @@
 #include <fstream>
 #include <sstream>
 #include <numeric>
-#include "pch.h"
 #include "BamboPaths.h"

@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+
 namespace Bambo 
 {
 	struct BAMBO_API WindowSettings

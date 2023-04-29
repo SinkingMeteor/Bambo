@@ -2,7 +2,7 @@
 
 namespace Bambo 
 {
-	Window::Window(std::shared_ptr<WindowSettings> settings) :
+	Window::Window(const WindowSettings& settings) :
 		m_windowSettings(settings),
 		m_glfwWindow(nullptr)
 	{
@@ -21,7 +21,7 @@ namespace Bambo
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		m_glfwWindow = glfwCreateWindow(m_windowSettings->Width, m_windowSettings->Height, m_windowSettings->Title.c_str(), nullptr, nullptr);
+		m_glfwWindow = glfwCreateWindow(m_windowSettings.Width, m_windowSettings.Height, m_windowSettings.Title.c_str(), nullptr, nullptr);
 
 		if (!m_glfwWindow) 
 		{
@@ -39,7 +39,7 @@ namespace Bambo
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glViewport(0, 0, m_windowSettings->Width, m_windowSettings->Height);
+		glViewport(0, 0, m_windowSettings.Width, m_windowSettings.Height);
 
 		glfwSetWindowUserPointer(m_glfwWindow, this);
 		glfwSetFramebufferSizeCallback(m_glfwWindow, [](GLFWwindow* window, int width, int height) 
@@ -54,8 +54,8 @@ namespace Bambo
 
 	void Window::SetViewportSize(int width, int height)
 	{
-		m_windowSettings->Width = width;
-		m_windowSettings->Height = height;
+		m_windowSettings.Width = width;
+		m_windowSettings.Height = height;
 
 		glViewport(0, 0, width, height);
 	}
