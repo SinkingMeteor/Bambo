@@ -11,8 +11,8 @@ namespace Bambo
 		void Initialize(const WindowSettings& settings);
 		void Dispose();
 		bool WantsToClose() const { return m_window->WindowShouldClose(); }
-		void EndFrame();
+		void Update() { m_window->Update(); }
 	private:
-		Window* m_window;
+		std::unique_ptr<Window> m_window;
 	};
 }

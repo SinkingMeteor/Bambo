@@ -2,7 +2,7 @@
 
 namespace Bambo 
 {
-	Input::Input(Window* window) :
+	Input::Input(GLFWwindow* window) :
 		m_window(window)
 	{
 	}
@@ -11,7 +11,7 @@ namespace Bambo
 	{
 		if (!m_window) return false;
 
-		int result = glfwGetKey(m_window->GetRawWindow(), keyCode);
+		int result = glfwGetKey(m_window, keyCode);
 		return result == GLFW_PRESS || result == GLFW_REPEAT;
 	}
 
@@ -19,7 +19,7 @@ namespace Bambo
 	{
 		if (!m_window) return false;
 
-		int result = glfwGetKey(m_window->GetRawWindow(), keyCode);
+		int result = glfwGetKey(m_window, keyCode);
 		return result == GLFW_RELEASE;
 	}
 
@@ -27,7 +27,7 @@ namespace Bambo
 	{
 		if (!m_window) return false;
 
-		int result = glfwGetMouseButton(m_window->GetRawWindow(), mouseButton);
+		int result = glfwGetMouseButton(m_window, mouseButton);
 		return result == GLFW_PRESS || result == GLFW_REPEAT;
 	}
 
@@ -35,7 +35,7 @@ namespace Bambo
 	{
 		if (!m_window) return false;
 
-		int result = glfwGetMouseButton(m_window->GetRawWindow(), mouseButton);
+		int result = glfwGetMouseButton(m_window, mouseButton);
 		return result == GLFW_RELEASE;
 
 	}
@@ -47,7 +47,7 @@ namespace Bambo
 		double x = 0.0f;
 		double y = 0.0f;
 
-		glfwGetCursorPos(m_window->GetRawWindow(), &x, &y);
+		glfwGetCursorPos(m_window, &x, &y);
 		return glm::vec2{ static_cast<float>(x), static_cast<float>(y) };
 	}
 }

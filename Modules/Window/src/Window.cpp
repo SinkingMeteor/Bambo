@@ -1,77 +1,15 @@
 #include "Window.h"
-
-namespace Bambo 
+#include "WindowsWindow.h"
+namespace Bambo
 {
-	Window::Window(const WindowSettings& settings) :
-		m_windowSettings(settings),
-		m_glfwWindow(nullptr)
+	std::unique_ptr<Window> Window::CreateBamboWindow(const WindowSettings& settings, OSType osType)
 	{
-
-	}
-
-	int Window::Initialize() 
-	{
-		if (glfwInit() == GLFW_FALSE) 
+		switch (osType)
 		{
-			Logger::Log("LogWindow", Verbosity::Fatal, "glfw initialization failed");
-			return BAMBO_FALSE;
+			case OSType::Windows: return std::make_unique<WindowsWindow>(settings);
 		}
 
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-		m_glfwWindow = glfwCreateWindow(m_windowSettings.Width, m_windowSettings.Height, m_windowSettings.Title.c_str(), nullptr, nullptr);
-
-		if (!m_glfwWindow) 
-		{
-			Logger::Log("LogWindow", Verbosity::Fatal, "glfw window creation failed");
-			return BAMBO_FALSE;
-		}
-
-		glfwMakeContextCurrent(m_glfwWindow);
-
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			Logger::Log("LogWindow", Verbosity::Fatal, "failed to initialize GLAD");
-			return BAMBO_FALSE;
-		}
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glViewport(0, 0, m_windowSettings.Width, m_windowSettings.Height);
-
-		glfwSetWindowUserPointer(m_glfwWindow, this);
-		glfwSetFramebufferSizeCallback(m_glfwWindow, [](GLFWwindow* window, int width, int height) 
-		{
-			Window* gameWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
-			gameWindow->SetViewportSize(width, height);
-		});
-
-
-		return BAMBO_TRUE;
-	}
-
-	void Window::SetViewportSize(int width, int height)
-	{
-		m_windowSettings.Width = width;
-		m_windowSettings.Height = height;
-
-		glViewport(0, 0, width, height);
-	}
-
-	void Window::CloseWindow()
-	{
-		if (!m_glfwWindow) return;
-
-		glfwDestroyWindow(m_glfwWindow);
-		m_glfwWindow = nullptr;
-	}
-
-	Window::~Window() 
-	{
-		if (m_glfwWindow) glfwDestroyWindow(m_glfwWindow);
-
-		glfwTerminate();
+		BAMBO_ASSERT(false, "Unknown os type.");
+		return nullptr;
 	}
 }

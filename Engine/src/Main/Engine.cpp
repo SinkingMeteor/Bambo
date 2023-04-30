@@ -1,8 +1,14 @@
 #include "Main/Engine.h"
 #include "WindowSettings.h"
+
+namespace
+{
+	const constexpr float DESIRED_DELTA_TIME = 1.0f / 60.0f;
+}
+
 namespace Bambo
 {
-	Engine::Engine(const InitialSettings& settings)
+	Engine::Engine()
 	{
 	}
 
@@ -21,19 +27,19 @@ namespace Bambo
 	int Engine::Run()
 	{
 		Timer timer{};
-		const float deltaTime = 1.0f / 60.0f;
 
 		while (!WindowManager::Get()->WantsToClose())
 		{
 			float passedTime = timer.Restart();
 
-			while (passedTime > deltaTime)
+			while (passedTime > DESIRED_DELTA_TIME)
 			{
-				passedTime -= deltaTime;
-				Update(deltaTime);
+				passedTime -= DESIRED_DELTA_TIME;
+				Update(DESIRED_DELTA_TIME);
 			}
 			Update(passedTime);
 			Render();
+			WindowManager::Get()->Update();
 		}
 
 		Dispose();
@@ -56,7 +62,5 @@ namespace Bambo
 	void Engine::Render()
 	{
 		RenderManager::Get()->ClearCanvas();
-
-		WindowManager::Get()->EndFrame();
 	}
 }

@@ -9,18 +9,10 @@
 
 namespace Bambo
 {
-	class InitialSettings final
-	{
-	public:
-		int WindowWidth{ 640 };
-		int WindowHeight{ 360 };
-		std::string WindowName{"Engine"};
-	};
-
 	class Engine final
 	{
 	public:
-		Engine(const InitialSettings& settings);
+		Engine();
 		Engine(const Engine& engine) = delete;
 		Engine& operator=(const Engine& engine) = delete;
 		~Engine();

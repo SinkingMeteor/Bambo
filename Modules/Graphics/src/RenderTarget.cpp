@@ -12,6 +12,10 @@ namespace Bambo
 
 	void RenderTarget::Initialize()
 	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glViewport(0, 0, m_windowSize.X, m_windowSize.Y);
+
 		glGenVertexArrays(1, &m_vao);
 		glBindVertexArray(m_vao);
 

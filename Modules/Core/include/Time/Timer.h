@@ -9,8 +9,9 @@ namespace Bambo
 		Timer() noexcept;
 		float Restart() noexcept;
 	private:
-		using clock = std::chrono::steady_clock;
+		using Clock = std::chrono::high_resolution_clock;
+		using Duration = std::chrono::duration<float, std::milli>;
 
-		clock::time_point m_lastTime;
+		Clock::time_point m_lastTime;
 	};
 }

@@ -6,12 +6,15 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Texture2D.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Sprite.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Camera.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/RenderTarget.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLGraphicsContext.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/GraphicsContext.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Transform.cpp)
 
 add_library(BamboGraphics STATIC ${BAMBO_GRAPHICS_SOURCES})
 
 target_include_directories(BamboGraphics 
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
+PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/
+PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/OpenGL/)
 
 find_package(OpenGL REQUIRED)
 

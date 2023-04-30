@@ -1,32 +1,27 @@
 #pragma once
 #include "pch.h"
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
 #include "Utils.h"
 #include "WindowSettings.h"
+#include "OS.h"
 namespace Bambo 
 {
 	class BAMBO_API Window
 	{
 	public:
-		Window(const WindowSettings& initialSettings);
+		Window() = default;
 		Window(const Window&) = delete;
 		Window& operator=(const Window&) = delete;
-		~Window();
+		virtual ~Window();
 
-		[[nodiscard]] int Initialize();
-		bool WindowShouldClose() const { return glfwWindowShouldClose(m_glfwWindow); }
+		virtual void Initialize() = 0;
+		virtual uint GetWidth() const = 0;
+		virtual uint GetHeight() const = 0;
 
-		const WindowSettings* GetSettings() const { return &m_windowSettings; }
-		int GetWidth() const { return m_windowSettings.Width; }
-		int GetHeight() const { return m_windowSettings.Height; }
-		GLFWwindow* GetRawWindow() const { return m_glfwWindow; }
-		void SetViewportSize(int width, int height);
-		void CloseWindow();
+		virtual bool WindowShouldClose() const = 0;
+		virtual void Update() = 0;
+		virtual void* GetWindowPtr() = 0;
+		virtual void CloseWindow() = 0;
 
-
-	private:
-		WindowSettings m_windowSettings;
-		GLFWwindow* m_glfwWindow;
+		static std::unique_ptr<Window> CreateBamboWindow(const WindowSettings& settings, OSType osType);
 	};
 }

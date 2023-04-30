@@ -5,7 +5,7 @@
 namespace Bambo 
 {
 	template <typename T>
-	struct BAMBO_API Rect final
+	struct BAMBO_API Rect
 	{
 	public:
 		T Left;
