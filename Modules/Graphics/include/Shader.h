@@ -1,38 +1,25 @@
 #pragma once
 #include "pch.h"
 #include "Graphics.h"
-#include "Utils.h"
+#include "ShaderImplementation.h"
 
 namespace Bambo 
 {
 	class BAMBO_API Shader final
 	{
-		enum class CheckType 
-		{
-			VertexShader,
-			FragmentShader,
-			ShaderProgram
-		};
 
 	public:
 		Shader();
 		Shader(const Shader&) = delete;
 		Shader& operator=(const Shader&) = delete;
-		~Shader();
-		GLuint GetID() const { return m_id; }
-		void LoadFromFile(const std::string& vertexSourceFile, const std::string& fragmentSourceFile);
-		Shader& Use();
-		static void StopUse();
-		void SetFloat(const char* name, float value);
-		void SetInteger(const char* name, int value);
-		void SetVector2f(const char* name, glm::vec2 value);
-		void SetVector3f(const char* name, glm::vec3 value);
-		void SetMatrix4(const char* name, const glm::mat4& matrix);
+		void Use() { m_shaderImplementation->Use(); }
+		void LoadFromFile(const std::string& vertexSourceFile, const std::string& fragmentSourceFile) { m_shaderImplementation->LoadFromFile(vertexSourceFile, fragmentSourceFile); }
+		void SetFloat(const char* name, float value) { m_shaderImplementation->SetFloat(name, value); }
+		void SetInteger(const char* name, int value) { m_shaderImplementation->SetInteger(name, value); }
+		void SetVector2f(const char* name, const glm::vec2& value) { m_shaderImplementation->SetVector2f(name, value); }
+		void SetVector3f(const char* name, const glm::vec3& value) { m_shaderImplementation->SetVector3f(name, value); }
+		void SetMatrix4(const char* name, const glm::mat4& matrix) { m_shaderImplementation->SetMatrix4(name, matrix); }
 	private:
-		GLuint m_id;
-
-		bool CheckErrors(uint id, CheckType type);
-		void Compile(const char* vertexSource, const char* fragmentSource);
-
+		std::unique_ptr<ShaderImplementation> m_shaderImplementation;
 	};
 }

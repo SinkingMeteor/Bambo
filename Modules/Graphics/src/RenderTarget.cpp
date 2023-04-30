@@ -82,7 +82,7 @@ namespace Bambo
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 
-		Shader::StopUse();
+		glUseProgram(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
