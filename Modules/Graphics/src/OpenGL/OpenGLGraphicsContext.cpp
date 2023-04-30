@@ -3,7 +3,7 @@
 namespace Bambo
 {
 	OpenGLGraphicsContext::OpenGLGraphicsContext(GLFWwindow* window) :
-		m_window()
+		m_window(window)
 	{}
 
 

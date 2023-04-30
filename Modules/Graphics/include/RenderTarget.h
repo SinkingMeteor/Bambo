@@ -16,6 +16,7 @@ namespace Bambo
 		~RenderTarget();
 
 		void Initialize();
+		void ClearCanvas();
 		void Draw(const Vertex* vertices, int amount, const RenderConfig& config);
 		void Draw(IRenderable& renderable, const RenderConfig& config);
 		void SetWindowSize(int windowWidth, int windowHeight) { m_windowSize = Vector2i{ windowWidth, windowHeight }; }

@@ -3,19 +3,18 @@
 #include "Window.h"
 #include "RenderTarget.h"
 #include "Time/Timer.h"
-#include "Managers/WindowManager.h"
-#include "Managers/AudioManager.h"
-#include "Managers/RenderManager.h"
+#include "WindowManager.h"
+#include "AudioManager.h"
+#include "RenderManager.h"
 
 namespace Bambo
 {
 	class Engine final
 	{
 	public:
-		Engine();
+		Engine() = default;
 		Engine(const Engine& engine) = delete;
 		Engine& operator=(const Engine& engine) = delete;
-		~Engine();
 
 		void Initialize();
 		int Run();

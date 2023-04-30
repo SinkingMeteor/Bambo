@@ -11,7 +11,7 @@ namespace Bambo
 		Window() = default;
 		Window(const Window&) = delete;
 		Window& operator=(const Window&) = delete;
-		virtual ~Window();
+		virtual ~Window() {}
 
 		virtual void Initialize() = 0;
 		virtual uint GetWidth() const = 0;

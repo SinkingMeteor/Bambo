@@ -1,4 +1,4 @@
-#include "Managers/WindowManager.h"
+#include "WindowManager.h"
 
 namespace Bambo
 {

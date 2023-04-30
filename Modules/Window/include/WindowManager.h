@@ -1,6 +1,6 @@
 #pragma once
-#include "engpch.h"
-#include "Managers/Singleton.h"
+#include "pch.h"
+#include "Singleton.h"
 #include "Window.h"
 #include "WindowSettings.h"
 namespace Bambo

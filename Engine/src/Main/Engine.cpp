@@ -8,19 +8,13 @@ namespace
 
 namespace Bambo
 {
-	Engine::Engine()
-	{
-	}
-
-	Engine::~Engine()
-	{
-	}
-
 	void Engine::Initialize()
 	{
 		WindowSettings settings{ 1280, 720, "Hello world!" };
 		WindowManager::Get()->Initialize(settings);
-		RenderManager::Get()->Initialize();
+
+		RenderManager::Get()->Initialize(RenderAPI::OpenGL);
+		
 		AudioManager::Get()->Initialize();
 	}
 

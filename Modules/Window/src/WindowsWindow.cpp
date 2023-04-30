@@ -37,7 +37,8 @@ namespace Bambo
 
 		glfwMakeContextCurrent(m_window);
 
-		m_context = GraphicsContext::Create(m_window, RenderAPI::OpenGL);
+		m_context = GraphicsContext::Create(m_window);
+		m_context->Initialize();
 
 		glfwSetWindowUserPointer(m_window, this);
 		glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height)

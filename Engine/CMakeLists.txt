@@ -2,10 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 set(BAMBO_ENGINE_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Main.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Main/Engine.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Managers/AudioManager.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Managers/WindowManager.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Managers/RenderManager.cpp)
+${CMAKE_CURRENT_LIST_DIR}/src/Main/Engine.cpp)
 
 add_executable(Bambo ${BAMBO_ENGINE_SOURCES})
 

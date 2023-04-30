@@ -3,7 +3,7 @@
 namespace Bambo
 {
 	RenderTarget::RenderTarget() :
-		m_windowSize(),
+		m_windowSize(640, 640),
 		m_vao(0),
 		m_vbo(0),
 		m_bufferSize(4)
@@ -35,6 +35,12 @@ namespace Bambo
 		const float viewportHeight = static_cast<const float>(m_windowSize.Y);
 
 		glViewport(0, 0, viewportWidth, viewportHeight);
+	}
+
+	void RenderTarget::ClearCanvas()
+	{
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
 	void RenderTarget::Draw(const Vertex* vertices, int amount, const RenderConfig& config)
@@ -77,7 +83,7 @@ namespace Bambo
 		glDisableVertexAttribArray(2);
 
 		Shader::StopUse();
-		Texture2D::StopUse();
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	void RenderTarget::Draw(IRenderable& renderable, const RenderConfig& config)

@@ -1,9 +1,10 @@
 #pragma once
+#include "pch.h"
 
 namespace Bambo
 {
 	template<typename T>
-	class Singleton
+	class BAMBO_API Singleton
 	{
 	public:
 		Singleton(const Singleton& singleton) = delete;

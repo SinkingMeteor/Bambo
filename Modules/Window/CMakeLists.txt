@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 set(BAMBO_WINDOW_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/WindowsWindow.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/WindowManager.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Window.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Input.cpp)
 
