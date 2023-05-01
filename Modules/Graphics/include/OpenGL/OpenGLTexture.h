@@ -16,17 +16,17 @@ namespace Bambo
 		virtual void Use() const override;
 		virtual RectInt GetTextureRect() const override { return RectInt{ 0, 0, m_width, m_height }; }
 	private:
-		uint m_id;
+		uint32 m_id;
 
-		int m_width;
-		int m_height;
+		int32 m_width;
+		int32 m_height;
 
-		uint m_internalFormat;
-		uint m_imageFormat;
+		uint32 m_internalFormat;
+		uint32 m_imageFormat;
 
-		uint m_wrapS;
-		uint m_wrapT;
-		uint m_filterMin;
-		uint m_filterMax;
+		uint32 m_wrapS;
+		uint32 m_wrapT;
+		uint32 m_filterMin;
+		uint32 m_filterMax;
 	};
 }

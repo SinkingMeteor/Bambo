@@ -14,8 +14,8 @@ namespace Bambo
 		virtual ~WindowsWindow();
 
 		virtual void Initialize() override;
-		virtual uint GetWidth() const override { return m_settings.Width; }
-		virtual uint GetHeight() const override { return m_settings.Height; }
+		virtual uint32 GetWidth() const override { return m_settings.Width; }
+		virtual uint32 GetHeight() const override { return m_settings.Height; }
 		virtual bool WindowShouldClose() const override { return glfwWindowShouldClose(m_window); }
 		virtual void Update() override;
 		virtual void* GetWindowPtr() override { return m_window; };

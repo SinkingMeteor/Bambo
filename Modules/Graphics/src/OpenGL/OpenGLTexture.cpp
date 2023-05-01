@@ -4,9 +4,9 @@ namespace Bambo
 {
 	OpenGLTexture::OpenGLTexture() :
 		TextureImplementation(),
-		m_id(0),
-		m_width(0),
-		m_height(0),
+		m_id(0u),
+		m_width(0u),
+		m_height(0u),
 		m_internalFormat(GL_SRGB),
 		m_imageFormat(GL_SRGB),
 		m_wrapS(GL_REPEAT),
@@ -25,7 +25,7 @@ namespace Bambo
 	void OpenGLTexture::LoadFromFile(const std::string& file)
 	{
 		int channels{};
-		uchar* data = stbi_load(file.c_str(), &m_width, &m_height, &channels, 0);
+		ubyte* data = stbi_load(file.c_str(), &m_width, &m_height, &channels, 0);
 		BAMBO_ASSERT(data, "Failed to load image");
 
 		if (channels == 4) {

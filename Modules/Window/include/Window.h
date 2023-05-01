@@ -14,8 +14,8 @@ namespace Bambo
 		virtual ~Window() {}
 
 		virtual void Initialize() = 0;
-		virtual uint GetWidth() const = 0;
-		virtual uint GetHeight() const = 0;
+		virtual uint32 GetWidth() const = 0;
+		virtual uint32 GetHeight() const = 0;
 
 		virtual bool WindowShouldClose() const = 0;
 		virtual void Update() = 0;

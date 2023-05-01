@@ -1,5 +1,10 @@
 #include "OpenGL/OpenGLRenderer.h"
 
+namespace
+{
+	//void ApplyLayout(const )
+}
+
 namespace Bambo
 {
 	OpenGLRenderer::OpenGLRenderer() :

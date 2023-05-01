@@ -58,6 +58,6 @@ namespace Bambo
 			rect1Max.y >= rect2Min.y;
 	}
 
-	using RectInt = Rect<int>;
+	using RectInt = Rect<int32>;
 	using RectFloat = Rect<float>;
 }

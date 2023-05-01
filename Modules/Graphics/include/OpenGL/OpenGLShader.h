@@ -12,7 +12,7 @@ namespace Bambo
 		virtual void Use() override;
 		virtual void LoadFromFile(const std::string& vertexSourceFile, const std::string& fragmentSourceFile) override;
 		virtual void SetFloat(const char* name, float value) override;
-		virtual void SetInteger(const char* name, int value) override;
+		virtual void SetInteger(const char* name, int32 value) override;
 		virtual void SetVector2f(const char* name, const glm::vec2& value) override;
 		virtual void SetVector3f(const char* name, const glm::vec3& value) override;
 		virtual void SetMatrix4(const char* name, const glm::mat4& matrix) override;
@@ -26,7 +26,7 @@ namespace Bambo
 
 		GLuint m_id;
 
-		bool CheckErrors(uint id, CheckType type);
+		bool CheckErrors(uint32 id, CheckType type);
 		void Compile(const char* vertexSource, const char* fragmentSource);
 
 	};

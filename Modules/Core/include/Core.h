@@ -1,13 +1,23 @@
 #pragma once
+#include<memory>
 
 namespace Bambo 
 {
 	constexpr const bool BAMBO_FALSE = 0;
 	constexpr const bool BAMBO_TRUE = 1;
 
-	using uint = unsigned int;
-	using uchar = unsigned char;
-	using bambo_id = size_t;
+	using int32 = std::int32_t;
+	using uint32 = std::uint32_t;
+	using ubyte = std::uint8_t;
+	using byte = std::int8_t;
+	using bambo_id = std::size_t;
+
+	template<typename T>
+	using UPtr = std::unique_ptr<T>;
+	template<typename T>
+	using SPtr = std::shared_ptr<T>;
+	template<typename T>
+	using WPtr = std::weak_ptr<T>;
 }
 
 	#define BAMBO_API __declspec(dllexport)
@@ -17,3 +27,4 @@ namespace Bambo
 	#else
 		#define BAMBO_ASSERT(x, msg); 
 	#endif
+

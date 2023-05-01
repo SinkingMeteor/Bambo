@@ -5,7 +5,10 @@
 #include "WindowManager.h"
 #include "AudioManager.h"
 #include "RenderManager.h"
-
+#include "TextureProvider.h"
+#include "ShaderProvider.h"
+#include "Camera.h"
+#include "Sprite.h"
 namespace Bambo
 {
 	class Engine final
@@ -18,6 +21,11 @@ namespace Bambo
 		void Initialize();
 		int Run();
 	private:
+		TextureProvider m_textureProvider;
+		ShaderProvider m_shaderProvider;
+		UPtr<Sprite> m_sprite;
+		SPtr<Camera> m_camera;
+
 		void Update(float deltaTime);
 		void Render();
 		void Dispose();

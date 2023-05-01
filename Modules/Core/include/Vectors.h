@@ -61,8 +61,8 @@ namespace Bambo
 	}
 
 	using Vector2f = Vector2<float>;
-	using Vector2i = Vector2<int>;
-	using Vector2u = Vector2<uint>;
+	using Vector2i = Vector2<int32>;
+	using Vector2u = Vector2<uint32>;
 
 	template<typename T>
 	struct Vector3
@@ -123,6 +123,6 @@ namespace Bambo
 	}
 
 	using Vector3f = Vector3<float>;
-	using Vector3i = Vector3<int>;
-	using Vector3u = Vector3<uint>;
+	using Vector3i = Vector3<int32>;
+	using Vector3u = Vector3<uint32>;
 }

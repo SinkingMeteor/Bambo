@@ -57,9 +57,9 @@ namespace Bambo
 		glUniformMatrix4fv(glGetUniformLocation(m_id, name), 1, false, static_cast<const float*>(glm::value_ptr(matrix)));
 	}
 
-	bool OpenGLShader::CheckErrors(uint id, OpenGLShader::CheckType type)
+	bool OpenGLShader::CheckErrors(uint32 id, OpenGLShader::CheckType type)
 	{
-		int result{};
+		int32 result{};
 		char infoLog[1024];
 		switch (type)
 		{

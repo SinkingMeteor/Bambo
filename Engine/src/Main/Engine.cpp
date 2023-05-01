@@ -1,5 +1,6 @@
 #include "Main/Engine.h"
 #include "WindowSettings.h"
+#include "Utils.h"
 
 namespace
 {
@@ -18,6 +19,11 @@ namespace Bambo
 		RenderManager::Get()->GetRenderer().SetViewport({ 0u , 0u }, { settings.Width, settings.Height });
 		
 		AudioManager::Get()->Initialize();
+
+		m_shaderProvider.Load(ToId("TestShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
+		SPtr<Texture2D> texture = m_textureProvider.Load(ToId("TestTexture"), BamboPaths::BamboResourcesDir + "Textures/TestImage.png");
+		m_sprite = std::make_unique<Sprite>(texture);
+		m_camera = std::make_shared<Camera>();
 	}
 
 	int Engine::Run()
@@ -58,5 +64,11 @@ namespace Bambo
 	void Engine::Render()
 	{
 		RenderManager::Get()->GetRenderer().Clear();
+
+		RenderConfig config{};
+		config.Shader = m_shaderProvider.Get(ToId("TestShader"));
+		config.Camera = m_camera;
+
+		m_sprite->Render(RenderManager::Get()->GetRenderer(), config);
 	}
 }
