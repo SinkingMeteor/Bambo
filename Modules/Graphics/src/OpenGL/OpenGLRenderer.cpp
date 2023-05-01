@@ -1,20 +1,47 @@
 #include "OpenGL/OpenGLRenderer.h"
 
-namespace
-{
-	//void ApplyLayout(const )
-}
-
 namespace Bambo
 {
+	static GLenum ShaderDataTypeToOpenGLType(ShaderDataType type)
+	{
+		switch (type)
+		{
+		case ShaderDataType::Float:    return GL_FLOAT;
+		case ShaderDataType::Float2:   return GL_FLOAT;
+		case ShaderDataType::Float3:   return GL_FLOAT;
+		case ShaderDataType::Float4:   return GL_FLOAT;
+		case ShaderDataType::Matrix3f:     return GL_FLOAT;
+		case ShaderDataType::Matrix4f:     return GL_FLOAT;
+		case ShaderDataType::Integer:      return GL_INT;
+		case ShaderDataType::Integer2:     return GL_INT;
+		case ShaderDataType::Integer3:     return GL_INT;
+		case ShaderDataType::Integer4:     return GL_INT;
+		case ShaderDataType::Bool:     return GL_BOOL;
+		}
+
+		BAMBO_ASSERT(false, "Unknown ShaderDataType!");
+		return 0;
+	}
+
+	static void ApplyLayout(const Bambo::BufferLayout& layout)
+	{
+		size_t counter = 0;
+		for (Bambo::CLayoutIter it = layout.Begin(); it != layout.End(); ++it)
+		{
+			glEnableVertexAttribArray(counter);
+			ShaderDataType type = it->GetType();
+			glVertexAttribPointer(counter, GetComponentCount(type), ShaderDataTypeToOpenGLType(type), GL_FALSE, layout.GetStride(), (void*)it->GetOffset());
+			++counter;
+		}
+	}
+
 	OpenGLRenderer::OpenGLRenderer() :
 		Renderer(),
 		m_vao(0),
 		m_vbo(0),
-		m_bufferSize(4)
-	{
-
-	}
+		m_bufferSize(4),
+		m_layout{ ShaderDataType::Float2, ShaderDataType::Float2, ShaderDataType::Float4 }
+	{}
 
 	OpenGLRenderer::~OpenGLRenderer()
 	{
@@ -43,9 +70,7 @@ namespace Bambo
 
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_bufferSize, NULL, GL_DYNAMIC_DRAW);
 
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(2 * sizeof(float)));
-		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(4 * sizeof(float)));
+		ApplyLayout(m_layout);
 	}
 
 	void OpenGLRenderer::SetViewport(const Vector2u & origin, const Vector2u & size)

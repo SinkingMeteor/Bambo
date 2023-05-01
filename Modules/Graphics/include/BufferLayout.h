@@ -19,8 +19,8 @@ namespace Bambo
 		Bool
 	};
 
-	static uint32 GetShaderDataTypeSize(ShaderDataType type);
-	static uint32 GetComponentCount(ShaderDataType type);
+	uint32 GetShaderDataTypeSize(ShaderDataType type);
+	uint32 GetComponentCount(ShaderDataType type);
 	const char* GetNameOfShaderData(ShaderDataType type);
 
 	class BAMBO_API LayoutElement final
@@ -49,9 +49,10 @@ namespace Bambo
 		BufferLayout(std::initializer_list<ShaderDataType> elements);
 		CLayoutIter Begin() const { return m_elements.cbegin(); }
 		CLayoutIter End() const { return m_elements.cend(); }
+		uint32 GetStride() const { return m_stride; }
 	private:
 		std::vector<LayoutElement> m_elements;
-		uint32 m_stride;
+		uint32 m_stride{0};
 
 		void CalculateOffsetsAndStride();
 	};

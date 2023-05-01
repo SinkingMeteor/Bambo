@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Renderer.h"
 #include "Graphics.h"
-
+#include "BufferLayout.h"
 namespace Bambo
 {
 	class BAMBO_API OpenGLRenderer final : public Renderer
@@ -19,5 +19,6 @@ namespace Bambo
 		GLuint m_vao;
 		GLuint m_vbo;
 		uint32 m_bufferSize;
+		BufferLayout m_layout;
 	};
 }
