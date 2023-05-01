@@ -7,7 +7,7 @@
 
 namespace Bambo
 {
-	class BAMBO_API OpenGLGraphicsContext : public GraphicsContext
+	class BAMBO_API OpenGLGraphicsContext final : public GraphicsContext
 	{
 	public:
 		OpenGLGraphicsContext(GLFWwindow* window);

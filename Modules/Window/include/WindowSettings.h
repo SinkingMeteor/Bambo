@@ -6,8 +6,8 @@ namespace Bambo
 	struct BAMBO_API WindowSettings
 	{
 	public:
-		int Width{1};
-		int Height{1};
+		uint Width{1};
+		uint Height{1};
 		std::string Title{};
 	};
 }

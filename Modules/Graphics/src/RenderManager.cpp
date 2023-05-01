@@ -4,24 +4,18 @@ namespace Bambo
 {
 	RenderManager::RenderManager():
 		m_renderApiType{RenderAPI::OpenGL},
-		m_renderTarget{}
+		m_renderer{}
 	{}
 
 
 	void RenderManager::Initialize(RenderAPI renderApi)
 	{
 		m_renderApiType = renderApi;
-		m_renderTarget = std::make_unique<RenderTarget>();
-		m_renderTarget->Initialize();
+		m_renderer = Renderer::CreateRenderer(renderApi);
+		m_renderer->Initialize();
 	}
 
 	void RenderManager::Dispose()
 	{
 	}
-
-	void RenderManager::ClearCanvas()
-	{
-		m_renderTarget->ClearCanvas();
-	}
-
 }

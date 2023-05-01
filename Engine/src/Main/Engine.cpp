@@ -10,10 +10,12 @@ namespace Bambo
 {
 	void Engine::Initialize()
 	{
-		WindowSettings settings{ 1280, 720, "Hello world!" };
+		WindowSettings settings{ 1280u, 720u, "Hello world!" };
 		WindowManager::Get()->Initialize(settings);
 
 		RenderManager::Get()->Initialize(RenderAPI::OpenGL);
+		RenderManager::Get()->GetRenderer().SetClearColor(Color{ 0.3f, 0.3f, 0.3f, 1.0f });
+		RenderManager::Get()->GetRenderer().SetViewport({ 0u , 0u }, { settings.Width, settings.Height });
 		
 		AudioManager::Get()->Initialize();
 	}
@@ -55,6 +57,6 @@ namespace Bambo
 
 	void Engine::Render()
 	{
-		RenderManager::Get()->ClearCanvas();
+		RenderManager::Get()->GetRenderer().Clear();
 	}
 }

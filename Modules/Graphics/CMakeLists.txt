@@ -5,7 +5,6 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Shader.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Texture2D.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Sprite.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Camera.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/RenderTarget.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLGraphicsContext.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/GraphicsContext.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLTexture.cpp
@@ -13,6 +12,8 @@ ${CMAKE_CURRENT_LIST_DIR}/src/TextureImplementation.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLShader.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/ShaderImplementation.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/RenderManager.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLRenderer.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Renderer.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Transform.cpp)
 
 add_library(BamboGraphics STATIC ${BAMBO_GRAPHICS_SOURCES})

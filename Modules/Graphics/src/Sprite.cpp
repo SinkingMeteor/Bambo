@@ -48,7 +48,7 @@ namespace Bambo
 		return RectFloat(Vector2f{ 0.f, 0.f }, Vector2f{ width, height });
 	}
 
-	void Sprite::Render(RenderTarget& renderTarget, const RenderConfig& config) 
+	void Sprite::Render(Renderer& renderer, const RenderConfig& config) 
 	{
 		if (!m_texture) return;
 
@@ -58,7 +58,7 @@ namespace Bambo
 		spriteConfig.Primitive = PrimitiveType::TriangleStrip;
 		spriteConfig.Texture = m_texture;
 
-		renderTarget.Draw(m_vertices.data(), m_vertices.size(), spriteConfig);
+		renderer.Draw(m_vertices.data(), m_vertices.size(), spriteConfig);
 	}
 
 	void Sprite::UpdatePosition()

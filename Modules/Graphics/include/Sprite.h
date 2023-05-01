@@ -6,8 +6,8 @@
 #include "Vertex.h"
 #include "Interfaces/ITransformable.h"
 #include "Interfaces/IRenderable.h"
-#include "RenderTarget.h"
 #include "RenderConfig.h"
+#include "Renderer.h"
 
 namespace Bambo 
 {
@@ -21,7 +21,7 @@ namespace Bambo
 		RectFloat GetLocalBounds() const;
 
 		virtual Transform& GetTransform() override { return m_transform; }
-		virtual void Render(RenderTarget& renderTarget, const RenderConfig& config) override;
+		virtual void Render(Renderer& renderTarget, const RenderConfig& config) override;
 		void SetPivot(const glm::vec2& relativePivot);
 	private:
 		std::array<Vertex, 4> m_vertices;

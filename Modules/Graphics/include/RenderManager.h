@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Singleton.h"
-#include "RenderTarget.h"
+#include "Renderer.h"
 #include "RenderAPI.h"
 namespace Bambo
 {
@@ -11,11 +11,11 @@ namespace Bambo
 		RenderManager();
 		void Initialize(RenderAPI renderApi);
 		void Dispose();
-		void ClearCanvas();
+		Renderer& GetRenderer() { return *m_renderer; }
 		RenderAPI GetCurrentRenderAPI() const { return m_renderApiType; }
 	protected:
 	private:
-		std::unique_ptr<RenderTarget> m_renderTarget;
+		std::unique_ptr<Renderer> m_renderer;
 		RenderAPI m_renderApiType;
 	};
 }
