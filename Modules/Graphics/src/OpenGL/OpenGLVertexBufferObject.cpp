@@ -3,6 +3,7 @@
 namespace Bambo
 {
 	OpenGLVertexBufferObject::OpenGLVertexBufferObject(const void* data, uint32 size) :
+		VertexBufferObject(),
 		m_id(0),
 		m_size(size),
 		m_layout(nullptr)
