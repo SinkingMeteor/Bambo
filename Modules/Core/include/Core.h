@@ -7,10 +7,11 @@ namespace Bambo
 	constexpr const bool BAMBO_TRUE = 1;
 
 	using int32 = std::int32_t;
+	using uint64 = std::uint64_t;
 	using uint32 = std::uint32_t;
 	using ubyte = std::uint8_t;
 	using byte = std::int8_t;
-	using bambo_id = std::size_t;
+	using bambo_id = std::uint64_t;
 
 	template<typename T>
 	using UPtr = std::unique_ptr<T>;

@@ -105,15 +105,7 @@ namespace Bambo
 			config.Texture->Use();
 		}
 
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
-
 		glDrawArrays(static_cast<GLenum>(config.Primitive), 0, amount);
-
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
 
 		glUseProgram(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
