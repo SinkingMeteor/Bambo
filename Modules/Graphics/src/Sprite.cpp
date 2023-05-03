@@ -48,17 +48,6 @@ namespace Bambo
 		return RectFloat(Vector2f{ 0.f, 0.f }, Vector2f{ width, height });
 	}
 
-	void Sprite::Render(RendererImplementation& renderer, RenderConfig config) 
-	{
-		if (!m_texture) return;
-
-		config.ModelMatrix = config.ModelMatrix.GetInternalMatrix() * m_transform.GetMatrix().GetInternalMatrix();
-		config.Primitive = PrimitiveType::TriangleStrip;
-		config.Texture = m_texture;
-
-		renderer.Draw(m_vertices.data(), m_vertices.size(), config);
-	}
-
 	void Sprite::UpdatePosition()
 	{
 		RectFloat bounds = GetLocalBounds();

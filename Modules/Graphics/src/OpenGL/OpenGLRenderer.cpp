@@ -1,19 +1,6 @@
 #include "OpenGL/OpenGLRenderer.h"
 namespace Bambo
 {
-	OpenGLRenderer::OpenGLRenderer() :
-		RendererImplementation(),
-		m_vbo(VertexBufferObject::CreateVertexBufferObject(4 * sizeof(QuadVertex))),
-		m_vao(VertexArrayObject::CreateVertexArrayObject())
-	{
-		m_vbo->SetLayout(std::make_shared<BufferLayout>(std::initializer_list{ ShaderDataType::Float3, ShaderDataType::Float2, ShaderDataType::Float4 }));
-		m_vao->AddVertexBufferObject(m_vbo);
-	}
-
-	OpenGLRenderer::~OpenGLRenderer()
-	{
-	}
-
 	void OpenGLRenderer::Initialize()
 	{
 		OpenGLCheck(glEnable(GL_DEPTH_TEST));
@@ -26,31 +13,11 @@ namespace Bambo
 		OpenGLCheck(glViewport(origin.X, origin.Y, size.X, size.Y));
 	}
 
-	void OpenGLRenderer::Draw(const void * vertices, int verticesAmount, const RenderConfig & config)
+	void OpenGLRenderer::Draw(const SPtr<VertexArrayObject> vao, uint32 vertexAmount)
 	{
-		if (!config.Camera) return;
-
-		m_vbo->SetData(vertices, verticesAmount * sizeof(QuadVertex));
-
-		if (config.Shader)
-		{
-			config.Shader->Use();
-			config.Shader->SetMatrix4("model", config.ModelMatrix.GetInternalMatrix());
-			config.Shader->SetMatrix4("projView", config.Camera->GetProjViewMatrix());
-		}
-
-		if (config.Texture)
-		{
-			OpenGLCheck(glActiveTexture(GL_TEXTURE0));
-			config.Texture->Use();
-		}
-
-		m_vao->Bind();
-		OpenGLCheck(glDrawArrays(static_cast<GLenum>(config.Primitive), 0, verticesAmount));
-		m_vao->Unbind();
-
-		OpenGLCheck(glUseProgram(0));
-		OpenGLCheck(glBindTexture(GL_TEXTURE_2D, 0));
+		vao->Bind();
+		OpenGLCheck(glDrawArrays(static_cast<GLenum>(GL_TRIANGLE_STRIP), 0, vertexAmount));
+		vao->Unbind();
 	}
 
 	void OpenGLRenderer::SetClearColor(const Color & color)

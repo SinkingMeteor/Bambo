@@ -10,16 +10,11 @@ namespace Bambo
 	class BAMBO_API OpenGLRenderer final : public RendererImplementation
 	{
 	public:
-		OpenGLRenderer();
-		virtual ~OpenGLRenderer();
+		OpenGLRenderer() = default;
 		virtual void Initialize() override;
 		virtual void SetViewport(const Vector2u& origin, const Vector2u& size) override;
-		virtual void Draw(const void* vertices, int verticesAmount, const RenderConfig& config) override;
+		virtual void Draw(const SPtr<VertexArrayObject> vao, uint32 vertexAmount) override;
 		virtual void SetClearColor(const Color& color) override;
 		virtual void Clear() override;
-	private:
-		SPtr<VertexBufferObject> m_vbo;
-		SPtr<VertexArrayObject> m_vao;
-		BufferLayout m_layout;
 	};
 }

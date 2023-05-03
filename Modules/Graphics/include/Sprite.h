@@ -11,7 +11,7 @@
 
 namespace Bambo 
 {
-	class BAMBO_API Sprite final : public ITransformable, public IRenderable
+	class BAMBO_API Sprite final : public ITransformable
 	{
 	public:
 		Sprite(std::shared_ptr<Texture2D> texture);
@@ -19,9 +19,7 @@ namespace Bambo
 		void SetRect(const RectInt& rect);
 		void SetTexture(std::shared_ptr<Texture2D> texture);
 		RectFloat GetLocalBounds() const;
-
 		virtual Transform& GetTransform() override { return m_transform; }
-		virtual void Render(RendererImplementation& renderTarget, RenderConfig config) override;
 		void SetPivot(const glm::vec2& relativePivot);
 	private:
 		std::array<QuadVertex, 4> m_vertices;
@@ -31,5 +29,7 @@ namespace Bambo
 
 		void UpdatePosition();
 		void UpdateTexCoords();
+
+		friend class Renderer2D;
 	};
 }

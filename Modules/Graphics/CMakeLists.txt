@@ -5,6 +5,8 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Shader.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Texture2D.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Sprite.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Camera.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Renderer.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Renderer2D.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLCheck.cpp
 #VBO
 ${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLVertexBufferObject.cpp

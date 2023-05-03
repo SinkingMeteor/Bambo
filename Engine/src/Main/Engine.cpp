@@ -22,8 +22,12 @@ namespace Bambo
 
 		m_shaderProvider.Load(ToId("TestShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
 		SPtr<Texture2D> texture = m_textureProvider.Load(ToId("TestTexture"), BamboPaths::BamboResourcesDir + "Textures/TestImage.png");
-		m_sprite = std::make_unique<Sprite>(texture);
+		m_sprite = std::make_shared<Sprite>(texture);
 		m_camera = std::make_shared<Camera>();
+
+		m_spriteRenderer = std::make_unique<Renderer2D>();
+		m_spriteRenderer->Initialize();
+		m_spriteRenderer->SetCamera(m_camera);
 	}
 
 	int Engine::Run()
@@ -67,8 +71,7 @@ namespace Bambo
 
 		RenderConfig config{};
 		config.Shader = m_shaderProvider.Get(ToId("TestShader"));
-		config.Camera = m_camera;
 
-		m_sprite->Render(RenderManager::Get()->GetRenderer(), config);
+		m_spriteRenderer->Render(m_sprite, config);
 	}
 }

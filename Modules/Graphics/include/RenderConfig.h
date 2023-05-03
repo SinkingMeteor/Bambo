@@ -17,16 +17,13 @@ namespace Bambo
 	struct BAMBO_API RenderConfig final 
 	{
 	public:
-		PrimitiveType Primitive{PrimitiveType::TriangleStrip};
+		PrimitiveType Primitive;
 		Matrix ModelMatrix{};
-		std::shared_ptr<Texture2D> Texture;
 		std::shared_ptr<Shader> Shader;
-		std::shared_ptr<Camera> Camera;
 	
 		RenderConfig() :
 			Primitive(PrimitiveType::TriangleStrip),
 			ModelMatrix(Matrix::Identity()),
-			Texture(nullptr),
 			Shader(nullptr)
 		{}
 	};
