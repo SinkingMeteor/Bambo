@@ -8,10 +8,10 @@ namespace Bambo
 		m_size(size),
 		m_layout(nullptr)
 	{
-		glGenBuffers(1, &m_id);
-		glBindBuffer(GL_ARRAY_BUFFER, m_id);
-		glBufferData(GL_ARRAY_BUFFER, m_size, data, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		OpenGLCheck(glGenBuffers(1, &m_id));
+		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
+		OpenGLCheck(glBufferData(GL_ARRAY_BUFFER, m_size, data, GL_STATIC_DRAW));
+		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
 	OpenGLVertexBufferObject::OpenGLVertexBufferObject(uint32 size) :
@@ -19,31 +19,31 @@ namespace Bambo
 		m_size(size),
 		m_layout(nullptr)
 	{
-		glGenBuffers(1, &m_id);
-		glBindBuffer(GL_ARRAY_BUFFER, m_id);
-		glBufferData(GL_ARRAY_BUFFER, m_size, nullptr, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		OpenGLCheck(glGenBuffers(1, &m_id));
+		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
+		OpenGLCheck(glBufferData(GL_ARRAY_BUFFER, m_size, nullptr, GL_STATIC_DRAW));
+		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
 	OpenGLVertexBufferObject::~OpenGLVertexBufferObject()
 	{
-		glDeleteBuffers(1, &m_id);
+		OpenGLCheck(glDeleteBuffers(1, &m_id));
 	}
 
 	void OpenGLVertexBufferObject::Bind() 
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, m_id);
+		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
 	}
 
 	void OpenGLVertexBufferObject::Unbind() 
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, m_id);
+		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
 	}
 
 	void OpenGLVertexBufferObject::SetData(const void* data, uint32 size) 
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, m_id);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, m_size, data);
+		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
+		OpenGLCheck(glBufferSubData(GL_ARRAY_BUFFER, 0, m_size, data));
 
 	}
 }

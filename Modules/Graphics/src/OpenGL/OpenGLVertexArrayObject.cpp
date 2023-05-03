@@ -29,22 +29,22 @@ namespace Bambo
 		m_vbos(),
 		m_layoutIndex(0)
 	{
-		glGenVertexArrays(1, &m_id);
+		OpenGLCheck(glGenVertexArrays(1, &m_id));
 	}
 
 	OpenGLVertexArrayObject::~OpenGLVertexArrayObject()
 	{
-		glDeleteVertexArrays(1, &m_id);
+		OpenGLCheck(glDeleteVertexArrays(1, &m_id));
 	}
 
 	void OpenGLVertexArrayObject::Bind()
 	{
-		glBindVertexArray(m_id);
+		OpenGLCheck(glBindVertexArray(m_id));
 	}
 
 	void OpenGLVertexArrayObject::Unbind() 
 	{
-		glBindVertexArray(0);
+		OpenGLCheck(glBindVertexArray(0));
 	}
 
 	void OpenGLVertexArrayObject::AddVertexBufferObject(SPtr<VertexBufferObject> vbo)
@@ -67,13 +67,13 @@ namespace Bambo
 			case ShaderDataType::Integer4:
 			case ShaderDataType::Bool:
 			{
-				glEnableVertexAttribArray(m_layoutIndex);
-				glVertexAttribPointer(m_layoutIndex,
+				OpenGLCheck(glEnableVertexAttribArray(m_layoutIndex));
+				OpenGLCheck(glVertexAttribPointer(m_layoutIndex,
 					GetComponentCount(it->GetType()),
 					ShaderDataTypeToOpenGLType(it->GetType()),
 					GL_FALSE,
 					layout->GetStride(),
-					(const void*)it->GetOffset());
+					(const void*)it->GetOffset()));
 				++m_layoutIndex;
 				break;
 			}
@@ -83,14 +83,14 @@ namespace Bambo
 				ubyte count = GetComponentCount(it->GetType());
 				for (ubyte i = 0; i < count; i++)
 				{
-					glEnableVertexAttribArray(m_layoutIndex);
-					glVertexAttribPointer(m_layoutIndex,
+					OpenGLCheck(glEnableVertexAttribArray(m_layoutIndex));
+					OpenGLCheck(glVertexAttribPointer(m_layoutIndex,
 						count,
 						ShaderDataTypeToOpenGLType(it->GetType()),
 						GL_FALSE,
 						layout->GetStride(),
 						(const void*)(it->GetOffset() + sizeof(float) * count * i));
-					glVertexAttribDivisor(m_layoutIndex, 1);
+					OpenGLCheck(glVertexAttribDivisor(m_layoutIndex, 1)));
 					++m_layoutIndex;
 				}
 				break;

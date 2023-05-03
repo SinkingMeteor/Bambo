@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Graphics.h"
+#include "OpenGLCheck.h"
 #include "VertexBufferObject.h"
 
 namespace Bambo

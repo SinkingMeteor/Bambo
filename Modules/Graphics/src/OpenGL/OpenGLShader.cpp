@@ -11,12 +11,12 @@ namespace Bambo
 
 	OpenGLShader::~OpenGLShader()
 	{
-		if (m_id) glDeleteProgram(m_id);
+		if (m_id) OpenGLCheck(glDeleteProgram(m_id));
 	}
 
 	void OpenGLShader::Use()
 	{
-		glUseProgram(m_id);
+		OpenGLCheck(glUseProgram(m_id));
 	}
 
 	void OpenGLShader::LoadFromFile(const std::string& vertexSourceFile, const std::string& fragmentSourceFile)
@@ -34,27 +34,27 @@ namespace Bambo
 
 	void OpenGLShader::SetFloat(const char* name, float value)
 	{
-		glUniform1f(glGetUniformLocation(m_id, name), value);
+		OpenGLCheck(glUniform1f(glGetUniformLocation(m_id, name), value));
 	}
 
 	void OpenGLShader::SetInteger(const char* name, int value)
 	{
-		glUniform1i(glGetUniformLocation(m_id, name), value);
+		OpenGLCheck(glUniform1i(glGetUniformLocation(m_id, name), value));
 	}
 
 	void OpenGLShader::SetVector2f(const char* name, const glm::vec2& value)
 	{
-		glUniform2f(glGetUniformLocation(m_id, name), value.x, value.y);
+		OpenGLCheck(glUniform2f(glGetUniformLocation(m_id, name), value.x, value.y));
 	}
 
 	void OpenGLShader::SetVector3f(const char* name, const glm::vec3& value)
 	{
-		glUniform3f(glGetUniformLocation(m_id, name), value.x, value.y, value.z);
+		OpenGLCheck(glUniform3f(glGetUniformLocation(m_id, name), value.x, value.y, value.z));
 	}
 
 	void OpenGLShader::SetMatrix4(const char* name, const glm::mat4& matrix)
 	{
-		glUniformMatrix4fv(glGetUniformLocation(m_id, name), 1, false, static_cast<const float*>(glm::value_ptr(matrix)));
+		OpenGLCheck(glUniformMatrix4fv(glGetUniformLocation(m_id, name), 1, false, static_cast<const float*>(glm::value_ptr(matrix))));
 	}
 
 	bool OpenGLShader::CheckErrors(uint32 id, OpenGLShader::CheckType type)
@@ -64,19 +64,19 @@ namespace Bambo
 		switch (type)
 		{
 		case OpenGLShader::CheckType::ShaderProgram:
-			glGetProgramiv(id, GL_LINK_STATUS, &result);
+			OpenGLCheck(glGetProgramiv(id, GL_LINK_STATUS, &result));
 			if (!result)
 			{
-				glGetProgramInfoLog(id, 1024, nullptr, infoLog);
+				OpenGLCheck(glGetProgramInfoLog(id, 1024, nullptr, infoLog));
 				Logger::Log("LogShader", Verbosity::Error, "ERROR: Compile-time error: %s", (const char*)infoLog);
 				return BAMBO_FALSE;
 			}
 			break;
 		default:
-			glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+			OpenGLCheck(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
 			if (!result)
 			{
-				glGetShaderInfoLog(id, 1024, nullptr, infoLog);
+				OpenGLCheck(glGetShaderInfoLog(id, 1024, nullptr, infoLog));
 				Logger::Log("LogShader", Verbosity::Error, "ERROR: Compile-time error: %s", (const char*)infoLog);
 				return BAMBO_FALSE;
 			}
@@ -91,23 +91,23 @@ namespace Bambo
 		GLuint fragmentShader{};
 
 		vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertexShader, 1, &vertexSource, NULL);
-		glCompileShader(vertexShader);
+		OpenGLCheck(glShaderSource(vertexShader, 1, &vertexSource, NULL));
+		OpenGLCheck(glCompileShader(vertexShader));
 		CheckErrors(vertexShader, OpenGLShader::CheckType::VertexShader);
 
 		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
-		glCompileShader(fragmentShader);
+		OpenGLCheck(glShaderSource(fragmentShader, 1, &fragmentSource, NULL));
+		OpenGLCheck(glCompileShader(fragmentShader));
 		CheckErrors(fragmentShader, OpenGLShader::CheckType::FragmentShader);
 
 		m_id = glCreateProgram();
-		glAttachShader(m_id, vertexShader);
-		glAttachShader(m_id, fragmentShader);
-		glLinkProgram(m_id);
+		OpenGLCheck(glAttachShader(m_id, vertexShader));
+		OpenGLCheck(glAttachShader(m_id, fragmentShader));
+		OpenGLCheck(glLinkProgram(m_id));
 		CheckErrors(m_id, OpenGLShader::CheckType::ShaderProgram);
 
-		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);
+		OpenGLCheck(glDeleteShader(vertexShader));
+		OpenGLCheck(glDeleteShader(fragmentShader));
 	}
 }
 

@@ -1,5 +1,4 @@
 #include "OpenGL/OpenGLRenderer.h"
-
 namespace Bambo
 {
 	OpenGLRenderer::OpenGLRenderer() :
@@ -17,14 +16,14 @@ namespace Bambo
 
 	void OpenGLRenderer::Initialize()
 	{
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		OpenGLCheck(glEnable(GL_DEPTH_TEST));
+		OpenGLCheck(glEnable(GL_BLEND));
+		OpenGLCheck(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	}
 
 	void OpenGLRenderer::SetViewport(const Vector2u & origin, const Vector2u & size)
 	{
-		glViewport(origin.X, origin.Y, size.X, size.Y);
+		OpenGLCheck(glViewport(origin.X, origin.Y, size.X, size.Y));
 	}
 
 	void OpenGLRenderer::Draw(const Vertex * vertices, int amount, const RenderConfig & config)
@@ -42,25 +41,25 @@ namespace Bambo
 
 		if (config.Texture)
 		{
-			glActiveTexture(GL_TEXTURE0);
+			OpenGLCheck(glActiveTexture(GL_TEXTURE0));
 			config.Texture->Use();
 		}
 
 		m_vao->Bind();
-		glDrawArrays(static_cast<GLenum>(config.Primitive), 0, amount);
+		OpenGLCheck(glDrawArrays(static_cast<GLenum>(config.Primitive), 0, amount));
 		m_vao->Unbind();
 
-		glUseProgram(0);
-		glBindTexture(GL_TEXTURE_2D, 0);
+		OpenGLCheck(glUseProgram(0));
+		OpenGLCheck(glBindTexture(GL_TEXTURE_2D, 0));
 	}
 
 	void OpenGLRenderer::SetClearColor(const Color & color)
 	{
-		glClearColor(color.R, color.G, color.B, color.A);
+		OpenGLCheck(glClearColor(color.R, color.G, color.B, color.A));
 	}
 
 	void OpenGLRenderer::Clear()
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		OpenGLCheck(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	}
 }

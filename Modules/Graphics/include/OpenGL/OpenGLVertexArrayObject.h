@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include "OpenGLCheck.h"
 #include "Graphics.h"
 #include "VertexBufferObject.h"
 #include "VertexArrayObject.h"
