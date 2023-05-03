@@ -1,8 +1,8 @@
-#include "Renderer.h"
+#include "RendererImplementation.h"
 #include "OpenGL/OpenGLRenderer.h"
 namespace Bambo
 {
-	std::unique_ptr<Renderer> Renderer::CreateRenderer(RenderAPI renderApi)
+	std::unique_ptr<RendererImplementation> RendererImplementation::CreateRenderer(RenderAPI renderApi)
 	{
 		switch (renderApi)
 		{

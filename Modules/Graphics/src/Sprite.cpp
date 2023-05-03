@@ -48,27 +48,25 @@ namespace Bambo
 		return RectFloat(Vector2f{ 0.f, 0.f }, Vector2f{ width, height });
 	}
 
-	void Sprite::Render(Renderer& renderer, const RenderConfig& config) 
+	void Sprite::Render(RendererImplementation& renderer, RenderConfig config) 
 	{
 		if (!m_texture) return;
 
-		RenderConfig spriteConfig{ config };
+		config.ModelMatrix = config.ModelMatrix.GetInternalMatrix() * m_transform.GetMatrix().GetInternalMatrix();
+		config.Primitive = PrimitiveType::TriangleStrip;
+		config.Texture = m_texture;
 
-		spriteConfig.ModelMatrix.GetInternalMatrix() *= m_transform.GetMatrix().GetInternalMatrix();
-		spriteConfig.Primitive = PrimitiveType::TriangleStrip;
-		spriteConfig.Texture = m_texture;
-
-		renderer.Draw(m_vertices.data(), m_vertices.size(), spriteConfig);
+		renderer.Draw(m_vertices.data(), m_vertices.size(), config);
 	}
 
 	void Sprite::UpdatePosition()
 	{
 		RectFloat bounds = GetLocalBounds();
 
-		m_vertices[0].Position = glm::vec2{0.0f, 0.0f};
-		m_vertices[1].Position = glm::vec2{ 0.0f, bounds.Height };
-		m_vertices[2].Position = glm::vec2{ bounds.Width, 0.0f };
-		m_vertices[3].Position = glm::vec2{ bounds.Width, bounds.Height };
+		m_vertices[0].Position = glm::vec3{0.0f, 0.0f, 0.0f};
+		m_vertices[1].Position = glm::vec3{ 0.0f, bounds.Height, 0.0f };
+		m_vertices[2].Position = glm::vec3{ bounds.Width, 0.0f, 0.0f };
+		m_vertices[3].Position = glm::vec3{ bounds.Width, bounds.Height, 0.0f };
 	}
 
 	void Sprite::UpdateTexCoords()

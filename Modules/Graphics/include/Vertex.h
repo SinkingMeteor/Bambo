@@ -5,9 +5,9 @@
 
 namespace Bambo 
 {
-	struct BAMBO_API Vertex
+	struct BAMBO_API QuadVertex
 	{
-		glm::vec2 Position{};
+		glm::vec3 Position{};
 		glm::vec2 TexCoord{};
 		Color Color{};
 	};

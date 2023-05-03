@@ -25,7 +25,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/ShaderImplementation.cpp
 #Renderer
 ${CMAKE_CURRENT_LIST_DIR}/src/RenderManager.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLRenderer.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Renderer.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/RendererImplementation.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Transform.cpp)
 
 add_library(BamboGraphics STATIC ${BAMBO_GRAPHICS_SOURCES})

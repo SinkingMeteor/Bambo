@@ -2,11 +2,11 @@
 namespace Bambo
 {
 	OpenGLRenderer::OpenGLRenderer() :
-		Renderer(),
-		m_vbo(VertexBufferObject::CreateVertexBufferObject(4 * sizeof(Vertex))),
+		RendererImplementation(),
+		m_vbo(VertexBufferObject::CreateVertexBufferObject(4 * sizeof(QuadVertex))),
 		m_vao(VertexArrayObject::CreateVertexArrayObject())
 	{
-		m_vbo->SetLayout(std::make_shared<BufferLayout>(std::initializer_list{ ShaderDataType::Float2, ShaderDataType::Float2, ShaderDataType::Float4 }));
+		m_vbo->SetLayout(std::make_shared<BufferLayout>(std::initializer_list{ ShaderDataType::Float3, ShaderDataType::Float2, ShaderDataType::Float4 }));
 		m_vao->AddVertexBufferObject(m_vbo);
 	}
 
@@ -26,11 +26,11 @@ namespace Bambo
 		OpenGLCheck(glViewport(origin.X, origin.Y, size.X, size.Y));
 	}
 
-	void OpenGLRenderer::Draw(const Vertex * vertices, int amount, const RenderConfig & config)
+	void OpenGLRenderer::Draw(const void * vertices, int verticesAmount, const RenderConfig & config)
 	{
 		if (!config.Camera) return;
 
-		m_vbo->SetData(vertices, amount * sizeof(Vertex));
+		m_vbo->SetData(vertices, verticesAmount * sizeof(QuadVertex));
 
 		if (config.Shader)
 		{
@@ -46,7 +46,7 @@ namespace Bambo
 		}
 
 		m_vao->Bind();
-		OpenGLCheck(glDrawArrays(static_cast<GLenum>(config.Primitive), 0, amount));
+		OpenGLCheck(glDrawArrays(static_cast<GLenum>(config.Primitive), 0, verticesAmount));
 		m_vao->Unbind();
 
 		OpenGLCheck(glUseProgram(0));

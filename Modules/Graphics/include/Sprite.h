@@ -7,7 +7,7 @@
 #include "Interfaces/ITransformable.h"
 #include "Interfaces/IRenderable.h"
 #include "RenderConfig.h"
-#include "Renderer.h"
+#include "RendererImplementation.h"
 
 namespace Bambo 
 {
@@ -21,10 +21,10 @@ namespace Bambo
 		RectFloat GetLocalBounds() const;
 
 		virtual Transform& GetTransform() override { return m_transform; }
-		virtual void Render(Renderer& renderTarget, const RenderConfig& config) override;
+		virtual void Render(RendererImplementation& renderTarget, RenderConfig config) override;
 		void SetPivot(const glm::vec2& relativePivot);
 	private:
-		std::array<Vertex, 4> m_vertices;
+		std::array<QuadVertex, 4> m_vertices;
 		std::shared_ptr<Texture2D> m_texture;
 		RectInt m_spriteRect;
 		Transform m_transform;

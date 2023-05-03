@@ -11,7 +11,7 @@ namespace Bambo
 	void RenderManager::Initialize(RenderAPI renderApi)
 	{
 		m_renderApiType = renderApi;
-		m_renderer = Renderer::CreateRenderer(renderApi);
+		m_renderer = RendererImplementation::CreateRenderer(renderApi);
 		m_renderer->Initialize();
 	}
 
