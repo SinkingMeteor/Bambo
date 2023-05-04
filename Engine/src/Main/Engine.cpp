@@ -20,7 +20,7 @@ namespace Bambo
 		
 		AudioManager::Get()->Initialize();
 
-		m_shaderProvider.Load(ToId("TestShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
+		SPtr<Shader> defaultSpriteShader = m_shaderProvider.Load(ToId("TestShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
 		SPtr<Texture2D> texture = m_textureProvider.Load(ToId("TestTexture"), BamboPaths::BamboResourcesDir + "Textures/TestImage.png");
 		m_sprite = std::make_shared<Sprite>(texture);
 		m_camera = std::make_shared<Camera>();
@@ -28,6 +28,7 @@ namespace Bambo
 		m_spriteRenderer = std::make_unique<SpriteRenderer>();
 		m_spriteRenderer->Initialize();
 		m_spriteRenderer->SetCamera(m_camera);
+		m_spriteRenderer->SetDefaultShader(defaultSpriteShader);
 	}
 
 	int Engine::Run()
@@ -70,7 +71,6 @@ namespace Bambo
 		RenderManager::Get()->GetRenderer().Clear();
 
 		RenderConfig config{};
-		config.Shader = m_shaderProvider.Get(ToId("TestShader"));
 
 		m_spriteRenderer->Render(m_sprite, config);
 	}

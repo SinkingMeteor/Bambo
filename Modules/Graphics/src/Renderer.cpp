@@ -3,7 +3,8 @@
 namespace Bambo
 {
 	Renderer::Renderer() :
-		m_camera()
+		m_camera(),
+		m_defaultShader()
 	{}
 
 	void Renderer::Initialize()

@@ -19,7 +19,6 @@ namespace Bambo
 
 		SPtr<VertexBufferObject> m_vbo;
 		SPtr<VertexArrayObject> m_vao;
-		std::array<glm::vec4, SPRITE_VERTEX_COUNT> m_basePositions;
 		std::array<QuadVertex, SPRITE_VERTEX_COUNT> m_renderVertices;
 	};
 }
