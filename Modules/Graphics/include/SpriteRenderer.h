@@ -9,13 +9,17 @@
 #include "RenderConfig.h"
 namespace Bambo
 {
-	class BAMBO_API Renderer2D final : public Renderer
+	class BAMBO_API SpriteRenderer final : public Renderer
 	{
 	public:
-		Renderer2D();
+		SpriteRenderer();
 		void Render(const SPtr<Sprite> sprite, const RenderConfig& renderConfig);
 	private:
+		static constexpr uint32 SPRITE_VERTEX_COUNT = 4;
+
 		SPtr<VertexBufferObject> m_vbo;
 		SPtr<VertexArrayObject> m_vao;
+		std::array<glm::vec4, SPRITE_VERTEX_COUNT> m_basePositions;
+		std::array<QuadVertex, SPRITE_VERTEX_COUNT> m_renderVertices;
 	};
 }

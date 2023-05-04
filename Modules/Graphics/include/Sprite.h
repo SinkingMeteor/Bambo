@@ -22,7 +22,6 @@ namespace Bambo
 		virtual Transform& GetTransform() override { return m_transform; }
 		void SetPivot(const glm::vec2& relativePivot);
 	private:
-		std::array<QuadVertex, 4> m_vertices;
 		std::shared_ptr<Texture2D> m_texture;
 		RectInt m_spriteRect;
 		Transform m_transform;
@@ -30,6 +29,6 @@ namespace Bambo
 		void UpdatePosition();
 		void UpdateTexCoords();
 
-		friend class Renderer2D;
+		friend class SpriteRenderer;
 	};
 }

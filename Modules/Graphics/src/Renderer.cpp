@@ -7,8 +7,7 @@ namespace Bambo
 	{}
 
 	void Renderer::Initialize()
-	{
-	}
+	{}
 
 	void Renderer::RenderInternal(const SPtr<VertexArrayObject> vao, uint32 vertexAmount)
 	{

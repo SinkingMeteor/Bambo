@@ -7,7 +7,7 @@
 #include "RenderManager.h"
 #include "TextureProvider.h"
 #include "ShaderProvider.h"
-#include "Renderer2D.h"
+#include "SpriteRenderer.h"
 #include "Camera.h"
 #include "Sprite.h"
 namespace Bambo
@@ -26,7 +26,7 @@ namespace Bambo
 		ShaderProvider m_shaderProvider;
 		SPtr<Sprite> m_sprite;
 		SPtr<Camera> m_camera;
-		UPtr<Renderer2D> m_spriteRenderer;
+		UPtr<SpriteRenderer> m_spriteRenderer;
 
 		void Update(float deltaTime);
 		void Render();

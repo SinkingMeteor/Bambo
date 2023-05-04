@@ -25,7 +25,7 @@ namespace Bambo
 		m_sprite = std::make_shared<Sprite>(texture);
 		m_camera = std::make_shared<Camera>();
 
-		m_spriteRenderer = std::make_unique<Renderer2D>();
+		m_spriteRenderer = std::make_unique<SpriteRenderer>();
 		m_spriteRenderer->Initialize();
 		m_spriteRenderer->SetCamera(m_camera);
 	}

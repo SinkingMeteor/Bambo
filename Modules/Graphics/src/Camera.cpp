@@ -72,16 +72,16 @@ namespace Bambo
 
 	glm::mat4 Camera::GetViewMatrix()
 	{
-		return glm::inverse(m_transform.GetMatrix().GetInternalMatrix());
+		return glm::inverse(m_transform.GetMatrix());
 	}
 
 	glm::mat4 Camera::GetProjViewMatrix()
 	{
 		if (m_transform.IsNeedUpdate())
 		{
-			m_projViewMatrix = Matrix{ GetProjectionMatrix() * GetViewMatrix() };
+			m_projViewMatrix = GetProjectionMatrix() * GetViewMatrix();
 		}
 
-		return m_projViewMatrix.GetInternalMatrix();
+		return m_projViewMatrix;
 	}
 }

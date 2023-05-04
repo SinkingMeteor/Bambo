@@ -28,7 +28,7 @@ namespace Bambo
 		glm::mat4 GetProjViewMatrix();
 	private:
 		Transform m_transform;
-		Matrix m_projViewMatrix;
+		glm::mat4 m_projViewMatrix;
 		glm::vec2 m_size;
 
 		glm::vec2 GetHalfOfCameraSize() const { return glm::vec2{ m_size.x * 0.5f, m_size.y * 0.5f }; }

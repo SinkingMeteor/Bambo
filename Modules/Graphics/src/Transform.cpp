@@ -2,21 +2,6 @@
 
 namespace Bambo 
 {
-	Matrix::Matrix(float a00, float a01, float a02,
-					float a10, float a11, float a12,
-					float a20, float a21, float a22) :
-		m_matrix{ a00, a10, 0.f, a20,
-				   a01, a11, 0.f, a21,
-				   0.f, 0.f, 1.f, 0.f,
-				   a02, a12, 0.f, a22 }
-	{}
-
-	const glm::mat4 Matrix::Identity()
-	{
-		static glm::mat4 mat{ 1.0f };
-		return mat;
-	}
-
 	Transform::Transform() : Transform(glm::vec2(0.0f, 0.0f))
 	{}
 
@@ -41,16 +26,15 @@ namespace Bambo
 		m_matrix()
 	{}
 
-	Matrix& Transform::GetMatrix()
+	glm::mat4& Transform::GetMatrix()
 	{
 		if (IsNeedUpdate()) 
 		{
-			glm::mat4 newMatrix{ Matrix::Identity() };
-			newMatrix = glm::translate(newMatrix, glm::vec3{ m_position.x + m_origin.x, m_position.y + m_origin.y, 0.0f });
-			newMatrix = glm::rotate(newMatrix, glm::radians(m_rotation), glm::vec3{ 0.0f, 0.0f, 1.0f });
-			newMatrix = glm::scale(newMatrix, glm::vec3{ m_scale.x, m_scale.y, 1.0f });
+			m_matrix = glm::mat4{ 1.0f };
+			m_matrix = glm::translate(m_matrix, glm::vec3{ m_position.x + m_origin.x, m_position.y + m_origin.y, 0.0f });
+			m_matrix = glm::rotate(m_matrix, glm::radians(m_rotation), glm::vec3{ 0.0f, 0.0f, 1.0f });
+			m_matrix = glm::scale(m_matrix, glm::vec3{ m_scale.x, m_scale.y, 1.0f });
 
-			m_matrix = Matrix{ newMatrix };
 			m_isNeedUpdate = false;
 		}
 
