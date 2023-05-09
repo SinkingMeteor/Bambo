@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "WindowsWindow.h"
+
 namespace Bambo
 {
 	std::unique_ptr<Window> Window::CreateBamboWindow(const WindowSettings& settings, OSType osType)

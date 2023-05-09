@@ -15,8 +15,10 @@
 #include <chrono>
 #include <iostream>
 #include <array>
+#include <functional>
 #include <type_traits>
 #include <fstream>
+#include <atomic>
 #include <sstream>
 #include <numeric>
 #include "Core.h"

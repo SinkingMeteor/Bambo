@@ -1,6 +1,7 @@
 #pragma once
 #include "engpch.h"
 #include "Window.h"
+#include "EngineEvent.h"
 #include "Time/Timer.h"
 #include "WindowManager.h"
 #include "AudioManager.h"
@@ -8,6 +9,7 @@
 #include "TextureProvider.h"
 #include "ShaderProvider.h"
 #include "SpriteRenderer.h"
+#include "WindowEvents.h"
 #include "Camera.h"
 #include "Sprite.h"
 namespace Bambo
@@ -28,6 +30,8 @@ namespace Bambo
 		SPtr<Camera> m_camera;
 		UPtr<SpriteRenderer> m_spriteRenderer;
 
+		void OnEvent(Event& event);
+		bool OnWindowResize(WindowResizedEvent& windowEvent);
 		void Update(float deltaTime);
 		void Render();
 		void Dispose();

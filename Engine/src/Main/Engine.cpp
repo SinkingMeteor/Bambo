@@ -1,5 +1,4 @@
 #include "Main/Engine.h"
-#include "WindowSettings.h"
 #include "Utils.h"
 
 namespace
@@ -13,6 +12,7 @@ namespace Bambo
 	{
 		WindowSettings settings{ 1280u, 720u, "Hello world!" };
 		WindowManager::Get()->Initialize(settings);
+		WindowManager::Get()->GetWindow().SetEventCallback(BAMBO_BIND_EVENT_FN(Engine::OnEvent));
 
 		RenderManager::Get()->Initialize(RenderAPI::OpenGL);
 		RenderManager::Get()->GetRenderer().SetClearColor(Color{ 0.3f, 0.3f, 0.3f, 1.0f });
@@ -30,6 +30,13 @@ namespace Bambo
 		m_spriteRenderer->SetCamera(m_camera);
 		m_spriteRenderer->SetDefaultShader(defaultSpriteShader);
 	}
+
+	void Engine::OnEvent(Event& event)
+	{
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<WindowResizedEvent>(BAMBO_BIND_EVENT_FN(Engine::OnWindowResize));
+	}
+
 
 	int Engine::Run()
 	{
@@ -57,6 +64,14 @@ namespace Bambo
 	void Engine::Update(float deltaTime)
 	{
 	}
+
+	bool Engine::OnWindowResize(WindowResizedEvent& windowEvent)
+	{
+		RendererImplementation& renderer = RenderManager::Get()->GetRenderer();
+		renderer.SetViewport(Vector2u{ 0u, 0u }, Vector2u{ windowEvent.GetWidth(), windowEvent.GetHeight() });
+		return true;
+	}
+
 
 	void Engine::Dispose()
 	{
