@@ -1,4 +1,4 @@
-#include "Main/World.h"
+#include "World/World.h"
 
 namespace Bambo
 {

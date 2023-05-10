@@ -7,3 +7,6 @@
 [submodule "Engine/thirdparty/OpenAL"]
 	path = Modules/thirdparty/OpenAL
 	url = https://github.com/kcat/openal-soft
+[submodule "Engine/thirdparty/flecs"]
+	path = Engine/thirdparty/flecs
+	url = https://github.com/SanderMertens/flecs

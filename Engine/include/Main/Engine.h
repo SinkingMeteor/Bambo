@@ -12,7 +12,7 @@
 #include "WindowEvents.h"
 #include "Camera.h"
 #include "Sprite.h"
-#include "World.h"
+#include "World/World.h"
 namespace Bambo
 {
 	class BAMBO_API Engine final

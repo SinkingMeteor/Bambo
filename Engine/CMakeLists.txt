@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
+add_subdirectory(thirdparty/flecs)
+
 set(BAMBO_ENGINE_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Main.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Engine.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Main/World.cpp)
+${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/World/Entity.cpp)
 
 add_executable(Bambo ${BAMBO_ENGINE_SOURCES})
 
@@ -13,19 +16,23 @@ PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
 target_compile_features(Bambo PUBLIC cxx_std_17)
 
 find_library(BAMBO_ENGINE_LIBS 
-NAMES BamboGraphics
-NAMES BamboWindow
-NAMES BamboAudio
+NAMES BamboGraphics BamboWindow BamboAudio
 HINTS ${BamboEngine_BINARY_DIR}/Modules/)
+
+find_library(THIRDPARTY_LIBS
+NAMES flecs
+HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/flecs)
 
 target_link_libraries(Bambo
 BamboGraphics 
 BamboWindow
-BamboAudio)
+BamboAudio
+flecs_static)
 
 target_include_directories(Bambo 
 PUBLIC ${BamboEngine_BINARY_DIR}/Engine/generated/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/flecs/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Core/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Graphics/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Audio/include/
