@@ -21,11 +21,20 @@ namespace Bambo
 	using WPtr = std::weak_ptr<T>;
 }
 
-	#define BAMBO_API __declspec(dllexport)
+#define BAMBO_API __declspec(dllexport)
 
-	#ifdef BAMBO_DEBUG_ON
-		#define BAMBO_ASSERT(x, msg) { if(!(x)) { fprintf(stderr, "Fatal error: %s\n", msg); __debugbreak(); }};
+#ifdef BAMBO_DEBUG_ON
+	#define BAMBO_ASSERT(x, msg) { if(!(x)) { fprintf(stderr, "Fatal error: %s\n", msg); __debugbreak(); }};
+#else
+	#define BAMBO_ASSERT(x, msg); 
+#endif
+
+#ifdef _WIN32
+	#ifdef _WIN64
+		#define BAMBO_CURRENT_OS_WINDOWS
 	#else
-		#define BAMBO_ASSERT(x, msg); 
+		#error "Unsupported windows system"
 	#endif
-
+#else
+	#error "Unsupported platform"
+#endif

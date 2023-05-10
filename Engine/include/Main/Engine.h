@@ -12,9 +12,10 @@
 #include "WindowEvents.h"
 #include "Camera.h"
 #include "Sprite.h"
+#include "World.h"
 namespace Bambo
 {
-	class Engine final
+	class BAMBO_API Engine final
 	{
 	public:
 		Engine() = default;
@@ -24,12 +25,9 @@ namespace Bambo
 		void Initialize();
 		int Run();
 	private:
-		TextureProvider m_textureProvider;
-		ShaderProvider m_shaderProvider;
-		SPtr<Sprite> m_sprite;
-		SPtr<Camera> m_camera;
-		UPtr<SpriteRenderer> m_spriteRenderer;
+		UPtr<World> m_world;
 
+		void LoadWorld();
 		void OnEvent(Event& event);
 		bool OnWindowResize(WindowResizedEvent& windowEvent);
 		void Update(float deltaTime);

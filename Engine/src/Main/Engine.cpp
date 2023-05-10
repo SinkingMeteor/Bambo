@@ -20,15 +20,17 @@ namespace Bambo
 		
 		AudioManager::Get()->Initialize();
 
-		SPtr<Shader> defaultSpriteShader = m_shaderProvider.Load(ToId("TestShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
-		SPtr<Texture2D> texture = m_textureProvider.Load(ToId("TestTexture"), BamboPaths::BamboResourcesDir + "Textures/TestImage.png");
-		m_sprite = std::make_shared<Sprite>(texture);
-		m_camera = std::make_shared<Camera>();
+		LoadWorld();
+	}
 
-		m_spriteRenderer = std::make_unique<SpriteRenderer>();
-		m_spriteRenderer->Initialize();
-		m_spriteRenderer->SetCamera(m_camera);
-		m_spriteRenderer->SetDefaultShader(defaultSpriteShader);
+	void Engine::LoadWorld()
+	{
+		if (m_world)
+		{
+			m_world->Dispose();
+		}
+		m_world = std::make_unique<World>();
+		m_world->Initialize();
 	}
 
 	void Engine::OnEvent(Event& event)
@@ -51,8 +53,10 @@ namespace Bambo
 				passedTime -= DESIRED_DELTA_TIME;
 				Update(DESIRED_DELTA_TIME);
 			}
+
 			Update(passedTime);
 			Render();
+
 			WindowManager::Get()->Update();
 		}
 
@@ -63,6 +67,10 @@ namespace Bambo
 
 	void Engine::Update(float deltaTime)
 	{
+		if (m_world)
+		{
+			m_world->Update(deltaTime);
+		}
 	}
 
 	bool Engine::OnWindowResize(WindowResizedEvent& windowEvent)
@@ -84,9 +92,9 @@ namespace Bambo
 	void Engine::Render()
 	{
 		RenderManager::Get()->GetRenderer().Clear();
-
-		RenderConfig config{};
-
-		m_spriteRenderer->Render(m_sprite, config);
+		if (m_world)
+		{
+			m_world->Render();
+		}
 	}
 }

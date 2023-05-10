@@ -1,10 +1,10 @@
 #pragma once
 #include "pch.h"
-
+#include "Singleton.h"
 namespace Bambo 
 {
 	template<typename Resource, typename Loader>
-	class BAMBO_API ResourceProvider 
+	class BAMBO_API ResourceProvider : public Singleton<ResourceProvider<Resource, Loader>>
 	{
 	public:
 		ResourceProvider();
@@ -12,7 +12,7 @@ namespace Bambo
 		ResourceProvider& operator=(const ResourceProvider&) = delete;
 		template<typename... Args>
 		std::shared_ptr<Resource> Load(const bambo_id id, Args &&...args);
-		std::shared_ptr<Resource> Get(const bambo_id id);
+		std::shared_ptr<Resource> GetResource(const bambo_id id);
 		bool Contains(const bambo_id id);
 	private:
 		std::unordered_map<bambo_id, std::shared_ptr<Resource>> m_resourceMap;
@@ -45,7 +45,7 @@ namespace Bambo
 	}
 
 	template<typename Resource, typename Loader>
-	std::shared_ptr<Resource> ResourceProvider<Resource, Loader>::Get(const bambo_id id)
+	std::shared_ptr<Resource> ResourceProvider<Resource, Loader>::GetResource(const bambo_id id)
 	{
 		BAMBO_ASSERT(Contains(id), "No key found in resource map")
 		return m_resourceMap[id];

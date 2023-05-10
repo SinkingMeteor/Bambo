@@ -15,7 +15,7 @@ namespace Bambo
 		Renderer& operator=(const Renderer& renderer) = delete;
 		virtual ~Renderer() {}
 
-		virtual void Initialize();
+		virtual void Initialize() {}
 		void SetCamera(SPtr<Camera> camera) { m_camera = camera; }
 		void SetDefaultShader(SPtr<Shader> defaultShader) { m_defaultShader = defaultShader; }
 	protected:
