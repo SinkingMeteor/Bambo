@@ -26,6 +26,39 @@ namespace Bambo
 		m_spriteRenderer->Render(m_sprite, config);
 	}
 
+	Entity World::CreateEntity()
+	{
+		return CreateEntity(IID{});
+	}
+	
+	Entity World::CreateEntity(IID id)
+	{
+		flecs::entity ent = m_entityManager.entity();
+		m_entityMap[id] = Entity{ent};
+	}
+	
+	Entity& World::GetEntityByID(IID id)
+	{
+		BAMBO_ASSERT_S(m_entityMap.find(id) != m_entityMap.end())
+		BAMBO_ASSERT_S(!m_entityMap[id].IsDestroyed())
+		return m_entityMap[id];
+	}
+
+	void World::DestroyEntity(IID id)
+	{
+		BAMBO_ASSERT_S(m_entityMap.find(id) != m_entityMap.end())
+		Entity& ent = m_entityMap[id];
+		ent.GetInternalEntity().destruct();
+		m_entityMap.erase(id);
+	}
+
+	void World::DestroyEntity(Entity& entity)
+	{
+		//ID
+	}
+
+
+
 	void World::Dispose()
 	{
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "engpch.h"
 #include "flecs.h"
+
 namespace Bambo
 {
 	using EntityManager = flecs::world;
@@ -21,6 +22,10 @@ namespace Bambo
 		bool HasComponent();
 		template<typename T>
 		void RemoveComponent();
+
+		flecs::entity GetInternalEntity() const { return m_entity; }
+		bool IsDestroyed() const { return !m_entity.is_alive(); }
+
 	private:
 		flecs::entity m_entity;
 	};

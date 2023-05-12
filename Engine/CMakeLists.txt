@@ -38,6 +38,7 @@ PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Graphics/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Audio/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Window/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/thirdparty/OpenAL/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/thirdparty/GLM/glm
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/thirdparty/
 PUBLIC ${OPENGL_INCLUDE_DIRS})
 
