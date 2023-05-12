@@ -1,19 +1,21 @@
 #pragma once
 #include "pch.h"
+#include "Graphics.h"
 #include "Renderer.h"
 #include "RendererImplementation.h"
 #include "VertexArrayObject.h"
 #include "VertexBufferObject.h"
 #include "BufferLayout.h"
-#include "Sprite.h"
 #include "RenderConfig.h"
+#include "Texture2D.h"
+
 namespace Bambo
 {
 	class BAMBO_API SpriteRenderer final : public Renderer
 	{
 	public:
 		SpriteRenderer();
-		void Render(const SPtr<Sprite> sprite, const RenderConfig& renderConfig);
+		void Render(const SPtr<Texture2D> texture, const RectInt& spriteRect, const glm::mat4& transform);
 	private:
 		static constexpr uint32 SPRITE_VERTEX_COUNT = 4;
 

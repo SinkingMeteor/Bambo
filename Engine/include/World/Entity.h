@@ -10,14 +10,17 @@ namespace Bambo
 	class BAMBO_API Entity final
 	{
 	public:
-		Entity(const flecs::entity& entity);
+		Entity() = default;
+		Entity(const flecs::entity& entity) :
+			m_entity(entity)
+		{}
 
 		template<typename T>
-		T* GetComponent();
+		const T* GetComponent();
 		template<typename T>
-		T* AddComponent();
+		const T* AddComponent();
 		template<typename T>
-		T* AddComponent(const T& component);
+		const T* AddComponent(const T& component);
 		template<typename T>
 		bool HasComponent();
 		template<typename T>
@@ -31,7 +34,7 @@ namespace Bambo
 	};
 
 	template<typename T>
-	T* Entity::GetComponent()
+	const T* Entity::GetComponent()
 	{
 		BAMBO_ASSERT_S(m_entity.is_alive())
 		BAMBO_ASSERT_S(m_entity.has<T>())
@@ -40,7 +43,7 @@ namespace Bambo
 	}
 
 	template<typename T>
-	T* Entity::AddComponent()
+	const T* Entity::AddComponent()
 	{
 		BAMBO_ASSERT_S(m_entity.is_alive())
 		BAMBO_ASSERT_S(!m_entity.has<T>())
@@ -49,7 +52,7 @@ namespace Bambo
 	}
 
 	template<typename T>
-	T* Entity::AddComponent(const T& component)
+	const T* Entity::AddComponent(const T& component)
 	{
 		BAMBO_ASSERT_S(m_entity.is_alive())
 		BAMBO_ASSERT_S(!m_entity.has<T>())

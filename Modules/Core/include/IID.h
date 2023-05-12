@@ -1,3 +1,4 @@
+#pragma once
 #include "pch.h"
 
 namespace Bambo
@@ -18,6 +19,10 @@ namespace Bambo
 		IID(const IID&) = default;
 
 		operator uint64() const { return m_ID; }
+		bool operator==(const IID& id) const
+		{
+			return m_ID == id.m_ID;
+		}
 	private:
 		uint64 m_ID;
 	};
@@ -25,14 +30,12 @@ namespace Bambo
 
 namespace std 
 {
-	template <typename T> struct hash;
-
 	template<>
 	struct hash<Bambo::IID>
 	{
 		std::size_t operator()(const Bambo::IID& id) const
 		{
-			return (uint64)id;
+			return std::hash<std::uint64_t>{}((std::uint64_t)id);
 		}
 	};
 

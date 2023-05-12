@@ -7,6 +7,7 @@
 #include "TextureProvider.h"
 #include "IID.h"
 #include "Entity.h"
+#include "Components.h"
 namespace Bambo
 {
 	class BAMBO_API World final
@@ -18,8 +19,8 @@ namespace Bambo
 		void Render();
 		void Dispose();
 
-		Entity CreateEntity();
-		Entity CreateEntity(IID id);
+		Entity& CreateEntity();
+		Entity& CreateEntity(IID id);
 		Entity& GetEntityByID(IID id);
 		void DestroyEntity(Entity& entity);
 		void DestroyEntity(IID id);

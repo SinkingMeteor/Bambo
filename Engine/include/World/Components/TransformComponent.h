@@ -1,6 +1,7 @@
 #pragma once
 #include "engpch.h"
 #include "glm.hpp"
+#include "gtc/quaternion.hpp"
 
 namespace Bambo
 {
@@ -13,12 +14,12 @@ namespace Bambo
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
-		TransformComponent(const glm::vec3 & position) : Translation(position) {}
+		TransformComponent(const glm::vec3 & position) : Position(position) {}
 
 		glm::mat4 GetTransform() const
 		{
-			glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
-			return glm::translate(glm::mat4(1.0f), Translation) * rotation * glm::scale(glm::mat4(1.0f), Scale);
+			glm::mat4 rotation{ glm::quat(Rotation) };
+			return glm::translate(glm::mat4(1.0f), Position) * rotation * glm::scale(glm::mat4(1.0f), Scale);
 		}
 	};
 }

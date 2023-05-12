@@ -11,7 +11,8 @@ ${CMAKE_CURRENT_LIST_DIR}/src/World/Entity.cpp)
 add_executable(Bambo ${BAMBO_ENGINE_SOURCES})
 
 target_include_directories(Bambo
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
+PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/
+PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/World/Components)
 
 target_compile_features(Bambo PUBLIC cxx_std_17)
 

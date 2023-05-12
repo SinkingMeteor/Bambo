@@ -6,13 +6,15 @@ namespace Bambo
 	{
 		SPtr<Shader> defaultSpriteShader = ShaderProvider::Get()->Load(ToId("TestShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
 		SPtr<Texture2D> texture = TextureProvider::Get()->Load(ToId("TestTexture"), BamboPaths::BamboResourcesDir + "Textures/TestImage.png");
-		m_sprite = std::make_shared<Sprite>(texture);
 		m_camera = std::make_shared<Camera>();
 
 		m_spriteRenderer = std::make_unique<SpriteRenderer>();
 		m_spriteRenderer->Initialize();
 		m_spriteRenderer->SetCamera(m_camera);
 		m_spriteRenderer->SetDefaultShader(defaultSpriteShader);
+
+		Entity& sprite = CreateEntity();
+		sprite.AddComponent<SpriteComponent>(SpriteComponent{ texture });
 	}
 
 	void World::Update(float deltaSeconds)
@@ -22,19 +24,26 @@ namespace Bambo
 
 	void World::Render()
 	{
-		RenderConfig config{};
-		m_spriteRenderer->Render(m_sprite, config);
+		m_entityManager.each([this](SpriteComponent& sprite, TransformComponent& transform)
+			{
+				m_spriteRenderer->Render(sprite.Texture, sprite.Texture->GetTextureRects()[sprite.SpriteRectIndex], transform.GetTransform());
+			});
+
 	}
 
-	Entity World::CreateEntity()
+	Entity& World::CreateEntity()
 	{
 		return CreateEntity(IID{});
 	}
 	
-	Entity World::CreateEntity(IID id)
+	Entity& World::CreateEntity(IID id)
 	{
+		BAMBO_ASSERT_S(m_entityMap.find(id) == m_entityMap.end())
 		flecs::entity ent = m_entityManager.entity();
-		m_entityMap[id] = Entity{ent};
+		ent.set<IDComponent>(IDComponent{ id });
+		ent.add<TransformComponent>();
+		m_entityMap[id] = Entity{ ent };
+		return m_entityMap[id];
 	}
 	
 	Entity& World::GetEntityByID(IID id)

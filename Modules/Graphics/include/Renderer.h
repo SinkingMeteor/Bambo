@@ -10,7 +10,6 @@ namespace Bambo
 	class BAMBO_API Renderer
 	{
 	public:
-		Renderer();
 		Renderer(const Renderer& renderer) = delete;
 		Renderer& operator=(const Renderer& renderer) = delete;
 		virtual ~Renderer() {}
@@ -22,6 +21,7 @@ namespace Bambo
 		WPtr<Camera> m_camera;
 		WPtr<Shader> m_defaultShader;
 
+		Renderer();
 		void RenderInternal(const SPtr<VertexArrayObject> vao, uint32 vertexAmount);
 	};
 }

@@ -18,12 +18,10 @@ namespace Bambo
 	{
 	public:
 		PrimitiveType Primitive;
-		glm::mat4 WorldMatrix{};
 		std::shared_ptr<Shader> Shader;
 	
 		RenderConfig() :
 			Primitive(PrimitiveType::TriangleStrip),
-			WorldMatrix(1.0f),
 			Shader(nullptr)
 		{}
 	};

@@ -17,19 +17,16 @@ namespace Bambo
 		m_renderVertices[3] = QuadVertex{};
 	}
 
-	void SpriteRenderer::Render(const SPtr<Sprite> sprite, const RenderConfig& renderConfig)
+	void SpriteRenderer::Render(const SPtr<Texture2D> texture, const RectInt& spriteRect, const glm::mat4& transform)
 	{
 		if (m_camera.expired()) return;
 
-		SPtr<Shader> currentShader{renderConfig.Shader};
+		SPtr<Shader> currentShader{m_defaultShader.lock()};
 
-		if (!currentShader)
-		{
-			BAMBO_ASSERT(!m_defaultShader.expired(), "Not found default shader for sprite renderer")
-			currentShader = m_defaultShader.lock();
-		}
+		float width = static_cast<float>(std::abs(spriteRect.Width));
+		float height = static_cast<float>(std::abs(spriteRect.Height));
 
-		RectFloat localBounds = sprite->GetLocalBounds();
+		RectFloat localBounds(Vector2f{ 0.f, 0.f }, Vector2f{ width, height });
 
 		//@TODO: Can be deleted ?
 		m_renderVertices[0].Position = glm::vec3{ 0.0f, 0.0f, 0.0f };
@@ -37,8 +34,7 @@ namespace Bambo
 		m_renderVertices[2].Position = glm::vec3{ localBounds.Width, 0.0f, 0.0f };
 		m_renderVertices[3].Position = glm::vec3{ localBounds.Width, localBounds.Height, 0.0f };
 
-		RectInt spriteRect = sprite->m_spriteRect;
-		RectInt texRect = sprite->m_texture->GetTextureRect();
+		RectInt texRect = texture->GetTextureRect();
 		float texWidth = static_cast<float>(texRect.Width);
 		float texHeight = static_cast<float>(texRect.Height);
 
@@ -55,13 +51,12 @@ namespace Bambo
 		m_vbo->SetData(m_renderVertices.data(), SPRITE_VERTEX_COUNT * sizeof(QuadVertex));
 
 		currentShader->Use();
-		glm::mat4 modelMatrix = renderConfig.WorldMatrix * sprite->GetTransform().GetMatrix();
-		currentShader->SetMatrix4("model", modelMatrix);
+		currentShader->SetMatrix4("model", transform);
 		currentShader->SetMatrix4("projView", m_camera.lock()->GetProjViewMatrix());
 
-		if (sprite->m_texture)
+		if (texture)
 		{
-			sprite->m_texture->Use();
+			texture->Use();
 		}
 
 		RenderInternal(m_vao, SPRITE_VERTEX_COUNT);
