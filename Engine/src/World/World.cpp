@@ -6,12 +6,13 @@ namespace Bambo
 	{
 		SPtr<Shader> defaultSpriteShader = ShaderProvider::Get()->Load(ToId("TestShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
 		SPtr<Texture2D> texture = TextureProvider::Get()->Load(ToId("TestTexture"), BamboPaths::BamboResourcesDir + "Textures/TestImage.png");
-		m_camera = std::make_shared<Camera>();
 
 		m_spriteRenderer = std::make_unique<SpriteRenderer>();
 		m_spriteRenderer->Initialize();
-		m_spriteRenderer->SetCamera(m_camera);
 		m_spriteRenderer->SetDefaultShader(defaultSpriteShader);
+
+		Entity& camera = CreateEntity();
+		camera.AddComponent<CameraComponent>(CameraComponent{ {640.0f, 360.0f} });
 
 		Entity& sprite = CreateEntity();
 		sprite.AddComponent<SpriteComponent>(SpriteComponent{ texture });
@@ -24,10 +25,14 @@ namespace Bambo
 
 	void World::Render()
 	{
-		m_entityManager.each([this](SpriteComponent& sprite, TransformComponent& transform)
+		m_entityManager.each([this](CameraComponent& camera, TransformComponent& transform)
+		{
+			glm::mat4 projViewMatrix = camera.GetProjectionMatrix() * camera.GetViewMatrix(transform.GetTransform());
+			m_entityManager.each([this, &projViewMatrix](SpriteComponent& sprite, TransformComponent& transform)
 			{
-				m_spriteRenderer->Render(sprite.Texture, sprite.Texture->GetTextureRects()[sprite.SpriteRectIndex], transform.GetTransform());
+				m_spriteRenderer->Render(sprite.Texture, sprite.Texture->GetTextureRects()[sprite.SpriteRectIndex], transform.GetTransform(), projViewMatrix);
 			});
+		});
 
 	}
 

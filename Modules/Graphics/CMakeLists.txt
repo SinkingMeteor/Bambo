@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.16)
 set(BAMBO_GRAPHICS_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Shader.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Texture2D.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Sprite.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Camera.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Renderer.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/SpriteRenderer.cpp

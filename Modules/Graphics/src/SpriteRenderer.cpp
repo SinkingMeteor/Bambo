@@ -17,10 +17,8 @@ namespace Bambo
 		m_renderVertices[3] = QuadVertex{};
 	}
 
-	void SpriteRenderer::Render(const SPtr<Texture2D> texture, const RectInt& spriteRect, const glm::mat4& transform)
+	void SpriteRenderer::Render(const SPtr<Texture2D> texture, const RectInt& spriteRect, const glm::mat4& transform, const glm::mat4& projViewMatrix)
 	{
-		if (m_camera.expired()) return;
-
 		SPtr<Shader> currentShader{m_defaultShader.lock()};
 
 		float width = static_cast<float>(std::abs(spriteRect.Width));
@@ -28,7 +26,6 @@ namespace Bambo
 
 		RectFloat localBounds(Vector2f{ 0.f, 0.f }, Vector2f{ width, height });
 
-		//@TODO: Can be deleted ?
 		m_renderVertices[0].Position = glm::vec3{ 0.0f, 0.0f, 0.0f };
 		m_renderVertices[1].Position = glm::vec3{ 0.0f, localBounds.Height, 0.0f };
 		m_renderVertices[2].Position = glm::vec3{ localBounds.Width, 0.0f, 0.0f };
@@ -52,7 +49,7 @@ namespace Bambo
 
 		currentShader->Use();
 		currentShader->SetMatrix4("model", transform);
-		currentShader->SetMatrix4("projView", m_camera.lock()->GetProjViewMatrix());
+		currentShader->SetMatrix4("projView", projViewMatrix);
 
 		if (texture)
 		{

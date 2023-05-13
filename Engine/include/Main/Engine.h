@@ -11,7 +11,6 @@
 #include "SpriteRenderer.h"
 #include "WindowEvents.h"
 #include "Camera.h"
-#include "Sprite.h"
 #include "World/World.h"
 namespace Bambo
 {

@@ -1,6 +1,5 @@
 #pragma once
 #include "engpch.h"
-#include "Sprite.h"
 #include "Camera.h"
 #include "SpriteRenderer.h"
 #include "ShaderProvider.h"
@@ -29,8 +28,6 @@ namespace Bambo
 	private:
 		EntityManager m_entityManager;
 		std::unordered_map<IID, Entity> m_entityMap;
-		SPtr<Sprite> m_sprite;
-		SPtr<Camera> m_camera;
 		UPtr<SpriteRenderer> m_spriteRenderer;
 	};
 }

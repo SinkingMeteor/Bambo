@@ -2,7 +2,7 @@
 
 namespace Bambo
 {
-	struct Color 
+	struct Color final
 	{
 		Color() : Color(1.0f, 1.0f, 1.0f, 1.0f) {}
 		Color(float r, float g, float b, float a) :

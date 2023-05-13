@@ -15,10 +15,8 @@ namespace Bambo
 		virtual ~Renderer() {}
 
 		virtual void Initialize() {}
-		void SetCamera(SPtr<Camera> camera) { m_camera = camera; }
 		void SetDefaultShader(SPtr<Shader> defaultShader) { m_defaultShader = defaultShader; }
 	protected:
-		WPtr<Camera> m_camera;
 		WPtr<Shader> m_defaultShader;
 
 		Renderer();
