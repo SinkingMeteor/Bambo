@@ -7,12 +7,14 @@ namespace Bambo
 		m_textureRects()
 	{
 		m_textureImplementation = TextureImplementation::CreateTexture();
-		m_textureRects.push_back(GetTextureRect());
 	}
 
-	Texture2D::Texture2D(std::vector<RectInt>&& textureRects) :
-		m_textureImplementation(),
-		m_textureRects(std::move(textureRects))
-	{}
+	void Texture2D::LoadFromFile(const std::string& filePath)
+	{
+		m_textureRects.clear();
+		m_textureImplementation->LoadFromFile(filePath);
+		//@TODO: Loading meta files
+		m_textureRects.push_back(GetTextureRect());
+	}
 
 }

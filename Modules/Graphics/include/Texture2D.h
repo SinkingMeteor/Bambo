@@ -7,9 +7,8 @@ namespace Bambo
 	{
 	public:
 		Texture2D();
-		Texture2D(std::vector<RectInt>&& textureRects);
 		
-		void LoadFromFile(const std::string& file) { m_textureImplementation->LoadFromFile(file); }
+		void LoadFromFile(const std::string& file);
 		void Use() const { m_textureImplementation->Use(); }
 		RectInt GetTextureRect() const { return m_textureImplementation->GetTextureRect(); }
 		const std::vector<RectInt>& GetTextureRects() const { return m_textureRects; }
