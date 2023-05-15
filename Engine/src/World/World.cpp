@@ -12,7 +12,8 @@ namespace Bambo
 		m_spriteRenderer->SetDefaultShader(defaultSpriteShader);
 
 		Entity& camera = CreateEntity();
-		camera.AddComponent<CameraComponent>(CameraComponent{ {640.0f, 360.0f} });
+		CameraComponent* cameraComponent = camera.AddComponent<CameraComponent>(CameraComponent{});
+		cameraComponent->Camera.SetViewportSize(WindowManager::Get()->GetWindow().GetWidth(), WindowManager::Get()->GetWindow().GetHeight());
 
 		Entity& sprite = CreateEntity();
 		sprite.AddComponent<SpriteComponent>(SpriteComponent{ texture });
@@ -20,14 +21,14 @@ namespace Bambo
 
 	void World::Update(float deltaSeconds)
 	{
-
+		Logger::Log("LogWorld", Verbosity::Info, "%f", deltaSeconds);
 	}
 
 	void World::Render()
 	{
 		m_entityManager.each([this](CameraComponent& camera, TransformComponent& transform)
 		{
-			glm::mat4 projViewMatrix = camera.GetProjectionMatrix() * camera.GetViewMatrix(transform.GetTransform());
+			glm::mat4 projViewMatrix = camera.Camera.GetProjectionMatrix() * glm::inverse(transform.GetTransform());
 			m_entityManager.each([this, &projViewMatrix](SpriteComponent& sprite, TransformComponent& transform)
 			{
 				m_spriteRenderer->Render(sprite.Texture, sprite.Texture->GetTextureRects()[sprite.SpriteRectIndex], transform.GetTransform(), projViewMatrix);

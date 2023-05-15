@@ -3,7 +3,7 @@
 
 namespace
 {
-	constexpr float MILLI = 1'000.0f;
+	constexpr float MICRO = 1'000'000.0f;
 }
 
 namespace Bambo
@@ -17,8 +17,8 @@ namespace Bambo
 	{
 		const Clock::time_point oldTime = m_lastTime;
 		m_lastTime = Clock::now();
-		Duration deltaTimeMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(m_lastTime - oldTime);
-		float deltaTimeSeconds = deltaTimeMilliseconds.count() / MILLI;
+		Duration deltaTimeMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(m_lastTime - oldTime);
+		float deltaTimeSeconds = deltaTimeMicroseconds.count() / MICRO;
 		return deltaTimeSeconds;
 	}
 }

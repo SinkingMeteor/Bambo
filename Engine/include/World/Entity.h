@@ -19,11 +19,11 @@ namespace Bambo
 		{}
 
 		template<typename T>
-		const T* GetComponent();
+		T* GetComponent();
 		template<typename T>
-		const T* AddComponent();
+		T* AddComponent();
 		template<typename T>
-		const T* AddComponent(const T& component);
+		T* AddComponent(const T& component);
 		template<typename T>
 		bool HasComponent();
 		template<typename T>
@@ -37,30 +37,30 @@ namespace Bambo
 	};
 
 	template<typename T>
-	const T* Entity::GetComponent()
+	T* Entity::GetComponent()
 	{
 		BAMBO_ASSERT_S(m_entity.is_alive())
 		BAMBO_ASSERT_S(m_entity.has<T>())
 
-		return m_entity.get<T>();
+		return m_entity.get_mut<T>();
 	}
 
 	template<typename T>
-	const T* Entity::AddComponent()
+	T* Entity::AddComponent()
 	{
 		BAMBO_ASSERT_S(m_entity.is_alive())
 		BAMBO_ASSERT_S(!m_entity.has<T>())
 
-		return m_entity.add<T>().get<T>();
+		return m_entity.add<T>().get_mut<T>();
 	}
 
 	template<typename T>
-	const T* Entity::AddComponent(const T& component)
+	T* Entity::AddComponent(const T& component)
 	{
 		BAMBO_ASSERT_S(m_entity.is_alive())
 		BAMBO_ASSERT_S(!m_entity.has<T>())
 
-		return m_entity.set<T>(component).get<T>();
+		return m_entity.set<T>(component).get_mut<T>();
 	}
 
 	template<typename T>

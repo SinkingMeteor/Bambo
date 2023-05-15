@@ -7,6 +7,8 @@
 #include "IID.h"
 #include "Entity.h"
 #include "Components.h"
+#include "WindowManager.h"
+#include "Input.h"
 namespace Bambo
 {
 	class BAMBO_API World final
