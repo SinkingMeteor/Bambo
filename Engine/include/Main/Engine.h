@@ -6,12 +6,10 @@
 #include "WindowManager.h"
 #include "AudioManager.h"
 #include "RenderManager.h"
-#include "TextureProvider.h"
-#include "ShaderProvider.h"
-#include "SpriteRenderer.h"
 #include "WindowEvents.h"
-#include "Camera.h"
 #include "World/World.h"
+#include "GUI/GUIWorld.h"
+#include "Module.h"
 namespace Bambo
 {
 	class BAMBO_API Engine final
@@ -23,14 +21,14 @@ namespace Bambo
 
 		void Initialize();
 		int Run();
+		void AddModule(UPtr<Module> module);
+		void RemoveModule();
 	private:
-		UPtr<World> m_world;
+		UPtr<GUIWorld> m_guiWorld;
+		std::vector<UPtr<Module>> m_modules;
 
-		void LoadWorld();
 		void OnEvent(Event& event);
 		bool OnWindowResize(WindowResizedEvent& windowEvent);
-		void Update(float deltaTime);
-		void Render();
 		void Dispose();
 	};
 }

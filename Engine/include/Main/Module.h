@@ -1,0 +1,19 @@
+#pragma once
+#include "engpch.h"
+#include "EngineEvent.h"
+namespace Bambo
+{
+	class BAMBO_API Module
+	{
+	public:
+		Module() = default;
+		virtual ~Module() = default;
+
+		virtual void OnAttach() {}
+		virtual void OnDetach() {}
+		virtual void OnUpdate(float deltaTIme) {}
+		virtual void Render() {}
+		virtual void OnGUI() {}
+		virtual void OnEvent(Event& event) {}
+	};
+}

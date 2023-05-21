@@ -24,6 +24,11 @@ namespace Bambo
 		Logger::Log("LogWorld", Verbosity::Info, "%f", deltaSeconds);
 	}
 
+	void World::OnGUI()
+	{
+
+	}
+
 	void World::Render()
 	{
 		m_entityManager.each([this](CameraComponent& camera, TransformComponent& transform)

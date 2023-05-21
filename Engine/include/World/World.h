@@ -9,6 +9,7 @@
 #include "Components.h"
 #include "WindowManager.h"
 #include "Input.h"
+
 namespace Bambo
 {
 	class BAMBO_API World final
@@ -17,6 +18,7 @@ namespace Bambo
 		World() = default;
 		void Initialize();
 		void Update(float deltaSeconds);
+		void OnGUI();
 		void Render();
 		void Dispose();
 

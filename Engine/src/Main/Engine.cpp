@@ -17,21 +17,13 @@ namespace Bambo
 		RenderManager::Get()->Initialize(RenderAPI::OpenGL);
 		RenderManager::Get()->GetRenderer().SetClearColor(Color{ 0.3f, 0.3f, 0.3f, 1.0f });
 		RenderManager::Get()->GetRenderer().SetViewport({ 0u , 0u }, { settings.Width, settings.Height });
+
+		m_guiWorld = std::make_unique<GUIWorld>();
+		m_guiWorld->Initialize();
 		
 		AudioManager::Get()->Initialize();
-
-		LoadWorld();
 	}
 
-	void Engine::LoadWorld()
-	{
-		if (m_world)
-		{
-			m_world->Dispose();
-		}
-		m_world = std::make_unique<World>();
-		m_world->Initialize();
-	}
 
 	void Engine::OnEvent(Event& event)
 	{
@@ -39,6 +31,16 @@ namespace Bambo
 		dispatcher.Dispatch<WindowResizedEvent>(BAMBO_BIND_EVENT_FN(Engine::OnWindowResize));
 	}
 
+	void Engine::AddModule(UPtr<Module> module)
+	{
+		module->OnAttach();
+		m_modules.emplace_back(std::move(module));
+	}
+
+	void Engine::RemoveModule()
+	{
+		//@TODO:
+	}
 
 	int Engine::Run()
 	{
@@ -51,11 +53,26 @@ namespace Bambo
 			while (passedTime > DESIRED_DELTA_TIME)
 			{
 				passedTime -= DESIRED_DELTA_TIME;
-				Update(DESIRED_DELTA_TIME);
+
+				for (size_t i = 0; i < m_modules.size(); ++i)
+				{
+					m_modules[i]->OnUpdate(DESIRED_DELTA_TIME);
+				}
 			}
 
-			Update(passedTime);
-			Render();
+			for (size_t i = 0; i < m_modules.size(); ++i)
+			{
+				m_modules[i]->OnUpdate(DESIRED_DELTA_TIME);
+				m_modules[i]->Render();
+			}
+
+
+			m_guiWorld->StartFrame();
+			for (size_t i = 0; i < m_modules.size(); ++i)
+			{
+				m_modules[i]->OnGUI();
+			}
+			m_guiWorld->EndFrame();
 
 			WindowManager::Get()->Update();
 		}
@@ -65,13 +82,6 @@ namespace Bambo
 		return 0;
 	}
 
-	void Engine::Update(float deltaTime)
-	{
-		if (m_world)
-		{
-			m_world->Update(deltaTime);
-		}
-	}
 
 	bool Engine::OnWindowResize(WindowResizedEvent& windowEvent)
 	{
@@ -83,18 +93,14 @@ namespace Bambo
 
 	void Engine::Dispose()
 	{
+		for (size_t i = 0; i < m_modules.size(); ++i)
+		{
+			m_modules[i]->OnDetach();
+		}
+
 		AudioManager::Get()->Dispose();
+		m_guiWorld->Dispose();
 		RenderManager::Get()->Dispose();
 		WindowManager::Get()->Dispose();
-	}
-
-
-	void Engine::Render()
-	{
-		RenderManager::Get()->GetRenderer().Clear();
-		if (m_world)
-		{
-			m_world->Render();
-		}
 	}
 }

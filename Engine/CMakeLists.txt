@@ -7,9 +7,10 @@ set(BAMBO_ENGINE_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Main.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Engine.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/GUI/GUIWorld.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/World/Entity.cpp)
 
-add_executable(Bambo ${BAMBO_ENGINE_SOURCES})
+add_executable(Bambo ${BAMBO_ENGINE_SOURCES} "include/Main/Module.h")
 
 target_include_directories(Bambo
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/
