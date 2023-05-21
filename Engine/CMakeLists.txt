@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_subdirectory(thirdparty/flecs)
+add_subdirectory(thirdparty/imgui)
 
 set(BAMBO_ENGINE_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Main.cpp
@@ -21,19 +22,21 @@ NAMES BamboGraphics BamboWindow BamboAudio
 HINTS ${BamboEngine_BINARY_DIR}/Modules/)
 
 find_library(THIRDPARTY_LIBS
-NAMES flecs
-HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/flecs)
+NAMES flecs imgui
+HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/)
 
 target_link_libraries(Bambo
 BamboGraphics 
 BamboWindow
 BamboAudio
+imgui
 flecs_static)
 
 target_include_directories(Bambo 
 PUBLIC ${BamboEngine_BINARY_DIR}/Engine/generated/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/flecs/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/imgui/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Core/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Graphics/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Audio/include/
