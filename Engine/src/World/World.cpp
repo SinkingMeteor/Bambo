@@ -69,13 +69,15 @@ namespace Bambo
 
 	void World::DestroyEntity(Entity& entity)
 	{
-		//ID
+		IDComponent* id = entity.GetComponent<IDComponent>();
+		BAMBO_ASSERT_S(m_entityMap.find(id->ID) != m_entityMap.end())
+		m_entityMap.erase(id->ID);
+		entity.GetInternalEntity().destruct();
 	}
-
 
 
 	void World::Dispose()
 	{
-
+		m_entityManager.reset();
 	}
 }

@@ -10,7 +10,7 @@ namespace Bambo
 		float Restart() noexcept;
 	private:
 		using Clock = std::chrono::high_resolution_clock;
-		using Duration = std::chrono::duration<float, std::milli>;
+		using Duration = std::chrono::duration<float, std::micro>;
 
 		Clock::time_point m_lastTime;
 	};

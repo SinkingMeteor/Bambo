@@ -13,7 +13,6 @@ namespace Bambo
 	class BAMBO_API Entity final
 	{
 	public:
-		Entity() = default;
 		Entity(const flecs::entity& entity) :
 			m_entity(entity)
 		{}
