@@ -10,13 +10,7 @@ namespace Bambo
 		m_spriteRenderer = std::make_unique<SpriteRenderer>();
 		m_spriteRenderer->Initialize();
 		m_spriteRenderer->SetDefaultShader(defaultSpriteShader);
-
-		Entity& camera = CreateEntity();
-		CameraComponent* cameraComponent = camera.AddComponent<CameraComponent>(CameraComponent{});
-		cameraComponent->Camera.SetViewportSize(WindowManager::Get()->GetWindow().GetWidth(), WindowManager::Get()->GetWindow().GetHeight());
-
-		Entity& sprite = CreateEntity();
-		sprite.AddComponent<SpriteComponent>(SpriteComponent{ texture });
+		
 	}
 
 	void World::Update(float deltaSeconds)
@@ -42,15 +36,15 @@ namespace Bambo
 
 	}
 
-	Entity& World::CreateEntity()
+	Entity& World::CreateEntity(const char* name)
 	{
-		return CreateEntity(IID{});
+		return CreateEntity(name, IID{});
 	}
 	
-	Entity& World::CreateEntity(IID id)
+	Entity& World::CreateEntity(const char* name, IID id)
 	{
 		BAMBO_ASSERT_S(m_entityMap.find(id) == m_entityMap.end())
-		flecs::entity ent = m_entityManager.entity();
+		flecs::entity ent = m_entityManager.entity(name);
 		ent.set<IDComponent>(IDComponent{ id });
 		ent.add<TransformComponent>();
 		m_entityMap[id] = Entity{ ent };

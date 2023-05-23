@@ -10,7 +10,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/GUI/GUIWorld.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/World/Entity.cpp)
 
-add_executable(Bambo ${BAMBO_ENGINE_SOURCES} "include/Main/Module.h")
+add_library(Bambo STATIC ${BAMBO_ENGINE_SOURCES})
 
 target_include_directories(Bambo
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/

@@ -60,12 +60,18 @@ namespace Bambo
 				}
 			}
 
+
 			for (size_t i = 0; i < m_modules.size(); ++i)
 			{
 				m_modules[i]->OnUpdate(DESIRED_DELTA_TIME);
-				m_modules[i]->Render();
 			}
 
+			RenderManager::Get()->GetRenderer().Clear();
+
+			for (size_t i = 0; i < m_modules.size(); ++i)
+			{
+				m_modules[i]->Render();
+			}
 
 			m_guiWorld->StartFrame();
 			for (size_t i = 0; i < m_modules.size(); ++i)

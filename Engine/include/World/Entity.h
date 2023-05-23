@@ -1,8 +1,7 @@
 #pragma once
 #include "engpch.h"
-#pragma warning(push)
+#pragma warning(push, 0)
 #include "flecs.h"
-#pragma warning(disable: 26439)
 #pragma warning(pop)
 
 namespace Bambo

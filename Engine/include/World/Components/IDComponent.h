@@ -11,5 +11,6 @@ namespace Bambo
 
 		IDComponent() = default;
 		IDComponent(IID id) : ID(id) {}
+		IDComponent(const IDComponent& id) = default;
 	};
 }

@@ -22,8 +22,8 @@ namespace Bambo
 		void Render();
 		void Dispose();
 
-		Entity& CreateEntity();
-		Entity& CreateEntity(IID id);
+		Entity& CreateEntity(const char* name);
+		Entity& CreateEntity(const char* name, IID id);
 		Entity& GetEntityByID(IID id);
 		void DestroyEntity(Entity& entity);
 		void DestroyEntity(IID id);
