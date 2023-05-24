@@ -3,4 +3,4 @@ project(BamboEngine)
 
 add_subdirectory(Modules)
 add_subdirectory(Engine)
-add_subdirectory(Polygon)
+add_subdirectory(Editor)

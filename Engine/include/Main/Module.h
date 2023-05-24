@@ -9,6 +9,8 @@ namespace Bambo
 		Module() = default;
 		virtual ~Module() = default;
 
+		virtual int32 GetModuleName() const = 0;
+
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
 		virtual void OnUpdate(float deltaTIme) {}

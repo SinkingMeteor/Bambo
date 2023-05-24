@@ -29,6 +29,13 @@ namespace Bambo
 	{
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowResizedEvent>(BAMBO_BIND_EVENT_FN(Engine::OnWindowResize));
+
+		for (size_t i = 0; i < m_modules.size(); ++i)
+		{
+			if (event.Handled) break;
+
+			m_modules[i]->OnEvent(event);
+		}
 	}
 
 	void Engine::AddModule(UPtr<Module> module)
@@ -37,9 +44,12 @@ namespace Bambo
 		m_modules.emplace_back(std::move(module));
 	}
 
-	void Engine::RemoveModule()
+	void Engine::RemoveModule(int32 moduleName)
 	{
-		//@TODO:
+		using It = std::vector<UPtr<Module>>::iterator;
+
+		It it = std::remove_if(m_modules.begin(), m_modules.end(), [&moduleName](const UPtr<Module>& module) { return module->GetModuleName() == moduleName; });
+		m_modules.erase(it, m_modules.end());
 	}
 
 	int Engine::Run()

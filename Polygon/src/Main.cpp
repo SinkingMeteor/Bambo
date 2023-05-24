@@ -12,6 +12,9 @@ class TestModule : public Bambo::Module
 {
 public:
 	TestModule() : m_world(std::make_unique<Bambo::World>()) {}
+
+	virtual int32 GetModuleName() const override { return 'TSTM'; }
+
 	virtual void OnAttach() override
 	{
 		m_world->Initialize();
@@ -39,10 +42,14 @@ public:
 	}
 	virtual void OnGUI() override
 	{
+		ImGui::ShowDemoWindow();
 	}
+
+
 
 private:
 	std::unique_ptr<Bambo::World> m_world;
+	std::string m_moduleName = "Polygon";
 };
 
 int main()

@@ -22,7 +22,7 @@ namespace Bambo
 		void Initialize();
 		int Run();
 		void AddModule(UPtr<Module> module);
-		void RemoveModule();
+		void RemoveModule(int32 moduleName);
 	private:
 		UPtr<GUIWorld> m_guiWorld;
 		std::vector<UPtr<Module>> m_modules;
