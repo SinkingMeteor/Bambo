@@ -80,8 +80,8 @@ namespace Bambo
 			case ShaderDataType::Matrix3f:
 			case ShaderDataType::Matrix4f:
 			{
-				ubyte count = GetComponentCount(it->GetType());
-				for (ubyte i = 0; i < count; i++)
+				uint32 count = GetComponentCount(it->GetType());
+				for (uint32 i = 0; i < count; i++)
 				{
 					OpenGLCheck(glEnableVertexAttribArray(m_layoutIndex));
 					OpenGLCheck(glVertexAttribPointer(m_layoutIndex,

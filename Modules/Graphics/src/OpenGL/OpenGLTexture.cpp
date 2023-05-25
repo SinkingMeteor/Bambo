@@ -25,7 +25,7 @@ namespace Bambo
 	void OpenGLTexture::LoadFromFile(const std::string& file)
 	{
 		int channels{};
-		ubyte* data = stbi_load(file.c_str(), &m_width, &m_height, &channels, 0);
+		stbi_uc* data = stbi_load(file.c_str(), &m_width, &m_height, &channels, 0);
 		BAMBO_ASSERT(data, "Failed to load image");
 
 		if (channels == 4) {
@@ -40,7 +40,6 @@ namespace Bambo
 
 		OpenGLCheck(glBindTexture(GL_TEXTURE_2D, m_id));
 		OpenGLCheck(glTexImage2D(GL_TEXTURE_2D, 0, m_internalFormat, m_width, m_height, 0, m_imageFormat, GL_UNSIGNED_BYTE, data));
-
 		OpenGLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_wrapS));
 		OpenGLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_wrapT));
 		OpenGLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_filterMin));

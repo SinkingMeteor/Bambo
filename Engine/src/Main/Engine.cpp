@@ -76,13 +76,6 @@ namespace Bambo
 				m_modules[i]->OnUpdate(DESIRED_DELTA_TIME);
 			}
 
-			RenderManager::Get()->GetRenderer().Clear();
-
-			for (size_t i = 0; i < m_modules.size(); ++i)
-			{
-				m_modules[i]->Render();
-			}
-
 			m_guiWorld->StartFrame();
 			for (size_t i = 0; i < m_modules.size(); ++i)
 			{

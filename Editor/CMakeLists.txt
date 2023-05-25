@@ -8,7 +8,11 @@ add_executable(BamboEditor ${BAMBO_EDITOR_SOURCES})
 
 target_include_directories(BamboEditor 
 PUBLIC ${BamboEngine_SOURCE_DIR}/Editor/include/
-PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/include/)
+PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Core/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Window/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Graphics/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Audio/include/)
 
 find_library(BAMBO_ENGINE_LIB
 NAMES Bambo

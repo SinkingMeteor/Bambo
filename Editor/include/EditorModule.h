@@ -1,5 +1,9 @@
 #pragma once
+#include "imgui.h"
 #include "Main/Module.h"
+#include "World/World.h"
+#include "EngineEvent.h"
+#include "RenderManager.h"
 
 namespace BamboEditor
 {
@@ -8,5 +12,15 @@ namespace BamboEditor
 	public:
 		EditorModule() = default;
 		virtual int32 GetModuleName() const override { return 'EDTM'; }
+		virtual void OnAttach() override;
+		virtual void OnDetach() override;
+		virtual void OnUpdate(float deltaTIme) override;
+		virtual void OnGUI() override;
+		virtual void OnEvent(Bambo::Event& event) override;
+	private:
+		UPtr<Bambo::World> m_currentWorld;
+
+		void OpenWorld();
+		void OpenWorld(const std::string& worldFilePath) {};
 	};
 }

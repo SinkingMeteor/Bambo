@@ -12,15 +12,17 @@
 
 namespace Bambo
 {
-	class BAMBO_API World final
+	class BAMBO_API World
 	{
 	public:
 		World() = default;
-		void Initialize();
-		void Update(float deltaSeconds);
-		void OnGUI();
-		void Render();
-		void Dispose();
+		virtual ~World() {};
+
+		virtual void Initialize();
+		virtual void Update(float deltaSeconds) {};
+		virtual void OnGUI() {};
+		virtual void Render();
+		virtual void Dispose();
 
 		Entity& CreateEntity(const char* name);
 		Entity& CreateEntity(const char* name, IID id);
