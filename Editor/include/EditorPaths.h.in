@@ -1,0 +1,13 @@
+#ifndef BAMBO_EDITOR_PATHS_H
+#define BAMBO_EDITOR_PATHS_H
+
+#include<string>
+
+namespace BamboPaths
+{
+	#define BAMBO_EDITOR_CONFIG_DIR "@BAMBO_EDITOR_CONFIG_DIR@/EditorConfig.json"
+
+	const std::string BamboEditorConfigDir = BAMBO_EDITOR_CONFIG_DIR;
+}
+
+#endif

@@ -4,6 +4,9 @@
 #include "World/World.h"
 #include "EngineEvent.h"
 #include "RenderManager.h"
+#include <fstream>
+#include "Project.h"
+#include "EditorPaths.h"
 
 namespace BamboEditor
 {
@@ -18,6 +21,7 @@ namespace BamboEditor
 		virtual void OnGUI() override;
 		virtual void OnEvent(Bambo::Event& event) override;
 	private:
+		UPtr<Project> m_currentProject;
 		UPtr<Bambo::World> m_currentWorld;
 
 		void OpenWorld();
