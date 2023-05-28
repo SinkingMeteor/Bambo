@@ -9,6 +9,8 @@ namespace Bambo
 	{
 	public:
 		AudioDevice();
+		AudioDevice(const AudioDevice& device) = delete;
+		AudioDevice& operator=(const AudioDevice& device) = delete;
 		~AudioDevice();
 
 	private:

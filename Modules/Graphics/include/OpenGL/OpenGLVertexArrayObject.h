@@ -11,6 +11,8 @@ namespace Bambo
 	{
 	public:
 		OpenGLVertexArrayObject();
+		OpenGLVertexArrayObject(const OpenGLVertexArrayObject&) = delete;
+		OpenGLVertexArrayObject& operator=(const OpenGLVertexArrayObject&) = delete;
 		virtual ~OpenGLVertexArrayObject();
 
 		virtual void Bind() override;

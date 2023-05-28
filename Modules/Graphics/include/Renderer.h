@@ -13,8 +13,6 @@ namespace Bambo
 		Renderer(const Renderer& renderer) = delete;
 		Renderer& operator=(const Renderer& renderer) = delete;
 		virtual ~Renderer() {}
-
-		virtual void Initialize() {}
 		void SetDefaultShader(SPtr<Shader> defaultShader) { m_defaultShader = defaultShader; }
 	protected:
 		WPtr<Shader> m_defaultShader;

@@ -68,8 +68,6 @@ namespace Bambo
 	void WindowsWindow::CloseWindow()
 	{
 		if (!m_window) return;
-
-		glfwDestroyWindow(m_window);
-		m_window = nullptr;
+		glfwSetWindowShouldClose(m_window, true);
 	}
 }

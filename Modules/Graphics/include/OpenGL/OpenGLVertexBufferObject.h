@@ -10,6 +10,8 @@ namespace Bambo
 	{
 	public:
 		OpenGLVertexBufferObject(const void* data, uint32 size);
+		OpenGLVertexBufferObject(const OpenGLVertexBufferObject&) = delete;
+		OpenGLVertexBufferObject& operator=(const OpenGLVertexBufferObject&) = delete;
 		OpenGLVertexBufferObject(uint32 size);
 		virtual ~OpenGLVertexBufferObject();
 		virtual void Bind() override;
