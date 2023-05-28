@@ -7,6 +7,7 @@
 #include <fstream>
 #include "Project.h"
 #include "EditorPaths.h"
+#include "Windows/SceneHierarchy.h"
 
 namespace BamboEditor
 {
@@ -18,11 +19,13 @@ namespace BamboEditor
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 		virtual void OnUpdate(float deltaTIme) override;
+		virtual void OnRender() override;
 		virtual void OnGUI() override;
 		virtual void OnEvent(Bambo::Event& event) override;
 	private:
 		UPtr<Project> m_currentProject;
-		UPtr<Bambo::World> m_currentWorld;
+		SPtr<Bambo::World> m_currentWorld;
+		std::vector<UPtr<GUIWindow>> m_windows;
 
 		void OpenWorld();
 		void OpenWorld(const std::string& worldFilePath) {};

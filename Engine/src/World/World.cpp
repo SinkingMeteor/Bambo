@@ -4,11 +4,16 @@ namespace Bambo
 {
 	void World::Initialize()
 	{
-		SPtr<Shader> defaultSpriteShader = ShaderProvider::Get()->Load(ToId("TestShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
+		CreateRoot();
+		Entity& ent1 = CreateEntity();
+		CreateEntity(ent1.GetID(), "Boo");
+		Entity& foo = CreateEntity(ent1.GetID(), "Foo");
+		CreateEntity(foo.GetID(), "Any");
+		CreateEntity(ent1.GetID(), "Bar");
+		CreateEntity();
+		CreateEntity();
 
 		m_spriteRenderer = std::make_unique<SpriteRenderer>();
-		m_spriteRenderer->Initialize();
-		m_spriteRenderer->SetDefaultShader(defaultSpriteShader);
 	}
 
 	void World::Render()
@@ -24,19 +29,38 @@ namespace Bambo
 
 	}
 
+	Entity& World::CreateEntity()
+	{
+		IID id{};
+		std::string nameId = "Entity_";
+		nameId += std::to_string(id);
+		return CreateEntity(m_rootEntityId, nameId.c_str(), id);
+	}
+
 	Entity& World::CreateEntity(const char* name)
 	{
-		return CreateEntity(name, IID{});
+		return CreateEntity(m_rootEntityId, name, IID{});
 	}
-	
-	Entity& World::CreateEntity(const char* name, IID id)
+
+	Entity& World::CreateEntity(IID parentId, const char* name)
 	{
-		BAMBO_ASSERT_S(m_entityMap.find(id) == m_entityMap.end())
+		return CreateEntity(parentId, name, IID{});
+	}
+
+	Entity& World::CreateEntity(IID parentId, const char* name, IID selfId)
+	{
+		BAMBO_ASSERT_S(m_entityMap.find(selfId) == m_entityMap.end())
+		BAMBO_ASSERT_S(m_entityMap.find(parentId) != m_entityMap.end())
+
+		Entity& parentEntity = m_entityMap[parentId];
 		flecs::entity ent = m_entityManager.entity(name);
-		ent.set<IDComponent>(IDComponent{ id });
+		ent.child_of(parentEntity.GetInternalEntity());
+
+		ent.set<IDComponent>(IDComponent{ selfId });
+		ent.set<TagComponent>(TagComponent{ name });
 		ent.add<TransformComponent>();
-		m_entityMap[id] = Entity{ ent };
-		return m_entityMap[id];
+		m_entityMap[selfId] = Entity{ ent };
+		return m_entityMap[selfId];
 	}
 	
 	Entity& World::GetEntityByID(IID id)
@@ -60,6 +84,15 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_entityMap.find(id->ID) != m_entityMap.end())
 		m_entityMap.erase(id->ID);
 		entity.GetInternalEntity().destruct();
+	}
+
+	void World::CreateRoot()
+	{
+		flecs::entity root = m_entityManager.entity("Root");
+		root.set<IDComponent>(IDComponent{ m_rootEntityId });
+		root.set<TagComponent>(TagComponent{ "Root" });
+		root.add<TransformComponent>();
+		m_entityMap[m_rootEntityId] = Entity{ root };
 	}
 
 	void World::Dispose()

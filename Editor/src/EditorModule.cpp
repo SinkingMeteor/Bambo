@@ -4,6 +4,9 @@ namespace BamboEditor
 {
 	void EditorModule::OnAttach()
 	{
+		m_currentWorld = std::make_shared<Bambo::World>();
+		m_windows.emplace_back<UPtr<SceneHierarchyWindow>>(std::make_unique<SceneHierarchyWindow>(m_currentWorld));
+
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_::ImGuiConfigFlags_DockingEnable;
 
@@ -15,6 +18,15 @@ namespace BamboEditor
 			//Проект-заглушка. В будущем заменить на диалоговое окно
 			m_currentProject = std::make_unique<Project>("MockProject", "");
 			OpenWorld();
+
+			Bambo::Entity& cameraEntity = m_currentWorld->CreateEntity();
+			Bambo::CameraComponent* camera = cameraEntity.AddComponent<Bambo::CameraComponent>();
+			camera->Camera.SetViewportSize(Bambo::WindowManager::Get()->GetWindowWidth(), Bambo::WindowManager::Get()->GetWindowHeight());
+
+			SPtr<Bambo::Texture2D> tex = Bambo::TextureProvider::Get()->Load(Bambo::ToId("TestImage"), BamboPaths::BamboResourcesDir + "Textures/TestImage.png");
+			Bambo::SpriteComponent spriteData{ tex };
+			m_currentWorld->CreateEntity("TestSprite").AddComponent<Bambo::SpriteComponent>(spriteData);
+
 			return;
 		}
 
@@ -39,7 +51,6 @@ namespace BamboEditor
 		{
 			OpenWorld(projectFirstWorldPath);
 		}
-
 	}
 
 	void EditorModule::OnDetach()
@@ -50,20 +61,29 @@ namespace BamboEditor
 		}
 	}
 
-	void EditorModule::OnUpdate(float deltaTIme)
+	void EditorModule::OnUpdate(float deltaTime)
+	{
+		if (m_currentWorld)
+		{
+			m_currentWorld->Update(deltaTime);
+		}
+	}
+	
+	void EditorModule::OnRender()
 	{
 		Bambo::RenderManager* renderManager = Bambo::RenderManager::Get();
 		renderManager->GetRenderer().Clear();
+
+		if (m_currentWorld)
+		{
+			m_currentWorld->Render();
+		}
 	}
-	
+
+
 	void EditorModule::OnGUI()
 	{
 		bool isToolActive = true;
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.ConfigFlags |= ImGuiConfigFlags_::ImGuiConfigFlags_DockingEnable;
-		ImVec2 appWindowSize = io.DisplaySize;
-		ImVec2 menuBarSize{};
 
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
 		ImGui::DockSpaceOverViewport(viewport);
@@ -77,13 +97,14 @@ namespace BamboEditor
 				if (ImGui::MenuItem("Close", "Ctrl+W")) { isToolActive = false; }
 				ImGui::EndMenu();
 			}
-			menuBarSize = ImGui::GetWindowSize();
 
 			ImGui::EndMainMenuBar();
 		}
 
-		ImGui::Begin("My First Tool", &isToolActive, ImGuiWindowFlags_MenuBar);
-		ImGui::End();
+		for (UPtr<GUIWindow>& window : m_windows)
+		{
+			window->OnGUI();
+		}
 
 		ImGui::ShowDemoWindow();
 	}
@@ -99,8 +120,6 @@ namespace BamboEditor
 		{
 			m_currentWorld->Dispose();
 		}
-
-		m_currentWorld = std::make_unique<Bambo::World>();
 		m_currentWorld->Initialize();
 	}
 

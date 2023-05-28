@@ -3,6 +3,7 @@
 #pragma warning(push, 0)
 #include "flecs.h"
 #pragma warning(pop)
+#include "Components/Components.h"
 
 namespace Bambo
 {
@@ -27,6 +28,14 @@ namespace Bambo
 		bool HasComponent();
 		template<typename T>
 		void RemoveComponent();
+	
+		IID GetID()
+		{
+			BAMBO_ASSERT_S(m_entity.is_alive())
+			BAMBO_ASSERT_S(m_entity.has<IDComponent>())
+
+			return GetComponent<IDComponent>()->ID;
+		}
 
 		flecs::entity GetInternalEntity() const { return m_entity; }
 		bool IsDestroyed() const { return !m_entity.is_alive(); }

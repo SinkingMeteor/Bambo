@@ -43,6 +43,7 @@ PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/thirdparty/GLAD/include
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/thirdparty/STBI/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/thirdparty/GLM/glm
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Core/include/
+PUBLIC ${BamboEngine_BINARY_DIR}/Modules/Graphics/generated/
 PUBLIC ${OPENGL_INCLUDE_DIRS})
 
 find_library(EXT_LIBS NAMES glfw glad STBI HINTS ${BamboEngine_BINARY_DIR}/Modules/thirdparty/)
@@ -51,3 +52,12 @@ target_link_libraries(BamboGraphics glfw glad STBI ${OPENGL_LIBRARIES})
 find_library(BAMBO_CORE_LIB NAMES BamboCore HINTS ${BamboEngine_BINARY_DIR}/Modules/Core/)
 target_link_libraries(BamboGraphics BamboCore)
 
+set(BAMBO_GRAPHICS_RESOURCE_DIR "${BamboEngine_BINARY_DIR}/Modules/Graphics/resources")
+add_definitions(-DBAMBO_GRAPHICS_RESOURCE_DIR=${BAMBO_GRAPHICS_RESOURCE_DIR})
+configure_file(include/GraphicsPaths.h.in "${BamboEngine_BINARY_DIR}/Modules/Graphics/generated/GraphicsPaths.h")
+
+add_custom_command(TARGET BamboGraphics POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_CURRENT_LIST_DIR}/resources
+    ${BamboEngine_BINARY_DIR}/Modules/Graphics/resources
+    COMMENT "Copying graphics resources")

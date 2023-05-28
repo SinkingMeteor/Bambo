@@ -70,10 +70,14 @@ namespace Bambo
 				}
 			}
 
-
 			for (size_t i = 0; i < m_modules.size(); ++i)
 			{
 				m_modules[i]->OnUpdate(DESIRED_DELTA_TIME);
+			}
+
+			for (size_t i = 0; i < m_modules.size(); ++i)
+			{
+				m_modules[i]->OnRender();
 			}
 
 			m_guiWorld->StartFrame();

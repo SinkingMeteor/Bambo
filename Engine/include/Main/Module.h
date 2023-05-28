@@ -14,6 +14,7 @@ namespace Bambo
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
 		virtual void OnUpdate(float deltaTIme) {}
+		virtual void OnRender() {}
 		virtual void OnGUI() {}
 		virtual void OnEvent(Event& event) {}
 	};

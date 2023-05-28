@@ -8,6 +8,8 @@
 #include "BufferLayout.h"
 #include "RenderConfig.h"
 #include "Texture2D.h"
+#include "ShaderProvider.h"
+#include "GraphicsPaths.h"
 
 namespace Bambo
 {

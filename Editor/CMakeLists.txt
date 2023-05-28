@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 set(BAMBO_EDITOR_SOURCES
+${BamboEngine_SOURCE_DIR}/Editor/src/Windows/SceneHierarchy.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/EditorModule.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Project.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Main.cpp)

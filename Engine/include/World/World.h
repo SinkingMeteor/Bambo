@@ -24,9 +24,12 @@ namespace Bambo
 		virtual void Render();
 		virtual void Dispose();
 
+		Entity& CreateEntity();
 		Entity& CreateEntity(const char* name);
-		Entity& CreateEntity(const char* name, IID id);
+		Entity& CreateEntity(IID parentId, const char* name);
+		Entity& CreateEntity(IID parentId, const char* name, IID selfId);
 		Entity& GetEntityByID(IID id);
+		Entity& GetRoot() { return m_entityMap[m_rootEntityId]; }
 		void DestroyEntity(Entity& entity);
 		void DestroyEntity(IID id);
 
@@ -34,6 +37,9 @@ namespace Bambo
 	private:
 		EntityManager m_entityManager;
 		std::unordered_map<IID, Entity> m_entityMap;
+		IID m_rootEntityId;
 		UPtr<SpriteRenderer> m_spriteRenderer;
+
+		void CreateRoot();
 	};
 }

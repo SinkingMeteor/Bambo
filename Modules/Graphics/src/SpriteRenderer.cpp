@@ -8,6 +8,7 @@ namespace Bambo
 		m_vao(VertexArrayObject::CreateVertexArrayObject()),
 		m_renderVertices()
 	{
+		m_defaultShader = ShaderProvider::Get()->Load(ToId("DefaultShader"), BamboPaths::BamboGraphicsResourceDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboGraphicsResourceDir + "Shaders/FSpriteDefault.txt");
 		m_vbo->SetLayout(std::make_shared<BufferLayout>(std::initializer_list{ ShaderDataType::Float3, ShaderDataType::Float2, ShaderDataType::Float4 }));
 		m_vao->AddVertexBufferObject(m_vbo);
 

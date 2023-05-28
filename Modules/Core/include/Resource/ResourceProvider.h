@@ -31,7 +31,11 @@ namespace Bambo
 	template<typename ...Args>
 	std::shared_ptr<Resource> ResourceProvider<Resource, Loader>::Load(const bambo_id id, Args && ...args)
 	{
-		BAMBO_ASSERT(!Contains(id), "Key already in resource map")
+		if (Contains(id))
+		{
+			return GetResource(id);
+		}
+
 		std::shared_ptr<Resource> resource = m_loader(std::forward<Args>(args)...);
 		m_resourceMap.emplace(id, resource);
 		return resource;
