@@ -7,8 +7,7 @@ set(BAMBO_ENGINE_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Main.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Engine.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/GUI/GUIWorld.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/World/Entity.cpp)
+${CMAKE_CURRENT_LIST_DIR}/src/GUI/GUIWorld.cpp)
 
 add_library(Bambo STATIC ${BAMBO_ENGINE_SOURCES})
 

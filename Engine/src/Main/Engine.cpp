@@ -10,7 +10,7 @@ namespace Bambo
 {
 	void Engine::Initialize()
 	{
-		WindowSettings settings{ 1280u, 720u, "Hello world!" };
+		WindowSettings settings{ 1280u, 720u, "Bambo Engine" };
 		WindowManager::Get()->Initialize(settings);
 		WindowManager::Get()->GetWindow().SetEventCallback(BAMBO_BIND_EVENT_FN(Engine::OnEvent));
 
