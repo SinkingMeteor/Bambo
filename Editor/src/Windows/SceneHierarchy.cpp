@@ -43,12 +43,15 @@ namespace BamboEditor
 
 				const Bambo::TagComponent* tag = childEntity.get<Bambo::TagComponent>();
 
-				if (ImGui::TreeNode(tag->Tag.c_str()))
+				if (ImGui::TreeNodeEx(tag->Tag.c_str(),
+					ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen |
+					ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_FramePadding |
+					ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow |
+					ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_SpanAvailWidth))
 				{
 					DisplayChildrenOf(entityWorld, childEntity);
 					ImGui::TreePop();
 				}
-
 			}
 		}
 	}
