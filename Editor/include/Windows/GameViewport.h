@@ -16,5 +16,7 @@ namespace BamboEditor
 	private:
 		std::string m_windowName;
 		SPtr<Bambo::Framebuffer> m_framebuffer;
+
+		ImVec2 ResizeGameViewport();
 	};
 }
