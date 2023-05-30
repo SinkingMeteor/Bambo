@@ -7,6 +7,8 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Camera.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Renderer.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/SpriteRenderer.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLCheck.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Framebuffer.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLFramebuffer.cpp
 #VBO
 ${CMAKE_CURRENT_LIST_DIR}/src/OpenGL/OpenGLVertexBufferObject.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/VertexBufferObject.cpp

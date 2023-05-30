@@ -8,6 +8,8 @@
 #include "Project.h"
 #include "EditorPaths.h"
 #include "Windows/SceneHierarchy.h"
+#include "Windows/GameViewport.h"
+#include "Framebuffer.h"
 
 namespace BamboEditor
 {
@@ -26,6 +28,7 @@ namespace BamboEditor
 		UPtr<Project> m_currentProject;
 		SPtr<Bambo::World> m_currentWorld;
 		std::vector<UPtr<GUIWindow>> m_windows;
+		SPtr<Bambo::Framebuffer> m_framebuffer;
 
 		void OpenWorld();
 		void OpenWorld(const std::string& worldFilePath) {};

@@ -7,6 +7,14 @@ namespace BamboEditor
 		m_currentWorld = std::make_shared<Bambo::World>();
 		m_windows.emplace_back<UPtr<SceneHierarchyWindow>>(std::make_unique<SceneHierarchyWindow>(m_currentWorld));
 
+		Bambo::WindowManager* windowManager = Bambo::WindowManager::Get();
+		uint32 width = windowManager->GetWindowWidth();
+		uint32 height = windowManager->GetWindowHeight();
+
+		m_framebuffer = Bambo::Framebuffer::Create({ Bambo::FramebufferTextureType::Color }, width, height);
+		m_windows.emplace_back<UPtr<GameViewportWindow>>(std::make_unique<GameViewportWindow>(m_framebuffer));
+
+
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_::ImGuiConfigFlags_DockingEnable;
 
@@ -74,10 +82,16 @@ namespace BamboEditor
 		Bambo::RenderManager* renderManager = Bambo::RenderManager::Get();
 		renderManager->GetRenderer().Clear();
 
+		m_framebuffer->Bind();
+
+		renderManager->GetRenderer().Clear();
+
 		if (m_currentWorld)
 		{
 			m_currentWorld->Render();
 		}
+
+		m_framebuffer->Unbind();
 	}
 
 
