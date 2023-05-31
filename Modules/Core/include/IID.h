@@ -17,6 +17,7 @@ namespace Bambo
 		{}
 
 		IID(const IID&) = default;
+		IID& operator=(const IID&) = default;
 
 		operator uint64() const { return m_ID; }
 		bool operator==(const IID& id) const

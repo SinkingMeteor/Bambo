@@ -25,6 +25,7 @@ namespace Bambo
 		virtual void Dispose();
 
 		Entity& CreateEntity();
+		Entity& CreateEntity(IID parentId);
 		Entity& CreateEntity(const char* name);
 		Entity& CreateEntity(IID parentId, const char* name);
 		Entity& CreateEntity(IID parentId, const char* name, IID selfId);

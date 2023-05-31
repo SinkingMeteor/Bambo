@@ -4,7 +4,8 @@ namespace BamboEditor
 {
 	SceneHierarchyWindow::SceneHierarchyWindow(SPtr<Bambo::World> world) :
 		m_windowName("Hierarchy"),
-		m_world(world)
+		m_world(world),
+		m_selectedEntity(nullptr)
 	{}
 
 	void SceneHierarchyWindow::OnGUI()
@@ -19,15 +20,47 @@ namespace BamboEditor
 			return;
 		}
 
+		if (ImGui::IsItemClicked())
+		{
+			m_selectedEntity = nullptr;
+		}
 
 		flecs::entity& rootEntity = m_world->GetRoot().GetInternalEntity();
 		Bambo::EntityManager& entityWorld = m_world->GetEntityManager();
 		DisplayChildrenOf(entityWorld, rootEntity);
 
+		ImGui::SetNextWindowSize({ 200.0f, 200.0f });
+		
+		if (ImGui::BeginPopupContextWindow())
+		{
+			if (ImGui::TreeNode("Add"))
+			{
+				if (ImGui::MenuItem("Empty")) { CreateEmpty(); }
+				if (ImGui::MenuItem("Camera")) { CreateCamera(); }
+				ImGui::TreePop();
+			}
+			ImGui::EndPopup();
+		}
+
 		ImGui::End();
 	}
 
-	void SceneHierarchyWindow::DisplayChildrenOf(Bambo::EntityManager& entityWorld, flecs::entity& entity)
+	Bambo::Entity& SceneHierarchyWindow::CreateEmpty()
+	{
+		if (!m_selectedEntity)
+		{
+			return m_world->CreateEntity();
+		}
+	
+		return m_world->CreateEntity(m_selectedEntity->GetID());
+	}
+
+	void SceneHierarchyWindow::CreateCamera()
+	{
+		CreateEmpty().AddComponent<Bambo::CameraComponent>();
+	}
+
+	void SceneHierarchyWindow::DisplayChildrenOf(Bambo::EntityManager& entityWorld, flecs::entity& entity, ImGuiTreeNodeFlags additionalFlags)
 	{
 		ecs_iter_t it = ecs_children(entityWorld, entity);
 
@@ -41,14 +74,46 @@ namespace BamboEditor
 				BAMBO_ASSERT_S(childEntity.has<Bambo::TagComponent>());
 
 				const Bambo::TagComponent* tag = childEntity.get<Bambo::TagComponent>();
+				const Bambo::IDComponent* idComponent = childEntity.get<Bambo::IDComponent>();
 
-				if (ImGui::TreeNodeEx(tag->Tag.c_str(),
-					ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_DefaultOpen |
-					ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_FramePadding |
-					ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow |
-					ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_SpanAvailWidth))
+				static ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Leaf;
+				ImGuiTreeNodeFlags nodeFlags = baseFlags;
+
+				nodeFlags |= additionalFlags;
+
+				if (m_selectedEntity != nullptr && m_selectedEntity->GetID() == idComponent->ID)
 				{
-					DisplayChildrenOf(entityWorld, childEntity);
+					nodeFlags |= ImGuiTreeNodeFlags_Selected;
+				}
+
+				if (ImGui::TreeNodeEx((void*)(uintptr_t)idComponent->ID, nodeFlags, tag->Tag.c_str()))
+				{
+					if(ImGui::IsItemClicked())
+					{
+						m_selectedEntity = &m_world->GetEntityByID(idComponent->ID);
+					}
+
+					if (ImGui::BeginDragDropSource())
+					{
+						ImGui::SetDragDropPayload("GOReparent", &childEntity, sizeof(childEntity));
+						ImGui::Text("%s", tag->Tag.c_str());
+						ImGui::EndDragDropSource();
+					}
+
+					if (ImGui::BeginDragDropTarget())
+					{
+						 const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GOReparent");
+						 if(payload != nullptr)
+						 {
+							 flecs::entity* targetEntity = static_cast<flecs::entity*>(payload->Data);
+							 targetEntity->child_of(childEntity);
+						 }
+
+						 ImGui::EndDragDropTarget();
+					}
+
+					bool noChildren = ecs_children(entityWorld, childEntity).count == 0;
+					DisplayChildrenOf(entityWorld, childEntity, noChildren ? ImGuiBackendFlags_None : ImGuiTreeNodeFlags_Leaf);
 					ImGui::TreePop();
 				}
 			}

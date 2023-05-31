@@ -16,7 +16,10 @@ namespace BamboEditor
 	private:
 		std::string m_windowName = "Hierarchy";
 		SPtr<Bambo::World> m_world;
+		Bambo::Entity* m_selectedEntity;
 
-		void DisplayChildrenOf(Bambo::EntityManager& entityWorld, flecs::entity& entity);
+		void DisplayChildrenOf(Bambo::EntityManager& entityWorld, flecs::entity& entity, ImGuiTreeNodeFlags additionalFlags = ImGuiBackendFlags_::ImGuiBackendFlags_None);
+		Bambo::Entity& CreateEmpty();
+		void CreateCamera();
 	};
 }

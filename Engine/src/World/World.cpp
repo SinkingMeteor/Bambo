@@ -42,6 +42,14 @@ namespace Bambo
 		return CreateEntity(m_rootEntityId, name, IID{});
 	}
 
+	Entity& World::CreateEntity(IID parentId)
+	{
+		IID id{};
+		std::string nameId = "Entity_";
+		nameId += std::to_string(id);
+		return CreateEntity(parentId, nameId.c_str(), id);
+	}
+
 	Entity& World::CreateEntity(IID parentId, const char* name)
 	{
 		return CreateEntity(parentId, name, IID{});
