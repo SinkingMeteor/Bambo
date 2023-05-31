@@ -54,11 +54,10 @@ namespace Bambo
 
 	int Engine::Run()
 	{
-		Timer timer{};
 
 		while (!WindowManager::Get()->WantsToClose())
 		{
-			float passedTime = timer.Restart();
+			float passedTime = TimeManager::Get()->MakeTick();
 
 			while (passedTime > DESIRED_DELTA_TIME)
 			{

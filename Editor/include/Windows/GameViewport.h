@@ -4,6 +4,8 @@
 #include "imgui.h"
 #include "Framebuffer.h"
 #include "WindowManager.h"
+#include "Main/TimeManager.h"
+
 
 namespace BamboEditor
 {
@@ -16,7 +18,10 @@ namespace BamboEditor
 	private:
 		std::string m_windowName;
 		SPtr<Bambo::Framebuffer> m_framebuffer;
+		bool m_isOpenedInfoPanel;
 
 		ImVec2 ResizeGameViewport();
+		void DrawInfoOverlay();
+		void DrawMenuBar();
 	};
 }

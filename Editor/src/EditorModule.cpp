@@ -100,7 +100,6 @@ namespace BamboEditor
 		bool isToolActive = true;
 
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
-
 		ImGui::DockSpaceOverViewport(viewport, ImGuiDockNodeFlags_::ImGuiDockNodeFlags_PassthruCentralNode);
 
 		if (ImGui::BeginMainMenuBar())

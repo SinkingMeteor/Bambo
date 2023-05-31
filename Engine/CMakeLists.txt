@@ -6,6 +6,7 @@ add_subdirectory(thirdparty/imgui)
 set(BAMBO_ENGINE_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Main.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Engine.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Main/TimeManager.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/GUI/GUIWorld.cpp)
 

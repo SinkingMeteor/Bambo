@@ -9,8 +9,7 @@ namespace BamboEditor
 
 	void SceneHierarchyWindow::OnGUI()
 	{
-		ImGuiWindowFlags flags = ImGuiWindowFlags_None;
-		flags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
+		ImGuiWindowFlags flags = ImGuiWindowFlags_AlwaysVerticalScrollbar;
 
 		ImGui::Begin(m_windowName.c_str(), nullptr, flags);
 
