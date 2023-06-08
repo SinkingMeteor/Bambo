@@ -10,26 +10,25 @@ namespace BamboEditor
 
 	void GameViewportWindow::OnGUI()
 	{
-		if (ImGui::Begin("Game Viewport", nullptr,
+		ImGui::Begin("Game Viewport", nullptr,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar |
-			ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollWithMouse))
-		{
-			DrawMenuBar();
+			ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollWithMouse);
 
-			ImVec2 viewportPanelSize = ResizeGameViewport();
-			ImVec2 windowSize = ImGui::GetWindowSize();
-			float xPos = (windowSize.x - viewportPanelSize.x) * 0.5f;
-			float yPos = (windowSize.y - viewportPanelSize.y) * 0.5f;
-			ImGui::SetCursorPos(ImVec2{ xPos, yPos });
+		DrawMenuBar();
 
-			uint64_t textureID = m_framebuffer->GetTextureID();
-			ImGui::Image(reinterpret_cast<void*>(textureID), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+		ImVec2 viewportPanelSize = ResizeGameViewport();
+		ImVec2 windowSize = ImGui::GetWindowSize();
+		float xPos = (windowSize.x - viewportPanelSize.x) * 0.5f;
+		float yPos = (windowSize.y - viewportPanelSize.y) * 0.5f;
+		ImGui::SetCursorPos(ImVec2{ xPos, yPos });
 
-			DrawInfoOverlay();
+		uint64_t textureID = m_framebuffer->GetTextureID();
+		ImGui::Image(reinterpret_cast<void*>(textureID), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
 
-			ImGui::End();
-		}
+		DrawInfoOverlay();
+
+		ImGui::End();
 	}
 
 	ImVec2 GameViewportWindow::ResizeGameViewport()
@@ -64,8 +63,7 @@ namespace BamboEditor
 	{
 		if (ImGui::BeginMenuBar())
 		{
-			if(ImGui::Checkbox("Info", &m_isOpenedInfoPanel)) {}
-
+			ImGui::Checkbox("Info", &m_isOpenedInfoPanel);
 			ImGui::EndMenuBar();
 		}
 	}
@@ -77,7 +75,11 @@ namespace BamboEditor
 		ImGuiIO& io = ImGui::GetIO();
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
 		
-		ImGui::SetNextWindowPos(ImGui::GetWindowViewport()->GetCenter(), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+		ImVec2 windowPosition = ImGui::GetWindowPos();
+		windowPosition.x += 50.0f;
+		windowPosition.y += 50.0f;
+
+		ImGui::SetNextWindowPos(windowPosition, ImGuiCond_Always, ImVec2(0.0f, 0.0f));
 
 		ImGui::SetNextWindowBgAlpha(0.35f); 
 		if (ImGui::Begin("Game Viewport info", nullptr, window_flags))

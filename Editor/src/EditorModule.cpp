@@ -24,7 +24,9 @@ namespace BamboEditor
 		if (editorConfigiStream.fail())
 		{
 			//Проект-заглушка. В будущем заменить на диалоговое окно
-			m_currentProject = std::make_unique<Project>("MockProject", "");
+			m_currentProject = std::make_unique<Project>("MockProject", BamboPaths::BamboEditorResourceDir);
+			m_windows.emplace_back<UPtr<ContentBrowserWindow>>(std::make_unique<ContentBrowserWindow>(m_currentProject));
+
 			OpenWorld();
 
 			Bambo::Entity& cameraEntity = m_currentWorld->CreateEntity();
@@ -48,8 +50,10 @@ namespace BamboEditor
 		const std::string& projectLocation = rootConfig["CurrentProjectLocation"];
 		const std::string& projectFirstWorldPath = rootConfig["CurrentProjectFirstWorldPath"];
 		
-		m_currentProject = std::make_unique<Project>(projectName, projectLocation);
+		m_currentProject = std::make_shared<Project>(projectName, projectLocation);
 		m_currentProject->SetFirstWorldPath(projectFirstWorldPath);
+
+		m_windows.emplace_back<UPtr<ContentBrowserWindow>>(std::make_unique<ContentBrowserWindow>(m_currentProject));
 
 		if (projectFirstWorldPath.size() == 0)
 		{

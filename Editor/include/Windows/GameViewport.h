@@ -14,7 +14,7 @@ namespace BamboEditor
 	public:
 		GameViewportWindow(SPtr<Bambo::Framebuffer> framebuffer);
 		virtual void OnGUI() override;
-		virtual const std::string& GetWindowName() override { return m_windowName; }
+		virtual const std::string& GetWindowName() const override { return m_windowName; }
 	private:
 		std::string m_windowName;
 		SPtr<Bambo::Framebuffer> m_framebuffer;

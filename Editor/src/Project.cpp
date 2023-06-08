@@ -28,7 +28,8 @@ namespace BamboEditor
 	{
 		nlohmann::json rootNode{};
 
-		std::string fullSavePath = m_projectLocation + "/" + m_projectName + ".json";
+		std::string projectLocation{ (const char*)m_projectLocation.c_str() };
+		std::string fullSavePath = projectLocation + "/" + m_projectName + ".json";
 		std::ofstream stream{ fullSavePath };
 
 		if (stream.fail()) return;

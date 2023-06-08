@@ -5,9 +5,11 @@
 
 namespace BamboPaths
 {
-	#define BAMBO_EDITOR_CONFIG_DIR "@BAMBO_EDITOR_CONFIG_DIR@/EditorConfig.json"
+	#define BAMBO_EDITOR_CONFIG_DIR "@BAMBO_EDITOR_CONFIG_DIR@EditorConfig.json"
+	#define BAMBO_EDITOR_RESOURCE_DIR "@BAMBO_EDITOR_RESOURCE_DIR@resources/"
 
 	const std::string BamboEditorConfigDir = BAMBO_EDITOR_CONFIG_DIR;
+	const std::string BamboEditorResourceDir = BAMBO_EDITOR_RESOURCE_DIR;
 }
 
 #endif

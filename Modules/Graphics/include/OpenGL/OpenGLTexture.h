@@ -15,6 +15,7 @@ namespace Bambo
 
 		virtual void LoadFromFile(const std::string& file) override;
 		virtual void Use() const override;
+		virtual uint32 GetID() const override { return m_id; }
 		virtual RectInt GetTextureRect() const override { return RectInt{ 0, 0, m_width, m_height }; }
 	private:
 		uint32 m_id;

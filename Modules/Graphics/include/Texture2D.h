@@ -12,6 +12,7 @@ namespace Bambo
 		void Use() const { m_textureImplementation->Use(); }
 		RectInt GetTextureRect() const { return m_textureImplementation->GetTextureRect(); }
 		const std::vector<RectInt>& GetTextureRects() const { return m_textureRects; }
+		uint32 GetID() const { return m_textureImplementation->GetID(); }
 	private:
 		std::unique_ptr<TextureImplementation> m_textureImplementation;
 		std::vector<RectInt> m_textureRects;

@@ -13,14 +13,15 @@ namespace BamboEditor
 		void SaveProject();
 
 		const std::string& GetName() const { return m_projectName; }
-		const std::string& GetRootFolder() const { return m_projectLocation; }
+		const std::filesystem::path& GetRootFolder() const { return m_projectLocation; }
 		const std::string& GetFirstWorldPath() const { return m_projectFirstWorldPath; }
 
 		void SetFirstWorldPath(const std::string& worldPath) { m_projectFirstWorldPath = worldPath; }
 
 	private:
 		std::string m_projectName;
-		std::string m_projectLocation;
 		std::string m_projectFirstWorldPath;
+
+		std::filesystem::path m_projectLocation;
 	};
 }

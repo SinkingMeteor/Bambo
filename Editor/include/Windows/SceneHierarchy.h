@@ -11,8 +11,8 @@ namespace BamboEditor
 	{
 	public:
 		SceneHierarchyWindow(SPtr<Bambo::World> world);
-		void OnGUI();
-		const std::string& GetWindowName() { return m_windowName; }
+		virtual void OnGUI() override;
+		virtual const std::string& GetWindowName() const override { return m_windowName; }
 	private:
 		std::string m_windowName = "Hierarchy";
 		SPtr<Bambo::World> m_world;
