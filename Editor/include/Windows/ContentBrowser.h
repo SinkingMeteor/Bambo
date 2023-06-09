@@ -27,7 +27,7 @@ namespace BamboEditor
 		float m_thumbnailSize = 32.0f;
 		float m_padding = 16.0f;
 
-		bool m_isOpenedSettingsPanel = true;
+		bool m_isOpenedSettingsPanel = false;
 	
 		void DrawSettingsOverlay();
 	};

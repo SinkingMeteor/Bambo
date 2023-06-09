@@ -24,6 +24,8 @@ namespace BamboEditor
 				ImGui::EndMenuBar();
 			}
 
+			DrawSettingsOverlay();
+
 			if (m_currentDirectory != m_currentProject->GetRootFolder())
 			{
 				if (ImGui::Button("<-"))
@@ -33,11 +35,9 @@ namespace BamboEditor
 			}
 
 			float cellSize = m_thumbnailSize + m_padding;
-
 			float panelWidth = ImGui::GetContentRegionAvail().x;
-			int columnCount = (int)(panelWidth / cellSize);
-			if (columnCount < 1)
-				columnCount = 1;
+			int columnCount = static_cast<int32>(panelWidth / cellSize);
+			columnCount = std::min(1, columnCount);
 
 			ImGui::Columns(columnCount, 0, false);
 
