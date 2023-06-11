@@ -31,7 +31,10 @@ namespace BamboEditor
 		std::vector<UPtr<GUIWindow>> m_windows;
 		SPtr<Bambo::Framebuffer> m_framebuffer;
 
-		void OpenWorld();
-		void OpenWorld(const std::string& worldFilePath) {};
+		void OpenWorld(const std::filesystem::path& worldFilePath);
+		void CreateProject();
+		void OpenProject();
+		void SaveProject();
+		void DispatchNewProject();
 	};
 }

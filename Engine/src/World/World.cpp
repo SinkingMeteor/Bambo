@@ -4,15 +4,6 @@ namespace Bambo
 {
 	void World::Initialize()
 	{
-		CreateRoot();
-		Entity& ent1 = CreateEntity();
-		CreateEntity(ent1.GetID(), "Boo");
-		Entity& foo = CreateEntity(ent1.GetID(), "Foo");
-		CreateEntity(foo.GetID(), "Any");
-		CreateEntity(ent1.GetID(), "Bar");
-		CreateEntity();
-		CreateEntity();
-
 		m_spriteRenderer = std::make_unique<SpriteRenderer>();
 	}
 

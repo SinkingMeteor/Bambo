@@ -71,7 +71,7 @@ namespace BamboEditor
 				ecs_entity_t child = it.entities[i];
 				flecs::entity childEntity = entityWorld.entity(child);
 
-				BAMBO_ASSERT_S(childEntity.has<Bambo::TagComponent>());
+				if (!childEntity.has<Bambo::TagComponent>()) continue;
 
 				const Bambo::TagComponent* tag = childEntity.get<Bambo::TagComponent>();
 				const Bambo::IDComponent* idComponent = childEntity.get<Bambo::IDComponent>();

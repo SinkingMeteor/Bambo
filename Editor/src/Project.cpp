@@ -2,43 +2,47 @@
 
 namespace BamboEditor
 {
-	Project::Project(const std::string& projectName, const std::string& rootFolder) :
-		m_projectName(projectName),
-		m_projectLocation(rootFolder)
-	{}
-
-	UPtr<Project> Project::LoadProject(const std::string& projectPath)
+	bool Project::LoadProject(const std::string& projectPath)
 	{
 		std::ifstream input{ projectPath };
 		nlohmann::json rootNode;
 		input >> rootNode;
 		input.close();
 
-		if (rootNode.is_null()) return nullptr;
+		if (rootNode.is_null()) return false;
 
-		const std::string& projectName = rootNode["ProjectName"];
-		const std::string& worldLocation = rootNode["FirstWorldLocation"];
+		m_projectName = rootNode["ProjectName"];
+		m_startupWorldPath = rootNode["FirstWorldLocation"].get<std::string>();
+		m_projectFolderLocation = rootNode["ProjectFolderLocation"].get<std::string>();
+		m_assetsFolderLocation = rootNode["AssetsFolderLocation"].get<std::string>();
 
-		UPtr<Project> project = std::make_unique<Project>(projectName, projectPath);
-		project->SetFirstWorldPath(worldLocation);
-		return project;
+		return true;
 	}
 
 	void Project::SaveProject()
 	{
 		nlohmann::json rootNode{};
 
-		std::string projectLocation{ (const char*)m_projectLocation.c_str() };
+		std::string projectLocation{ (const char*)m_projectFolderLocation.c_str() };
 		std::string fullSavePath = projectLocation + "/" + m_projectName + ".json";
 		std::ofstream stream{ fullSavePath };
 
 		if (stream.fail()) return;
 
 		rootNode["ProjectName"] = m_projectName;
-		rootNode["FirstWorldLocation"] = m_projectFirstWorldPath;
+		rootNode["FirstWorldLocation"] = m_startupWorldPath;
+		rootNode["ProjectFolderLocation"] = m_projectFolderLocation;
+		rootNode["AssetsFolderLocation"] = m_assetsFolderLocation;
 
 		stream << rootNode;
 		stream.close();
 	}
 
+	void Project::CreateDefaultProject()
+	{
+		m_projectName = "Unknown project";
+		m_projectFolderLocation = "";
+		m_assetsFolderLocation = "";
+		m_startupWorldPath = "";
+	}
 }

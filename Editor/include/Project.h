@@ -8,20 +8,29 @@ namespace BamboEditor
 	class Project final
 	{
 	public:
-		Project(const std::string& projectName, const std::string& rootFolder);
-		static UPtr<Project> LoadProject(const std::string& projectPath);
+		Project() = default;
+		Project(const Project& project) = default;
+		Project& operator=(const Project& project) = default;
+		~Project() = default;
+
+		bool LoadProject(const std::string& projectPath);
+		void CreateDefaultProject();
 		void SaveProject();
 
 		const std::string& GetName() const { return m_projectName; }
-		const std::filesystem::path& GetRootFolder() const { return m_projectLocation; }
-		const std::string& GetFirstWorldPath() const { return m_projectFirstWorldPath; }
+		const std::filesystem::path& GetRootPath() const { return m_projectFolderLocation; }
+		const std::filesystem::path& GetAssetsPath() const { return m_assetsFolderLocation; }
+		const std::filesystem::path& GetStartupWorldPath() const { return m_startupWorldPath; }
 
-		void SetFirstWorldPath(const std::string& worldPath) { m_projectFirstWorldPath = worldPath; }
-
+		void SetProjectName(const std::string& projectName) { m_projectName = projectName; }
+		void SetStartupWorldPath(const std::string& worldPath) { m_startupWorldPath = worldPath; }
+		void SetProjectFolderLocation(const std::string& projectLocation) { m_projectFolderLocation = projectLocation; }
+		void SetAssetsFolderLocation(const std::string& assetsLocation) { m_assetsFolderLocation = assetsLocation; }
 	private:
 		std::string m_projectName;
-		std::string m_projectFirstWorldPath;
 
-		std::filesystem::path m_projectLocation;
+		std::filesystem::path m_startupWorldPath;
+		std::filesystem::path m_projectFolderLocation;
+		std::filesystem::path m_assetsFolderLocation;
 	};
 }
