@@ -32,8 +32,6 @@ namespace BamboEditor
 		SPtr<Bambo::Framebuffer> m_framebuffer;
 
 		void OpenWorld(const std::filesystem::path& worldFilePath);
-		void CreateProject();
-		void OpenProject();
 		void SaveProject();
 		void DispatchNewProject();
 	};

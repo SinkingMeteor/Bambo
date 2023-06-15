@@ -21,17 +21,24 @@ namespace BamboEditor
 		io.ConfigFlags |= ImGuiConfigFlags_::ImGuiConfigFlags_DockingEnable;
 
 		std::ifstream editorConfigiStream{ BamboPaths::BamboEditorConfigDir };
-		if (!editorConfigiStream.fail())
+		nlohmann::json rootConfig{};
+
+		if (editorConfigiStream.fail())
 		{
-			nlohmann::json rootConfig{};
-			rootConfig << editorConfigiStream;
-			BAMBO_ASSERT_S(!rootConfig.is_null())
-
-				//TODO: Вывести список доступных проектов
-
-			std::string currentProjectPath = rootConfig["CurrentProjectPath"];
-			m_currentProject->LoadProject(currentProjectPath);
+			std::ofstream configOutFile{ BamboPaths::BamboEditorConfigDir };
+			rootConfig["CurrentProjectFolderPath"] = "";
+			rootConfig["CurrentProjectName"] = "";
+			configOutFile << std::setw(4) << rootConfig;
+			configOutFile.close();
 		}
+		else
+		{
+			rootConfig << editorConfigiStream;
+		}
+
+		std::filesystem::path currentProjectPath{ rootConfig["CurrentProjectFolderPath"].get<std::string>() };
+		std::string currentProjectName = rootConfig["CurrentProjectName"];
+		m_currentProject->LoadProject(currentProjectPath, currentProjectName);
 		
 		OpenWorld(m_currentProject->GetStartupWorldPath());
 		DispatchNewProject();
@@ -82,8 +89,6 @@ namespace BamboEditor
 		{
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("New", "Ctrl+N")) { CreateProject(); }
-				if (ImGui::MenuItem("Open..", "Ctrl+O")) { OpenProject(); }
 				if (ImGui::MenuItem("Save", "Ctrl+S")) { m_currentProject->SaveProject(); }
 				if (ImGui::MenuItem("Close", "Ctrl+W")) { isToolActive = false; }
 				ImGui::EndMenu();
@@ -114,16 +119,6 @@ namespace BamboEditor
 		m_currentWorld->Initialize();
 	
 		if (worldPath.empty()) return;
-	}
-
-	void EditorModule::CreateProject()
-	{
-		DispatchNewProject();
-	}
-
-	void EditorModule::OpenProject()
-	{
-		DispatchNewProject();
 	}
 
 	void EditorModule::SaveProject()

@@ -1,4 +1,5 @@
 #pragma once
+#include "engpch.h"
 #include <string>
 #include <memory>
 #include "json.hpp"
@@ -13,7 +14,7 @@ namespace BamboEditor
 		Project& operator=(const Project& project) = default;
 		~Project() = default;
 
-		bool LoadProject(const std::string& projectPath);
+		bool LoadProject(const std::filesystem::path& projectPath, const std::string& projectName);
 		void CreateDefaultProject();
 		void SaveProject();
 
