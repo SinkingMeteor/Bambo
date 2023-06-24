@@ -23,4 +23,3 @@
 #include <sstream>
 #include <numeric>
 #include "Core.h"
-#include "Log.h"

@@ -1,4 +1,5 @@
 #include "OpenGL/OpenGLCheck.h"
+#include "Log.h"
 
 namespace Bambo
 {
@@ -10,25 +11,25 @@ namespace Bambo
         switch (error)
         {
         case GL_STACK_OVERFLOW:
-            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "GL_STACK_OVERFLOW: This command would cause a stack overflow.");
+            Logger::Get()->Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "GL_STACK_OVERFLOW: This command would cause a stack overflow.");
             break;
         case GL_STACK_UNDERFLOW:
-            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "GL_STACK_UNDERFLOW: This command would cause a stack underflow.");
+            Logger::Get()->Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "GL_STACK_UNDERFLOW: This command would cause a stack underflow.");
             break;
         case GL_INVALID_ENUM:
-            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "GL_INVALID_ENUM: an invalid enum value was passed to an OpenGL function");
+            Logger::Get()->Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "GL_INVALID_ENUM: an invalid enum value was passed to an OpenGL function");
             break;
         case GL_INVALID_VALUE:
-            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "GL_INVALID_VALUE: an invalid value was passed to an OpenGL function");
+            Logger::Get()->Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "GL_INVALID_VALUE: an invalid value was passed to an OpenGL function");
             break;
         case GL_INVALID_OPERATION:
-            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "GL_INVALID_OPERATION: the requested operation is not valid");
+            Logger::Get()->Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "GL_INVALID_OPERATION: the requested operation is not valid");
             break;
         case GL_OUT_OF_MEMORY:
-            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "AL_OUT_OF_MEMORY: the requested operation resulted in OpenAL running out of memory");
+            Logger::Get()->Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s", filename.c_str(), line, "AL_OUT_OF_MEMORY: the requested operation resulted in OpenAL running out of memory");
             break;
         default:
-            Logger::Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s : %i", filename.c_str(), line, "UNKNOWN_ERROR", error);
+            Logger::Get()->Log("*ERROR*", Verbosity::Fatal, "%s | %u | %s : %i", filename.c_str(), line, "UNKNOWN_ERROR", error);
         }
     }
 

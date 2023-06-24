@@ -1,5 +1,5 @@
 #include "OpenGL\OpenGLShader.h"
-
+#include "Log.h"
 namespace Bambo
 {
 	OpenGLShader::OpenGLShader() :
@@ -68,7 +68,7 @@ namespace Bambo
 			if (!result)
 			{
 				OpenGLCheck(glGetProgramInfoLog(id, 1024, nullptr, infoLog));
-				Logger::Log("LogShader", Verbosity::Error, "ERROR: Compile-time error: %s", (const char*)infoLog);
+				Logger::Get()->Log("LogShader", Verbosity::Error, "ERROR: Compile-time error: %s", (const char*)infoLog);
 				return BAMBO_FALSE;
 			}
 			break;
@@ -77,7 +77,7 @@ namespace Bambo
 			if (!result)
 			{
 				OpenGLCheck(glGetShaderInfoLog(id, 1024, nullptr, infoLog));
-				Logger::Log("LogShader", Verbosity::Error, "ERROR: Compile-time error: %s", (const char*)infoLog);
+				Logger::Get()->Log("LogShader", Verbosity::Error, "ERROR: Compile-time error: %s", (const char*)infoLog);
 				return BAMBO_FALSE;
 			}
 			break;

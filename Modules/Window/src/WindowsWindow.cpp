@@ -1,5 +1,5 @@
 #include "WindowsWindow.h"
-
+#include "Log.h"
 namespace Bambo
 {
 	WindowsWindow::WindowsWindow(const WindowSettings& settings) :
@@ -23,7 +23,7 @@ namespace Bambo
 	{
 		if (glfwInit() == GLFW_FALSE)
 		{
-			Logger::Log("LogWindow", Verbosity::Fatal, "glfw initialization failed");
+			Logger::Get()->Log("LogWindow", Verbosity::Fatal, "glfw initialization failed");
 			return;
 		}
 
@@ -35,7 +35,7 @@ namespace Bambo
 
 		if (!m_window)
 		{
-			Logger::Log("LogWindow", Verbosity::Fatal, "glfw window creation failed");
+			Logger::Get()->Log("LogWindow", Verbosity::Fatal, "glfw window creation failed");
 			return;
 		}
 

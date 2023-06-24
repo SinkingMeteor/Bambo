@@ -1,4 +1,5 @@
 #include "Music.h"
+#include "Log.h"
 
 namespace Bambo
 {
@@ -12,7 +13,7 @@ namespace Bambo
 	{
 		if (!m_currentAudio)
 		{
-			Logger::Log("LogMusic", Verbosity::Warning, "There is no music to play!");
+			Logger::Get()->Log("LogMusic", Verbosity::Warning, "There is no music to play!");
 			return;
 		}
 

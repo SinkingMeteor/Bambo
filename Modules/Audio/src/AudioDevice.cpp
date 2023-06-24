@@ -1,5 +1,5 @@
 #include "AudioDevice.h"
-
+#include "Log.h"
 namespace Bambo
 {
 	AudioDevice::AudioDevice() :
@@ -10,7 +10,7 @@ namespace Bambo
 
 		if (!m_device)
 		{
-			Logger::Log("Audio device log", Verbosity::Error, "ERROR: %s", "Can't create an openAL device");
+			Logger::Get()->Log("Audio device log", Verbosity::Error, "ERROR: %s", "Can't create an openAL device");
 			return;
 		}
 
@@ -18,13 +18,13 @@ namespace Bambo
 	
 		if (!m_context)
 		{
-			Logger::Log("Audio device log", Verbosity::Error, "ERROR: %s", "Can't create an openAL context");
+			Logger::Get()->Log("Audio device log", Verbosity::Error, "ERROR: %s", "Can't create an openAL context");
 			return;
 		}
 
 		if (!alcMakeContextCurrent(m_context))
 		{
-			Logger::Log("Audio device log", Verbosity::Error, "ERROR: %s", "Can't set current openAL context");
+			Logger::Get()->Log("Audio device log", Verbosity::Error, "ERROR: %s", "Can't set current openAL context");
 			return;
 		}
 	}

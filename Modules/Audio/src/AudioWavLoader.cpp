@@ -1,4 +1,5 @@
 #include "AudioWavLoader.h"
+#include "Log.h"
 
 namespace
 {
@@ -27,7 +28,7 @@ namespace Bambo
 	{
 		if (!ReadHeaderOfWav(inStream, rawData.SampleRate, rawData.DataSize, rawData.Channels, rawData.Bps))
 		{
-			Logger::Log("LogAudioFile", Verbosity::Error, "Can't open WAV file");
+			Logger::Get()->Log("LogAudioFile", Verbosity::Error, "Can't open WAV file");
 			return false;
 		}
 
@@ -44,56 +45,56 @@ namespace Bambo
 
 		if (!file.read(buffer, 4))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: Can't read RIFF while loading WAV file");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: Can't read RIFF while loading WAV file");
 			return false;
 		}
 
 		if (std::strncmp(buffer, "RIFF", 4) != 0)
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: You're trying to load invalid WAV file");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: You're trying to load invalid WAV file");
 			return false;
 		}
 
 		if (!file.read(buffer, 4))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: Can't read size of WAV file");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: Can't read size of WAV file");
 			return false;
 		}
 
 		if (!file.read(buffer, 4))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read WAVE");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read WAVE");
 			return false;
 		}
 
 		if (std::strncmp(buffer, "WAVE", 4) != 0)
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: file is not a valid WAVE file (header doesn't contain WAVE)");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: file is not a valid WAVE file (header doesn't contain WAVE)");
 			return false;
 		}
 
 		if (!file.read(buffer, 4))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read fmt/0");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read fmt/0");
 			return false;
 		}
 
 		if (!file.read(buffer, 4))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read the 16");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read the 16");
 			return false;
 		}
 
 		if (!file.read(buffer, 2))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read PCM");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read PCM");
 			return false;
 		}
 
 		//Channels number
 		if (!file.read(buffer, 2))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read number of channels");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read number of channels");
 			return false;
 		}
 		channels = ConvertToInt(buffer, 2);
@@ -101,59 +102,59 @@ namespace Bambo
 		//Sample rate
 		if (!file.read(buffer, 4))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read sample rate");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read sample rate");
 			return false;
 		}
 		sampleRate = ConvertToInt(buffer, 4);
 
 		if (!file.read(buffer, 4))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read (sampleRate * bitsPerSample * channels) / 8");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read (sampleRate * bitsPerSample * channels) / 8");
 			return false;
 		}
 
 		if (!file.read(buffer, 2))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read 	(BitsPerSample * Channels) / 8.1 - 8 bit mono2 - 8 bit stereo/16 bit mono4 - 16 bit stereo");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read 	(BitsPerSample * Channels) / 8.1 - 8 bit mono2 - 8 bit stereo/16 bit mono4 - 16 bit stereo");
 			return false;
 		}
 
 		// BPS
 		if (!file.read(buffer, 2))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read bits per sample");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read bits per sample");
 			return false;
 		}
 		bps = ConvertToInt(buffer, 2);
 
 		if (!file.read(buffer, 4))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read data chunk header");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read data chunk header");
 			return false;
 		}
 
 		if (std::strncmp(buffer, "data", 4) != 0)
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: file is not a valid WAVE file (doesn't have 'data' tag)");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: file is not a valid WAVE file (doesn't have 'data' tag)");
 			return false;
 		}
 
 		if (!file.read(buffer, 4))
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: could not read data size");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: could not read data size");
 			return false;
 		}
 		dataSize = ConvertToInt(buffer, 4);
 
 		if (file.eof())
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: There is no data in file");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: There is no data in file");
 			return false;
 		}
 
 		if (file.fail())
 		{
-			Logger::Log("LogAudioFile",Verbosity::Error, "ERROR: fail state set on the file");
+			Logger::Get()->Log("LogAudioFile",Verbosity::Error, "ERROR: fail state set on the file");
 			return false;
 		}
 

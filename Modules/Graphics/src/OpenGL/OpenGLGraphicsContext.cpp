@@ -1,4 +1,5 @@
 #include "OpenGLGraphicsContext.h"
+#include "Log.h"
 
 namespace Bambo
 {
@@ -11,7 +12,7 @@ namespace Bambo
 	{
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			Logger::Log("LogWindow", Verbosity::Fatal, "failed to initialize GLAD");
+			Logger::Get()->Log("LogWindow", Verbosity::Fatal, "failed to initialize GLAD");
 			return;
 		}
 	}

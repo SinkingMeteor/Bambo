@@ -1,4 +1,5 @@
 #include "EditorModule.h"
+#include "Log.h"
 
 namespace BamboEditor
 {
@@ -25,15 +26,23 @@ namespace BamboEditor
 
 		if (editorConfigiStream.fail())
 		{
-			std::ofstream configOutFile{ BamboPaths::BamboEditorConfigDir };
-			rootConfig["CurrentProjectFolderPath"] = "";
-			rootConfig["CurrentProjectName"] = "";
-			configOutFile << std::setw(4) << rootConfig;
-			configOutFile.close();
+			Bambo::Logger::Get()->Log("LogEditorModule", Bambo::Verbosity::Fatal, "Can't open or find editor config file. Please check EditorConfig.json file at root folder");
 		}
 		else
 		{
 			rootConfig << editorConfigiStream;
+		}
+
+		if (rootConfig["CurrentProjectFolderPath"].is_null())
+		{
+			Bambo::Logger::Get()->Log("LogEditorModule", Bambo::Verbosity::Error, "Editor config file doesn't contains current project folder path. Please add \"CurrentProjectFolderPath\" or reassembly editor");
+			rootConfig["CurrentProjectFolderPath"] = std::string{};
+		}
+
+		if (rootConfig["CurrentProjectName"].is_null())
+		{
+			Bambo::Logger::Get()->Log("LogEditorModule", Bambo::Verbosity::Error, "Editor config file doesn't contains current project name. Please add \"CurrentProjectName\" or reassembly editor");
+			rootConfig["CurrentProjectName"] = std::string{};
 		}
 
 		std::filesystem::path currentProjectPath{ rootConfig["CurrentProjectFolderPath"].get<std::string>() };
