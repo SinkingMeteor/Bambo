@@ -1,17 +1,11 @@
 #pragma once
-#include "imgui.h"
+#include "Essentials.h"
 #include "Main/Module.h"
-#include "World/World.h"
 #include "EngineEvent.h"
-#include "RenderManager.h"
-#include <fstream>
 #include "Project.h"
 #include "EditorPaths.h"
-#include "Windows/SceneHierarchy.h"
-#include "Windows/GameViewport.h"
-#include "Windows/ContentBrowser.h"
-#include "Framebuffer.h"
-
+#include "Patterns/StateMachine.h"
+#include "EditorStates/IEditorState.h"
 namespace BamboEditor
 {
 	class EditorModule : public Bambo::Module
@@ -27,12 +21,6 @@ namespace BamboEditor
 		virtual void OnEvent(Bambo::Event& event) override;
 	private:
 		SPtr<Project> m_currentProject;
-		SPtr<Bambo::World> m_currentWorld;
-		std::vector<UPtr<GUIWindow>> m_windows;
-		SPtr<Bambo::Framebuffer> m_framebuffer;
-
-		void OpenWorld(const std::filesystem::path& worldFilePath);
-		void SaveProject();
-		void DispatchNewProject();
+		Bambo::StateMachine<IEditorState> m_states;
 	};
 }

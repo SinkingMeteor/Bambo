@@ -4,6 +4,8 @@ set(BAMBO_EDITOR_SOURCES
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/SceneHierarchy.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/GameViewport.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/ContentBrowser.cpp
+${BamboEngine_SOURCE_DIR}/Editor/src/EditorStates/OpenProjectEditorState.cpp
+${BamboEngine_SOURCE_DIR}/Editor/src/EditorStates/MainEditorState.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/EditorModule.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Project.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Main.cpp)
