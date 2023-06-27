@@ -6,6 +6,7 @@
 #include "EditorPaths.h"
 #include "Patterns/StateMachine.h"
 #include "EditorStates/IEditorState.h"
+
 namespace BamboEditor
 {
 	class EditorModule : public Bambo::Module

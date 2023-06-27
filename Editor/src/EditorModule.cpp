@@ -1,17 +1,21 @@
 #include "EditorModule.h"
 #include "EditorStates/MainEditorState.h"
 #include "EditorStates/OpenProjectEditorState.h"
+#include "EditorPaths.h"
 namespace BamboEditor
 {
 	void EditorModule::OnAttach()
 	{
-		m_currentProject = std::make_unique<Project>();
-		m_currentProject->CreateDefaultProject();
+		Bambo::TextureProvider* textureProvider = Bambo::TextureProvider::Get();
+		textureProvider->Load(Bambo::ToId(BamboPaths::FILE_ICON_TEXTURE_KEY), BamboPaths::BamboEditorResourceDir + "Graphics/EditorFileIcon.jpg");
+		textureProvider->Load(Bambo::ToId(BamboPaths::FOLDER_ICON_TEXTURE_KEY), BamboPaths::BamboEditorResourceDir + "Graphics/EditorFolderIcon.png");
 
-		m_states.AddState(std::make_shared<OpenProjectEditorState>(m_currentProject));
+		m_currentProject = std::make_unique<Project>();
+
+		m_states.AddState(std::make_shared<OpenProjectEditorState>(m_currentProject, &m_states));
 		m_states.AddState(std::make_shared<MainEditorState>(m_currentProject));
 
-		m_states.EnterTo(static_cast<uint32>(EditorStateType::Main));
+		m_states.EnterTo(static_cast<uint32>(EditorStateType::OpenProject));
 	}
 
 	void EditorModule::OnDetach()

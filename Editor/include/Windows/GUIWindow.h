@@ -7,7 +7,7 @@ namespace BamboEditor
 	{
 	public:
 		GUIWindow() = default;
-		virtual ~GUIWindow() {}
+		virtual ~GUIWindow() = default;
 
 		virtual void OnGUI() = 0;
 		virtual const std::string& GetWindowName() const = 0;

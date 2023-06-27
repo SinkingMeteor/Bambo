@@ -1,10 +1,7 @@
 #include "Windows/ContentBrowser.h"
-
+#include "EditorPaths.h"
 namespace BamboEditor
 {
-	static const std::string FILE_ICON_TEXTURE_KEY = "EditorFileIcon";
-	static const std::string FOLDER_ICON_TEXTURE_KEY = "EditorFolderIcon";
-
 	ContentBrowserWindow::ContentBrowserWindow() :
 		GUIWindow(),
 		m_windowName("ContentBrowser"),
@@ -14,13 +11,13 @@ namespace BamboEditor
 		m_folderIcon()
 	{
 		Bambo::TextureProvider* textureProvider = Bambo::TextureProvider::Get();
-		m_fileIcon = textureProvider->Load(Bambo::ToId(FILE_ICON_TEXTURE_KEY), BamboPaths::BamboEditorResourceDir + "Graphics/EditorFileIcon.jpg");
-		m_folderIcon = textureProvider->Load(Bambo::ToId(FOLDER_ICON_TEXTURE_KEY), BamboPaths::BamboEditorResourceDir + "Graphics/EditorFolderIcon.png");
+		m_fileIcon = textureProvider->GetResource(Bambo::ToId(BamboPaths::FILE_ICON_TEXTURE_KEY));
+		m_folderIcon = textureProvider->GetResource(Bambo::ToId(BamboPaths::FOLDER_ICON_TEXTURE_KEY));
 	}
 
 	void ContentBrowserWindow::OnGUI()
 	{
-		ImGui::Begin("Content Browser", nullptr, ImGuiWindowFlags_MenuBar);
+		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_MenuBar);
 
 		if (m_currentDirectory.empty())
 		{
@@ -47,8 +44,8 @@ namespace BamboEditor
 
 		float cellSize = m_thumbnailSize + m_padding;
 		float panelWidth = ImGui::GetContentRegionAvail().x;
-		int columnCount = static_cast<int32>(panelWidth / cellSize);
-		columnCount = std::min(1, columnCount);
+		int32 columnCount = static_cast<int32>(panelWidth / cellSize);
+		columnCount = std::max(1, columnCount);
 
 		ImGui::Columns(columnCount, 0, false);
 

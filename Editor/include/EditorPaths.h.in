@@ -10,6 +10,9 @@ namespace BamboPaths
 
 	const std::string BamboEditorConfigDir = BAMBO_EDITOR_CONFIG_DIR;
 	const std::string BamboEditorResourceDir = BAMBO_EDITOR_RESOURCE_DIR;
+
+	const std::string FILE_ICON_TEXTURE_KEY = "EditorFileIcon";
+	const std::string FOLDER_ICON_TEXTURE_KEY = "EditorFolderIcon";
 }
 
 #endif

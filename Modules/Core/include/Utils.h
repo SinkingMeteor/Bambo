@@ -21,6 +21,8 @@ namespace Bambo
 		return ONE_RADIAN_IN_DEGREES * radians;
 	}
 
+	bool HasExtension(const std::string& targetString, const std::string& extension);
+	bool IsHiddenFolder(const std::filesystem::path& path);
 	bool IsLittleEndian();
 	int ConvertToInt(char* buffer, std::size_t len);
 }

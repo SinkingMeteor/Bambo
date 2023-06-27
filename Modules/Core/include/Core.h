@@ -35,3 +35,5 @@ using WPtr = std::weak_ptr<T>;
 #else
 	#error "Unsupported platform"
 #endif
+
+#define DECLARE_LOG_CATEGORY_STATIC(logCategory) static const char* logCategory = #logCategory;

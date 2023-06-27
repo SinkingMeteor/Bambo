@@ -30,4 +30,15 @@ namespace Bambo
 		}
 		return a;
 	}
+
+	bool IsHiddenFolder(const std::filesystem::path& path)
+	{
+		DWORD attributes = GetFileAttributes(path.string().c_str());
+		return attributes & FILE_ATTRIBUTE_HIDDEN;
+	}
+
+	bool HasExtension(const std::string& targetString, const std::string& extension)
+	{
+		return targetString.substr(targetString.find_last_of(".") + 1) == extension;
+	}
 }
