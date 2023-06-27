@@ -4,6 +4,7 @@ namespace Bambo
 {
 	void World::Initialize()
 	{
+		CreateRoot();
 		m_spriteRenderer = std::make_unique<SpriteRenderer>();
 	}
 
