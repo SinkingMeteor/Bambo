@@ -14,6 +14,7 @@ namespace BamboEditor
 		Project& operator=(const Project& project) = default;
 		~Project() = default;
 
+		bool OpenProject(const std::filesystem::path& projFilePath);
 		void SaveProject();
 
 		const std::string& GetName() const { return m_projectName; }

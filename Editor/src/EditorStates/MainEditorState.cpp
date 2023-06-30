@@ -106,7 +106,7 @@ namespace BamboEditor
 
 	void MainEditorState::SaveProject()
 	{
-
+		m_currentProject->SaveProject();
 	}
 
 	void MainEditorState::DispatchNewProject()

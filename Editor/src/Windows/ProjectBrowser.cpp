@@ -160,23 +160,12 @@ namespace BamboEditor
 		BAMBO_ASSERT_S(!m_currentProject.expired())
 		BAMBO_ASSERT_S(m_onProjectLoadedCallback)
 
-		std::ifstream stream{ projFilePath };
-		BAMBO_ASSERT_S(!stream.fail())
-
-		nlohmann::json projectConfig{};
-		stream >> projectConfig;
-		stream.close();
-
-		BAMBO_ASSERT_S(!projectConfig["ProjectName"].is_null())
-		BAMBO_ASSERT_S(!projectConfig["ProjectFolderLocation"].is_null())
-		BAMBO_ASSERT_S(!projectConfig["AssetsFolderLocation"].is_null())
-		BAMBO_ASSERT_S(!projectConfig["FirstWorldLocation"].is_null())
-
-		SPtr<Project> project = m_currentProject.lock();
-		project->SetProjectName(projectConfig["ProjectName"]);
-		project->SetProjectFolderLocation(projectConfig["ProjectFolderLocation"]);
-		project->SetAssetsFolderLocation(projectConfig["AssetsFolderLocation"]);
-		project->SetStartupWorldPath(projectConfig["FirstWorldLocation"]);
+		SPtr<Project> projectPtr = m_currentProject.lock();
+		if (!projectPtr->OpenProject(projFilePath))
+		{
+			Bambo::Logger::Get()->Log(ProjectBrowserLog, Bambo::Verbosity::Error, "Can't open the project file.");
+			return;
+		}
 
 		m_onProjectLoadedCallback();
 	}
