@@ -1,5 +1,6 @@
 #pragma once
 #include "engpch.h"
+#include "Essentials.h"
 #include "Camera.h"
 #include "SpriteRenderer.h"
 #include "ShaderProvider.h"
@@ -9,20 +10,21 @@
 #include "Components.h"
 #include "WindowManager.h"
 #include "Input.h"
+#include "json.hpp"
 
 namespace Bambo
 {
+	const std::string WORLD_FILE_EXTENSION_DOT = ".bworld";
+
 	class BAMBO_API World
 	{
 	public:
-		World() = default;
-		virtual ~World() {};
+		World(const std::filesystem::path& worldFilePath);
+		virtual ~World();
 
-		virtual void Initialize();
 		virtual void Update(float deltaSeconds) {};
 		virtual void OnGUI() {};
 		virtual void Render();
-		virtual void Dispose();
 
 		Entity& CreateEntity();
 		Entity& CreateEntity(IID parentId);
@@ -35,12 +37,22 @@ namespace Bambo
 		void DestroyEntity(IID id);
 
 		EntityManager& GetEntityManager() { return m_entityManager; }
+
+		static void CreateNewWorldFile(const std::filesystem::path& assetPath);
+		void SaveWorld();
+
+	protected:
+		virtual void Initialize();
+		virtual void Dispose();
+
 	private:
+		std::fstream m_worldFileStream;
 		EntityManager m_entityManager;
 		std::unordered_map<IID, Entity> m_entityMap;
 		IID m_rootEntityId;
 		UPtr<SpriteRenderer> m_spriteRenderer;
 
 		void CreateRoot();
+		void LoadWorld();
 	};
 }

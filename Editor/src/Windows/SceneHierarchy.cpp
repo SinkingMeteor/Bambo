@@ -2,9 +2,9 @@
 
 namespace BamboEditor
 {
-	SceneHierarchyWindow::SceneHierarchyWindow(SPtr<Bambo::World> world) :
+	SceneHierarchyWindow::SceneHierarchyWindow(EditorContext* editorContext) :
 		m_windowName("Hierarchy"),
-		m_world(world),
+		m_editorContext(editorContext),
 		m_selectedEntity(nullptr)
 	{}
 
@@ -14,7 +14,7 @@ namespace BamboEditor
 
 		ImGui::Begin(m_windowName.c_str(), nullptr, flags);
 
-		if (!m_world)
+		if (!m_editorContext || !m_editorContext->CurrentWorld)
 		{
 			ImGui::End();
 			return;
@@ -25,8 +25,8 @@ namespace BamboEditor
 			m_selectedEntity = nullptr;
 		}
 
-		flecs::entity& rootEntity = m_world->GetRoot().GetInternalEntity();
-		Bambo::EntityManager& entityWorld = m_world->GetEntityManager();
+		flecs::entity& rootEntity = m_editorContext->CurrentWorld->GetRoot().GetInternalEntity();
+		Bambo::EntityManager& entityWorld = m_editorContext->CurrentWorld->GetEntityManager();
 		DisplayChildrenOf(entityWorld, rootEntity);
 
 		ImGui::SetNextWindowSize({ 200.0f, 200.0f });
@@ -49,10 +49,10 @@ namespace BamboEditor
 	{
 		if (!m_selectedEntity)
 		{
-			return m_world->CreateEntity();
+			return m_editorContext->CurrentWorld->CreateEntity();
 		}
 	
-		return m_world->CreateEntity(m_selectedEntity->GetID());
+		return m_editorContext->CurrentWorld->CreateEntity(m_selectedEntity->GetID());
 	}
 
 	void SceneHierarchyWindow::CreateCamera()
@@ -90,7 +90,7 @@ namespace BamboEditor
 				{
 					if(ImGui::IsItemClicked())
 					{
-						m_selectedEntity = &m_world->GetEntityByID(idComponent->ID);
+						m_selectedEntity = &m_editorContext->CurrentWorld->GetEntityByID(idComponent->ID);
 					}
 
 					if (ImGui::BeginDragDropSource())

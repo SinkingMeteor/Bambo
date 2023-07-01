@@ -6,6 +6,7 @@
 #include "EditorPaths.h"
 #include "Patterns/StateMachine.h"
 #include "EditorStates/IEditorState.h"
+#include "EditorContext.h"
 
 namespace BamboEditor
 {
@@ -21,7 +22,7 @@ namespace BamboEditor
 		virtual void OnGUI() override;
 		virtual void OnEvent(Bambo::Event& event) override;
 	private:
-		SPtr<Project> m_currentProject;
+		EditorContext m_editorContext;
 		Bambo::StateMachine<IEditorState> m_states;
 	};
 }

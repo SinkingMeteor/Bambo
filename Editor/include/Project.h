@@ -1,11 +1,15 @@
 #pragma once
 #include "engpch.h"
+#include "Essentials.h"
 #include <string>
 #include <memory>
 #include "json.hpp"
 
 namespace BamboEditor
 {
+	const std::string PROJECT_EXTENSION = "bambo";
+	const std::string PROJECT_EXTENSION_DOT = ".bambo";
+
 	class Project final
 	{
 	public:
@@ -14,6 +18,7 @@ namespace BamboEditor
 		Project& operator=(const Project& project) = default;
 		~Project() = default;
 
+		static void CreateNewProjectFile(const std::filesystem::path& path);
 		bool OpenProject(const std::filesystem::path& projFilePath);
 		void SaveProject();
 

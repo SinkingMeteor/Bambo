@@ -3,12 +3,12 @@
 
 namespace BamboEditor
 {
-	OpenProjectEditorState::OpenProjectEditorState(SPtr<Project> project, Bambo::StateMachine<IEditorState>* stateMachine) :
+	OpenProjectEditorState::OpenProjectEditorState(EditorContext* editorContext, Bambo::StateMachine<IEditorState>* stateMachine) :
 		m_stateMachine(stateMachine),
-		m_currentProject(project),
+		m_editorContext(editorContext),
 		m_windows()
 	{
-		m_windows.emplace_back<UPtr<ProjectBrowserWindow>>(std::make_unique<ProjectBrowserWindow>(m_currentProject, std::bind(&OpenProjectEditorState::OpenEditor, this)));
+		m_windows.emplace_back<UPtr<ProjectBrowserWindow>>(std::make_unique<ProjectBrowserWindow>(editorContext, std::bind(&OpenProjectEditorState::OpenEditor, this)));
 
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags &= ~ImGuiConfigFlags_::ImGuiConfigFlags_DockingEnable;

@@ -1,7 +1,30 @@
 #include "World/World.h"
 
+DECLARE_LOG_CATEGORY_STATIC(WorldLog)
+
 namespace Bambo
 {
+	World::World(const std::filesystem::path& worldFilePath) :
+		m_worldFileStream(),
+		m_entityManager(),
+		m_entityMap(),
+		m_rootEntityId(),
+		m_spriteRenderer()
+	{
+		m_worldFileStream.open(worldFilePath);
+		BAMBO_ASSERT_S(!m_worldFileStream.fail())
+
+		LoadWorld();
+		Initialize();
+	}
+
+	World::~World()
+	{
+		Dispose();
+		BAMBO_ASSERT_S(m_worldFileStream.is_open())
+		m_worldFileStream.close();
+	}
+
 	void World::Initialize()
 	{
 		CreateRoot();
@@ -93,6 +116,32 @@ namespace Bambo
 		root.set<TagComponent>(TagComponent{ "Root" });
 		root.add<TransformComponent>();
 		m_entityMap[m_rootEntityId] = Entity{ root };
+	}
+
+	void World::CreateNewWorldFile(const std::filesystem::path& assetPath) 
+	{
+		std::ofstream outProject{ assetPath };
+
+		BAMBO_ASSERT_S(!outProject.fail())
+
+		nlohmann::json rootConfig{};
+		rootConfig["WorldName"] = assetPath.filename().replace_extension().string();
+		outProject << std::setw(4) << rootConfig;
+
+
+		outProject.close();
+	}
+
+	void World::LoadWorld() 
+	{
+		nlohmann::json worldConfigFile{};
+		m_worldFileStream >> worldConfigFile;
+		BAMBO_ASSERT_S(!worldConfigFile.is_null())
+		BAMBO_ASSERT_S(!worldConfigFile["WorldName"].is_null())
+	}
+	
+	void World::SaveWorld() 
+	{
 	}
 
 	void World::Dispose()

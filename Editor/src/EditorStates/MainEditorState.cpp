@@ -6,17 +6,16 @@
 
 namespace BamboEditor
 {
-	MainEditorState::MainEditorState(SPtr<Project> project) :
-		m_currentProject(project)
+	MainEditorState::MainEditorState(EditorContext* editorContext) :
+		m_editorContext(editorContext)
 	{
 		Bambo::WindowManager* windowManager = Bambo::WindowManager::Get();
 		uint32 width = windowManager->GetWindowWidth();
 		uint32 height = windowManager->GetWindowHeight();
 		m_framebuffer = Bambo::Framebuffer::Create({ Bambo::FramebufferTextureType::Color }, width, height);
 
-		m_currentWorld = std::make_shared<Bambo::World>();
-		m_windows.emplace_back<UPtr<SceneHierarchyWindow>>(std::make_unique<SceneHierarchyWindow>(m_currentWorld));
-		m_windows.emplace_back<UPtr<ContentBrowserWindow>>(std::make_unique<ContentBrowserWindow>());
+		m_windows.emplace_back<UPtr<SceneHierarchyWindow>>(std::make_unique<SceneHierarchyWindow>(m_editorContext));
+		m_windows.emplace_back<UPtr<ContentBrowserWindow>>(std::make_unique<ContentBrowserWindow>(m_editorContext));
 		m_windows.emplace_back<UPtr<GameViewportWindow>>(std::make_unique<GameViewportWindow>(m_framebuffer));
 
 		ImGuiIO& io = ImGui::GetIO();
@@ -25,23 +24,22 @@ namespace BamboEditor
 
 	void MainEditorState::Enter()
 	{
-		OpenWorld(m_currentProject->GetStartupWorldPath());
-		DispatchNewProject();
+		BAMBO_ASSERT_S(m_editorContext)
+		BAMBO_ASSERT_S(m_editorContext->CurrentProject)
+		BAMBO_ASSERT_S(!m_editorContext->CurrentWorld)
+
+		OpenWorld(m_editorContext->CurrentProject->GetStartupWorldPath());
 	}
 
 	void MainEditorState::Exit()
 	{
-		if (m_currentWorld)
-		{
-			m_currentWorld->Dispose();
-		}
 	}
 
 	void MainEditorState::OnUpdate(float deltaTime)
 	{
-		if (m_currentWorld)
+		if (m_editorContext->CurrentWorld)
 		{
-			m_currentWorld->Update(deltaTime);
+			m_editorContext->CurrentWorld->Update(deltaTime);
 		}
 	}
 
@@ -54,9 +52,9 @@ namespace BamboEditor
 
 		renderManager->GetRenderer().Clear();
 
-		if (m_currentWorld)
+		if (m_editorContext->CurrentWorld)
 		{
-			m_currentWorld->Render();
+			m_editorContext->CurrentWorld->Render();
 		}
 
 		m_framebuffer->Unbind();
@@ -73,7 +71,7 @@ namespace BamboEditor
 		{
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("Save", "Ctrl+S")) { m_currentProject->SaveProject(); }
+				if (ImGui::MenuItem("Save", "Ctrl+S")) { SaveProject(); }
 				if (ImGui::MenuItem("Close", "Ctrl+W")) { isToolActive = false; }
 				ImGui::EndMenu();
 			}
@@ -95,26 +93,16 @@ namespace BamboEditor
 
 	void MainEditorState::OpenWorld(const std::filesystem::path& worldPath)
 	{
-		if (m_currentWorld)
-		{
-			m_currentWorld->Dispose();
-		}
-		m_currentWorld->Initialize();
-
-		if (worldPath.empty()) return;
+		m_editorContext->CurrentWorld = std::make_shared<Bambo::World>(worldPath);
 	}
 
 	void MainEditorState::SaveProject()
 	{
-		m_currentProject->SaveProject();
-	}
+		BAMBO_ASSERT_S(m_editorContext)
+		BAMBO_ASSERT_S(m_editorContext->CurrentProject)
+		BAMBO_ASSERT_S(m_editorContext->CurrentWorld)
 
-	void MainEditorState::DispatchNewProject()
-	{
-		for (size_t i = 0; i < m_windows.size(); ++i)
-		{
-			m_windows[i]->OnProjectChanged(*m_currentProject);
-		}
+		m_editorContext->CurrentProject->SaveProject();
+		m_editorContext->CurrentWorld->SaveWorld();
 	}
-
 }

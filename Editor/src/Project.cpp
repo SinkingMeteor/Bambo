@@ -1,7 +1,45 @@
 #include "Project.h"
+#include "World/World.h"
+
+namespace
+{
+	const std::string TEMPLATE_WORLD_FILE_ASSET_LOCATION = "FirstWorld";
+}
+
+DECLARE_LOG_CATEGORY_STATIC(ProjectLog)
 
 namespace BamboEditor
 {
+	void Project::CreateNewProjectFile(const std::filesystem::path& projFilePath)
+	{
+		Bambo::Logger::Get()->Log("ProjectBrowserLog", Bambo::Verbosity::Info, "%s", projFilePath.filename());
+
+		std::filesystem::path assetsNewPath{ projFilePath.parent_path() / "Assets" };
+
+		if (!CreateDirectory(assetsNewPath.string().c_str(), NULL))
+		{
+			Bambo::Logger::Get()->Log(ProjectLog, Bambo::Verbosity::Fatal, "Can't create an asset directory while constructing a project");
+		}
+
+		nlohmann::json rootConfig{};
+		std::ofstream outProject{ projFilePath };
+
+		BAMBO_ASSERT_S(!outProject.fail())
+		BAMBO_ASSERT_S(projFilePath.has_filename())
+
+		std::filesystem::path firstWorldPath = assetsNewPath / (TEMPLATE_WORLD_FILE_ASSET_LOCATION + Bambo::WORLD_FILE_EXTENSION_DOT);
+
+		rootConfig["ProjectFolderLocation"] = projFilePath.string();
+		rootConfig["AssetsFolderLocation"] = assetsNewPath.string();
+		rootConfig["FirstWorldLocation"] = firstWorldPath.string();
+		rootConfig["ProjectName"] = projFilePath.filename().replace_extension().string();
+		outProject << std::setw(4) << rootConfig;
+
+		Bambo::World::CreateNewWorldFile(firstWorldPath);
+
+		outProject.close();
+	}
+
 	bool Project::OpenProject(const std::filesystem::path& projFilePath)
 	{
 		std::ifstream stream{ projFilePath };

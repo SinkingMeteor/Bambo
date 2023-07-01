@@ -4,16 +4,14 @@
 namespace
 {
 	const std::string TARGET_EXTENSION = "bambo";
-	const std::string TARGET_EXTENSION_DOT = ".bambo";
-	const std::string TEMPLATE_WORLD_FILE_LOCATION = "/TemplateWorld.bworld";
 }
 
 DECLARE_LOG_CATEGORY_STATIC(ProjectBrowserLog)
 
 namespace BamboEditor
 {
-	ProjectBrowserWindow::ProjectBrowserWindow(WPtr<Project> currentProject, const std::function<void()>& onProjectLoadedCallback) :
-		m_currentProject(currentProject),
+	ProjectBrowserWindow::ProjectBrowserWindow(EditorContext* editorContext, const std::function<void()>& onProjectLoadedCallback) :
+		m_editorContext(editorContext),
 		m_onProjectLoadedCallback(onProjectLoadedCallback),
 		m_windowName("Project Browser"),
 		m_newProjectName(),
@@ -125,43 +123,16 @@ namespace BamboEditor
 
 	void ProjectBrowserWindow::CreateNewProject()
 	{
-		std::string projectName{ m_newProjectName };
-		if (projectName.size() == 0) return;
-		 
-		std::string projectFullName = projectName + TARGET_EXTENSION_DOT;
-		std::filesystem::path fullpath = m_currentDirectory / projectFullName;
-
-		Bambo::Logger::Get()->Log("ProjectBrowserLog", Bambo::Verbosity::Info, "%s", m_newProjectName);
-		
-		std::string assetsNewPath = (m_currentDirectory / "Assets").string();
-
-		if (!CreateDirectory(assetsNewPath.c_str(), NULL))
-		{
-			Bambo::Logger::Get()->Log(ProjectBrowserLog, Bambo::Verbosity::Fatal, "Can't create an asset directory while constructing a project");
-		}
-
-		nlohmann::json rootConfig{};
-		std::ofstream outProject{ fullpath };
-
-		BAMBO_ASSERT_S(!outProject.fail())
-
-		rootConfig["ProjectFolderLocation"] = m_currentDirectory.string();
-		rootConfig["AssetsFolderLocation"] = assetsNewPath;
-		rootConfig["FirstWorldLocation"] = TEMPLATE_WORLD_FILE_LOCATION;
-		rootConfig["ProjectName"] = projectName;
-		outProject << std::setw(4) << rootConfig;
-		outProject.close();
-
-		OpenProject(fullpath);
+		std::filesystem::path newProjectFullPath = m_currentDirectory / (m_newProjectName + PROJECT_EXTENSION_DOT);
+		Project::CreateNewProjectFile(newProjectFullPath);
+		OpenProject(newProjectFullPath);
 	}
 
 	void ProjectBrowserWindow::OpenProject(const std::filesystem::path& projFilePath)
 	{
-		BAMBO_ASSERT_S(!m_currentProject.expired())
 		BAMBO_ASSERT_S(m_onProjectLoadedCallback)
 
-		SPtr<Project> projectPtr = m_currentProject.lock();
-		if (!projectPtr->OpenProject(projFilePath))
+		if (!m_editorContext->CurrentProject->OpenProject(projFilePath))
 		{
 			Bambo::Logger::Get()->Log(ProjectBrowserLog, Bambo::Verbosity::Error, "Can't open the project file.");
 			return;

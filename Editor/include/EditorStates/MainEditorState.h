@@ -5,13 +5,14 @@
 #include "World/World.h"
 #include "Windows/GUIWindow.h"
 #include "Framebuffer.h"
+#include "EditorContext.h"
 
 namespace BamboEditor
 {
 	class MainEditorState final : public IEditorState
 	{
 	public:
-		MainEditorState(SPtr<Project> project);
+		MainEditorState(EditorContext* editorContext);
 		virtual uint32 GetId() const override { return static_cast<uint32>(EditorStateType::Main); };
 		virtual void Enter() override;
 		virtual void Exit() override;
@@ -21,8 +22,7 @@ namespace BamboEditor
 		virtual void OnGUI() override;
 		virtual void OnEvent(Bambo::Event& event) override;
 	private:
-		SPtr<Project> m_currentProject;
-		SPtr<Bambo::World> m_currentWorld;
+		EditorContext* m_editorContext;
 		std::vector<UPtr<GUIWindow>> m_windows;
 		SPtr<Bambo::Framebuffer> m_framebuffer;
 

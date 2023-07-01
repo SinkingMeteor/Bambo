@@ -2,7 +2,7 @@
 #include "EditorPaths.h"
 namespace BamboEditor
 {
-	ContentBrowserWindow::ContentBrowserWindow() :
+	ContentBrowserWindow::ContentBrowserWindow(EditorContext* editorContext) :
 		GUIWindow(),
 		m_windowName("ContentBrowser"),
 		m_currentDirectory(),
@@ -13,6 +13,9 @@ namespace BamboEditor
 		Bambo::TextureProvider* textureProvider = Bambo::TextureProvider::Get();
 		m_fileIcon = textureProvider->GetResource(Bambo::ToId(BamboPaths::FILE_ICON_TEXTURE_KEY));
 		m_folderIcon = textureProvider->GetResource(Bambo::ToId(BamboPaths::FOLDER_ICON_TEXTURE_KEY));
+
+		m_currentDirectory = editorContext->CurrentProject->GetAssetsPath();
+		m_rootDirectory = m_currentDirectory;
 	}
 
 	void ContentBrowserWindow::OnGUI()
@@ -84,12 +87,6 @@ namespace BamboEditor
 		ImGui::Columns(1);
 
 		ImGui::End();
-	}
-
-	void ContentBrowserWindow::OnProjectChanged(const Project& project)
-	{
-		m_currentDirectory = project.GetAssetsPath();
-		m_rootDirectory = m_currentDirectory;
 	}
 
 	void ContentBrowserWindow::DrawSettingsOverlay()

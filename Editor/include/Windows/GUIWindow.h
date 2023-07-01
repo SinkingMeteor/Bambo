@@ -11,6 +11,5 @@ namespace BamboEditor
 
 		virtual void OnGUI() = 0;
 		virtual const std::string& GetWindowName() const = 0;
-		virtual void OnProjectChanged(const Project& project) {}
 	};
 }

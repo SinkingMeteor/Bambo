@@ -4,13 +4,13 @@
 #include "Patterns/StateMachine.h"
 #include "Project.h"
 #include "Windows/GUIWindow.h"
-
+#include "EditorContext.h"
 namespace BamboEditor
 {
 	class OpenProjectEditorState final : public IEditorState
 	{
 	public:
-		OpenProjectEditorState(SPtr<Project> project, Bambo::StateMachine<IEditorState>* stateMachine);
+		OpenProjectEditorState(EditorContext* editorContext, Bambo::StateMachine<IEditorState>* stateMachine);
 		virtual uint32 GetId() const override { return static_cast<uint32>(EditorStateType::OpenProject); };
 		virtual void Enter() override;
 		virtual void Exit() override;
@@ -22,7 +22,7 @@ namespace BamboEditor
 
 	private:
 		Bambo::StateMachine<IEditorState>* m_stateMachine;
-		SPtr<Project> m_currentProject;
+		EditorContext* m_editorContext;
 		std::vector<UPtr<GUIWindow>> m_windows;
 
 		void OpenEditor();
