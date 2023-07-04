@@ -46,7 +46,7 @@ namespace Bambo
 		virtual void Dispose();
 
 	private:
-		std::fstream m_worldFileStream;
+		std::filesystem::path m_worldFilePath;
 		EntityManager m_entityManager;
 		std::unordered_map<IID, Entity> m_entityMap;
 		IID m_rootEntityId;

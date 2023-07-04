@@ -9,6 +9,14 @@ namespace BamboEditor
 	MainEditorState::MainEditorState(EditorContext* editorContext) :
 		m_editorContext(editorContext)
 	{
+	}
+
+	void MainEditorState::Enter()
+	{
+		BAMBO_ASSERT_S(m_editorContext)
+		BAMBO_ASSERT_S(m_editorContext->CurrentProject)
+		BAMBO_ASSERT_S(!m_editorContext->CurrentWorld)
+
 		Bambo::WindowManager* windowManager = Bambo::WindowManager::Get();
 		uint32 width = windowManager->GetWindowWidth();
 		uint32 height = windowManager->GetWindowHeight();
@@ -20,19 +28,14 @@ namespace BamboEditor
 
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_::ImGuiConfigFlags_DockingEnable;
-	}
-
-	void MainEditorState::Enter()
-	{
-		BAMBO_ASSERT_S(m_editorContext)
-		BAMBO_ASSERT_S(m_editorContext->CurrentProject)
-		BAMBO_ASSERT_S(!m_editorContext->CurrentWorld)
 
 		OpenWorld(m_editorContext->CurrentProject->GetStartupWorldPath());
 	}
 
 	void MainEditorState::Exit()
 	{
+		m_framebuffer.reset();
+		m_windows.clear();
 	}
 
 	void MainEditorState::OnUpdate(float deltaTime)

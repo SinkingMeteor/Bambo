@@ -1,28 +1,29 @@
 #include "World/World.h"
 
+namespace
+{
+	const char* WORLD_NAME_KEY = "WorldName";
+	const char* WORLD_CONTENT_KEY = "Content";
+}
+
 DECLARE_LOG_CATEGORY_STATIC(WorldLog)
 
 namespace Bambo
 {
 	World::World(const std::filesystem::path& worldFilePath) :
-		m_worldFileStream(),
+		m_worldFilePath(worldFilePath),
 		m_entityManager(),
 		m_entityMap(),
 		m_rootEntityId(),
 		m_spriteRenderer()
 	{
-		m_worldFileStream.open(worldFilePath);
-		BAMBO_ASSERT_S(!m_worldFileStream.fail())
-
-		LoadWorld();
 		Initialize();
+		LoadWorld();
 	}
 
 	World::~World()
 	{
 		Dispose();
-		BAMBO_ASSERT_S(m_worldFileStream.is_open())
-		m_worldFileStream.close();
 	}
 
 	void World::Initialize()
@@ -125,7 +126,7 @@ namespace Bambo
 		BAMBO_ASSERT_S(!outProject.fail())
 
 		nlohmann::json rootConfig{};
-		rootConfig["WorldName"] = assetPath.filename().replace_extension().string();
+		rootConfig[WORLD_NAME_KEY] = assetPath.filename().replace_extension().string();
 		outProject << std::setw(4) << rootConfig;
 
 
@@ -134,14 +135,42 @@ namespace Bambo
 
 	void World::LoadWorld() 
 	{
+		std::ifstream worldFileStream{ m_worldFilePath };
+		BAMBO_ASSERT_S(!worldFileStream.fail())
+		
 		nlohmann::json worldConfigFile{};
-		m_worldFileStream >> worldConfigFile;
+		worldFileStream >> worldConfigFile;
+
+		worldFileStream.close();
+
 		BAMBO_ASSERT_S(!worldConfigFile.is_null())
-		BAMBO_ASSERT_S(!worldConfigFile["WorldName"].is_null())
+		BAMBO_ASSERT_S(!worldConfigFile[WORLD_NAME_KEY].is_null())
+
+		if (worldConfigFile[WORLD_CONTENT_KEY].is_null())
+			return;
+
+		m_entityManager.reset();
+
+		std::string worldString = worldConfigFile[WORLD_CONTENT_KEY].get<std::string>();
+		flecs::string_view worldStringView{ worldString.c_str() };
+
+		m_entityManager.from_json(worldStringView);
 	}
 	
 	void World::SaveWorld() 
 	{
+		std::ofstream worldFileStream{ m_worldFilePath };
+		BAMBO_ASSERT_S(!worldFileStream.fail())
+		
+		nlohmann::json worldConfigFile{};
+
+		flecs::string jsonedWorld = m_entityManager.to_json();
+		//@TODO: STORE NAME ??
+		worldConfigFile[WORLD_NAME_KEY] = "Hello world";
+		worldConfigFile[WORLD_CONTENT_KEY] = jsonedWorld.c_str();
+
+		worldFileStream << std::setw(4) << worldConfigFile;
+		worldFileStream.close();
 	}
 
 	void World::Dispose()
