@@ -3,3 +3,4 @@
 #include "Log.h"
 #include "Utils.h"
 #include "EngineEvent.h"
+#include "Patterns/Delegate/Delegate.h"
