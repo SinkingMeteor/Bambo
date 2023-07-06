@@ -21,8 +21,8 @@ namespace Bambo
 		Delegate() = default;
 		Delegate(const Delegate&) = delete;
 		Delegate& operator=(const Delegate&) = delete;
-		Delegate(Delegate&& d) : m_callable(nullptr) { m_callable.swap(d.m_callable); }
-		Delegate& operator=(Delegate&& d)
+		Delegate(Delegate&& d) noexcept : m_callable(nullptr) { m_callable.swap(d.m_callable); }
+		Delegate& operator=(Delegate&& d) noexcept
 		{
 			if (&d == this) return *this;
 			m_callable.swap(d.m_callable);

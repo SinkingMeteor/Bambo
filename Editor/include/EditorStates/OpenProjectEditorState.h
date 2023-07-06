@@ -18,7 +18,6 @@ namespace BamboEditor
 		virtual void OnUpdate(float deltaTIme) override;
 		virtual void OnRender() override;
 		virtual void OnGUI() override;
-		virtual void OnEvent(Bambo::Event& event) override;
 
 	private:
 		Bambo::StateMachine<IEditorState>* m_stateMachine;

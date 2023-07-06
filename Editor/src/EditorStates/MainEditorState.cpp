@@ -90,10 +90,6 @@ namespace BamboEditor
 		ImGui::ShowDemoWindow();
 	}
 
-	void MainEditorState::OnEvent(Bambo::Event& event)
-	{
-	}
-
 	void MainEditorState::OpenWorld(const std::filesystem::path& worldPath)
 	{
 		m_editorContext->CurrentWorld = std::make_shared<Bambo::World>(worldPath);

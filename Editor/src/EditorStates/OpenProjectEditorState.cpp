@@ -38,10 +38,6 @@ namespace BamboEditor
 		}
 	}
 
-	void OpenProjectEditorState::OnEvent(Bambo::Event& event)
-	{
-	}
-
 	void OpenProjectEditorState::OpenEditor()
 	{
 		BAMBO_ASSERT_S(m_stateMachine)

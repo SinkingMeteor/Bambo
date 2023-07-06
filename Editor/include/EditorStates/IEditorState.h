@@ -19,6 +19,5 @@ namespace BamboEditor
 		virtual void OnUpdate(float deltaTIme) = 0;
 		virtual void OnRender() = 0;
 		virtual void OnGUI() = 0;
-		virtual void OnEvent(Bambo::Event& event) = 0;
 	};
 }

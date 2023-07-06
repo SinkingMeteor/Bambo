@@ -44,12 +44,4 @@ namespace BamboEditor
 		if (!editorState) return;
 		editorState->OnGUI();
 	}
-
-	void EditorModule::OnEvent(Bambo::Event& event)
-	{
-		IEditorState* editorState = m_states.GetCurrentState();
-		if (!editorState) return;
-		editorState->OnEvent(event);
-	}
-
 }

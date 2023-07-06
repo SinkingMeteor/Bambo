@@ -4,13 +4,11 @@ namespace Bambo
 {
 	WindowsWindow::WindowsWindow(const WindowSettings& settings) :
 		m_window(nullptr),
-		m_data(),
+		m_width(settings.Width),
+		m_height(settings.Height),
+		m_title(settings.Title),
 		m_context()
-	{
-		m_data.Width = settings.Width; 
-		m_data.Height = settings.Height; 
-		m_data.Title = settings.Title;
-	}
+	{}
 
 	WindowsWindow::~WindowsWindow()
 	{
@@ -31,7 +29,7 @@ namespace Bambo
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		m_window = glfwCreateWindow(m_data.Width, m_data.Height, m_data.Title.c_str(), nullptr, nullptr);
+		m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
 
 		if (!m_window)
 		{
@@ -44,18 +42,12 @@ namespace Bambo
 		m_context = GraphicsContext::Create(m_window);
 		m_context->Initialize();
 
-		glfwSetWindowUserPointer(m_window, &m_data);
+		glfwSetWindowUserPointer(m_window, this);
 		glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int32 width, int32 height)
 			{
-				WindowData* windowData = static_cast<WindowData*>(glfwGetWindowUserPointer(window));
-				windowData->Width = static_cast<uint32>(width);
-				windowData->Height = static_cast<uint32>(height);
-
-				WindowResizedEvent windowEvent{ windowData->Width, windowData->Height };
-				windowData->Callback(windowEvent);
+				WindowsWindow* windowsWindow = static_cast<WindowsWindow*>(glfwGetWindowUserPointer(window));
+				windowsWindow->SetNewWindowSize(static_cast<uint32>(width), static_cast<uint32>(height));
 			});
-
-		return;
 	}
 
 
@@ -69,5 +61,16 @@ namespace Bambo
 	{
 		if (!m_window) return;
 		glfwSetWindowShouldClose(m_window, true);
+	}
+
+	void WindowsWindow::SetNewWindowSize(uint32 width, uint32 height)
+	{
+		BAMBO_ASSERT_S(width != 0u)
+		BAMBO_ASSERT_S(height != 0u)
+
+		m_width = width;
+		m_height = height;
+
+		m_onWindowResized.Invoke(m_width, m_height);
 	}
 }

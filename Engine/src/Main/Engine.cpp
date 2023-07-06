@@ -12,7 +12,8 @@ namespace Bambo
 	{
 		WindowSettings settings{ 1280u, 720u, "Bambo Engine" };
 		WindowManager::Get()->Initialize(settings);
-		WindowManager::Get()->GetWindow().SetEventCallback(BAMBO_BIND_EVENT_FN(Engine::OnEvent));
+
+		WindowManager::Get()->GetWindow().OnWindowResized().Bind(*this, &Engine::OnWindowResize);
 
 		RenderManager::Get()->Initialize(RenderAPI::OpenGL);
 		RenderManager::Get()->GetRenderer().SetClearColor(Color{ 0.3f, 0.3f, 0.3f, 1.0f });
@@ -22,20 +23,6 @@ namespace Bambo
 		m_guiWorld->Initialize();
 		
 		AudioManager::Get()->Initialize();
-	}
-
-
-	void Engine::OnEvent(Event& event)
-	{
-		EventDispatcher dispatcher(event);
-		dispatcher.Dispatch<WindowResizedEvent>(BAMBO_BIND_EVENT_FN(Engine::OnWindowResize));
-
-		for (size_t i = 0; i < m_modules.size(); ++i)
-		{
-			if (event.Handled) break;
-
-			m_modules[i]->OnEvent(event);
-		}
 	}
 
 	void Engine::AddModule(UPtr<Module> module)
@@ -95,13 +82,12 @@ namespace Bambo
 	}
 
 
-	bool Engine::OnWindowResize(WindowResizedEvent& windowEvent)
+	void Engine::OnWindowResize(uint32 width, uint32 height)
 	{
 		RendererImplementation& renderer = RenderManager::Get()->GetRenderer();
-		renderer.SetViewport(Vector2u{ 0u, 0u }, Vector2u{ windowEvent.GetWidth(), windowEvent.GetHeight() });
-		return true;
+		Window& window = WindowManager::Get()->GetWindow();
+		renderer.SetViewport(Vector2u{ 0u, 0u }, Vector2u{ window.GetWidth(), window.GetHeight() });
 	}
-
 
 	void Engine::Dispose()
 	{

@@ -1,7 +1,6 @@
 #pragma once
 #include "Essentials.h"
 #include "Main/Module.h"
-#include "EngineEvent.h"
 #include "Project.h"
 #include "EditorPaths.h"
 #include "Patterns/StateMachine.h"
@@ -20,7 +19,6 @@ namespace BamboEditor
 		virtual void OnUpdate(float deltaTIme) override;
 		virtual void OnRender() override;
 		virtual void OnGUI() override;
-		virtual void OnEvent(Bambo::Event& event) override;
 	private:
 		EditorContext m_editorContext;
 		Bambo::StateMachine<IEditorState> m_states;

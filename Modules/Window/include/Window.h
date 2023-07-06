@@ -1,13 +1,11 @@
 #pragma once
 #include "pch.h"
+#include "Essentials.h"
 #include "Utils.h"
-#include "EngineEvent.h"
 #include "OS.h"
 
 namespace Bambo 
 {
-	using EventCallback = std::function<void(Event&)>;
-
 	struct WindowSettings
 	{
 	public:
@@ -15,6 +13,8 @@ namespace Bambo
 		uint32 Height{ 1 };
 		std::string Title{};
 	};
+
+	using OnWindowResizedDelegate = MulticastDelegate<void(uint32, uint32)>; //width, height
 
 	class BAMBO_API Window
 	{
@@ -28,12 +28,15 @@ namespace Bambo
 		virtual void Initialize() = 0;
 		virtual uint32 GetWidth() const = 0;
 		virtual uint32 GetHeight() const = 0;
-		virtual void SetEventCallback(const EventCallback& callback) = 0;
 		virtual bool WindowShouldClose() const = 0;
 		virtual void Update() = 0;
 		virtual void* GetWindowPtr() = 0;
 		virtual void CloseWindow() = 0;
 
+		OnWindowResizedDelegate& OnWindowResized() { return m_onWindowResized; }
+
 		static std::unique_ptr<Window> CreateBamboWindow(const WindowSettings& settings, OSType osType);
+	protected:
+		OnWindowResizedDelegate m_onWindowResized;
 	};
 }
