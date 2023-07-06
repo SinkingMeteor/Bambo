@@ -4,3 +4,4 @@
 #include "Utils.h"
 #include "EngineEvent.h"
 #include "Patterns/Delegate/Delegate.h"
+#include "Patterns/Delegate/MulticastDelegate.h"

@@ -5,7 +5,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Log.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Utils.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Time/Timer.cpp)
 
-add_library(BamboCore STATIC ${BAMBO_CORE_SOURCES})
+add_library(BamboCore STATIC ${BAMBO_CORE_SOURCES} )
 
 target_include_directories(BamboCore 
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/)
