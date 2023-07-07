@@ -74,6 +74,7 @@ namespace Bambo
 
 		Vector3() noexcept : Vector3(T(0.0f), T(0.0f), T(0.0f)) {}
 		Vector3(T valueX, T valueY, T valueZ) : X(valueX), Y(valueY), Z(valueZ) {}
+		Vector3(const Vector2<T>& vec2) : Vector3(vec2.X, vec2.Y, 0.0f) {}
 
 		float Dot(const Vector3<T>& vector) const;
 		float Magnitude() const;

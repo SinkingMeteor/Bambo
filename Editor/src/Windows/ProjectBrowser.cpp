@@ -38,7 +38,7 @@ namespace BamboEditor
 		ImGui::SetNextWindowSize(viewportSize);
 		ImGui::SetNextWindowPos(windowPos);
 
-		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar);
+		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 
 		ImGui::Text(m_currentDirectory.string().c_str());
 
