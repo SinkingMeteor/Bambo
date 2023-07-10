@@ -35,9 +35,9 @@ flecs_static)
 
 target_include_directories(Bambo 
 PUBLIC ${BamboEngine_BINARY_DIR}/Engine/generated/
-PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/
-PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/flecs/include/
-PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/imgui/include/
+PRIVATE ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/
+PRIVATE ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/flecs/include/
+PRIVATE ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/imgui/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Core/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Graphics/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Audio/include/
@@ -52,3 +52,8 @@ add_definitions(-DBAMBO_ENGINE_RESOURCE_DIR=${BAMBO_ENGINE_RESOURCE_DIR})
 configure_file(include/BamboPaths.h.in "${BamboEngine_BINARY_DIR}/Engine/generated/BamboPaths.h")
 
 target_precompile_headers(Bambo PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/engpch.h)
+
+add_custom_command(TARGET Bambo POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+            ${BamboEngine_BINARY_DIR}/Modules/thirdparty/OpenAL/OpenAL32.dll
+            ${BamboEngine_BINARY_DIR}/Engine/)
