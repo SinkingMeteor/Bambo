@@ -4,5 +4,6 @@
 
 namespace Bambo
 {
+	bool FromJson(rttr::instance& instance, nlohmann::json& jsonNode);
 	void ToJson(rttr::instance& instance, nlohmann::json& jsonNode);
 }

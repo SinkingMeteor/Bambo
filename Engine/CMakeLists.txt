@@ -8,6 +8,7 @@ set(BAMBO_ENGINE_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Engine.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/TimeManager.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Serialization/JsonSerializer.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Serialization/JsonDeserializer.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/GUI/GUIWorld.cpp)
 
