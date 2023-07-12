@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_subdirectory(thirdparty/rttr)
-
 set(BAMBO_EDITOR_SOURCES
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/SceneHierarchy.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/GameViewport.cpp
@@ -33,10 +31,6 @@ find_library(BAMBO_ENGINE_LIB
 NAMES Bambo
 HINTS ${BamboEngine_BINARY_DIR}/Engine/)
 
-find_library(THIRDPARTY_LIBS
-NAMES RTTR::Core
-HINTS ${BamboEngine_BINARY_DIR}/Editor/thirdparty/)
-
 set(BAMBO_EDITOR_CONFIG_DIR "${BamboEngine_BINARY_DIR}/Editor/")
 set(BAMBO_EDITOR_RESOURCE_DIR "${BamboEngine_BINARY_DIR}/Editor/")
 add_definitions(-DBAMBO_EDITOR_CONFIG_DIR=${BAMBO_EDITOR_CONFIG_DIR})
@@ -44,7 +38,7 @@ add_definitions(-DBAMBO_EDITOR_RESOURCE_DIR=${BAMBO_EDITOR_RESOURCE_DIR})
 configure_file(include/EditorPaths.h.in "${BamboEngine_BINARY_DIR}/Editor/generated/EditorPaths.h")
 configure_file(include/EditorConfig.json.in "${BamboEngine_BINARY_DIR}/Editor/EditorConfig.json")
 
-target_link_libraries(BamboEditor Bambo rttr_core)
+target_link_libraries(BamboEditor Bambo)
 
 add_custom_command(TARGET BamboEditor POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -54,5 +48,5 @@ add_custom_command(TARGET BamboEditor POST_BUILD
 
 add_custom_command(TARGET BamboEditor POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-    ${BamboEngine_BINARY_DIR}/Editor/thirdparty/rttr/bin/rttr_core_d.dll
+    ${BamboEngine_BINARY_DIR}/Engine/thirdparty/rttr/bin/rttr_core_d.dll
     ${BamboEngine_BINARY_DIR}/Editor/)

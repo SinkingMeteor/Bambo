@@ -2,11 +2,12 @@ cmake_minimum_required(VERSION 3.16)
 
 add_subdirectory(thirdparty/flecs)
 add_subdirectory(thirdparty/imgui)
+add_subdirectory(thirdparty/rttr)
 
 set(BAMBO_ENGINE_SOURCES
-${CMAKE_CURRENT_LIST_DIR}/src/Main/Main.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/Engine.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Main/TimeManager.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Serialization/JsonSerializer.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/GUI/GUIWorld.cpp)
 
@@ -23,13 +24,14 @@ NAMES BamboGraphics BamboWindow BamboAudio
 HINTS ${BamboEngine_BINARY_DIR}/Modules/)
 
 find_library(THIRDPARTY_LIBS
-NAMES flecs imgui
+NAMES flecs imgui RTTR::Core
 HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/)
 
 target_link_libraries(Bambo
 BamboGraphics 
 BamboWindow
 BamboAudio
+rttr_core
 imgui
 flecs_static)
 
@@ -38,6 +40,7 @@ PUBLIC ${BamboEngine_BINARY_DIR}/Engine/generated/
 PRIVATE ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/
 PRIVATE ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/flecs/include/
 PRIVATE ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/imgui/include/
+PUBLIC ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/rttr/src/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Core/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Graphics/include/
 PUBLIC ${BamboEngine_SOURCE_DIR}/Modules/Audio/include/
