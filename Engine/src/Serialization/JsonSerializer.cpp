@@ -9,7 +9,7 @@ namespace
 
     void SerializeSequentialContainer(const rttr::variant_sequential_view& view, nlohmann::json& jsonNode)
     {
-        BAMBO_ASSERT(false, "array serializing is not supported currently")
+        jsonNode = nlohmann::json::array({});
 
         for (const auto& item : view)
         {
@@ -35,10 +35,10 @@ namespace
 
     void SerializeAssociativeContainer(const rttr::variant_associative_view& view, nlohmann::json& jsonNode)
     {
-        BAMBO_ASSERT(false, "map serializing is not supported currently")
-
         static const rttr::string_view key_name("key");
         static const rttr::string_view value_name("value");
+
+        jsonNode = nlohmann::json::array({});
 
         if (view.is_key_only_type())
         {
@@ -51,11 +51,9 @@ namespace
         {
             for (auto& item : view)
             {
-                jsonNode[key_name.data()] = key_name;
-                SerializeVariant(item.first, jsonNode);
-
-                jsonNode[value_name.data()] = value_name;
-                SerializeVariant(item.second, jsonNode);
+                jsonNode.push_back({});
+                SerializeVariant(item.first, jsonNode.back()[key_name.data()]);
+                SerializeVariant(item.second, jsonNode.back()[value_name.data()]);
             }
         }
 
@@ -63,32 +61,34 @@ namespace
 
     bool SerializePrimitive(const rttr::type& type, const rttr::variant& variant, nlohmann::json& jsonNode)
     {
+        bool isArray = jsonNode.is_array();
+
         if (type.is_arithmetic())
         {
             if (type == rttr::type::get<bool>())
-                jsonNode = variant.to_bool();
+                isArray ? jsonNode.push_back(variant.to_bool()) : jsonNode = variant.to_bool();
             else if (type == rttr::type::get<char>())
-                jsonNode = variant.to_bool();
+                isArray ? jsonNode.push_back(variant.to_bool()) : jsonNode = variant.to_bool();
             else if (type == rttr::type::get<int8_t>())
-                jsonNode = variant.to_int8();
+                isArray ? jsonNode.push_back(variant.to_int8()) : jsonNode = variant.to_int8();
             else if (type == rttr::type::get<int16_t>())
-                jsonNode = variant.to_int16();
+                isArray ? jsonNode.push_back(variant.to_int16()) : jsonNode = variant.to_int16();
             else if (type == rttr::type::get<int32_t>())
-                jsonNode = variant.to_int32();
+                isArray ? jsonNode.push_back(variant.to_int32()) : jsonNode = variant.to_int32();
             else if (type == rttr::type::get<int64_t>())
-                jsonNode = variant.to_int64();
+                isArray ? jsonNode.push_back(variant.to_int64()) : jsonNode = variant.to_int64();
             else if (type == rttr::type::get<uint8_t>())
-                jsonNode = variant.to_uint8();
+                isArray ? jsonNode.push_back(variant.to_uint8()) : jsonNode = variant.to_uint8();
             else if (type == rttr::type::get<uint16_t>())
-                jsonNode = variant.to_uint16();
+                isArray ? jsonNode.push_back(variant.to_uint16()) : jsonNode = variant.to_uint16();
             else if (type == rttr::type::get<uint32_t>())
-                jsonNode = variant.to_uint32();
+                isArray ? jsonNode.push_back(variant.to_uint32()) : jsonNode = variant.to_uint32();
             else if (type == rttr::type::get<uint64_t>())
-                jsonNode = variant.to_uint64();
+                isArray ? jsonNode.push_back(variant.to_uint64()) : jsonNode = variant.to_uint64();
             else if (type == rttr::type::get<float>())
-                jsonNode = variant.to_double();
+                isArray ? jsonNode.push_back(variant.to_double()) : jsonNode = variant.to_double();
             else if (type == rttr::type::get<double>())
-                jsonNode = variant.to_double();
+                isArray ? jsonNode.push_back(variant.to_double()) : jsonNode = variant.to_double();
             return true;
         }
         
@@ -98,23 +98,23 @@ namespace
             std::string result = variant.to_string(&ok);
             if (ok)
             {
-                jsonNode = variant.to_string();
+                isArray ? jsonNode.push_back(variant.to_string()) : jsonNode = variant.to_string();
             }
             else
             {
                 ok = false;
                 auto value = variant.to_uint64(&ok);
                 if (ok)
-                    jsonNode = variant.to_uint64();
+                    isArray ? jsonNode.push_back(variant.to_uint64()) : jsonNode = variant.to_uint64();
                 else
-                    jsonNode = "";
+                    isArray ? jsonNode.push_back(variant.to_uint64()) : jsonNode = "";
             }
             return true;
         }
         
         if (type == rttr::type::get<std::string>())
         {
-            jsonNode = variant.to_string();
+            isArray ? jsonNode.push_back(variant.to_string()) : jsonNode = variant.to_string();
             return true;
         }
         
@@ -123,6 +123,8 @@ namespace
 
     bool SerializeVariant(const rttr::variant& variant, nlohmann::json& jsonNode)
     {
+        bool isArray = jsonNode.is_array();
+
         rttr::type variantType = variant.get_type();
         rttr::type wrappedType = variantType;
         if (variantType.is_wrapper())
@@ -149,7 +151,15 @@ namespace
         auto childProps = isWrapped ? wrappedType.get_properties() : variantType.get_properties();
         if (!childProps.empty())
         {
-            ToJsonInternal(variant, jsonNode);
+            if (isArray)
+            {
+                jsonNode.push_back({});
+                ToJsonInternal(variant, jsonNode.back());
+            }
+            else
+            {
+                ToJsonInternal(variant, jsonNode);
+            }
         }
         else
         {
@@ -157,11 +167,11 @@ namespace
             std::string text = variant.to_string(&ok);
             if (!ok)
             {
-                jsonNode = text;
+                isArray ? jsonNode.push_back(text) : jsonNode = text;
                 return false;
             }
 
-            jsonNode = text;
+            isArray ? jsonNode.push_back(text) : jsonNode = text;
         }
     }
 
@@ -179,11 +189,21 @@ namespace
             if (!propValue)
                 continue;
 
-            const rttr::string_view name = prop.get_name();
-
-            if (!SerializeVariant(propValue, jsonNode[name.data()]))
+            if (jsonNode.is_array())
             {
-                Bambo::Logger::Get()->Log("JsonSerializerLog", Bambo::Verbosity::Error, "Can't serialize property with name %s", name.data());
+                if (!SerializeVariant(propValue, jsonNode))
+                {
+                    Bambo::Logger::Get()->Log("JsonSerializerLog", Bambo::Verbosity::Error, "Can't serialize property with name %s", jsonNode);
+                }
+            }
+            else
+            {
+                const rttr::string_view name = prop.get_name();
+
+                if (!SerializeVariant(propValue, jsonNode[name.data()]))
+                {
+                    Bambo::Logger::Get()->Log("JsonSerializerLog", Bambo::Verbosity::Error, "Can't serialize property with name %s", name.data());
+                }
             }
         }
 	}

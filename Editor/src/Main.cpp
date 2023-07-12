@@ -21,6 +21,11 @@ struct PlayerArray
 	std::vector<Player> Players{};
 };
 
+struct PlayerMap
+{
+	std::unordered_map<int32, Player> Players{};
+};
+
 RTTR_REGISTRATION
 {
 	rttr::registration::class_<Point>("Point")
@@ -33,20 +38,28 @@ RTTR_REGISTRATION
 
 	rttr::registration::class_<PlayerArray>("PlayerArray")
 		.property("Players", &PlayerArray::Players);
+
+	rttr::registration::class_<PlayerMap>("PlayerMap")
+		.property("Players", &PlayerMap::Players);
 }
 
 int main()
 {
 	Player player1{ Point{ 10, 25 }, Point{ 30, 125 }};
-	Player player2{ Point{ 10, 25 }, Point{ 30, 125 }};
-	Player player3{ Point{ 10, 25 }, Point{ 30, 125 }};
+	Player player2{ Point{ 11, 26 }, Point{ 31, 126 }};
+	Player player3{ Point{ 12, 29 }, Point{ 32, 128 }};
 
 	PlayerArray arr{};
 	arr.Players.push_back(player1);
 	arr.Players.push_back(player2);
 	arr.Players.push_back(player3);
 
-	rttr::instance inst{ player1 };
+	PlayerMap map{};
+	map.Players[0] = player1;
+	map.Players[1] = player2;
+	map.Players[2] = player3;
+
+	rttr::instance inst{ map };
 
 	nlohmann::json rootJson{};
 	std::ofstream stream{ "E:/TestFile.json" };
