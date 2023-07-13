@@ -15,19 +15,22 @@ namespace
         {
             if (item.is_sequential_container())
             {
-                SerializeSequentialContainer(item.create_sequential_view(), jsonNode);
+                jsonNode.push_back(nlohmann::json::array());
+                SerializeSequentialContainer(item.create_sequential_view(), jsonNode.back());
             }
             else
             {
                 rttr::variant wrappedVariant = item.extract_wrapped_value();
                 rttr::type valueType = wrappedVariant.get_type();
+                jsonNode.push_back({});
+
                 if (valueType.is_arithmetic() || valueType == rttr::type::get<std::string>() || valueType.is_enumeration())
                 {
-                    SerializePrimitive(valueType, wrappedVariant, jsonNode);
+                    SerializePrimitive(valueType, wrappedVariant, jsonNode.back());
                 }
                 else 
                 {
-                    ToJsonInternal(wrappedVariant, jsonNode);
+                    ToJsonInternal(wrappedVariant, jsonNode.back());
                 }
             }
         }

@@ -59,16 +59,16 @@ int main()
 	map.Players[1] = player2;
 	map.Players[2] = player3;
 
-	if (false)
+	if (true)
 	{
-		rttr::instance inst{ player1 };
+		rttr::instance inst{ map };
 
 		nlohmann::json rootJson{};
 		std::ofstream stream{ "E:/TestFile.json" };
 
 		Bambo::ToJson(inst, rootJson);
 
-		stream << rootJson;
+		stream << std::setw(4) << rootJson;
 		stream.close();
 	}
 
@@ -79,10 +79,9 @@ int main()
 		istream >> importJson;
 		istream.close();
 
-		Player player4{ Point{ 0, 0 }, Point{ 0, 0 } };
-		rttr::instance pointInstance{ player4 };
+		PlayerMap map2{};
+		rttr::instance pointInstance{ map2 };
 		Bambo::FromJson(pointInstance, importJson);
-		std::cout << player4.YPoint.X << " " << player4.YPoint.Y << std::endl;
 	}
 
 	Bambo::Engine engine{};
