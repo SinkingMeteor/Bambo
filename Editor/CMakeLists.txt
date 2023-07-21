@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 set(BAMBO_EDITOR_SOURCES
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/SceneHierarchy.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/GameViewport.cpp
+${BamboEngine_SOURCE_DIR}/Editor/src/Windows/Inspector.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/ContentBrowser.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/ProjectBrowser.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/EditorStates/OpenProjectEditorState.cpp
