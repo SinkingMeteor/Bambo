@@ -2,10 +2,11 @@
 #include "engpch.h"
 #include "glm.hpp"
 #include "gtc/quaternion.hpp"
+#include "Serialization/MathSerialization.h"
 
 namespace Bambo
 {
-	class BAMBO_API TransformComponent final
+	class BAMBO_API TransformComponent final : public Component
 	{
 	public:
 		glm::vec3 Position{ 0.0f, 0.0f, 0.0f };
@@ -20,6 +21,21 @@ namespace Bambo
 		{
 			glm::mat4 rotation{ glm::quat(Rotation) };
 			return glm::translate(glm::mat4(1.0f), Position) * rotation * glm::scale(glm::mat4(1.0f), Scale);
+		}
+
+		virtual void Serialize(nlohmann::json& node) override
+		{
+			node["name"] = "TransformComponent";
+			Serialization::Serialize(Position, node["Position"]);
+			Serialization::Serialize(Rotation, node["Rotation"]);
+			Serialization::Serialize(Scale, node["Scale"]);
+		}
+
+		virtual void Deserialize(nlohmann::json& node) override
+		{
+			Serialization::Deserialize(Position, node["Position"]);
+			Serialization::Deserialize(Rotation, node["Rotation"]);
+			Serialization::Deserialize(Scale, node["Scale"]);
 		}
 	};
 }

@@ -3,7 +3,7 @@
 #include "Texture2D.h"
 namespace Bambo
 {
-	struct BAMBO_API SpriteComponent final
+	struct BAMBO_API SpriteComponent final : public Component
 	{
 		SPtr<Texture2D> Texture{ nullptr };
 		uint32 SpriteRectIndex{ 0 };
@@ -19,5 +19,17 @@ namespace Bambo
 			Texture(texture),
 			SpriteRectIndex(rectIndex)
 		{}
+
+		virtual void Serialize(nlohmann::json& node) override
+		{
+			node["name"] = "SpriteComponent";
+			//node["texture"] = Texture->
+			node["rectId"] = SpriteRectIndex;
+		}
+
+		virtual void Deserialize(nlohmann::json& node) override
+		{
+			SpriteRectIndex = node["rectId"].get<uint32>();
+		}
 	};
 }

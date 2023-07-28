@@ -1,8 +1,5 @@
 #pragma once
 
-#include "rttr/src/rttr/registration.h"
-#include "rttr/src/rttr/type.h"
-
 #include "pch.h"
 #include "BamboPaths.h"
 #pragma warning(push, 0)
