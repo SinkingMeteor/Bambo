@@ -16,11 +16,12 @@ namespace Bambo
 {
 	const std::string WORLD_FILE_EXTENSION_DOT = ".bworld";
 
-	class BAMBO_API World
+	class BAMBO_API World final
 	{
+		friend Entity;
 	public:
 		World(const std::filesystem::path& worldFilePath);
-		virtual ~World();
+		~World();
 
 		virtual void Update(float deltaSeconds) {};
 		virtual void OnGUI() {};
@@ -32,6 +33,7 @@ namespace Bambo
 		Entity& CreateEntity(IID parentId, const char* name);
 		Entity& CreateEntity(IID parentId, const char* name, IID selfId);
 		Entity& GetEntityByID(IID id);
+
 		Entity& GetRoot() { return m_entityMap[m_rootEntityId]; }
 		void DestroyEntity(Entity& entity);
 		void DestroyEntity(IID id);
@@ -40,10 +42,7 @@ namespace Bambo
 
 		static void CreateNewWorldFile(const std::filesystem::path& assetPath);
 		void SaveWorld();
-
-	protected:
-		virtual void Initialize();
-		virtual void Dispose();
+		void Reset();
 
 	private:
 		std::filesystem::path m_worldFilePath;
@@ -54,5 +53,6 @@ namespace Bambo
 
 		void CreateRoot();
 		void LoadWorld();
+		void ChangeID(Entity& entity, IID oldID, IID newID);
 	};
 }

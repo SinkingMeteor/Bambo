@@ -24,15 +24,15 @@ namespace Bambo
 			node["orthoFar"] = Camera.GetOrthoFar();
 
 			node["fov"] = Camera.GetFieldOfView();
-			node["perpectiveNear"] = Camera.GetPespectiveNear();
-			node["perpectiveFar"] = Camera.GetPespectiveFar();
+			node["perspectiveNear"] = Camera.GetPespectiveNear();
+			node["perspectiveFar"] = Camera.GetPespectiveFar();
 
 		}
 
 		virtual void Deserialize(nlohmann::json& node) override
 		{
 			Camera.SetAspectRatio(node["aspectRatio"].get<float>());
-			Camera.SetProjectionType((node["projType"].get<CameraProjectionType>()));
+			Camera.SetProjectionType(static_cast<CameraProjectionType>((node["projType"].get<int32>())));
 			Camera.SetOrthographicSize(node["orthoSize"].get<float>());
 			Camera.SetOrthographicNear(node["orthoNear"].get<float>());
 			Camera.SetOrthographicFar(node["orthoFar"].get<float>());

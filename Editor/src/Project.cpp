@@ -35,8 +35,6 @@ namespace BamboEditor
 		rootConfig["ProjectName"] = projFilePath.filename().replace_extension().string();
 		outProject << std::setw(4) << rootConfig;
 
-		Bambo::World::CreateNewWorldFile(firstWorldPath);
-
 		outProject.close();
 	}
 

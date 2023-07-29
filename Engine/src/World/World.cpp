@@ -1,9 +1,9 @@
 #include "World/World.h"
-
+#include "Serialization/WorldSerialization.h"
 namespace
 {
-	const char* WORLD_NAME_KEY = "WorldName";
-	const char* WORLD_CONTENT_KEY = "Content";
+	const char* WORLD_NAME_KEY = "name";
+	const char* WORLD_CONTENT_KEY = "content";
 }
 
 DECLARE_LOG_CATEGORY_STATIC(WorldLog)
@@ -15,21 +15,15 @@ namespace Bambo
 		m_entityManager(),
 		m_entityMap(),
 		m_rootEntityId(),
-		m_spriteRenderer()
+		m_spriteRenderer(std::make_unique<SpriteRenderer>())
 	{
-		Initialize();
+		CreateRoot();
 		LoadWorld();
 	}
 
 	World::~World()
 	{
-		Dispose();
-	}
-
-	void World::Initialize()
-	{
-		CreateRoot();
-		m_spriteRenderer = std::make_unique<SpriteRenderer>();
+		Reset();
 	}
 
 	void World::Render()
@@ -77,13 +71,16 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_entityMap.find(parentId) != m_entityMap.end())
 
 		Entity& parentEntity = m_entityMap[parentId];
+
+		BAMBO_ASSERT_S(parentEntity.IsValid())
+
 		flecs::entity ent = m_entityManager.entity(name);
 		ent.child_of(parentEntity.GetInternalEntity());
 
 		ent.set<IDComponent>(IDComponent{ selfId });
 		ent.set<TagComponent>(TagComponent{ name });
 		ent.add<TransformComponent>();
-		m_entityMap[selfId] = Entity{ ent };
+		m_entityMap[selfId] = Entity{ ent, this };
 		return m_entityMap[selfId];
 	}
 	
@@ -92,6 +89,23 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_entityMap.find(id) != m_entityMap.end())
 		BAMBO_ASSERT_S(!m_entityMap[id].IsDestroyed())
 		return m_entityMap[id];
+	}
+
+	void World::ChangeID(Entity& entity, IID oldID, IID newID)
+	{
+		if (oldID == newID) return;
+
+		if(m_rootEntityId == oldID)
+		{
+			m_rootEntityId = newID;
+		}
+
+		auto it = m_entityMap.find(oldID);
+		BAMBO_ASSERT_S(it != m_entityMap.end())
+
+		auto node = m_entityMap.extract(it);
+		node.key() = newID;
+		m_entityMap.insert(std::move(node));
 	}
 
 	void World::DestroyEntity(IID id)
@@ -116,27 +130,18 @@ namespace Bambo
 		root.set<IDComponent>(IDComponent{ m_rootEntityId });
 		root.set<TagComponent>(TagComponent{ "Root" });
 		root.add<TransformComponent>();
-		m_entityMap[m_rootEntityId] = Entity{ root };
-	}
-
-	void World::CreateNewWorldFile(const std::filesystem::path& assetPath) 
-	{
-		std::ofstream outProject{ assetPath };
-
-		BAMBO_ASSERT_S(!outProject.fail())
-
-		nlohmann::json rootConfig{};
-		rootConfig[WORLD_NAME_KEY] = assetPath.filename().replace_extension().string();
-		outProject << std::setw(4) << rootConfig;
-
-
-		outProject.close();
+		m_entityMap[m_rootEntityId] = Entity{ root, this };
 	}
 
 	void World::LoadWorld() 
 	{
 		std::ifstream worldFileStream{ m_worldFilePath };
-		BAMBO_ASSERT_S(!worldFileStream.fail())
+
+		if (worldFileStream.fail())
+		{
+			worldFileStream.close();
+			return;
+		}
 		
 		nlohmann::json worldConfigFile{};
 		worldFileStream >> worldConfigFile;
@@ -149,12 +154,7 @@ namespace Bambo
 		if (worldConfigFile[WORLD_CONTENT_KEY].is_null())
 			return;
 
-		m_entityManager.reset();
-
-		std::string worldString = worldConfigFile[WORLD_CONTENT_KEY].get<std::string>();
-		flecs::string_view worldStringView{ worldString.c_str() };
-
-		m_entityManager.from_json(worldStringView);
+		Serialization::Deserialize(*this, worldConfigFile[WORLD_CONTENT_KEY]);
 	}
 	
 	void World::SaveWorld() 
@@ -164,17 +164,18 @@ namespace Bambo
 		
 		nlohmann::json worldConfigFile{};
 
-		flecs::string jsonedWorld = m_entityManager.to_json();
-		//@TODO: STORE NAME ??
-		worldConfigFile[WORLD_NAME_KEY] = "Hello world";
-		worldConfigFile[WORLD_CONTENT_KEY] = jsonedWorld.c_str();
+		worldConfigFile[WORLD_NAME_KEY] = m_worldFilePath.filename().replace_extension().string();
+		Serialization::Serialize(*this, worldConfigFile[WORLD_CONTENT_KEY]);
 
 		worldFileStream << std::setw(4) << worldConfigFile;
 		worldFileStream.close();
 	}
 
-	void World::Dispose()
+	void World::Reset()
 	{
+		m_entityMap.clear();
 		m_entityManager.reset();
+	
+		CreateRoot();
 	}
 }
