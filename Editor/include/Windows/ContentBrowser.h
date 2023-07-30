@@ -31,5 +31,8 @@ namespace BamboEditor
 		bool m_isOpenedSettingsPanel = false;
 	
 		void DrawSettingsOverlay();
+		void DrawContentTree();
+		void DrawFolderContent();
+		void DrawPath(const std::filesystem::path& pathToDraw, bool isDirectory);
 	};
 }

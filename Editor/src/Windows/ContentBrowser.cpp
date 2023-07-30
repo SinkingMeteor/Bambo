@@ -26,7 +26,84 @@ namespace BamboEditor
 
 	void ContentBrowserWindow::OnGUI()
 	{
-		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_MenuBar);
+		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize);
+
+		if (ImGui::BeginMenuBar())
+		{
+			ImGui::Checkbox("Settings", &m_isOpenedSettingsPanel);
+			ImGui::EndMenuBar();
+		}
+			
+		DrawSettingsOverlay();
+		DrawContentTree();
+		ImGui::SameLine();
+		DrawFolderContent();
+
+		ImGui::End();
+		
+	}
+
+	void ContentBrowserWindow::DrawPath(const std::filesystem::path& pathToDraw, bool isDirectory)
+	{
+
+		if (ImGui::TreeNodeEx(pathToDraw.string().c_str(), isDirectory ? ImGuiTreeNodeFlags_None : ImGuiTreeNodeFlags_Bullet, pathToDraw.filename().string().c_str()))
+		{
+			if (isDirectory)
+			{
+				for (auto& directoryEntry : std::filesystem::directory_iterator(pathToDraw))
+				{
+					const std::filesystem::path& path = directoryEntry.path();
+					DrawPath(path, directoryEntry.is_directory());
+				}
+			}
+
+			ImGui::TreePop();
+		}
+
+		//if (ImGui::IsItemClicked())
+		//{
+		//	m_selectedEntity = &m_editorContext->CurrentWorld->GetEntityByID(idComponent->ID);
+		//}
+
+		//if (ImGui::BeginDragDropSource())
+		//{
+		//	ImGui::SetDragDropPayload("GOReparent", &childEntity, sizeof(childEntity));
+		//	ImGui::Text("%s", tag->Tag.c_str());
+		//	ImGui::EndDragDropSource();
+		//}
+
+		//if (ImGui::BeginDragDropTarget())
+		//{
+		//	const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GOReparent");
+		//	if (payload != nullptr)
+		//	{
+		//		flecs::entity* targetEntity = static_cast<flecs::entity*>(payload->Data);
+		//		targetEntity->child_of(childEntity);
+		//	}
+
+		//	ImGui::EndDragDropTarget();
+		//}
+	}
+
+	void ContentBrowserWindow::DrawContentTree()
+	{
+		float windowHeight = ImGui::GetWindowHeight();
+		float windowWidth = ImGui::GetWindowWidth();
+
+		ImGui::BeginChild("ContentBrowserTree", ImVec2{ windowWidth * 0.2f, 0.0f }, true, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoDocking);
+	
+		std::filesystem::path targetPath = m_rootDirectory;
+		DrawPath(targetPath, true);
+		
+		ImGui::EndChild();
+	}
+
+	void ContentBrowserWindow::DrawFolderContent()
+	{
+		float windowHeight = ImGui::GetWindowHeight();
+		float windowWidth = ImGui::GetWindowWidth();
+
+		ImGui::BeginChild("ContentBrowserContent", ImVec2{ 0.0f , 0.0f }, true, ImGuiWindowFlags_NoDocking);
 
 		ImGui::Text(m_currentDirectory.string().c_str());
 		ImGui::Dummy(ImVec2{ 1.0f, 10.0f });
@@ -34,17 +111,9 @@ namespace BamboEditor
 		if (m_currentDirectory.empty())
 		{
 			ImGui::Text("You shoud create or open a project first");
-			ImGui::End();
+			ImGui::EndChild();
 			return;
 		}
-
-		if (ImGui::BeginMenuBar())
-		{
-			ImGui::Checkbox("Settings", &m_isOpenedSettingsPanel);
-			ImGui::EndMenuBar();
-		}
-
-		DrawSettingsOverlay();
 
 		if (m_currentDirectory != m_rootDirectory)
 		{
@@ -82,9 +151,8 @@ namespace BamboEditor
 			{
 				if (directoryEntry.is_directory())
 					m_currentDirectory /= path.filename();
-
 			}
-			
+
 			ImGui::SameLine();
 
 			ImGui::SetNextItemWidth(cellSize);
@@ -98,8 +166,7 @@ namespace BamboEditor
 		}
 
 		ImGui::Columns(1);
-
-		ImGui::End();
+		ImGui::EndChild();
 	}
 
 	void ContentBrowserWindow::DrawSettingsOverlay()
@@ -115,16 +182,14 @@ namespace BamboEditor
 
 		ImGui::SetNextWindowPos(windowPosition, ImGuiCond_Always, ImVec2(0.0f, 0.0f));
 
-		ImGui::SetNextWindowBgAlpha(0.35f);
-		if (ImGui::Begin("Content browser settings", nullptr, window_flags))
-		{
-			ImGui::Text("Content settings:");
-			ImGui::Separator();
+		ImGui::Begin("Content browser settings", nullptr, window_flags);
+		
+		ImGui::Text("Content settings:");
+		ImGui::Separator();
 
-			ImGui::SliderFloat("Thumbnail Size", &m_itemScale, 12.0f, 48.0f);
-			ImGui::SliderInt("Columns Count", &m_columnsCount, 1, 4);
+		ImGui::SliderFloat("Thumbnail Size", &m_itemScale, 12.0f, 48.0f);
+		ImGui::SliderInt("Columns Count", &m_columnsCount, 1, 4);
 
-		}
 		ImGui::End();
 	}
 }
