@@ -59,8 +59,6 @@ namespace BamboEditor
 		ImGui::SameLine(0.0f, 25.0f);
 		DrawCreateProject();
 
-		ImGui::Dummy(ImVec2{1.0f, 25.0f});
-
 		float cellSize = (m_thumbnailSize + m_padding) * m_sizeFactor;
 		float panelWidth = ImGui::GetContentRegionAvail().x;
 

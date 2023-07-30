@@ -25,8 +25,8 @@ namespace BamboEditor
 		SPtr<Bambo::Texture2D> m_fileIcon;
 		SPtr<Bambo::Texture2D> m_folderIcon;
 
-		float m_thumbnailSize = 32.0f;
-		float m_padding = 16.0f;
+		float m_itemScale = 24.0f;
+		int32 m_columnsCount = 1;
 
 		bool m_isOpenedSettingsPanel = false;
 	

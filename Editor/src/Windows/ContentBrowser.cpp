@@ -1,5 +1,11 @@
 #include "Windows/ContentBrowser.h"
 #include "EditorPaths.h"
+
+namespace
+{
+	const float TARGET_ITEM_SCALE = 20.0f;
+}
+
 namespace BamboEditor
 {
 	ContentBrowserWindow::ContentBrowserWindow(EditorContext* editorContext) :
@@ -22,6 +28,9 @@ namespace BamboEditor
 	{
 		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_MenuBar);
 
+		ImGui::Text(m_currentDirectory.string().c_str());
+		ImGui::Dummy(ImVec2{ 1.0f, 10.0f });
+
 		if (m_currentDirectory.empty())
 		{
 			ImGui::Text("You shoud create or open a project first");
@@ -31,7 +40,7 @@ namespace BamboEditor
 
 		if (ImGui::BeginMenuBar())
 		{
-			if (ImGui::Checkbox("Settings", &m_isOpenedSettingsPanel)) {}
+			ImGui::Checkbox("Settings", &m_isOpenedSettingsPanel);
 			ImGui::EndMenuBar();
 		}
 
@@ -45,22 +54,20 @@ namespace BamboEditor
 			}
 		}
 
-		float cellSize = m_thumbnailSize + m_padding;
 		float panelWidth = ImGui::GetContentRegionAvail().x;
-		int32 columnCount = static_cast<int32>(panelWidth / cellSize);
-		columnCount = std::max(1, columnCount);
+		float cellSize = panelWidth / m_columnsCount;
 
-		ImGui::Columns(columnCount, 0, false);
+		ImGui::Columns(m_columnsCount, 0, false);
 
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_currentDirectory))
 		{
-			const auto& path = directoryEntry.path();
+			const std::filesystem::path& path = directoryEntry.path();
 			std::string filenameString = path.filename().string();
 
 			ImGui::PushID(filenameString.c_str());
 			SPtr<Bambo::Texture2D> icon = directoryEntry.is_directory() ? m_folderIcon : m_fileIcon;
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-			ImGui::ImageButton((ImTextureID)icon->GetID(), { m_thumbnailSize, m_thumbnailSize }, { 0, 1 }, { 1, 0 });
+			ImGui::ImageButton((ImTextureID)icon->GetID(), { m_itemScale, m_itemScale }, { 0, 1 }, { 1, 0 });
 
 			if (ImGui::BeginDragDropSource())
 			{
@@ -77,7 +84,13 @@ namespace BamboEditor
 					m_currentDirectory /= path.filename();
 
 			}
+			
+			ImGui::SameLine();
+
+			ImGui::SetNextItemWidth(cellSize);
+			ImGui::SetWindowFontScale(m_itemScale / TARGET_ITEM_SCALE);
 			ImGui::TextWrapped(filenameString.c_str());
+			ImGui::SetWindowFontScale(1.0f);
 
 			ImGui::NextColumn();
 
@@ -108,8 +121,8 @@ namespace BamboEditor
 			ImGui::Text("Content settings:");
 			ImGui::Separator();
 
-			ImGui::SliderFloat("Thumbnail Size", &m_thumbnailSize, 16, 512);
-			ImGui::SliderFloat("Padding", &m_padding, 0, 32);
+			ImGui::SliderFloat("Thumbnail Size", &m_itemScale, 12.0f, 48.0f);
+			ImGui::SliderInt("Columns Count", &m_columnsCount, 1, 4);
 
 		}
 		ImGui::End();
