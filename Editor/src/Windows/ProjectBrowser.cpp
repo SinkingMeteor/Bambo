@@ -17,6 +17,7 @@ namespace BamboEditor
 		m_newProjectName(),
 		m_rootDirectory(std::filesystem::current_path().root_path()),
 		m_currentDirectory(m_rootDirectory),
+		m_disksList(),
 		m_fileIcon(),
 		m_folderIcon(),
 		m_thumbnailSize(16.0f),
@@ -27,6 +28,8 @@ namespace BamboEditor
 		Bambo::TextureProvider* textureProvider = Bambo::TextureProvider::Get();
 		m_fileIcon = textureProvider->GetResource(Bambo::ToId(BamboPaths::FILE_ICON_TEXTURE_KEY));
 		m_folderIcon = textureProvider->GetResource(Bambo::ToId(BamboPaths::FOLDER_ICON_TEXTURE_KEY));
+
+		Bambo::GetAvalaibleDisks(m_disksList);
 	}
 
 	void ProjectBrowserWindow::OnGUI()
@@ -40,36 +43,23 @@ namespace BamboEditor
 
 		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 
+		if (ImGui::BeginMenuBar())
+		{
+			ImGui::SetNextItemWidth(200.0f);
+			ImGui::SliderFloat("Size", &m_sizeFactor, 0.5f, 2.0f);
+
+			ImGui::EndMenuBar();
+		}
+
 		ImGui::Text(m_currentDirectory.string().c_str());
 
-		if (m_currentDirectory != m_rootDirectory)
-		{
-			if (ImGui::Button("<-"))
-			{
-				m_currentDirectory = m_currentDirectory.parent_path();
-			}
-			ImGui::SameLine();
-		}
-
-		if (!m_hasProjectAtDirectory)
-		{
-			if (ImGui::Button("Create New Here"))
-			{
-				CreateNewProject();
-			}
-
-			ImGui::SameLine(0.0f, 50.0f);
-			ImGui::Text("Project Name: ");
-			ImGui::SameLine();
-			ImGui::SetNextItemWidth(200.0f);
-			ImGui::PushID("Project Name");
-			ImGui::InputText("", m_newProjectName, 32);
-			ImGui::PopID();
-		}
-
+		DrawDiskList();
 		ImGui::SameLine();
-		ImGui::SetNextItemWidth(200.0f);
-		ImGui::SliderFloat("Size", &m_sizeFactor, 0.5f, 2.0f);
+		DrawReturnArrow();
+		ImGui::SameLine(0.0f, 25.0f);
+		DrawCreateProject();
+
+		ImGui::Dummy(ImVec2{1.0f, 25.0f});
 
 		float cellSize = (m_thumbnailSize + m_padding) * m_sizeFactor;
 		float panelWidth = ImGui::GetContentRegionAvail().x;
@@ -120,6 +110,63 @@ namespace BamboEditor
 
 		ImGui::End();
 	}
+
+	void ProjectBrowserWindow::DrawCreateProject()
+	{
+		if (!m_hasProjectAtDirectory)
+		{
+			ImGui::Text("Project Name: ");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(200.0f);
+			ImGui::PushID("Project Name");
+			ImGui::InputText("", m_newProjectName, 32);
+			ImGui::PopID();
+
+			ImGui::SameLine(0.0f, 25.0f);
+
+			if (ImGui::Button("Create New Here"))
+			{
+				CreateNewProject();
+			}
+		}
+	}
+
+	void ProjectBrowserWindow::DrawDiskList()
+	{
+		static int currentDisk = 0;
+		int prevDisk = currentDisk;
+
+		std::vector<const char*> disks{};
+		disks.reserve(m_disksList.size());
+
+		for (size_t i = 0; i < m_disksList.size(); ++i)
+		{
+			disks.push_back(m_disksList[i].c_str());
+		}
+
+		ImGui::SetNextItemWidth(50.0f);
+		ImGui::PushID("Disks");
+		ImGui::ListBox("", &currentDisk, disks.data(), disks.size(), 1);
+		ImGui::PopID();
+
+		if (currentDisk != prevDisk)
+		{
+			m_currentDirectory = m_disksList[currentDisk];
+			m_rootDirectory = m_currentDirectory;
+		}
+	}
+
+	void ProjectBrowserWindow::DrawReturnArrow()
+	{
+		if (m_currentDirectory != m_rootDirectory)
+		{
+			if (ImGui::Button("<-"))
+			{
+				m_currentDirectory = m_currentDirectory.parent_path();
+			}
+		}
+	}
+
 
 	void ProjectBrowserWindow::CreateNewProject()
 	{

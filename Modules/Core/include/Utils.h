@@ -11,5 +11,6 @@ namespace Bambo
 	bool HasExtension(const std::string& targetString, const std::string& extension);
 	bool IsHiddenFolder(const std::filesystem::path& path);
 	bool IsLittleEndian();
+	void GetAvalaibleDisks(std::vector<std::string>& disks);
 	int ConvertToInt(char* buffer, std::size_t len);
 }

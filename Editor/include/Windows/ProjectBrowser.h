@@ -23,6 +23,7 @@ namespace BamboEditor
 		char m_newProjectName[32];
 		std::filesystem::path m_rootDirectory;
 		std::filesystem::path m_currentDirectory;
+		std::vector<std::string> m_disksList;
 
 		SPtr<Bambo::Texture2D> m_fileIcon;
 		SPtr<Bambo::Texture2D> m_folderIcon;
@@ -34,5 +35,8 @@ namespace BamboEditor
 
 		void CreateNewProject();
 		void OpenProject(const std::filesystem::path& projFilePath);
+		void DrawDiskList();
+		void DrawReturnArrow();
+		void DrawCreateProject();
 	};
 }

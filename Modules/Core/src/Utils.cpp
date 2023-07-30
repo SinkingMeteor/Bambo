@@ -31,6 +31,23 @@ namespace Bambo
 		return a;
 	}
 
+	void GetAvalaibleDisks(std::vector<std::string>& disks)
+	{
+		DWORD dwSize = MAX_PATH;
+		char szLogicalDrives[MAX_PATH] = { 0 };
+		DWORD dwResult = GetLogicalDriveStrings(dwSize, szLogicalDrives);
+
+		if (dwResult > 0 && dwResult <= MAX_PATH)
+		{
+			char* szSingleDrive = szLogicalDrives;
+			while (*szSingleDrive)
+			{
+				disks.push_back(szSingleDrive);
+				szSingleDrive += strlen(szSingleDrive) + 1;
+			}
+		}
+	}
+
 	bool IsHiddenFolder(const std::filesystem::path& path)
 	{
 		DWORD attributes = GetFileAttributes(path.string().c_str());
