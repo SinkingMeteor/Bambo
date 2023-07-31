@@ -2,6 +2,8 @@
 
 namespace Bambo
 {
+	DECLARE_LOG_CATEGORY_STATIC(UtilsLog)
+
 	bool IsLittleEndian()
 	{
 		short int word = 0x0001;
@@ -29,6 +31,25 @@ namespace Bambo
 			}
 		}
 		return a;
+	}
+
+
+	bool MakeDirectory(const std::filesystem::path& path, const std::string& directoryName)
+	{
+		std::error_code err{};
+		std::filesystem::path targetPath = path / directoryName;
+		if (!std::filesystem::create_directories(targetPath, err))
+		{
+			if (std::filesystem::exists(targetPath))
+			{
+
+				return true; 
+			}
+
+			Logger::Get()->Log(UtilsLog, Verbosity::Error, ": FAILED to create [%s], err:%s\n", directoryName.c_str(), err.message().c_str());
+			return false;
+		}
+		return true;
 	}
 
 	void GetAvalaibleDisks(std::vector<std::string>& disks)

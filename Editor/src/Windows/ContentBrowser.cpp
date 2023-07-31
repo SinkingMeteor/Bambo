@@ -13,6 +13,7 @@ namespace BamboEditor
 		m_windowName("ContentBrowser"),
 		m_currentDirectory(),
 		m_rootDirectory(),
+		m_selectedContentItem(""),
 		m_fileIcon(),
 		m_folderIcon()
 	{
@@ -115,6 +116,13 @@ namespace BamboEditor
 			return;
 		}
 
+		if (ImGui::BeginPopupContextWindow("ContentBrowserContext"))
+		{
+			if (ImGui::MenuItem("CreateFolder")) { Bambo::MakeDirectory(m_currentDirectory, "NewFolder"); }
+
+			ImGui::EndPopup();
+		}
+
 		if (m_currentDirectory != m_rootDirectory)
 		{
 			if (ImGui::Button("<-"))
@@ -125,6 +133,7 @@ namespace BamboEditor
 
 		float panelWidth = ImGui::GetContentRegionAvail().x;
 		float cellSize = panelWidth / m_columnsCount;
+		bool selectedNewItem = false;
 
 		ImGui::Columns(m_columnsCount, 0, false);
 
@@ -132,11 +141,12 @@ namespace BamboEditor
 		{
 			const std::filesystem::path& path = directoryEntry.path();
 			std::string filenameString = path.filename().string();
+			bool isSelected = m_selectedContentItem.size() != 0 && m_selectedContentItem == filenameString;
 
 			ImGui::PushID(filenameString.c_str());
 			SPtr<Bambo::Texture2D> icon = directoryEntry.is_directory() ? m_folderIcon : m_fileIcon;
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-			ImGui::ImageButton((ImTextureID)icon->GetID(), { m_itemScale, m_itemScale }, { 0, 1 }, { 1, 0 });
+			ImGui::ImageButton((ImTextureID)icon->GetID(), { m_itemScale, m_itemScale }, { 0, 1 }, { 1, 0 }, -1, isSelected ? ImVec4{ 1.0f, 1.0f, 1.0f, 1.0f } : ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
 
 			if (ImGui::BeginDragDropSource())
 			{
@@ -146,9 +156,16 @@ namespace BamboEditor
 				ImGui::EndDragDropSource();
 			}
 
+			if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+			{
+				selectedNewItem = true;
+				m_selectedContentItem = filenameString;
+			}
+
 			ImGui::PopStyleColor();
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
+				m_selectedContentItem = "";
 				if (directoryEntry.is_directory())
 					m_currentDirectory /= path.filename();
 			}
@@ -163,6 +180,11 @@ namespace BamboEditor
 			ImGui::NextColumn();
 
 			ImGui::PopID();
+		}
+
+		if (ImGui::IsMouseClicked(0) && !selectedNewItem)
+		{
+			m_selectedContentItem = "";
 		}
 
 		ImGui::Columns(1);

@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include "Log.h"
 
 namespace Bambo 
 {
@@ -13,4 +14,5 @@ namespace Bambo
 	bool IsLittleEndian();
 	void GetAvalaibleDisks(std::vector<std::string>& disks);
 	int ConvertToInt(char* buffer, std::size_t len);
+	bool MakeDirectory(const std::filesystem::path& path, const std::string& directoryName);
 }

@@ -22,6 +22,8 @@ namespace BamboEditor
 		std::filesystem::path m_currentDirectory;
 		std::filesystem::path m_rootDirectory;
 
+		std::string m_selectedContentItem;
+
 		SPtr<Bambo::Texture2D> m_fileIcon;
 		SPtr<Bambo::Texture2D> m_folderIcon;
 
