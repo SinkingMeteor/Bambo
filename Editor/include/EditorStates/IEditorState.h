@@ -1,6 +1,6 @@
 #pragma once
-#include "Essentials.h"
-#include "Patterns/StateMachine.h"
+#include "Core/Essentials.h"
+#include "Core/Patterns/StateMachine.h"
 
 namespace BamboEditor
 {

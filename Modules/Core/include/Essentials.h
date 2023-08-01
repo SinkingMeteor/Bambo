@@ -1,6 +1,0 @@
-#include "pch.h"
-#include "Core.h"
-#include "Log.h"
-#include "Utils.h"
-#include "Patterns/Delegate/Delegate.h"
-#include "Patterns/Delegate/MulticastDelegate.h"

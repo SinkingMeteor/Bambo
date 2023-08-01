@@ -6,7 +6,6 @@
 namespace BamboPaths
 {
 	#define BAMBO_ENGINE_RESOURCE_DIR "@BAMBO_ENGINE_RESOURCE_DIR@/"
-
 	const std::string BamboResourcesDir = BAMBO_ENGINE_RESOURCE_DIR;
 }
 

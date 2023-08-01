@@ -5,11 +5,15 @@
 
 namespace BamboEditor
 {
+	EditorModule::EditorModule(Bambo::Window* targetWindow) :
+		m_editorContext(),
+		m_states(),
+		m_guiWorld(targetWindow)
+	{}
+
 	void EditorModule::OnAttach()
 	{
-		Bambo::TextureProvider* textureProvider = Bambo::TextureProvider::Get();
-		textureProvider->Load(Bambo::ToId(BamboPaths::FILE_ICON_TEXTURE_KEY), BamboPaths::BamboEditorResourceDir + "Graphics/EditorFileIcon.jpg");
-		textureProvider->Load(Bambo::ToId(BamboPaths::FOLDER_ICON_TEXTURE_KEY), BamboPaths::BamboEditorResourceDir + "Graphics/EditorFolderIcon.png");
+		m_guiWorld.Initialize();
 
 		m_editorContext.CurrentProject = std::make_unique<Project>();
 
@@ -22,6 +26,7 @@ namespace BamboEditor
 	void EditorModule::OnDetach()
 	{
 		m_states.Clear();
+		m_guiWorld.Dispose();
 	}
 
 	void EditorModule::OnUpdate(float deltaTime)
@@ -38,10 +43,20 @@ namespace BamboEditor
 		editorState->OnRender();
 	}
 
+	void EditorModule::OnGUIStart()
+	{
+		m_guiWorld.StartFrame();
+	}
+
 	void EditorModule::OnGUI()
 	{
 		IEditorState* editorState = m_states.GetCurrentState();
 		if (!editorState) return;
 		editorState->OnGUI();
+	}
+
+	void EditorModule::OnGUIEnd()
+	{
+		m_guiWorld.EndFrame();
 	}
 }

@@ -1,8 +1,8 @@
 #pragma once
-#include "Core.h"
+#include "Core/Essentials.h"
+#include "EditorEssentials.h"
 #include "Windows/GUIWindow.h"
 #include "World/World.h"
-#include "imgui.h"
 #include "World/Components/Components.h"
 #include "EditorContext.h"
 

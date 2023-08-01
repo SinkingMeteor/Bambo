@@ -1,11 +1,10 @@
 #pragma once
-#include "pch.h"
-#include "GUIWindow.h"
-#include "imgui.h"
-#include "Framebuffer.h"
-#include "WindowManager.h"
-#include "Main/TimeManager.h"
-
+#include "Core/Essentials.h"
+#include "EditorEssentials.h"
+#include "Windows/GUIWindow.h"
+#include "Graphics/Framebuffer.h"
+#include "Window/WindowManager.h"
+#include "Core/Time/TimeManager.h"
 
 namespace BamboEditor
 {

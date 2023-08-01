@@ -1,6 +1,7 @@
 #pragma once
-#include "engpch.h"
-#include "Texture2D.h"
+#include "Core/Essentials.h"
+#include "Graphics/Texture2D.h"
+
 namespace Bambo
 {
 	struct BAMBO_API SpriteComponent final : public Component

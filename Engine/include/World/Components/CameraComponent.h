@@ -1,8 +1,7 @@
 #pragma once
-#include "engpch.h"
-#include "glm.hpp"
-#include "Rect.h"
-#include "Camera.h"
+#include "Core/Essentials.h"
+#include "Graphics/Rect.h"
+#include "Graphics/Camera.h"
 
 namespace Bambo
 {

@@ -2,12 +2,14 @@
 #include "Windows/SceneHierarchy.h"
 #include "Windows/ContentBrowser.h"
 #include "Windows/GameViewport.h"
-#include "RenderManager.h"
+#include "BamboPaths.h"
+#include "Graphics/RenderManager.h"
 
 namespace BamboEditor
 {
 	MainEditorState::MainEditorState(EditorContext* editorContext) :
-		m_editorContext(editorContext)
+		m_editorContext(editorContext),
+		m_textureProvider()
 	{
 	}
 
@@ -22,8 +24,11 @@ namespace BamboEditor
 		uint32 height = windowManager->GetWindowHeight();
 		m_framebuffer = Bambo::Framebuffer::Create({ Bambo::FramebufferTextureType::Color }, width, height);
 
+		SPtr<Bambo::Texture2D> fileIcon = m_textureProvider.Load(Bambo::ToId(BamboPaths::FILE_ICON_TEXTURE_KEY), BamboPaths::BamboEditorResourceDir + "Graphics/EditorFileIcon.jpg");
+		SPtr<Bambo::Texture2D> folderIcon = m_textureProvider.Load(Bambo::ToId(BamboPaths::FOLDER_ICON_TEXTURE_KEY), BamboPaths::BamboEditorResourceDir + "Graphics/EditorFolderIcon.png");
+
 		m_windows.emplace_back<UPtr<SceneHierarchyWindow>>(std::make_unique<SceneHierarchyWindow>(m_editorContext));
-		m_windows.emplace_back<UPtr<ContentBrowserWindow>>(std::make_unique<ContentBrowserWindow>(m_editorContext));
+		m_windows.emplace_back<UPtr<ContentBrowserWindow>>(std::make_unique<ContentBrowserWindow>(m_editorContext, fileIcon, folderIcon));
 		m_windows.emplace_back<UPtr<GameViewportWindow>>(std::make_unique<GameViewportWindow>(m_framebuffer));
 
 		ImGuiIO& io = ImGui::GetIO();
@@ -49,11 +54,11 @@ namespace BamboEditor
 	void MainEditorState::OnRender()
 	{
 		Bambo::RenderManager* renderManager = Bambo::RenderManager::Get();
-		renderManager->GetRenderer().Clear();
+		renderManager->GetRenderer()->Clear();
 
 		m_framebuffer->Bind();
 
-		renderManager->GetRenderer().Clear();
+		renderManager->GetRenderer()->Clear();
 
 		if (m_editorContext->CurrentWorld)
 		{

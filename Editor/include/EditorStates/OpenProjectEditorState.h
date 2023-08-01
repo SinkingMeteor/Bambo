@@ -1,7 +1,7 @@
 #pragma once
-#include "Essentials.h"
+#include "Core/Essentials.h"
 #include "EditorStates/IEditorState.h"
-#include "Patterns/StateMachine.h"
+#include "Core/Patterns/StateMachine.h"
 #include "Project.h"
 #include "Windows/GUIWindow.h"
 #include "EditorContext.h"
@@ -23,6 +23,7 @@ namespace BamboEditor
 		Bambo::StateMachine<IEditorState>* m_stateMachine;
 		EditorContext* m_editorContext;
 		std::vector<UPtr<GUIWindow>> m_windows;
+		Bambo::TextureProvider m_textureProvider;
 
 		void OpenEditor();
 	};

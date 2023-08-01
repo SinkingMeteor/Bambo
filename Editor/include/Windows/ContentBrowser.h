@@ -1,11 +1,10 @@
 #pragma once
-#include "pch.h"
+#include "Core/Essentials.h"
+#include "EditorEssentials.h"
 #include "GUIWindow.h"
 #include "Project.h"
-#include "imgui.h"
-#include "TextureProvider.h"
-#include "Texture2D.h"
-#include "Utils.h"
+#include "Graphics/TextureProvider.h"
+#include "Graphics/Texture2D.h"
 #include "EditorPaths.h"
 #include "EditorContext.h"
 
@@ -14,7 +13,7 @@ namespace BamboEditor
 	class ContentBrowserWindow final : public GUIWindow
 	{
 	public:
-		ContentBrowserWindow(EditorContext* editorContext);
+		ContentBrowserWindow(EditorContext* editorContext, SPtr<Bambo::Texture2D> fileIcon, SPtr<Bambo::Texture2D> folderIcon);
 		virtual void OnGUI() override;
 		virtual const std::string& GetWindowName() const override { return m_windowName; }
 	private:

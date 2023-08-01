@@ -1,10 +1,10 @@
 #pragma once
-#include "Essentials.h"
+#include "Core/Essentials.h"
 #include "Windows/GUIWindow.h"
 #include "Project.h"
 #include "imgui.h"
-#include "Texture2D.h"
-#include "TextureProvider.h"
+#include "Graphics/Texture2D.h"
+#include "Graphics/TextureProvider.h"
 #include "EditorPaths.h"
 #include "EditorContext.h"
 
@@ -13,7 +13,7 @@ namespace BamboEditor
 	class ProjectBrowserWindow final : public GUIWindow
 	{
 	public:
-		ProjectBrowserWindow(EditorContext* editorContext, const std::function<void()>& onProjectLoadedCallback);
+		ProjectBrowserWindow(EditorContext* editorContext, const std::function<void()>& onProjectLoadedCallback, SPtr<Bambo::Texture2D> fileIcon, SPtr<Bambo::Texture2D> folderIcon);
 		virtual void OnGUI() override;
 		virtual const std::string& GetWindowName() const override { return m_windowName; }
 	private:

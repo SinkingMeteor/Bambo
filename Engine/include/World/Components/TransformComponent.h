@@ -1,7 +1,5 @@
 #pragma once
-#include "engpch.h"
-#include "glm.hpp"
-#include "gtc/quaternion.hpp"
+#include "Core/Essentials.h"
 #include "Serialization/MathSerialization.h"
 
 namespace Bambo

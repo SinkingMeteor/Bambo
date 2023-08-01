@@ -8,19 +8,15 @@ namespace
 
 namespace BamboEditor
 {
-	ContentBrowserWindow::ContentBrowserWindow(EditorContext* editorContext) :
+	ContentBrowserWindow::ContentBrowserWindow(EditorContext* editorContext, SPtr<Bambo::Texture2D> fileIcon, SPtr<Bambo::Texture2D> folderIcon) :
 		GUIWindow(),
 		m_windowName("ContentBrowser"),
 		m_currentDirectory(),
 		m_rootDirectory(),
 		m_selectedContentItem(""),
-		m_fileIcon(),
-		m_folderIcon()
+		m_fileIcon(fileIcon),
+		m_folderIcon(folderIcon)
 	{
-		Bambo::TextureProvider* textureProvider = Bambo::TextureProvider::Get();
-		m_fileIcon = textureProvider->GetResource(Bambo::ToId(BamboPaths::FILE_ICON_TEXTURE_KEY));
-		m_folderIcon = textureProvider->GetResource(Bambo::ToId(BamboPaths::FOLDER_ICON_TEXTURE_KEY));
-
 		m_currentDirectory = editorContext->CurrentProject->GetAssetsPath();
 		m_rootDirectory = m_currentDirectory;
 	}

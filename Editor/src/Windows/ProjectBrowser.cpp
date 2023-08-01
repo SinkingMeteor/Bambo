@@ -1,5 +1,4 @@
 #include "Windows/ProjectBrowser.h"
-#include "Utils.h"
 
 namespace
 {
@@ -10,7 +9,7 @@ DECLARE_LOG_CATEGORY_STATIC(ProjectBrowserLog)
 
 namespace BamboEditor
 {
-	ProjectBrowserWindow::ProjectBrowserWindow(EditorContext* editorContext, const std::function<void()>& onProjectLoadedCallback) :
+	ProjectBrowserWindow::ProjectBrowserWindow(EditorContext* editorContext, const std::function<void()>& onProjectLoadedCallback, SPtr<Bambo::Texture2D> fileIcon, SPtr<Bambo::Texture2D> folderIcon) :
 		m_editorContext(editorContext),
 		m_onProjectLoadedCallback(onProjectLoadedCallback),
 		m_windowName("Project Browser"),
@@ -18,17 +17,13 @@ namespace BamboEditor
 		m_rootDirectory(std::filesystem::current_path().root_path()),
 		m_currentDirectory(m_rootDirectory),
 		m_disksList(),
-		m_fileIcon(),
-		m_folderIcon(),
+		m_fileIcon(fileIcon),
+		m_folderIcon(folderIcon),
 		m_thumbnailSize(16.0f),
 		m_padding(8.0f),
 		m_sizeFactor(1.0f),
 		m_hasProjectAtDirectory(false)
 	{
-		Bambo::TextureProvider* textureProvider = Bambo::TextureProvider::Get();
-		m_fileIcon = textureProvider->GetResource(Bambo::ToId(BamboPaths::FILE_ICON_TEXTURE_KEY));
-		m_folderIcon = textureProvider->GetResource(Bambo::ToId(BamboPaths::FOLDER_ICON_TEXTURE_KEY));
-
 		Bambo::GetAvalaibleDisks(m_disksList);
 	}
 

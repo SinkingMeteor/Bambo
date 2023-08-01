@@ -1,6 +1,6 @@
 #pragma once
-#include "engpch.h"
-#include "IID.h"
+#include "pch.h"
+#include "Core/IID.h"
 
 namespace Bambo
 {

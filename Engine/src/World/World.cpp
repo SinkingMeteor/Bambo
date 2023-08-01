@@ -15,8 +15,11 @@ namespace Bambo
 		m_entityManager(),
 		m_entityMap(),
 		m_rootEntityId(),
-		m_spriteRenderer(std::make_unique<SpriteRenderer>())
+		m_spriteRenderer(),
+		m_shaderProvider()
 	{
+		SPtr<Shader> defaultShader = m_shaderProvider.Load(ToId("DefaultShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
+		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultShader);
 		CreateRoot();
 		LoadWorld();
 	}

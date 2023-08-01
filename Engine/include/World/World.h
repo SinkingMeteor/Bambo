@@ -1,15 +1,14 @@
 #pragma once
-#include "engpch.h"
-#include "Essentials.h"
-#include "Camera.h"
-#include "SpriteRenderer.h"
-#include "ShaderProvider.h"
-#include "TextureProvider.h"
-#include "IID.h"
+#include "Core/Essentials.h"
+#include "Graphics/Camera.h"
+#include "Graphics/SpriteRenderer.h"
+#include "Graphics/ShaderProvider.h"
+#include "Graphics/TextureProvider.h"
+#include "Core/IID.h"
 #include "Entity.h"
-#include "Components.h"
-#include "WindowManager.h"
-#include "Input.h"
+#include "World/Components/Components.h"
+#include "Window/WindowManager.h"
+#include "Window/Input.h"
 #include "json.hpp"
 
 namespace Bambo
@@ -50,6 +49,7 @@ namespace Bambo
 		std::unordered_map<IID, Entity> m_entityMap;
 		IID m_rootEntityId;
 		UPtr<SpriteRenderer> m_spriteRenderer;
+		ShaderProvider m_shaderProvider;
 
 		void CreateRoot();
 		void LoadWorld();

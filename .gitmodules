@@ -1,11 +1,11 @@
 [submodule "Engine/thirdparty/GLFW"]
-	path = Modules/thirdparty/GLFW
+	path = Engine/thirdparty/GLFW
 	url = https://github.com/glfw/glfw
 [submodule "Engine/thirdparty/GLM"]
-	path = Modules/thirdparty/GLM
+	path = Engine/thirdparty/GLM
 	url = https://github.com/g-truc/glm
 [submodule "Engine/thirdparty/OpenAL"]
-	path = Modules/thirdparty/OpenAL
+	path = Engine/thirdparty/OpenAL
 	url = https://github.com/kcat/openal-soft
 [submodule "Engine/thirdparty/flecs"]
 	path = Engine/thirdparty/flecs

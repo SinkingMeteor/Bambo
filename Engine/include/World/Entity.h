@@ -1,7 +1,5 @@
 #pragma once
-#include "engpch.h"
-#pragma warning(push, 0)
-#include "flecs.h"
+#include "Core/Essentials.h"
 #pragma warning(pop)
 #include "Components/Components.h"
 

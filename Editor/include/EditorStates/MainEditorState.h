@@ -1,10 +1,11 @@
 #pragma once
-#include "Essentials.h"
+#include "Core/Essentials.h"
+#include "EditorEssentials.h"
 #include "EditorStates/IEditorState.h"
 #include "Project.h"
 #include "World/World.h"
 #include "Windows/GUIWindow.h"
-#include "Framebuffer.h"
+#include "Graphics/Framebuffer.h"
 #include "EditorContext.h"
 
 namespace BamboEditor
@@ -24,6 +25,7 @@ namespace BamboEditor
 		EditorContext* m_editorContext;
 		std::vector<UPtr<GUIWindow>> m_windows;
 		SPtr<Bambo::Framebuffer> m_framebuffer;
+		Bambo::TextureProvider m_textureProvider;
 
 		void OpenWorld(const std::filesystem::path& worldFilePath);
 		void SaveProject();
