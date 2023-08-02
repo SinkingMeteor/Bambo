@@ -23,7 +23,6 @@ namespace BamboEditor
 		Bambo::StateMachine<IEditorState>* m_stateMachine;
 		EditorContext* m_editorContext;
 		std::vector<UPtr<GUIWindow>> m_windows;
-		Bambo::TextureProvider m_textureProvider;
 
 		void OpenEditor();
 	};

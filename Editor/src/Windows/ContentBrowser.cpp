@@ -8,30 +8,19 @@ namespace
 
 namespace BamboEditor
 {
-	ContentBrowserWindow::ContentBrowserWindow(EditorContext* editorContext, SPtr<Bambo::Texture2D> fileIcon, SPtr<Bambo::Texture2D> folderIcon) :
+	ContentBrowserWindow::ContentBrowserWindow(EditorContext* editorContext) :
 		GUIWindow(),
-		m_windowName("ContentBrowser"),
-		m_currentDirectory(),
-		m_rootDirectory(),
-		m_selectedContentItem(""),
-		m_fileIcon(fileIcon),
-		m_folderIcon(folderIcon)
+		m_editorContext(editorContext),
+		m_fileBrowserWidget(),
+		m_windowName("ContentBrowser")
 	{
-		m_currentDirectory = editorContext->CurrentProject->GetAssetsPath();
-		m_rootDirectory = m_currentDirectory;
+		m_fileBrowserWidget.SetRootPath(editorContext->CurrentProject->GetAssetsPath());
 	}
 
 	void ContentBrowserWindow::OnGUI()
 	{
-		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_None);
 
-		if (ImGui::BeginMenuBar())
-		{
-			ImGui::Checkbox("Settings", &m_isOpenedSettingsPanel);
-			ImGui::EndMenuBar();
-		}
-			
-		DrawSettingsOverlay();
 		DrawContentTree();
 		ImGui::SameLine();
 		DrawFolderContent();
@@ -40,58 +29,61 @@ namespace BamboEditor
 		
 	}
 
-	void ContentBrowserWindow::DrawPath(const std::filesystem::path& pathToDraw, bool isDirectory)
+	void ContentBrowserWindow::DrawPath(const std::filesystem::path& path, bool isDirectory)
 	{
+		std::string filenameString = path.filename().string();
 
-		if (ImGui::TreeNodeEx(pathToDraw.string().c_str(), isDirectory ? ImGuiTreeNodeFlags_None : ImGuiTreeNodeFlags_Bullet, pathToDraw.filename().string().c_str()))
+		if (isDirectory)
 		{
-			if (isDirectory)
-			{
-				for (auto& directoryEntry : std::filesystem::directory_iterator(pathToDraw))
-				{
-					const std::filesystem::path& path = directoryEntry.path();
-					DrawPath(path, directoryEntry.is_directory());
-				}
-			}
-
-			ImGui::TreePop();
+			if (Bambo::IsHiddenFolder(path))
+				return;
 		}
 
-		//if (ImGui::IsItemClicked())
-		//{
-		//	m_selectedEntity = &m_editorContext->CurrentWorld->GetEntityByID(idComponent->ID);
-		//}
+		ImGui::TableNextRow();
 
-		//if (ImGui::BeginDragDropSource())
-		//{
-		//	ImGui::SetDragDropPayload("GOReparent", &childEntity, sizeof(childEntity));
-		//	ImGui::Text("%s", tag->Tag.c_str());
-		//	ImGui::EndDragDropSource();
-		//}
+		if (isDirectory)
+		{
+			bool open = ImGui::TreeNodeEx(filenameString.c_str(), ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_SpanFullWidth, filenameString.c_str());
 
-		//if (ImGui::BeginDragDropTarget())
-		//{
-		//	const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GOReparent");
-		//	if (payload != nullptr)
-		//	{
-		//		flecs::entity* targetEntity = static_cast<flecs::entity*>(payload->Data);
-		//		targetEntity->child_of(childEntity);
-		//	}
+			if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+			{
+				m_fileBrowserWidget.SetRootPath(path);
+			}
 
-		//	ImGui::EndDragDropTarget();
-		//}
+			if (open)
+			{
+				for (auto& directoryEntry : std::filesystem::directory_iterator(path))
+				{
+					const std::filesystem::path& childPath = directoryEntry.path();
+					DrawPath(childPath, directoryEntry.is_directory());
+				}
+				ImGui::TreePop();
+			}
+		}
+		else
+		{
+			static ImGuiTreeNodeFlags fileFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_SpanFullWidth;
+			ImGui::TreeNodeEx(filenameString.c_str(), fileFlags);
+		}
 	}
 
 	void ContentBrowserWindow::DrawContentTree()
 	{
-		float windowHeight = ImGui::GetWindowHeight();
 		float windowWidth = ImGui::GetWindowWidth();
 
 		ImGui::BeginChild("ContentBrowserTree", ImVec2{ windowWidth * 0.2f, 0.0f }, true, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoDocking);
 	
-		std::filesystem::path targetPath = m_rootDirectory;
-		DrawPath(targetPath, true);
-		
+		static ImGuiTableFlags tableFlags = ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
+		if (ImGui::BeginTable("Browser", 1, tableFlags))
+		{
+			ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
+			ImGui::TableHeadersRow();
+
+			ImGui::TableNextRow();
+			DrawPath(m_fileBrowserWidget.GetCurrentPath(), true);
+			ImGui::EndTable();
+		}
+
 		ImGui::EndChild();
 	}
 
@@ -102,10 +94,11 @@ namespace BamboEditor
 
 		ImGui::BeginChild("ContentBrowserContent", ImVec2{ 0.0f , 0.0f }, true, ImGuiWindowFlags_NoDocking);
 
-		ImGui::Text(m_currentDirectory.string().c_str());
+		const std::filesystem::path& currentDir = m_fileBrowserWidget.GetCurrentPath();
+		ImGui::Text(currentDir.string().c_str());
 		ImGui::Dummy(ImVec2{ 1.0f, 10.0f });
 
-		if (m_currentDirectory.empty())
+		if (currentDir.empty())
 		{
 			ImGui::Text("You shoud create or open a project first");
 			ImGui::EndChild();
@@ -114,100 +107,21 @@ namespace BamboEditor
 
 		if (ImGui::BeginPopupContextWindow("ContentBrowserContext"))
 		{
-			if (ImGui::MenuItem("CreateFolder")) { Bambo::MakeDirectory(m_currentDirectory, "NewFolder"); }
+			if (ImGui::MenuItem("CreateFolder")) { Bambo::MakeDirectory(currentDir, "NewFolder"); }
 
 			ImGui::EndPopup();
 		}
 
-		if (m_currentDirectory != m_rootDirectory)
+		if (!m_fileBrowserWidget.IsOnRootPath())
 		{
 			if (ImGui::Button("<-"))
 			{
-				m_currentDirectory = m_currentDirectory.parent_path();
+				m_fileBrowserWidget.ToParentPath();
 			}
 		}
 
-		float panelWidth = ImGui::GetContentRegionAvail().x;
-		float cellSize = panelWidth / m_columnsCount;
-		bool selectedNewItem = false;
+		m_fileBrowserWidget.Draw();
 
-		ImGui::Columns(m_columnsCount, 0, false);
-
-		for (auto& directoryEntry : std::filesystem::directory_iterator(m_currentDirectory))
-		{
-			const std::filesystem::path& path = directoryEntry.path();
-			std::string filenameString = path.filename().string();
-			bool isSelected = m_selectedContentItem.size() != 0 && m_selectedContentItem == filenameString;
-
-			ImGui::PushID(filenameString.c_str());
-			SPtr<Bambo::Texture2D> icon = directoryEntry.is_directory() ? m_folderIcon : m_fileIcon;
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-			ImGui::ImageButton((ImTextureID)icon->GetID(), { m_itemScale, m_itemScale }, { 0, 1 }, { 1, 0 }, -1, isSelected ? ImVec4{ 1.0f, 1.0f, 1.0f, 1.0f } : ImVec4{0.0f, 0.0f, 0.0f, 0.0f});
-
-			if (ImGui::BeginDragDropSource())
-			{
-				std::filesystem::path relativePath(path);
-				const wchar_t* itemPath = relativePath.c_str();
-				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
-				ImGui::EndDragDropSource();
-			}
-
-			if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-			{
-				selectedNewItem = true;
-				m_selectedContentItem = filenameString;
-			}
-
-			ImGui::PopStyleColor();
-			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-			{
-				m_selectedContentItem = "";
-				if (directoryEntry.is_directory())
-					m_currentDirectory /= path.filename();
-			}
-
-			ImGui::SameLine();
-
-			ImGui::SetNextItemWidth(cellSize);
-			ImGui::SetWindowFontScale(m_itemScale / TARGET_ITEM_SCALE);
-			ImGui::TextWrapped(filenameString.c_str());
-			ImGui::SetWindowFontScale(1.0f);
-
-			ImGui::NextColumn();
-
-			ImGui::PopID();
-		}
-
-		if (ImGui::IsMouseClicked(0) && !selectedNewItem)
-		{
-			m_selectedContentItem = "";
-		}
-
-		ImGui::Columns(1);
 		ImGui::EndChild();
-	}
-
-	void ContentBrowserWindow::DrawSettingsOverlay()
-	{
-		if (!m_isOpenedSettingsPanel) return;
-
-		ImGuiIO& io = ImGui::GetIO();
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
-
-		ImVec2 windowPosition = ImGui::GetWindowPos();
-		windowPosition.x += 50.0f;
-		windowPosition.y += 50.0f;
-
-		ImGui::SetNextWindowPos(windowPosition, ImGuiCond_Always, ImVec2(0.0f, 0.0f));
-
-		ImGui::Begin("Content browser settings", nullptr, window_flags);
-		
-		ImGui::Text("Content settings:");
-		ImGui::Separator();
-
-		ImGui::SliderFloat("Thumbnail Size", &m_itemScale, 12.0f, 48.0f);
-		ImGui::SliderInt("Columns Count", &m_columnsCount, 1, 4);
-
-		ImGui::End();
 	}
 }

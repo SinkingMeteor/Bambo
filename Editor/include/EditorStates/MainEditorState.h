@@ -25,7 +25,6 @@ namespace BamboEditor
 		EditorContext* m_editorContext;
 		std::vector<UPtr<GUIWindow>> m_windows;
 		SPtr<Bambo::Framebuffer> m_framebuffer;
-		Bambo::TextureProvider m_textureProvider;
 
 		void OpenWorld(const std::filesystem::path& worldFilePath);
 		void SaveProject();

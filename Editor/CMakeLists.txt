@@ -10,6 +10,7 @@ ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/ContentBrowser.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/ProjectBrowser.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/EditorStates/OpenProjectEditorState.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/EditorStates/MainEditorState.cpp
+${BamboEngine_SOURCE_DIR}/Editor/src/Widget/FileBrowserWidget.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/EditorModule.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Project.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/GUIWorld.cpp
@@ -18,8 +19,6 @@ ${BamboEngine_SOURCE_DIR}/Editor/src/Main.cpp)
 add_executable(BamboEditor ${BAMBO_EDITOR_SOURCES} )
 
 target_include_directories(BamboEditor 
-PRIVATE ${BamboEngine_SOURCE_DIR}/Engine/include/
-PRIVATE ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/
 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/thirdparty/imgui/include/
 PRIVATE ${BamboEngine_SOURCE_DIR}/Editor/include/
 PRIVATE ${BamboEngine_BINARY_DIR}/Editor/generated/)
