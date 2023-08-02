@@ -86,20 +86,6 @@ namespace BamboEditor
 
 			ImGui::TreePop();
 		}
-        /*if (isDirectory)
-        {
-            bool open = ImGui::TreeNodeEx(node->Name, ImGuiTreeNodeFlags_SpanFullWidth);
-            ImGui::TableNextColumn();
-            ImGui::TextDisabled("--");
-            ImGui::TableNextColumn();
-            ImGui::TextUnformatted(node->Type);
-            if (open)
-            {
-                for (int child_n = 0; child_n < node->ChildCount; child_n++)
-                    DisplayNode(&all_nodes[node->ChildIdx + child_n], all_nodes);
-                ImGui::TreePop();
-            }
-        }*/
     }
 
 	void FileBrowserWidget::Draw()

@@ -40,12 +40,13 @@ namespace BamboEditor
 		}
 
 		ImGui::TableNextRow();
+		ImGui::TableNextColumn();
 
 		if (isDirectory)
 		{
-			bool open = ImGui::TreeNodeEx(filenameString.c_str(), ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_SpanFullWidth, filenameString.c_str());
+			bool open = ImGui::TreeNodeEx(filenameString.c_str(),  ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_OpenOnArrow, filenameString.c_str());
 
-			if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
 				m_fileBrowserWidget.SetRootPath(path);
 			}
@@ -64,23 +65,25 @@ namespace BamboEditor
 		{
 			static ImGuiTreeNodeFlags fileFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_SpanFullWidth;
 			ImGui::TreeNodeEx(filenameString.c_str(), fileFlags);
+			ImGui::TreePop();
+
 		}
 	}
 
 	void ContentBrowserWindow::DrawContentTree()
 	{
 		float windowWidth = ImGui::GetWindowWidth();
+		float windowHeight = ImGui::GetWindowHeight();
 
-		ImGui::BeginChild("ContentBrowserTree", ImVec2{ windowWidth * 0.2f, 0.0f }, true, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoDocking);
+		ImGui::BeginChild("ContentBrowserTree", ImVec2{ windowWidth * 0.2f, 0.0f }, true, ImGuiWindowFlags_NoDocking);
 	
 		static ImGuiTableFlags tableFlags = ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
-		if (ImGui::BeginTable("Browser", 1, tableFlags))
+		if (ImGui::BeginTable("ContentHierarchy", 1, tableFlags))
 		{
-			ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
+			ImGui::TableSetupColumn("Name", ImGuiBackendFlags_None);
 			ImGui::TableHeadersRow();
 
-			ImGui::TableNextRow();
-			DrawPath(m_fileBrowserWidget.GetCurrentPath(), true);
+			DrawPath(m_editorContext->CurrentProject->GetAssetsPath(), true);
 			ImGui::EndTable();
 		}
 
