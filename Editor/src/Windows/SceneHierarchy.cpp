@@ -27,7 +27,16 @@ namespace BamboEditor
 
 		flecs::entity& rootEntity = m_editorContext->CurrentWorld->GetRoot().GetInternalEntity();
 		Bambo::EntityManager& entityWorld = m_editorContext->CurrentWorld->GetEntityManager();
-		DisplayChildrenOf(entityWorld, rootEntity);
+
+		static ImGuiTableFlags tableFlags = ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
+		if (ImGui::BeginTable("SceneHierarchy", 1, tableFlags))
+		{
+			ImGui::TableSetupColumn("Hierarchy", ImGuiBackendFlags_None);
+			ImGui::TableHeadersRow();
+
+			DisplayChildrenOf(entityWorld, rootEntity);
+			ImGui::EndTable();
+		}
 
 		ImGui::SetNextWindowSize({ 200.0f, 200.0f });
 		
@@ -76,20 +85,17 @@ namespace BamboEditor
 				const Bambo::TagComponent* tag = childEntity.get<Bambo::TagComponent>();
 				const Bambo::IDComponent* idComponent = childEntity.get<Bambo::IDComponent>();
 
-				static ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_Leaf;
-				ImGuiTreeNodeFlags nodeFlags = baseFlags;
+				const static ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnArrow;
+				ImGuiTreeNodeFlags nodeFlags = baseFlags | additionalFlags;
 
-				nodeFlags |= additionalFlags;
-
-				if (m_selectedEntity != nullptr && m_selectedEntity->GetID() == idComponent->ID)
-				{
-					nodeFlags |= ImGuiTreeNodeFlags_Selected;
-				}
+				ImGui::TableNextRow();
+				ImGui::TableNextColumn();
 
 				if (ImGui::TreeNodeEx((void*)(uintptr_t)idComponent->ID, nodeFlags, tag->Tag.c_str()))
 				{
-					if(ImGui::IsItemClicked())
+					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 					{
+						//@TODO: To inspector window
 						m_selectedEntity = &m_editorContext->CurrentWorld->GetEntityByID(idComponent->ID);
 					}
 
@@ -113,7 +119,7 @@ namespace BamboEditor
 					}
 
 					bool noChildren = ecs_children(entityWorld, childEntity).count == 0;
-					DisplayChildrenOf(entityWorld, childEntity, noChildren ? ImGuiBackendFlags_None : ImGuiTreeNodeFlags_Leaf);
+					DisplayChildrenOf(entityWorld, childEntity, noChildren ? (ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet) : ImGuiBackendFlags_None);
 					ImGui::TreePop();
 				}
 			}
