@@ -29,7 +29,6 @@
 #include "gtc/quaternion.hpp"
 #include "gtc/type_ptr.hpp"
 #include "stb_image.h"
-#include "flecs.h"
 #include "json.hpp"
 #pragma warning(pop)
 #include "Core/Core.h"

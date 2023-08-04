@@ -5,7 +5,7 @@ namespace BamboEditor
 	SceneHierarchyWindow::SceneHierarchyWindow(EditorContext* editorContext) :
 		m_windowName("Hierarchy"),
 		m_editorContext(editorContext),
-		m_selectedEntity(nullptr)
+		m_selectedGameObject(nullptr)
 	{}
 
 	void SceneHierarchyWindow::OnGUI()
@@ -22,11 +22,10 @@ namespace BamboEditor
 
 		if (ImGui::IsItemClicked())
 		{
-			m_selectedEntity = nullptr;
+			m_selectedGameObject = nullptr;
 		}
 
-		flecs::entity& rootEntity = m_editorContext->CurrentWorld->GetRoot().GetInternalEntity();
-		Bambo::EntityManager& entityWorld = m_editorContext->CurrentWorld->GetEntityManager();
+		const Bambo::GameObject* rootGo = m_editorContext->CurrentWorld->GetRoot();
 
 		static ImGuiTableFlags tableFlags = ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
 		if (ImGui::BeginTable("SceneHierarchy", 1, tableFlags))
@@ -34,7 +33,7 @@ namespace BamboEditor
 			ImGui::TableSetupColumn("Hierarchy", ImGuiBackendFlags_None);
 			ImGui::TableHeadersRow();
 
-			DisplayChildrenOf(entityWorld, rootEntity);
+			DisplayChildrenOf(rootGo);
 			ImGui::EndTable();
 		}
 
@@ -54,74 +53,69 @@ namespace BamboEditor
 		ImGui::End();
 	}
 
-	Bambo::Entity& SceneHierarchyWindow::CreateEmpty()
+	Bambo::GameObject* SceneHierarchyWindow::CreateEmpty()
 	{
-		if (!m_selectedEntity)
-		{
-			return m_editorContext->CurrentWorld->CreateEntity();
-		}
-	
-		return m_editorContext->CurrentWorld->CreateEntity(m_selectedEntity->GetID());
+		return m_editorContext->CurrentWorld->CreateGameObject(m_selectedGameObject);
 	}
 
 	void SceneHierarchyWindow::CreateCamera()
 	{
-		CreateEmpty().AddComponent<Bambo::CameraComponent>();
+		CreateEmpty()->AddComponent<Bambo::CameraComponent>();
 	}
 
-	void SceneHierarchyWindow::DisplayChildrenOf(Bambo::EntityManager& entityWorld, flecs::entity& entity, ImGuiTreeNodeFlags additionalFlags)
+	void SceneHierarchyWindow::DisplayChildrenOf(const Bambo::GameObject* gameObject, ImGuiTreeNodeFlags additionalFlags)
 	{
-		ecs_iter_t it = ecs_children(entityWorld, entity);
+		const Bambo::RelationshipComponent* relComp = gameObject->GetComponentConst<Bambo::RelationshipComponent>();
+		const std::vector<Bambo::RelationshipComponent*>& children = relComp->GetChildrenConst();
 
-		while (ecs_children_next(&it))
+		for (int i = 0; i < children.size(); ++i)
 		{
-			for (int i = 0; i < it.count; ++i)
+			Bambo::GameObject* childGo = children[i]->GetOwner();
+			Bambo::RelationshipComponent* childRelComp = childGo->GetComponent<Bambo::RelationshipComponent>();
+
+			BAMBO_ASSERT_S(childGo)
+			BAMBO_ASSERT_S(childGo->IsValid())
+			BAMBO_ASSERT_S(childGo->HasComponent<Bambo::TagComponent>())
+
+			Bambo::IID id = childGo->GetID();
+			const Bambo::TagComponent* tag = childGo->GetComponentConst<Bambo::TagComponent>();
+
+			const static ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnArrow;
+			ImGuiTreeNodeFlags nodeFlags = baseFlags | additionalFlags;
+
+			ImGui::TableNextRow();
+			ImGui::TableNextColumn();
+
+			if (ImGui::TreeNodeEx((void*)(uintptr_t)id, nodeFlags, tag->Tag.c_str()))
 			{
-				ecs_entity_t child = it.entities[i];
-				flecs::entity childEntity = entityWorld.entity(child);
-
-				if (!childEntity.has<Bambo::TagComponent>()) continue;
-
-				const Bambo::TagComponent* tag = childEntity.get<Bambo::TagComponent>();
-				const Bambo::IDComponent* idComponent = childEntity.get<Bambo::IDComponent>();
-
-				const static ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnArrow;
-				ImGuiTreeNodeFlags nodeFlags = baseFlags | additionalFlags;
-
-				ImGui::TableNextRow();
-				ImGui::TableNextColumn();
-
-				if (ImGui::TreeNodeEx((void*)(uintptr_t)idComponent->ID, nodeFlags, tag->Tag.c_str()))
+				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 				{
-					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-					{
-						//@TODO: To inspector window
-						m_selectedEntity = &m_editorContext->CurrentWorld->GetEntityByID(idComponent->ID);
-					}
-
-					if (ImGui::BeginDragDropSource())
-					{
-						ImGui::SetDragDropPayload("GOReparent", &childEntity, sizeof(childEntity));
-						ImGui::Text("%s", tag->Tag.c_str());
-						ImGui::EndDragDropSource();
-					}
-
-					if (ImGui::BeginDragDropTarget())
-					{
-						 const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GOReparent");
-						 if(payload != nullptr)
-						 {
-							 flecs::entity* targetEntity = static_cast<flecs::entity*>(payload->Data);
-							 targetEntity->child_of(childEntity);
-						 }
-
-						 ImGui::EndDragDropTarget();
-					}
-
-					bool noChildren = ecs_children(entityWorld, childEntity).count == 0;
-					DisplayChildrenOf(entityWorld, childEntity, noChildren ? (ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet) : ImGuiBackendFlags_None);
-					ImGui::TreePop();
+					//@TODO: To inspector window
+					m_selectedGameObject = m_editorContext->CurrentWorld->GetGameObject(id);
 				}
+
+				if (ImGui::BeginDragDropSource())
+				{
+					ImGui::SetDragDropPayload("GOReparent", &*childGo, sizeof(*childGo));
+					ImGui::Text("%s", tag->Tag.c_str());
+					ImGui::EndDragDropSource();
+				}
+
+				if (ImGui::BeginDragDropTarget())
+				{
+						const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GOReparent");
+						if(payload != nullptr)
+						{
+							Bambo::GameObject* targetGo = static_cast<Bambo::GameObject*>(payload->Data);
+							targetGo->GetComponent<Bambo::RelationshipComponent>()->SetParent(childRelComp);
+						}
+
+						ImGui::EndDragDropTarget();
+				}
+
+				bool noChildren = childRelComp->GetChildrenCount() == 0;
+				DisplayChildrenOf(childGo, noChildren ? (ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet) : ImGuiBackendFlags_None);
+				ImGui::TreePop();
 			}
 		}
 	}

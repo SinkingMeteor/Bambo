@@ -5,7 +5,6 @@ add_subdirectory(thirdparty/GLFW)
 add_subdirectory(thirdparty/STBI)
 add_subdirectory(thirdparty/GLM)
 add_subdirectory(thirdparty/OpenAL)
-add_subdirectory(thirdparty/flecs)
 
 set(BAMBO_ENGINE_SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/src/Audio/Audio.cpp
@@ -64,9 +63,8 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Window/Window.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Window/Input.cpp
 
 ${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/World/Entity.cpp
 
-${CMAKE_CURRENT_LIST_DIR}/src/Serialization/WorldSerialization.cpp
+#${CMAKE_CURRENT_LIST_DIR}/src/Serialization/WorldSerialization.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Serialization/MathSerialization.cpp)
 
 add_library(BamboEngine STATIC ${BAMBO_ENGINE_SOURCES})
@@ -76,7 +74,6 @@ PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/
 PUBLIC ${BamboEngine_BINARY_DIR}/Engine/generated/
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLFW/include/
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/flecs/include/
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/OpenAL/include/
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLM/glm
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLAD/include
@@ -85,14 +82,13 @@ PUBLIC ${OPENGL_INCLUDE_DIRS})
 
 target_compile_features(BamboEngine PUBLIC cxx_std_17)
 
-find_library(THIRDPARTY_LIBS NAMES flecs glfw glad OpenAL STBI ${OPENGL_LIBRARIES} HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/)
+find_library(THIRDPARTY_LIBS NAMES glfw glad OpenAL STBI ${OPENGL_LIBRARIES} HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/)
 
 target_link_libraries(BamboEngine
 PUBLIC glfw 
 PUBLIC glad 
 PUBLIC STBI 
-PUBLIC OpenAL
-PUBLIC flecs_static)
+PUBLIC OpenAL)
 
 set(BAMBO_ENGINE_RESOURCE_DIR "${BamboEngine_SOURCE_DIR}/Engine/resources")
 add_definitions(-DBAMBO_ENGINE_RESOURCE_DIR=${BAMBO_ENGINE_RESOURCE_DIR})

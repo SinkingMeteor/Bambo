@@ -1,9 +1,9 @@
 #pragma once
-#include "pch.h"
+#include "Core.h"
 
 namespace Bambo
 {
-	class BAMBO_API IID
+	class IID
 	{
 	public:
 		IID()

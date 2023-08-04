@@ -5,7 +5,7 @@
 #include "Graphics/ShaderProvider.h"
 #include "Graphics/TextureProvider.h"
 #include "Core/IID.h"
-#include "Entity.h"
+#include "GameObject.h"
 #include "World/Components/Components.h"
 #include "Window/WindowManager.h"
 #include "Window/Input.h"
@@ -17,7 +17,6 @@ namespace Bambo
 
 	class BAMBO_API World final
 	{
-		friend Entity;
 	public:
 		World(const std::filesystem::path& worldFilePath);
 		~World();
@@ -26,33 +25,34 @@ namespace Bambo
 		virtual void OnGUI() {};
 		virtual void Render();
 
-		Entity& CreateEntity();
-		Entity& CreateEntity(IID parentId);
-		Entity& CreateEntity(const char* name);
-		Entity& CreateEntity(IID parentId, const char* name);
-		Entity& CreateEntity(IID parentId, const char* name, IID selfId);
-		Entity& GetEntityByID(IID id);
-
-		Entity& GetRoot() { return m_entityMap[m_rootEntityId]; }
-		void DestroyEntity(Entity& entity);
-		void DestroyEntity(IID id);
-
-		EntityManager& GetEntityManager() { return m_entityManager; }
+		GameObject* CreateGameObject(GameObject* parent = nullptr);
+		GameObject* GetGameObject(IID id);
+		const GameObject* GetRoot() const { return m_root; }
+		void DestroyGameObject(GameObject* gameObject);
+		void DestroyGameObject(IID id);
 
 		static void CreateNewWorldFile(const std::filesystem::path& assetPath);
 		void SaveWorld();
 		void Reset();
 
+		bool IsValidGameObject(IID id) 
+		{
+			GameObject* go = GetGameObject(id);
+			if (!go) return false;
+
+			return go->IsValid();
+		}
+
 	private:
 		std::filesystem::path m_worldFilePath;
-		EntityManager m_entityManager;
-		std::unordered_map<IID, Entity> m_entityMap;
-		IID m_rootEntityId;
+		std::unordered_map<IID, UPtr<GameObject>> m_gameObjectMap;
+		GameObject* m_root;
 		UPtr<SpriteRenderer> m_spriteRenderer;
 		ShaderProvider m_shaderProvider;
 
 		void CreateRoot();
+		GameObject* CreateGameObjectInternal(GameObject* parent);
 		void LoadWorld();
-		void ChangeID(Entity& entity, IID oldID, IID newID);
+
 	};
 }

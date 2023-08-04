@@ -55,7 +55,7 @@ namespace BamboEditor
 
 	void ProjectBrowserWindow::DrawCreateProject()
 	{
-		if (m_fileBrowserWidget.HasFileWithExtension(TARGET_EXTENSION))
+		if (!m_fileBrowserWidget.HasFileWithExtension(TARGET_EXTENSION))
 		{
 			ImGui::SameLine(0.0f, 25.0f);
 
