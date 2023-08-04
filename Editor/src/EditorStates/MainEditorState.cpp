@@ -2,6 +2,7 @@
 #include "Windows/SceneHierarchy.h"
 #include "Windows/ContentBrowser.h"
 #include "Windows/GameViewport.h"
+#include "Windows/Inspector.h"
 #include "BamboPaths.h"
 #include "Graphics/RenderManager.h"
 
@@ -24,6 +25,7 @@ namespace BamboEditor
 
 		m_windows.emplace_back<UPtr<SceneHierarchyWindow>>(std::make_unique<SceneHierarchyWindow>(m_editorContext));
 		m_windows.emplace_back<UPtr<ContentBrowserWindow>>(std::make_unique<ContentBrowserWindow>(m_editorContext));
+		m_windows.emplace_back<UPtr<InspectorWindow>>(std::make_unique<InspectorWindow>(m_editorContext));
 		m_windows.emplace_back<UPtr<GameViewportWindow>>(std::make_unique<GameViewportWindow>(m_framebuffer));
 
 		ImGuiIO& io = ImGui::GetIO();
