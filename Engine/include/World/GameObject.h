@@ -1,6 +1,6 @@
 #pragma once
 #include "Core/Essentials.h"
-
+#include "Components/ComponentFactory.h"
 namespace Bambo
 {
 	class Component;
@@ -8,10 +8,14 @@ namespace Bambo
 	class BAMBO_API GameObject
 	{
 		friend class World;
+		using It = std::vector<GameObject*>::iterator;
+
 	public:
 		GameObject() = default;
 		GameObject(World* world, IID id) :
 			m_components(),
+			m_children(),
+			m_parent(nullptr),
 			m_id(id),
 			m_world(world)
 		{}
@@ -39,6 +43,17 @@ namespace Bambo
 
 		bool IsValid() const { return m_world; }
 
+	public:
+
+		void SetParent(GameObject* newParent);
+		GameObject* GetParent() { return m_parent; }
+		std::vector<GameObject*>& GetChildren() { return m_children; }
+		const std::vector<GameObject*>& GetChildrenConst() const { return m_children; }
+		std::size_t GetChildrenCount() const { return m_children.size(); }
+
+		void AddChild(GameObject* child);
+		void RemoveChild(GameObject* child);
+		
 		bool operator==(const GameObject& go)
 		{
 			return m_id == go.m_id;
@@ -49,8 +64,14 @@ namespace Bambo
 			return m_id != go.m_id;
 		}
 
+		void Serialize(nlohmann::json& node);
+		void Deserialize(nlohmann::json& node);
+
 	private:
 		std::vector<UPtr<Component>> m_components;
+		std::vector<GameObject*> m_children;
+		GameObject* m_parent;
+
 		IID m_id;
 		World* m_world;
 	};

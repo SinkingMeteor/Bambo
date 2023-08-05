@@ -65,13 +65,11 @@ namespace BamboEditor
 
 	void SceneHierarchyWindow::DisplayChildrenOf(const Bambo::GameObject* gameObject, ImGuiTreeNodeFlags additionalFlags)
 	{
-		const Bambo::RelationshipComponent* relComp = gameObject->GetComponentConst<Bambo::RelationshipComponent>();
-		const std::vector<Bambo::RelationshipComponent*>& children = relComp->GetChildrenConst();
+		const std::vector<Bambo::GameObject*>& children = gameObject->GetChildrenConst();
 
 		for (int i = 0; i < children.size(); ++i)
 		{
-			Bambo::GameObject* childGo = children[i]->GetOwner();
-			Bambo::RelationshipComponent* childRelComp = childGo->GetComponent<Bambo::RelationshipComponent>();
+			Bambo::GameObject* childGo = children[i];
 
 			BAMBO_ASSERT_S(childGo)
 			BAMBO_ASSERT_S(childGo->IsValid())
@@ -107,13 +105,13 @@ namespace BamboEditor
 						if(payload != nullptr)
 						{
 							Bambo::GameObject* targetGo = static_cast<Bambo::GameObject*>(payload->Data);
-							targetGo->GetComponent<Bambo::RelationshipComponent>()->SetParent(childRelComp);
+							targetGo->SetParent(childGo);
 						}
 
 						ImGui::EndDragDropTarget();
 				}
 
-				bool noChildren = childRelComp->GetChildrenCount() == 0;
+				bool noChildren = childGo->GetChildrenCount() == 0;
 				DisplayChildrenOf(childGo, noChildren ? (ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet) : ImGuiBackendFlags_None);
 				ImGui::TreePop();
 			}

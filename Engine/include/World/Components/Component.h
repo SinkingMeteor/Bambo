@@ -8,7 +8,7 @@ namespace Bambo
 #define COMPONENT_BODY(Name) public: \
 	static std::size_t GetTypeID() \
 	{	\
-		static std::size_t id = std::hash<std::string_view>{}(#Name); \
+		static std::size_t id = HashString(#Name); \
 		return id; \
 	}	\
 	virtual std::size_t GetID() const override \

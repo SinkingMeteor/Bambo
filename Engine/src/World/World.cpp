@@ -19,7 +19,7 @@ namespace Bambo
 	{
 		SPtr<Shader> defaultShader = m_shaderProvider.Load(ToId("DefaultShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
 		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultShader);
-		CreateRoot();
+		CreateRoot(IID{});
 		LoadWorld();
 	}
 
@@ -32,13 +32,13 @@ namespace Bambo
 	{
 	}
 
-	GameObject* World::CreateGameObject(GameObject* parent)
+	GameObject* World::CreateGameObject(GameObject* parent, IID id)
 	{
 		if (!parent)
 		{
 			parent = m_root;
 		}
-		return CreateGameObjectInternal(parent);
+		return CreateGameObjectInternal(parent, id);
 	}
 
 	GameObject* World::GetGameObject(IID id)
@@ -64,32 +64,30 @@ namespace Bambo
 		DestroyGameObject(GetGameObject(id));
 	}
 
-	void World::CreateRoot()
+	void World::CreateRoot(IID id)
 	{
 		if (m_root && m_root->IsValid())
 		{
 			DestroyGameObject(m_root);
 		}
 
-		m_root = CreateGameObjectInternal(nullptr);
+		m_root = CreateGameObjectInternal(nullptr, id);
 	}
 
-	GameObject* World::CreateGameObjectInternal(GameObject* parent)
+	GameObject* World::CreateGameObjectInternal(GameObject* parent, IID id)
 	{
-		IID newId{};
+		IID newId = id;
 		UPtr<GameObject> newGameObject = std::make_unique<GameObject>(this, newId);
 
 		GameObject* rawPtr = newGameObject.get();
 
-		RelationshipComponent* relComp = newGameObject->AddComponent<RelationshipComponent>();
-
 		if (!parent)
 		{
-			relComp->SetParent(nullptr);
+			newGameObject->SetParent(nullptr);
 		}
 		else
 		{
-			relComp->SetParent(parent->GetComponent<RelationshipComponent>());
+			newGameObject->SetParent(parent);
 		}
 
 		newGameObject->AddComponent<TagComponent>()->Tag = "GameObject";
@@ -147,7 +145,5 @@ namespace Bambo
 		}
 
 		m_gameObjectMap.clear();
-	
-		CreateRoot();
 	}
 }

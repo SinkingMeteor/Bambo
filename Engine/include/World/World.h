@@ -25,9 +25,10 @@ namespace Bambo
 		virtual void OnGUI() {};
 		virtual void Render();
 
-		GameObject* CreateGameObject(GameObject* parent = nullptr);
+		GameObject* CreateGameObject(GameObject* parent = nullptr, IID id = IID{});
+		void CreateRoot(IID id);
 		GameObject* GetGameObject(IID id);
-		const GameObject* GetRoot() const { return m_root; }
+		GameObject* GetRoot() { return m_root; }
 		void DestroyGameObject(GameObject* gameObject);
 		void DestroyGameObject(IID id);
 
@@ -50,8 +51,7 @@ namespace Bambo
 		UPtr<SpriteRenderer> m_spriteRenderer;
 		ShaderProvider m_shaderProvider;
 
-		void CreateRoot();
-		GameObject* CreateGameObjectInternal(GameObject* parent);
+		GameObject* CreateGameObjectInternal(GameObject* parent, IID id);
 		void LoadWorld();
 
 	};

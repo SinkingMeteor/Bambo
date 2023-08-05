@@ -12,5 +12,17 @@ namespace Bambo
 		uint32 SpriteRectIndex{ 0 };
 
 		SpriteComponent() = default;
+
+		virtual void Serialize(nlohmann::json& node) override
+		{
+			node["name"] = "SpriteComponent";
+			//node["texture"] = Texture->
+			node["rectId"] = SpriteRectIndex;
+		}
+
+		virtual void Deserialize(nlohmann::json& node) override
+		{
+			SpriteRectIndex = node["rectId"].get<uint32>();
+		}
 	};
 }

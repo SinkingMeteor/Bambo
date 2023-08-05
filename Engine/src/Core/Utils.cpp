@@ -79,4 +79,17 @@ namespace Bambo
 	{
 		return targetString.substr(targetString.find_last_of(".") + 1) == extension;
 	}
+
+	constexpr static int SIZE = 47;
+	constexpr static int SEED = 131;
+	
+	std::size_t HashString(const std::string_view& str)
+	{
+		std::size_t hash = 0;
+		for (int i = 0; i < str.length(); ++i)
+		{
+			hash = (hash * SEED) + str[i];
+		}
+		return hash % SIZE;
+	}
 }
