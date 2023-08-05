@@ -63,6 +63,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Window/Window.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Window/Input.cpp
 
 ${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/World/Components/ComponentFactory.cpp
 
 #${CMAKE_CURRENT_LIST_DIR}/src/Serialization/WorldSerialization.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Serialization/MathSerialization.cpp)

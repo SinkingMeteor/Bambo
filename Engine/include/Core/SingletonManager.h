@@ -6,8 +6,9 @@ namespace Bambo
 	class ISingleton
 	{
 	public:
-		ISingleton() = default;
 		virtual ~ISingleton() = default;
+	protected:
+		ISingleton() = default;
 	};
 
 	class BAMBO_API SingletonManager final

@@ -5,6 +5,7 @@
 #include "Window/WindowManager.h"
 #include "Audio/AudioManager.h"
 #include "Graphics/RenderManager.h"
+#include "World/Components/ComponentFactory.h"
 #include "World/World.h"
 #include "Core/Module.h"
 namespace Bambo

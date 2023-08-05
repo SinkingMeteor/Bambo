@@ -1,5 +1,6 @@
 #pragma once
 #include "Core/Essentials.h"
+#include "Serialization/ISerializable.h"
 
 namespace Bambo
 {
@@ -15,12 +16,9 @@ namespace Bambo
 		return GetTypeID(); \
 	}	\
 
-	
-
-
 class GameObject;
 
-	class Component
+	class Component : public ISerializable
 	{
 		friend class GameObject;
 	public:
