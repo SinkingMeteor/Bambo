@@ -10,5 +10,6 @@ namespace BamboEditor
 	{
 		SPtr<Project> CurrentProject{};
 		SPtr<Bambo::World> CurrentWorld{};
+		Bambo::GameObject* SelectedGameObject{};
 	};
 }

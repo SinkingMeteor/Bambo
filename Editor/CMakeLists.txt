@@ -8,6 +8,11 @@ ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/GameViewport.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/Inspector.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/ContentBrowser.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Windows/ProjectBrowser.cpp
+
+${BamboEngine_SOURCE_DIR}/Editor/src/Drawers/InspectorDrawersRegistry.cpp
+${BamboEngine_SOURCE_DIR}/Editor/src/Drawers/PrimitiveDrawers.cpp
+${BamboEngine_SOURCE_DIR}/Editor/src/Drawers/DefaultDrawers.cpp
+
 ${BamboEngine_SOURCE_DIR}/Editor/src/EditorStates/OpenProjectEditorState.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/EditorStates/MainEditorState.cpp
 ${BamboEngine_SOURCE_DIR}/Editor/src/Widget/FileBrowserWidget.cpp

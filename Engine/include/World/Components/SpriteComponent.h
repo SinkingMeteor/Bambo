@@ -9,7 +9,7 @@ namespace Bambo
 		COMPONENT_BODY(SpriteComponent)
 
 		SPtr<Texture2D> Texture{ nullptr };
-		uint32 SpriteRectIndex{ 0 };
+		int32 SpriteRectIndex{ 0 };
 
 		SpriteComponent() = default;
 

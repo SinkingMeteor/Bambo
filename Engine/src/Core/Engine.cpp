@@ -19,12 +19,6 @@ namespace Bambo
 		componentFactory->Register(CameraComponent::GetTypeID(), []() { return std::make_unique<CameraComponent>(); });
 		componentFactory->Register(SpriteComponent::GetTypeID(), []() { return std::make_unique<SpriteComponent>(); });
 
-		/* All gameObjects must have these components, so we doesn't need to register it. */
-		// componentFactory->Register(RelationshipComponent::GetTypeID(), []() { return std::make_unique<RelationshipComponent>(); });
-		// componentFactory->Register(TransformComponent::GetTypeID(), []() { return std::make_unique<TransformComponent>(); });
-		// componentFactory->Register(TagComponent::GetTypeID(), []() { return std::make_unique<TagComponent>(); });
-
-
 		WindowSettings settings{ 1280u, 720u, "Bambo Engine" };
 
 		WindowManager* windowManager = singletonManager->Register<WindowManager>();

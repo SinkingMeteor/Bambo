@@ -17,7 +17,6 @@ namespace BamboEditor
 	private:
 		std::string m_windowName = "Hierarchy";
 		EditorContext* m_editorContext;
-		Bambo::GameObject* m_selectedGameObject;
 
 		void DisplayChildrenOf(const Bambo::GameObject* gameObject, ImGuiTreeNodeFlags additionalFlags = ImGuiBackendFlags_::ImGuiBackendFlags_None);
 		Bambo::GameObject* CreateEmpty();

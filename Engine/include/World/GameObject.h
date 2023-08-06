@@ -49,6 +49,7 @@ namespace Bambo
 		GameObject* GetParent() { return m_parent; }
 		std::vector<GameObject*>& GetChildren() { return m_children; }
 		const std::vector<GameObject*>& GetChildrenConst() const { return m_children; }
+		std::vector<UPtr<Component>>& GetComponentsArray() { return m_components; }
 		std::size_t GetChildrenCount() const { return m_children.size(); }
 
 		void AddChild(GameObject* child);

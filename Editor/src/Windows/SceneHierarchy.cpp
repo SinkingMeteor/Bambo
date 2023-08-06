@@ -4,8 +4,7 @@ namespace BamboEditor
 {
 	SceneHierarchyWindow::SceneHierarchyWindow(EditorContext* editorContext) :
 		m_windowName("Hierarchy"),
-		m_editorContext(editorContext),
-		m_selectedGameObject(nullptr)
+		m_editorContext(editorContext)
 	{}
 
 	void SceneHierarchyWindow::OnGUI()
@@ -22,7 +21,7 @@ namespace BamboEditor
 
 		if (ImGui::IsItemClicked())
 		{
-			m_selectedGameObject = nullptr;
+			m_editorContext->SelectedGameObject = nullptr;
 		}
 
 		const Bambo::GameObject* rootGo = m_editorContext->CurrentWorld->GetRoot();
@@ -55,7 +54,7 @@ namespace BamboEditor
 
 	Bambo::GameObject* SceneHierarchyWindow::CreateEmpty()
 	{
-		return m_editorContext->CurrentWorld->CreateGameObject(m_selectedGameObject);
+		return m_editorContext->CurrentWorld->CreateGameObject(m_editorContext->SelectedGameObject);
 	}
 
 	void SceneHierarchyWindow::CreateCamera()
@@ -89,7 +88,7 @@ namespace BamboEditor
 				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 				{
 					//@TODO: To inspector window
-					m_selectedGameObject = m_editorContext->CurrentWorld->GetGameObject(id);
+					m_editorContext->SelectedGameObject = m_editorContext->CurrentWorld->GetGameObject(id);
 				}
 
 				if (ImGui::BeginDragDropSource())

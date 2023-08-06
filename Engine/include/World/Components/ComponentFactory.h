@@ -5,10 +5,10 @@
 #include "Component.h"
 namespace Bambo
 {
-	using CompFactoryFunc = std::function<UPtr<Component>()>;
 
 	class ComponentFactory : public ISingleton
 	{
+		using CompFactoryFunc = std::function<UPtr<Component>()>;
 		SINGLETON_BODY(ComponentFactory, 'CMPF')
 	public:
 		ComponentFactory() = default;

@@ -2,7 +2,8 @@
 #include "Core/Essentials.h"
 #include "EditorContext.h"
 #include "Windows/GUIWindow.h"
-
+#include "Drawers/DefaultDrawers.h"
+#include "Drawers/InspectorDrawersRegistry.h"
 namespace BamboEditor
 {
 	class InspectorWindow : public GUIWindow
