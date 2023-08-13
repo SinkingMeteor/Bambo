@@ -12,7 +12,8 @@ namespace Bambo
 		m_wrapS(GL_REPEAT),
 		m_wrapT(GL_REPEAT),
 		m_filterMin(GL_NEAREST),
-		m_filterMax(GL_NEAREST)
+		m_filterMax(GL_NEAREST),
+		m_texturePath()
 	{
 		OpenGLCheck(glGenTextures(1, &m_id));
 	}
@@ -48,6 +49,7 @@ namespace Bambo
 		OpenGLCheck(glBindTexture(GL_TEXTURE_2D, 0));
 
 		stbi_image_free(data);
+		m_texturePath = file;
 	}
 
 	void OpenGLTexture::Use() const

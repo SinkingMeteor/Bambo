@@ -35,6 +35,11 @@ namespace BamboEditor
         ImGui::InputText(name, (char*)str->c_str(), str->capacity() + 1, flags, InputTextCallback, &cb_user_data);
     }
 
+    void DrawReadonlyString(const std::string* str)
+    {
+        ImGui::TextWrapped(str->c_str());
+    }
+
     void DrawVector3(const char* name, glm::vec3* vec3)
     {
         ImGui::InputFloat3(name, glm::value_ptr(*vec3));

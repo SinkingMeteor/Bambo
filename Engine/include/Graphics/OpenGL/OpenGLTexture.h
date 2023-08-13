@@ -15,7 +15,10 @@ namespace Bambo
 		virtual void LoadFromFile(const std::string& file) override;
 		virtual void Use() const override;
 		virtual uint32 GetID() const override { return m_id; }
+		virtual const std::string& GetTexturePath() const override { return m_texturePath; };
 		virtual RectInt GetTextureRect() const override { return RectInt{ 0, 0, m_width, m_height }; }
+		virtual int32 GetTextureWidth() override { return m_width; }
+		virtual int32 GetTextureHeight() override { return m_height; }
 	private:
 		uint32 m_id;
 
@@ -29,5 +32,7 @@ namespace Bambo
 		uint32 m_wrapT;
 		uint32 m_filterMin;
 		uint32 m_filterMax;
+
+		std::string m_texturePath;
 	};
 }

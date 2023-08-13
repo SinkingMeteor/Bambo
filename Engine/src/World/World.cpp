@@ -15,7 +15,8 @@ namespace Bambo
 		m_gameObjectMap(),
 		m_root(),
 		m_spriteRenderer(),
-		m_shaderProvider()
+		m_shaderProvider(),
+		m_textureProvider()
 	{
 		SPtr<Shader> defaultShader = m_shaderProvider.Load(ToId("DefaultShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
 		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultShader);

@@ -9,7 +9,7 @@ namespace Bambo
 	{
 		using result_type = std::shared_ptr<Texture2D>;
 
-		result_type operator()(const std::string& path) const
+		result_type operator()(const std::size_t id, const std::string& path) const
 		{
 			std::shared_ptr<Texture2D> texture = std::make_shared<Texture2D>();
 			texture->LoadFromFile(path);

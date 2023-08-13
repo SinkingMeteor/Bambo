@@ -47,6 +47,7 @@ namespace Bambo
 			BAMBO_ASSERT_S(factory->IsRegistered(compHash))
 
 			UPtr<Component> comp = factory->CreateComponent(compHash);
+			comp->SetOwner(this);
 			comp->Deserialize(compNode);
 			m_components.push_back(std::move(comp));
 		}

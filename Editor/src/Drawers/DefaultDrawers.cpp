@@ -25,6 +25,7 @@ namespace BamboEditor
 
 		ImGui::Text("SpriteComponent");
 		DrawInteger("Rect index", &spriteComponent->SpriteRectIndex);
+		DrawReadonlyString(&spriteComponent->Texture->GetTexturePath());
 	}
 
 	void DrawCameraComponent(Bambo::Component* component)

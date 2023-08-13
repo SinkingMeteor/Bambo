@@ -8,7 +8,7 @@ namespace Bambo
 	class BAMBO_API Audio final
 	{
 	public:
-		Audio(char* data, ALsizei dataSize, ALsizei sampleRate, int channels, int bps);
+		Audio(const std::size_t assetId, char* data, ALsizei dataSize, ALsizei sampleRate, int32 channels, int32 bps);
 		~Audio();
 		Audio(const Audio& audio) = delete;
 		Audio& operator=(const Audio& audio) = delete;
@@ -21,13 +21,14 @@ namespace Bambo
 		const char* GetRawData() const { return m_data.get(); }
 
 	private:
+		std::size_t m_assetId;
 		ALuint m_buffer;
 
 		std::unique_ptr<char[]> m_data;
 		ALsizei m_dataSize;
 		ALsizei m_sampleRate;
-		int m_channels;
-		int m_bps;
+		int32 m_channels;
+		int32 m_bps;
 	};
 
 }

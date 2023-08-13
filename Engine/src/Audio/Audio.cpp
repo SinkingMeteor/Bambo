@@ -2,7 +2,8 @@
 
 namespace Bambo
 {
-	Audio::Audio(char* data, ALsizei dataSize, ALsizei sampleRate, int channels, int bps) :
+	Audio::Audio(const std::size_t assetId, char* data, ALsizei dataSize, ALsizei sampleRate, int channels, int bps) :
+		m_assetId(assetId),
 		m_buffer(AL_NONE),
 		m_data(data),
 		m_dataSize(dataSize),

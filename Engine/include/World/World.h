@@ -31,7 +31,7 @@ namespace Bambo
 		GameObject* GetRoot() { return m_root; }
 		void DestroyGameObject(GameObject* gameObject);
 		void DestroyGameObject(IID id);
-
+		TextureProvider* GetTextureProvider() { return &m_textureProvider; }
 		static void CreateNewWorldFile(const std::filesystem::path& assetPath);
 		void SaveWorld();
 		void Reset();
@@ -50,6 +50,7 @@ namespace Bambo
 		GameObject* m_root;
 		UPtr<SpriteRenderer> m_spriteRenderer;
 		ShaderProvider m_shaderProvider;
+		TextureProvider m_textureProvider;
 
 		GameObject* CreateGameObjectInternal(GameObject* parent, IID id);
 		void LoadWorld();

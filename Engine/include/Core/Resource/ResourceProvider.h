@@ -35,7 +35,7 @@ namespace Bambo
 			return GetResource(id);
 		}
 
-		std::shared_ptr<Resource> resource = m_loader(std::forward<Args>(args)...);
+		std::shared_ptr<Resource> resource = m_loader(id, std::forward<Args>(args)...);
 		m_resourceMap.emplace(id, resource);
 		return resource;
 	}

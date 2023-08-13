@@ -16,7 +16,7 @@ namespace Bambo
 			m_loaders.emplace_back(std::make_shared<AudioWavLoader>());
 		}
 
-		result_type operator()(const std::string& path) const
+		result_type operator()(const std::size_t id, const std::string& path) const
 		{
 			std::ifstream inStream{ path, std::ios::binary };
 			if (!inStream.is_open())
@@ -40,7 +40,7 @@ namespace Bambo
 					{
 						return nullptr;
 					}
-					return std::make_shared<Audio>(rawData.Data, rawData.DataSize, rawData.SampleRate, rawData.Channels, rawData.Bps);
+					return std::make_shared<Audio>(id, rawData.Data, rawData.DataSize, rawData.SampleRate, rawData.Channels, rawData.Bps);
 				}
 			}
 
