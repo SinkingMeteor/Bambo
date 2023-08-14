@@ -30,6 +30,10 @@ class GameObject;
 		Component& operator=(const Component&) = delete;
 		Component& operator=(Component&&) = delete;
 
+		virtual void Start() {}
+		virtual void Tick(float deltaSeconds) {}
+		virtual void End() {}
+
 		virtual std::size_t GetID() const { return 0; }
 		GameObject* GetOwner() { return m_owner; }
 	protected:

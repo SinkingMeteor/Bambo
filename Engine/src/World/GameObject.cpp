@@ -1,12 +1,19 @@
 #include "World/GameObject.h"
 #include "World/Components/Components.h"
 #include "World/World.h"
-
+#include "Serialization/MathSerialization.h"
 namespace Bambo
 {
 	void GameObject::Serialize(nlohmann::json& node)
 	{
 		node["id"] = (uint64_t)m_id;
+		node["name"] = m_name;
+
+		nlohmann::json& transformNode = node["transform"];
+		Serialization::Serialize(m_transform.GetPosition(), transformNode["position"]);
+		Serialization::Serialize(m_transform.GetRotation(), transformNode["rotation"]);
+		Serialization::Serialize(m_transform.GetScale(), transformNode["scale"]);
+		Serialization::Serialize(m_transform.GetOrigin(), transformNode["origin"]);
 
 		for (size_t i = 0; i < m_components.size(); ++i)
 		{
@@ -25,25 +32,22 @@ namespace Bambo
 	{
 		BAMBO_ASSERT_S(m_world)
 
-			nlohmann::json& componentsNode = node["components"];
+		nlohmann::json& componentsNode = node["components"];
 		ComponentFactory* factory = ComponentFactory::Get();
+		m_name = node["name"];
+
+		nlohmann::json& transformNode = node["transform"];
+		Serialization::Deserialize(m_transform.GetPositionRef(), transformNode["position"]);
+		Serialization::Deserialize(m_transform.GetRotationRef(), transformNode["rotation"]);
+		Serialization::Deserialize(m_transform.GetScaleRef(), transformNode["scale"]);
+		Serialization::Deserialize(m_transform.GetOriginRef(), transformNode["origin"]);
 
 		for (size_t i = 0; i < componentsNode.size(); ++i)
 		{
 			nlohmann::json& compNode = componentsNode.at(i);
 			std::size_t compHash = HashString(compNode["name"]);
 
-			if (compHash == TransformComponent::GetTypeID())
-			{
-				GetComponent<TransformComponent>()->Deserialize(compNode);
-				continue;
-			}
-			if (compHash == TagComponent::GetTypeID())
-			{
-				GetComponent<TagComponent>()->Deserialize(compNode);
-				continue;
-			}
-
+		
 			BAMBO_ASSERT_S(factory->IsRegistered(compHash))
 
 			UPtr<Component> comp = factory->CreateComponent(compHash);

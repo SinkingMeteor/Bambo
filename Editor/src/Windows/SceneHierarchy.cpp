@@ -75,7 +75,7 @@ namespace BamboEditor
 			BAMBO_ASSERT_S(childGo->HasComponent<Bambo::TagComponent>())
 
 			Bambo::IID id = childGo->GetID();
-			const Bambo::TagComponent* tag = childGo->GetComponentConst<Bambo::TagComponent>();
+			std::string& name = childGo->GetName();
 
 			const static ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnArrow;
 			ImGuiTreeNodeFlags nodeFlags = baseFlags | additionalFlags;
@@ -83,7 +83,7 @@ namespace BamboEditor
 			ImGui::TableNextRow();
 			ImGui::TableNextColumn();
 
-			if (ImGui::TreeNodeEx((void*)(uintptr_t)id, nodeFlags, tag->Tag.c_str()))
+			if (ImGui::TreeNodeEx((void*)(uintptr_t)id, nodeFlags, name.c_str()))
 			{
 				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 				{
@@ -94,7 +94,7 @@ namespace BamboEditor
 				if (ImGui::BeginDragDropSource())
 				{
 					ImGui::SetDragDropPayload("GOReparent", &*childGo, sizeof(*childGo));
-					ImGui::Text("%s", tag->Tag.c_str());
+					ImGui::Text("%s", name.c_str());
 					ImGui::EndDragDropSource();
 				}
 

@@ -2,21 +2,13 @@
 
 namespace BamboEditor
 {
-	void DrawTagComponent(Bambo::Component* component)
+	void DrawTransformComponent(Bambo::Transform* transform)
 	{
-		Bambo::TagComponent* tag = Bambo::Cast<Bambo::TagComponent>(component);
-		ImGui::Text("TagComponent");
-		DrawString("Tag", &tag->Tag);
-	}
-
-	void DrawTransformComponent(Bambo::Component* component)
-	{
-		Bambo::TransformComponent* transform = Bambo::Cast<Bambo::TransformComponent>(component);
-
-		ImGui::Text("TransformComponent");
-		DrawVector3("Position", &transform->Position);
-		DrawVector3("Rotation", &transform->Rotation);
-		DrawVector3("Scale", &transform->Scale);
+		ImGui::Text("Transform:");
+		DrawVector3("Position", &transform->GetPositionRef());
+		DrawVector3("Rotation", &transform->GetRotationRef());
+		DrawVector3("Scale", &transform->GetScaleRef());
+		DrawVector3("Origin", &transform->GetOriginRef());
 	}
 
 	void DrawSpriteComponent(Bambo::Component* component)

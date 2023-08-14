@@ -91,9 +91,6 @@ namespace Bambo
 			newGameObject->SetParent(parent);
 		}
 
-		newGameObject->AddComponent<TagComponent>()->Tag = "GameObject";
-		newGameObject->AddComponent<TransformComponent>();
-
 		m_gameObjectMap[newId] = std::move(newGameObject);
 		return rawPtr;
 	}

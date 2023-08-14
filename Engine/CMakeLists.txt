@@ -66,6 +66,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/World/GameObject.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/World/Components/ComponentFactory.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/World/Components/SpriteComponent.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/World/Components/CameraComponent.cpp
 
 ${CMAKE_CURRENT_LIST_DIR}/src/Serialization/WorldSerialization.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Serialization/MathSerialization.cpp)

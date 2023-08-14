@@ -23,8 +23,6 @@ namespace BamboEditor
 		m_states.AddState(std::make_shared<MainEditorState>(&m_editorContext));
 
 		InspectorDrawersRegistry* drawerRegistry = SingletonManager::Get()->Register<InspectorDrawersRegistry>();
-		drawerRegistry->Register(TagComponent::GetTypeID(), DrawTagComponent);
-		drawerRegistry->Register(TransformComponent::GetTypeID(), DrawTransformComponent);
 		drawerRegistry->Register(SpriteComponent::GetTypeID(), DrawSpriteComponent);
 		drawerRegistry->Register(CameraComponent::GetTypeID(), DrawCameraComponent);
 

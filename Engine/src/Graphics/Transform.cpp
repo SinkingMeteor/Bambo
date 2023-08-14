@@ -2,22 +2,13 @@
 
 namespace Bambo 
 {
-	Transform::Transform() : Transform(glm::vec2(0.0f, 0.0f))
+	Transform::Transform() : Transform(glm::vec3(0.0f))
 	{}
 
-	Transform::Transform(const glm::vec2& position) : Transform(position, 0.0f, glm::vec2(1.0f, 1.0f), glm::vec2(0.0f, 0.0f))
+	Transform::Transform(const glm::vec3& position) : Transform(position, glm::vec3{0.0f}, glm::vec3{1.0f}, glm::vec3{0.0f})
 	{}
 
-	Transform::Transform(const glm::vec2& position, const glm::vec2& origin) : Transform(position, 0.0f, glm::vec2(1.0f, 1.0f), origin)
-	{}
-
-	Transform::Transform(const glm::vec2& position, float rotation) : Transform(position, rotation, glm::vec2(1.0f, 1.0f), glm::vec2(0.0f, 0.0f))
-	{}
-
-	Transform::Transform(const glm::vec2& position, float rotation, const glm::vec2& scale) : Transform(position, rotation, scale, glm::vec2(0.0f, 0.0f))
-	{}
-
-	Transform::Transform(const glm::vec2& position, float rotation, const glm::vec2& scale, const glm::vec2& origin) : 
+	Transform::Transform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, const glm::vec3& origin) :
 		m_position(position),
 		m_rotation(rotation),
 		m_scale(scale),
@@ -30,9 +21,9 @@ namespace Bambo
 	{
 		if (IsNeedUpdate()) 
 		{
-			m_matrix = glm::mat4{ 1.0f };
-			m_matrix = glm::translate(m_matrix, glm::vec3{ m_position.x + m_origin.x, m_position.y + m_origin.y, 0.0f });
-			m_matrix = glm::rotate(m_matrix, glm::radians(m_rotation), glm::vec3{ 0.0f, 0.0f, 1.0f });
+			glm::mat4 rotation{ glm::quat(m_rotation) };
+			m_matrix = glm::translate(m_matrix, glm::vec3{ m_position.x + m_origin.x, m_position.y + m_origin.y, m_position.z + m_origin.z });
+			m_matrix *= rotation;
 			m_matrix = glm::scale(m_matrix, glm::vec3{ m_scale.x, m_scale.y, 1.0f });
 
 			m_isNeedUpdate = false;
@@ -41,37 +32,37 @@ namespace Bambo
 		return m_matrix;
 	}
 
-	void Transform::SetPosition(const glm::vec2& position)
+	void Transform::SetPosition(const glm::vec3& position)
 	{
 		m_position = position;
 		m_isNeedUpdate = true;
 	}
 
-	void Transform::AddToPosition(const glm::vec2& addPosition)
+	void Transform::AddToPosition(const glm::vec3& addPosition)
 	{
 		m_position += addPosition;
 		m_isNeedUpdate = true;
 	}
 
-	void Transform::SetRotation(float angle)
+	void Transform::SetRotation(const glm::vec3& angle)
 	{
 		m_rotation = angle;
 		m_isNeedUpdate = true;
 	}
 
-	void Transform::AddRotation(float angle)
+	void Transform::AddRotation(const glm::vec3& angle)
 	{
 		m_rotation += angle;
 		m_isNeedUpdate = true;
 	}
 
-	void Transform::SetScale(const glm::vec2& scale)
+	void Transform::SetScale(const glm::vec3& scale)
 	{
 		m_scale = scale;
 		m_isNeedUpdate = true;
 	}
 
-	void Transform::SetOrigin(const glm::vec2& origin)
+	void Transform::SetOrigin(const glm::vec3& origin)
 	{
 		m_origin = origin;
 		m_isNeedUpdate = true;
