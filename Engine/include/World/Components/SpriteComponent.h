@@ -9,12 +9,24 @@ namespace Bambo
 	{
 		COMPONENT_BODY(SpriteComponent);
 
-		SPtr<Texture2D> Texture{ nullptr };
-		int32 SpriteRectIndex{ 0 };
-
 		SpriteComponent() = default;
 
+		SPtr<Texture2D> GetTexture() const { return m_texture; }
+		RectInt GetRect() const 
+		{
+			BAMBO_ASSERT_S(m_texture)
+			return m_texture->GetTextureRects()[m_spriteRectIndex];
+		}
+
+		int32& GetRectIndexRef() { return m_spriteRectIndex; }
+
+		void SetTexture(SPtr<Texture2D> texture) { m_texture = texture; }
+		void SetRectIndex(int32 rectIndex) { m_spriteRectIndex = rectIndex; }
+
 		virtual void Serialize(nlohmann::json& node) override;
-		virtual void Deserialize(nlohmann::json& node);
+		virtual void Deserialize(nlohmann::json& node) override;
+	private:
+		SPtr<Texture2D> m_texture{ nullptr };
+		int32 m_spriteRectIndex{ 0 };
 	};
 }

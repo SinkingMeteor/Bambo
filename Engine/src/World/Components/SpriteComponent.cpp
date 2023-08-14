@@ -6,9 +6,9 @@ namespace Bambo
 	void SpriteComponent::Serialize(nlohmann::json& node)
 	{
 		node["name"] = "SpriteComponent";
-		node["texturePath"] = Texture->GetTexturePath();
-		node["textureID"] = Texture->GetAssetID();
-		node["rectId"] = SpriteRectIndex;
+		node["texturePath"] = m_texture->GetTexturePath();
+		node["textureID"] = m_texture->GetAssetID();
+		node["rectId"] = m_spriteRectIndex;
 	}
 
 	void SpriteComponent::Deserialize(nlohmann::json& node)
@@ -17,12 +17,13 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_owner->IsValid())
 		BAMBO_ASSERT_S(m_owner->GetWorld())
 
+		m_spriteRectIndex = node["rectId"].get<int32>();
+
 		World* world = m_owner->GetWorld();
 		TextureProvider* textureProvider = world->GetTextureProvider();
-		SpriteRectIndex = node["rectId"].get<uint32>();
 		std::size_t assetId = node["textureID"].get<std::size_t>();
 		std::string assetPath = node["texturePath"];
 
-		Texture = textureProvider->Load(assetId, assetPath);
+		m_texture = textureProvider->Load(assetId, assetPath);
 	}
 }
