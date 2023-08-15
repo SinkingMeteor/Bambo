@@ -8,7 +8,7 @@ namespace BamboEditor
 		DrawVector3("Position", &transform->GetPositionRef());
 		DrawVector3("Rotation", &transform->GetRotationRef());
 		DrawVector3("Scale", &transform->GetScaleRef());
-		DrawVector3("Origin", &transform->GetOriginRef());
+		transform->SetNeedUpdate();
 	}
 
 	void DrawSpriteComponent(Bambo::Component* component)
@@ -17,6 +17,7 @@ namespace BamboEditor
 
 		ImGui::Text("SpriteComponent");
 		DrawInteger("Rect index", &spriteComponent->GetRectIndexRef());
+		DrawVector3("Origin", &spriteComponent->GetOriginRef());
 		DrawReadonlyString(&spriteComponent->GetTexture()->GetTexturePath());
 	}
 

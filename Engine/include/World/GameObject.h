@@ -46,8 +46,6 @@ namespace Bambo
 
 		bool IsValid() const { return m_world; }
 
-	public:
-
 		void SetParent(GameObject* newParent);
 		GameObject* GetParent() { return m_parent; }
 
@@ -61,6 +59,10 @@ namespace Bambo
 
 		void AddChild(GameObject* child);
 		void RemoveChild(GameObject* child);
+
+		virtual void Start();
+		virtual void Tick(float deltaSeconds);
+		virtual void End();
 		
 		bool operator==(const GameObject& go)
 		{

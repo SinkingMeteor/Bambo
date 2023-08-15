@@ -28,6 +28,7 @@
 #include "glm.hpp"
 #include "gtc/quaternion.hpp"
 #include "gtc/type_ptr.hpp"
+#include "gtx/euler_angles.hpp"
 #include "stb_image.h"
 #include "json.hpp"
 #pragma warning(pop)

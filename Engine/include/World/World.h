@@ -15,34 +15,30 @@ namespace Bambo
 {
 	const std::string WORLD_FILE_EXTENSION_DOT = ".bworld";
 
-	class BAMBO_API World final
+	class BAMBO_API World
 	{
 	public:
 		World(const std::filesystem::path& worldFilePath);
-		~World();
+		virtual ~World();
 
-		virtual void Update(float deltaSeconds) {};
+		virtual void Update(float deltaSeconds);
 		virtual void OnGUI() {};
 		virtual void Render();
 
+		SpriteRenderer* GetRenderer() { return m_spriteRenderer.get(); }
 		GameObject* CreateGameObject(GameObject* parent = nullptr, IID id = IID{});
-		void CreateRoot(IID id);
 		GameObject* GetGameObject(IID id);
 		GameObject* GetRoot() { return m_root; }
+		void CreateRoot(IID id);
 		void DestroyGameObject(GameObject* gameObject);
 		void DestroyGameObject(IID id);
 		TextureProvider* GetTextureProvider() { return &m_textureProvider; }
-		static void CreateNewWorldFile(const std::filesystem::path& assetPath);
 		void SaveWorld();
 		void Reset();
 
-		bool IsValidGameObject(IID id) 
-		{
-			GameObject* go = GetGameObject(id);
-			if (!go) return false;
+		static void CreateNewWorldFile(const std::filesystem::path& assetPath);
 
-			return go->IsValid();
-		}
+		bool IsValidGameObject(IID id);
 
 	private:
 		std::filesystem::path m_worldFilePath;

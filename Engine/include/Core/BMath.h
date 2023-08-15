@@ -1,5 +1,4 @@
 #pragma once
-
 #include "pch.h"
 #include "Vectors.h"
 
@@ -7,8 +6,8 @@ namespace Bambo
 {
 	namespace BMath
 	{
-		constexpr const float ONE_DEGREE_IN_RADIANS = 0.0174532f;
-		constexpr const float ONE_RADIAN_IN_DEGREES = 57.2957795f;
+		constexpr const float DEG2RAD = 0.0174532f;
+		constexpr const float RAD2DEG = 57.2957795f;
 		constexpr const float TAU = 6.28318530717959f;
 		constexpr const float PI = 3.14159265359f;
 		constexpr const float DEFAULT_TOLERANCE = 0.0000001f;
@@ -59,12 +58,12 @@ namespace Bambo
 
 		float DegToRad(float degrees)
 		{
-			return ONE_DEGREE_IN_RADIANS * degrees;
+			return DEG2RAD * degrees;
 		}
 
 		float RadToDeg(float radians)
 		{
-			return ONE_RADIAN_IN_DEGREES * radians;
+			return RAD2DEG * radians;
 		}
 
 		float Lerp(float a, float b, float t)

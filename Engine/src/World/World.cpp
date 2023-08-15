@@ -22,6 +22,7 @@ namespace Bambo
 		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultShader);
 		CreateRoot(IID{});
 		LoadWorld();
+
 	}
 
 	World::~World()
@@ -29,8 +30,20 @@ namespace Bambo
 		Reset();
 	}
 
+	void World::Update(float deltaSeconds)
+	{
+		auto it = m_gameObjectMap.begin();
+		auto end = m_gameObjectMap.end();
+		for (; it != end; ++it)
+		{
+			it->second->Tick(deltaSeconds);
+		}
+	}
+
 	void World::Render()
 	{
+		m_spriteRenderer->BeginRender();
+		m_spriteRenderer->EndRender();
 	}
 
 	GameObject* World::CreateGameObject(GameObject* parent, IID id)
@@ -63,6 +76,14 @@ namespace Bambo
 	void World::DestroyGameObject(IID id)
 	{
 		DestroyGameObject(GetGameObject(id));
+	}
+
+	bool World::IsValidGameObject(IID id)
+	{
+		GameObject* go = GetGameObject(id);
+		if (!go) return false;
+
+		return go->IsValid();
 	}
 
 	void World::CreateRoot(IID id)

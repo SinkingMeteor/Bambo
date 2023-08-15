@@ -1,4 +1,5 @@
 #include "World/Components/CameraComponent.h"
+#include "World/World.h"
 
 namespace Bambo
 {
@@ -29,4 +30,18 @@ namespace Bambo
 		m_camera.SetPerspectiveNear(node["perspectiveNear"].get<float>());
 		m_camera.SetPerspectiveFar(node["perspectiveFar"].get<float>());
 	}
+
+	void CameraComponent::Tick(float deltaSeconds)
+	{
+		if (!m_owner) return;
+
+		World* world = m_owner->GetWorld();
+		if (!world) return;
+
+		const glm::mat4& projMat = m_camera.GetProjectionMatrix();
+		const glm::mat4& viewMat = m_owner->GetTransform()->GetMatrix();
+
+		world->GetRenderer()->SetProjViewMatrix(projMat * glm::inverse(viewMat));
+	}
+
 }

@@ -13,7 +13,6 @@ namespace Bambo
 		Serialization::Serialize(m_transform.GetPosition(), transformNode["position"]);
 		Serialization::Serialize(m_transform.GetRotation(), transformNode["rotation"]);
 		Serialization::Serialize(m_transform.GetScale(), transformNode["scale"]);
-		Serialization::Serialize(m_transform.GetOrigin(), transformNode["origin"]);
 
 		for (size_t i = 0; i < m_components.size(); ++i)
 		{
@@ -40,7 +39,6 @@ namespace Bambo
 		Serialization::Deserialize(m_transform.GetPositionRef(), transformNode["position"]);
 		Serialization::Deserialize(m_transform.GetRotationRef(), transformNode["rotation"]);
 		Serialization::Deserialize(m_transform.GetScaleRef(), transformNode["scale"]);
-		Serialization::Deserialize(m_transform.GetOriginRef(), transformNode["origin"]);
 
 		for (size_t i = 0; i < componentsNode.size(); ++i)
 		{
@@ -110,6 +108,29 @@ namespace Bambo
 		if (m_parent)
 		{
 			m_parent->AddChild(this);
+		}
+	}
+
+	void GameObject::Start()
+	{
+		for (size_t i = 0; i < m_components.size(); ++i)
+		{
+			m_components[i]->Start();
+		}
+
+	}
+	void GameObject::Tick(float deltaSeconds)
+	{
+		for (size_t i = 0; i < m_components.size(); ++i)
+		{
+			m_components[i]->Tick(deltaSeconds);
+		}
+	}
+	void GameObject::End()
+	{
+		for (size_t i = 0; i < m_components.size(); ++i)
+		{
+			m_components[i]->End();
 		}
 	}
 }

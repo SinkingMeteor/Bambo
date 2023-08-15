@@ -18,6 +18,7 @@ namespace Bambo
 
 		virtual void Serialize(nlohmann::json& node) override;
 		virtual void Deserialize(nlohmann::json& node) override;
+		virtual void Tick(float deltaSeconds) override;
 	};
 
 

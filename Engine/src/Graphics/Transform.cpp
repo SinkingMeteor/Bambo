@@ -1,18 +1,17 @@
 #include "Graphics/Transform.h"
-
+#include "Core/BMath.h"
 namespace Bambo 
 {
-	Transform::Transform() : Transform(glm::vec3(0.0f))
+	Transform::Transform() : Transform(glm::vec3{ 0.0f })
 	{}
 
-	Transform::Transform(const glm::vec3& position) : Transform(position, glm::vec3{0.0f}, glm::vec3{1.0f}, glm::vec3{0.0f})
+	Transform::Transform(const glm::vec3& position) : Transform(position, glm::vec3{0.0f}, glm::vec3{1.0f})
 	{}
 
-	Transform::Transform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, const glm::vec3& origin) :
+	Transform::Transform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale) :
 		m_position(position),
 		m_rotation(rotation),
 		m_scale(scale),
-		m_origin(origin),
 		m_isNeedUpdate(true),
 		m_matrix()
 	{}
@@ -21,9 +20,10 @@ namespace Bambo
 	{
 		if (IsNeedUpdate()) 
 		{
-			glm::mat4 rotation{ glm::quat(m_rotation) };
-			m_matrix = glm::translate(m_matrix, glm::vec3{ m_position.x + m_origin.x, m_position.y + m_origin.y, m_position.z + m_origin.z });
-			m_matrix *= rotation;
+			glm::vec3 radVec = m_rotation * BMath::DEG2RAD;
+			glm::mat4 rotationMat{ glm::quat(radVec)};
+			m_matrix = glm::translate(glm::mat4{1.0f}, m_position);
+			m_matrix = m_matrix * rotationMat;
 			m_matrix = glm::scale(m_matrix, glm::vec3{ m_scale.x, m_scale.y, 1.0f });
 
 			m_isNeedUpdate = false;
@@ -62,9 +62,4 @@ namespace Bambo
 		m_isNeedUpdate = true;
 	}
 
-	void Transform::SetOrigin(const glm::vec3& origin)
-	{
-		m_origin = origin;
-		m_isNeedUpdate = true;
-	}
 }
