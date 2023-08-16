@@ -9,7 +9,7 @@ namespace Bambo
 	class BAMBO_API GameObject
 	{
 		friend class World;
-		using It = std::vector<GameObject*>::iterator;
+		using It = std::vector<IID>::iterator;
 
 	public:
 		GameObject() = default;
@@ -17,7 +17,7 @@ namespace Bambo
 			m_transform(),
 			m_components(),
 			m_children(),
-			m_parent(nullptr),
+			m_parent(),
 			m_name("GameObject"),
 			m_id(id),
 			m_world(world)
@@ -46,19 +46,19 @@ namespace Bambo
 
 		bool IsValid() const { return m_world; }
 
-		void SetParent(GameObject* newParent);
-		GameObject* GetParent() { return m_parent; }
+		void SetParent(IID newParent);
+		IID GetParent() { return m_parent; }
 
 		Transform* GetTransform() { return &m_transform; }
-		std::vector<GameObject*>& GetChildren() { return m_children; }
-		const std::vector<GameObject*>& GetChildrenConst() const { return m_children; }
+		std::vector<IID>& GetChildren() { return m_children; }
+		const std::vector<IID>& GetChildrenConst() const { return m_children; }
 		std::vector<UPtr<Component>>& GetComponentsArray() { return m_components; }
 		std::size_t GetChildrenCount() const { return m_children.size(); }
 		std::string& GetName() { return m_name; }
 		void SetName(const std::string& newName) { m_name = newName; }
 
-		void AddChild(GameObject* child);
-		void RemoveChild(GameObject* child);
+		void AddChild(IID child);
+		void RemoveChild(IID child);
 
 		virtual void Start();
 		virtual void Tick(float deltaSeconds);
@@ -80,8 +80,8 @@ namespace Bambo
 	private:
 		Transform m_transform;
 		std::vector<UPtr<Component>> m_components;
-		std::vector<GameObject*> m_children;
-		GameObject* m_parent;
+		std::vector<IID> m_children;
+		IID m_parent;
 		std::string m_name;
 
 		IID m_id;

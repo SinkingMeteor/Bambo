@@ -14,19 +14,21 @@ namespace BamboEditor
 			ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollWithMouse);
 
-		if (!m_editorContext->SelectedGameObject || !m_editorContext->SelectedGameObject->IsValid())
+		if (!m_editorContext->SelectedGameObject || !m_editorContext->SelectedGameObject.IsValid())
 		{
 			ImGui::End();
 			return;
 		}
 
-		std::string& name = m_editorContext->SelectedGameObject->GetName();
+		Bambo::GameObject* gameObject = m_editorContext->CurrentWorld->GetGameObject(m_editorContext->SelectedGameObject);
+
+		std::string& name = gameObject->GetName();
 		DrawString("Name", &name);
 
-		DrawTransformComponent(m_editorContext->SelectedGameObject->GetTransform());
+		DrawTransformComponent(gameObject->GetTransform());
 		InspectorDrawersRegistry* drawersRegistry = InspectorDrawersRegistry::Get();
 
-		std::vector<UPtr<Bambo::Component>>& components = m_editorContext->SelectedGameObject->GetComponentsArray();
+		std::vector<UPtr<Bambo::Component>>& components = gameObject->GetComponentsArray();
 
 		for (size_t i = 0; i < components.size(); ++i)
 		{

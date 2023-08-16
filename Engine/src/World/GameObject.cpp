@@ -23,7 +23,11 @@ namespace Bambo
 		for (size_t i = 0; i < m_children.size(); ++i)
 		{
 			node["children"].push_back({});
-			m_children[i]->Serialize(node["children"].back());
+			GameObject* child = m_world->GetGameObject(m_children[i]);
+
+			BAMBO_ASSERT_S(child)
+
+			child->Serialize(node["children"].back());
 		}
 	}
 
@@ -61,14 +65,14 @@ namespace Bambo
 		for (size_t i = 0; i < childrenNode.size(); ++i)
 		{
 			IID id = childrenNode.at(i)["id"].get<uint64_t>();
-			GameObject* child = m_world->CreateGameObject(this, id);
+			GameObject* child = m_world->CreateGameObject(m_id, id);
 			BAMBO_ASSERT_S(child->IsValid())
 				child->Deserialize(childrenNode.at(i));
 		}
 	}
 
 
-	void GameObject::AddChild(GameObject* child)
+	void GameObject::AddChild(IID child)
 	{
 		It it = m_children.begin();
 		It end = m_children.end();
@@ -83,7 +87,7 @@ namespace Bambo
 		m_children.push_back(child);
 	}
 
-	void GameObject::RemoveChild(GameObject* child)
+	void GameObject::RemoveChild(IID child)
 	{
 		It it = m_children.begin();
 		It end = m_children.end();
@@ -97,18 +101,20 @@ namespace Bambo
 		}
 	}
 
-	void GameObject::SetParent(GameObject* newParent)
+	void GameObject::SetParent(IID newParent)
 	{
-		if (m_parent)
+		if (m_parent.IsValid())
 		{
-			m_parent->RemoveChild(this);
+			GameObject* oldParent = m_world->GetGameObject(m_parent);
+			oldParent->RemoveChild(m_id);
 		}
 
 		m_parent = newParent;
 
-		if (m_parent)
+		if (m_parent.IsValid())
 		{
-			m_parent->AddChild(this);
+			GameObject* newParent = m_world->GetGameObject(m_parent);
+			newParent->AddChild(m_id);
 		}
 	}
 

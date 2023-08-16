@@ -21,9 +21,8 @@ namespace Bambo
 	{
 		SPtr<Shader> defaultShader = m_shaderProvider.Load(ToId("DefaultShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
 		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultShader);
-		CreateRoot(IID{});
+		CreateRoot(IID::GenerateNew());
 		LoadWorld();
-
 	}
 
 	World::~World()
@@ -47,12 +46,18 @@ namespace Bambo
 		m_spriteRenderer->EndRender();
 	}
 
-	GameObject* World::CreateGameObject(GameObject* parent, IID id)
+	GameObject* World::CreateGameObject(IID parent, IID id)
 	{
-		if (!parent)
+		if (!parent.IsValid())
 		{
 			parent = m_root;
 		}
+
+		if (!id.IsValid())
+		{
+			id = IID::GenerateNew();
+		}
+
 		return CreateGameObjectInternal(parent, id);
 	}
 
@@ -89,31 +94,22 @@ namespace Bambo
 
 	void World::CreateRoot(IID id)
 	{
-		if (m_root && m_root->IsValid())
+		if (m_root.IsValid())
 		{
 			DestroyGameObject(m_root);
 		}
 
-		m_root = CreateGameObjectInternal(nullptr, id);
+		m_root = CreateGameObjectInternal(IID{}, id)->GetID();
 	}
 
-	GameObject* World::CreateGameObjectInternal(GameObject* parent, IID id)
+	GameObject* World::CreateGameObjectInternal(IID parentId, IID id)
 	{
-		IID newId = id;
-		UPtr<GameObject> newGameObject = std::make_unique<GameObject>(this, newId);
+		UPtr<GameObject> newGameObject = std::make_unique<GameObject>(this, id);
 
 		GameObject* rawPtr = newGameObject.get();
+		newGameObject->SetParent(parentId);
 
-		if (!parent)
-		{
-			newGameObject->SetParent(nullptr);
-		}
-		else
-		{
-			newGameObject->SetParent(parent);
-		}
-
-		m_gameObjectMap[newId] = std::move(newGameObject);
+		m_gameObjectMap[id] = std::move(newGameObject);
 		return rawPtr;
 	}
 

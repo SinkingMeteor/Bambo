@@ -39,9 +39,12 @@ namespace Bambo
 		if (!world) return;
 
 		const glm::mat4& projMat = m_camera.GetProjectionMatrix();
-		const glm::mat4& viewMat = m_owner->GetTransform()->GetMatrix();
+		glm::mat4 viewMat = glm::inverse(m_owner->GetTransform()->GetMatrix());
+		float height = m_camera.GetOrthographicSize();
+		float width = m_camera.GetAspectRatio() * height;
+		viewMat = glm::translate(viewMat, glm::vec3(width * 0.5f, height * 0.5f, 0.0f));
 
-		world->GetRenderer()->SetProjViewMatrix(projMat * glm::inverse(viewMat));
+		world->GetRenderer()->SetProjViewMatrix(projMat * viewMat);
 	}
 
 }

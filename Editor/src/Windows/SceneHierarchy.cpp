@@ -21,7 +21,7 @@ namespace BamboEditor
 
 		if (ImGui::IsItemClicked())
 		{
-			m_editorContext->SelectedGameObject = nullptr;
+			m_editorContext->SelectedGameObject = Bambo::IID{};
 		}
 
 		const Bambo::GameObject* rootGo = m_editorContext->CurrentWorld->GetRoot();
@@ -70,15 +70,14 @@ namespace BamboEditor
 
 	void SceneHierarchyWindow::DisplayChildrenOf(const Bambo::GameObject* gameObject, ImGuiTreeNodeFlags additionalFlags)
 	{
-		const std::vector<Bambo::GameObject*>& children = gameObject->GetChildrenConst();
+		const std::vector<Bambo::IID>& children = gameObject->GetChildrenConst();
 
 		for (int i = 0; i < children.size(); ++i)
 		{
-			Bambo::GameObject* childGo = children[i];
+			Bambo::GameObject* childGo = m_editorContext->CurrentWorld->GetGameObject(children[i]);
 
 			BAMBO_ASSERT_S(childGo)
 			BAMBO_ASSERT_S(childGo->IsValid())
-			BAMBO_ASSERT_S(childGo->HasComponent<Bambo::TagComponent>())
 
 			Bambo::IID id = childGo->GetID();
 			std::string& name = childGo->GetName();
@@ -94,7 +93,7 @@ namespace BamboEditor
 				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 				{
 					//@TODO: To inspector window
-					m_editorContext->SelectedGameObject = m_editorContext->CurrentWorld->GetGameObject(id);
+					m_editorContext->SelectedGameObject = m_editorContext->CurrentWorld->GetGameObject(id)->GetID();
 				}
 
 				if (ImGui::BeginDragDropSource())
@@ -110,7 +109,7 @@ namespace BamboEditor
 						if(payload != nullptr)
 						{
 							Bambo::GameObject* targetGo = static_cast<Bambo::GameObject*>(payload->Data);
-							targetGo->SetParent(childGo);
+							targetGo->SetParent(childGo->GetID());
 						}
 
 						ImGui::EndDragDropTarget();

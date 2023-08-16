@@ -13,7 +13,9 @@ namespace Bambo
 		m_perspectiveNear(0.01f),
 		m_perspectiveFar(1000.0f),
 		m_isNeedToUpdate(true)
-	{}
+	{
+		SetViewportSize(640u, 360u);
+	}
 
 	void Camera::SetViewportSize(uint32 width, uint32 height)
 	{

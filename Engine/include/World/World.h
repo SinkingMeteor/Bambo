@@ -26,9 +26,9 @@ namespace Bambo
 		virtual void Render();
 
 		SpriteRenderer* GetRenderer() { return m_spriteRenderer.get(); }
-		GameObject* CreateGameObject(GameObject* parent = nullptr, IID id = IID{});
+		GameObject* CreateGameObject(IID parent = IID{}, IID id = IID{});
 		GameObject* GetGameObject(IID id);
-		GameObject* GetRoot() { return m_root; }
+		GameObject* GetRoot() { return GetGameObject(m_root); }
 		void CreateRoot(IID id);
 		void DestroyGameObject(GameObject* gameObject);
 		void DestroyGameObject(IID id);
@@ -43,12 +43,12 @@ namespace Bambo
 	private:
 		std::filesystem::path m_worldFilePath;
 		std::unordered_map<IID, UPtr<GameObject>> m_gameObjectMap;
-		GameObject* m_root;
+		IID m_root;
 		UPtr<SpriteRenderer> m_spriteRenderer;
 		ShaderProvider m_shaderProvider;
 		TextureProvider m_textureProvider;
 
-		GameObject* CreateGameObjectInternal(GameObject* parent, IID id);
+		GameObject* CreateGameObjectInternal(IID parent, IID id);
 		void LoadWorld();
 
 	};
