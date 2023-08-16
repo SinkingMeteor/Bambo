@@ -21,5 +21,6 @@ namespace BamboEditor
 		void DisplayChildrenOf(const Bambo::GameObject* gameObject, ImGuiTreeNodeFlags additionalFlags = ImGuiBackendFlags_::ImGuiBackendFlags_None);
 		Bambo::GameObject* CreateEmpty();
 		void CreateCamera();
+		void CreateSprite();
 	};
 }

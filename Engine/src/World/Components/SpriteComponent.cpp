@@ -3,6 +3,21 @@
 #include "Serialization/MathSerialization.h"
 namespace Bambo
 {
+	SpriteComponent::SpriteComponent() :
+		m_texture{},
+		m_origin{0.5f},
+		m_spriteRectIndex{0}
+	{}
+
+	void SpriteComponent::PostConstruct()
+	{
+		if (!m_owner) return;
+
+		World* world = m_owner->GetWorld();
+		if (!world) return;
+		m_texture = world->GetTextureProvider()->Load(ToId("Square"), BamboPaths::BamboResourcesDir + "Textures/Square.png");
+	}
+
 	void SpriteComponent::Tick(float deltaSeconds)
 	{
 		if (!m_owner) return;

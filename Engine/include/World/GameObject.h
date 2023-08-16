@@ -133,6 +133,7 @@ namespace Bambo
 
 		UPtr<T> comp = std::make_unique<T>();
 		comp->SetOwner(this);
+		comp->PostConstruct();
 		m_components.push_back(std::move(comp));
 
 		return Cast<T>(m_components.back().get());

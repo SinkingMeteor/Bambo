@@ -50,6 +50,7 @@ namespace Bambo
 
 			UPtr<Component> comp = factory->CreateComponent(compHash);
 			comp->SetOwner(this);
+			comp->PostConstruct();
 			comp->Deserialize(compNode);
 			m_components.push_back(std::move(comp));
 		}

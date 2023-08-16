@@ -9,7 +9,7 @@ namespace Bambo
 	{
 		COMPONENT_BODY(SpriteComponent);
 
-		SpriteComponent() = default;
+		SpriteComponent();
 
 		SPtr<Texture2D> GetTexture() const { return m_texture; }
 		RectInt GetRect() const 
@@ -34,7 +34,8 @@ namespace Bambo
 
 		virtual void Serialize(nlohmann::json& node) override;
 		virtual void Deserialize(nlohmann::json& node) override;
-
+		
+		virtual void PostConstruct() override;
 		virtual void Tick(float deltaSeconds) override;
 	private:
 		SPtr<Texture2D> m_texture{ nullptr };

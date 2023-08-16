@@ -4,6 +4,7 @@ namespace
 {
 	const char* WORLD_NAME_KEY = "name";
 	const char* WORLD_CONTENT_KEY = "content";
+	const char* ID_COUNTER = "idcounter";
 }
 
 DECLARE_LOG_CATEGORY_STATIC(WorldLog)
@@ -135,6 +136,8 @@ namespace Bambo
 		BAMBO_ASSERT_S(!worldConfigFile.is_null())
 		BAMBO_ASSERT_S(!worldConfigFile[WORLD_NAME_KEY].is_null())
 
+		IID::SetGlobalCounter(worldConfigFile[ID_COUNTER].get<uint64>());
+
 		if (worldConfigFile[WORLD_CONTENT_KEY].is_null())
 			return;
 
@@ -149,6 +152,7 @@ namespace Bambo
 		nlohmann::json worldConfigFile{};
 
 		worldConfigFile[WORLD_NAME_KEY] = m_worldFilePath.filename().replace_extension().string();
+		worldConfigFile[ID_COUNTER] = IID::GetGlobalCounter();
 		Serialization::Serialize(*this, worldConfigFile[WORLD_CONTENT_KEY]);
 
 		worldFileStream << std::setw(4) << worldConfigFile;

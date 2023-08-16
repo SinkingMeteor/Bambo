@@ -30,6 +30,7 @@ class GameObject;
 		Component& operator=(const Component&) = delete;
 		Component& operator=(Component&&) = delete;
 
+		virtual void PostConstruct() {}
 		virtual void Start() {}
 		virtual void Tick(float deltaSeconds) {}
 		virtual void End() {}

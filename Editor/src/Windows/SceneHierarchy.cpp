@@ -44,6 +44,7 @@ namespace BamboEditor
 			{
 				if (ImGui::MenuItem("Empty")) { CreateEmpty(); }
 				if (ImGui::MenuItem("Camera")) { CreateCamera(); }
+				if (ImGui::MenuItem("Sprite")) { CreateSprite(); }
 				ImGui::TreePop();
 			}
 			ImGui::EndPopup();
@@ -60,6 +61,11 @@ namespace BamboEditor
 	void SceneHierarchyWindow::CreateCamera()
 	{
 		CreateEmpty()->AddComponent<Bambo::CameraComponent>();
+	}
+
+	void SceneHierarchyWindow::CreateSprite()
+	{
+		CreateEmpty()->AddComponent<Bambo::SpriteComponent>();
 	}
 
 	void SceneHierarchyWindow::DisplayChildrenOf(const Bambo::GameObject* gameObject, ImGuiTreeNodeFlags additionalFlags)
