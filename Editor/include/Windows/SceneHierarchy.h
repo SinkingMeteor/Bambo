@@ -22,5 +22,6 @@ namespace BamboEditor
 		Bambo::GameObject* CreateEmpty();
 		void CreateCamera();
 		void CreateSprite();
+		bool DestroyObject(Bambo::IID id);
 	};
 }

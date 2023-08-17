@@ -74,9 +74,16 @@ namespace Bambo
 
 		BAMBO_ASSERT_S(gameObject->IsValid())
 
+		gameObject->SetParent(IID{});
+		std::vector<IID>& children = gameObject->GetChildren();
+	
+		for (size_t i = 0; i < children.size(); ++i)
+		{
+			DestroyGameObject(children[i]);
+		}
+
 		IID id = gameObject->GetID();
 		m_gameObjectMap.erase(id);
-		gameObject = nullptr;
 	}
 
 	void World::DestroyGameObject(IID id)

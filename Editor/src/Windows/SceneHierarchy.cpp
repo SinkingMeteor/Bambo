@@ -52,7 +52,7 @@ namespace BamboEditor
 		}
 
 
-		if (ImGui::IsItemClicked() && previousSelected == m_editorContext->SelectedGameObject)
+		if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && previousSelected == m_editorContext->SelectedGameObject)
 		{
 			m_editorContext->SelectedGameObject = Bambo::IID{};
 		}
@@ -68,6 +68,12 @@ namespace BamboEditor
 				if (ImGui::MenuItem("Sprite")) { CreateSprite(); }
 				ImGui::TreePop();
 			}
+
+			if (m_editorContext->SelectedGameObject.IsValid() && ImGui::MenuItem("Delete object"))
+			{
+				DestroyObject(m_editorContext->SelectedGameObject);
+			}
+
 			ImGui::EndPopup();
 		}
 
@@ -87,6 +93,17 @@ namespace BamboEditor
 	void SceneHierarchyWindow::CreateSprite()
 	{
 		CreateEmpty()->AddComponent<Bambo::SpriteComponent>();
+	}
+
+	bool SceneHierarchyWindow::DestroyObject(Bambo::IID id)
+	{
+		if (!id.IsValid()) return false;
+		if (!m_editorContext->CurrentWorld) return false;
+
+		m_editorContext->CurrentWorld->DestroyGameObject(id);
+		m_editorContext->SelectedGameObject = Bambo::IID{};
+		g_dragAndDroppedId = Bambo::IID{};
+		return true;
 	}
 
 	void SceneHierarchyWindow::DisplayChildrenOf(const Bambo::GameObject* gameObject, ImGuiTreeNodeFlags additionalFlags)
@@ -118,7 +135,6 @@ namespace BamboEditor
 
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
-				//@TODO: To inspector window
 				m_editorContext->SelectedGameObject = m_editorContext->CurrentWorld->GetGameObject(id)->GetID();
 			}
 
