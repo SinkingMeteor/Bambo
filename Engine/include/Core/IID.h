@@ -14,8 +14,16 @@ namespace Bambo
 			m_ID(id)
 		{}
 
-		IID(const IID&) = default;
-		IID& operator=(const IID&) = default;
+		IID(const IID& id)
+		{
+			m_ID = id.m_ID;
+		}
+
+		IID& operator=(const IID& id)
+		{
+			m_ID = id.m_ID;
+			return *this;
+		}
 
 		static uint64 GetGlobalCounter() { return m_idCounter; }
 		static void SetGlobalCounter(uint64 id) { m_idCounter = id; }

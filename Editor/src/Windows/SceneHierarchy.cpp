@@ -1,5 +1,10 @@
 #include "Windows/SceneHierarchy.h"
 
+namespace
+{
+	Bambo::IID g_dragAndDroppedId;
+}
+
 namespace BamboEditor
 {
 	SceneHierarchyWindow::SceneHierarchyWindow(EditorContext* editorContext) :
@@ -19,10 +24,7 @@ namespace BamboEditor
 			return;
 		}
 
-		if (ImGui::IsItemClicked())
-		{
-			m_editorContext->SelectedGameObject = Bambo::IID{};
-		}
+		Bambo::IID previousSelected = m_editorContext->SelectedGameObject;
 
 		const Bambo::GameObject* rootGo = m_editorContext->CurrentWorld->GetRoot();
 
@@ -32,8 +34,27 @@ namespace BamboEditor
 			ImGui::TableSetupColumn("Hierarchy", ImGuiBackendFlags_None);
 			ImGui::TableHeadersRow();
 
+			if (ImGui::BeginDragDropTarget())
+			{
+				const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GOReparent");
+				if (payload != nullptr)
+				{
+					Bambo::IID* goID = static_cast<Bambo::IID*>(payload->Data);
+					Bambo::GameObject* targetGo = m_editorContext->CurrentWorld->GetGameObject(*goID);
+					targetGo->SetParent(rootGo->GetID());
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+
 			DisplayChildrenOf(rootGo);
 			ImGui::EndTable();
+		}
+
+
+		if (ImGui::IsItemClicked() && previousSelected == m_editorContext->SelectedGameObject)
+		{
+			m_editorContext->SelectedGameObject = Bambo::IID{};
 		}
 
 		ImGui::SetNextWindowSize({ 200.0f, 200.0f });
@@ -85,40 +106,52 @@ namespace BamboEditor
 			const static ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnArrow;
 			ImGuiTreeNodeFlags nodeFlags = baseFlags | additionalFlags;
 
+			if (id == m_editorContext->SelectedGameObject)
+			{
+				nodeFlags |= ImGuiTreeNodeFlags_Selected;
+			}
+
 			ImGui::TableNextRow();
 			ImGui::TableNextColumn();
 
-			if (ImGui::TreeNodeEx((void*)(uintptr_t)id, nodeFlags, name.c_str()))
+			bool isOpened = ImGui::TreeNodeEx((void*)(uintptr_t)id, nodeFlags, name.c_str());
+
+			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
-				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-				{
-					//@TODO: To inspector window
-					m_editorContext->SelectedGameObject = m_editorContext->CurrentWorld->GetGameObject(id)->GetID();
-				}
-
-				if (ImGui::BeginDragDropSource())
-				{
-					ImGui::SetDragDropPayload("GOReparent", &*childGo, sizeof(*childGo));
-					ImGui::Text("%s", name.c_str());
-					ImGui::EndDragDropSource();
-				}
-
-				if (ImGui::BeginDragDropTarget())
-				{
-						const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GOReparent");
-						if(payload != nullptr)
-						{
-							Bambo::GameObject* targetGo = static_cast<Bambo::GameObject*>(payload->Data);
-							targetGo->SetParent(childGo->GetID());
-						}
-
-						ImGui::EndDragDropTarget();
-				}
-
-				bool noChildren = childGo->GetChildrenCount() == 0;
-				DisplayChildrenOf(childGo, noChildren ? (ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet) : ImGuiBackendFlags_None);
-				ImGui::TreePop();
+				//@TODO: To inspector window
+				m_editorContext->SelectedGameObject = m_editorContext->CurrentWorld->GetGameObject(id)->GetID();
 			}
+
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAutoExpirePayload))
+			{
+				g_dragAndDroppedId = id;
+				ImGui::SetDragDropPayload("GOReparent", &g_dragAndDroppedId, sizeof(Bambo::IID));
+				ImGui::Text("%s", name.c_str());
+				ImGui::EndDragDropSource();
+			}
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GOReparent");
+				if (payload != nullptr)
+				{
+					Bambo::IID* goID = static_cast<Bambo::IID*>(payload->Data);
+					Bambo::GameObject* targetGo = m_editorContext->CurrentWorld->GetGameObject(*goID);
+					targetGo->SetParent(childGo->GetID());
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+
+			if (!isOpened)
+			{
+				continue;
+			}
+
+
+			bool noChildren = childGo->GetChildrenCount() == 0;
+			DisplayChildrenOf(childGo, noChildren ? (ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet) : ImGuiBackendFlags_None);
+			ImGui::TreePop();
 		}
 	}
 
