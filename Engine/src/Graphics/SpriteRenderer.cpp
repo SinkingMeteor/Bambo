@@ -26,7 +26,7 @@ namespace Bambo
 		m_sprites.push_back(sprite);
 	}
 
-	void SpriteRenderer::BeginRender()
+	void SpriteRenderer::Render()
 	{
 		for (size_t i = 0; i < m_sprites.size(); ++i)
 		{
@@ -34,18 +34,15 @@ namespace Bambo
 			GameObject* owner = m_sprites[i]->GetOwner();
 			BAMBO_ASSERT_S(owner)
 
-			glm::mat4& spriteModelMat = owner->GetTransform()->GetMatrix();
+			glm::mat4& spriteModelMat = owner->GetTransform()->GetGlobalMatrixRef();
 			glm::mat4 modelMat = glm::translate(spriteModelMat, m_sprites[i]->GetOriginOffset());
 
 			Render(m_sprites[i]->GetTexture(), m_sprites[i]->GetRect(), modelMat, m_projViewMatrix);
 		}
-	}
 
-	void SpriteRenderer::EndRender()
-	{
 		m_sprites.clear();
-	}
 
+	}
 
 	void SpriteRenderer::Render(const SPtr<Texture2D> texture, const RectInt& spriteRect, const glm::mat4& transform, const glm::mat4& projViewMatrix)
 	{

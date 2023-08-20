@@ -17,8 +17,7 @@ namespace Bambo
 	{
 	public:
 		SpriteRenderer(SPtr<Shader> defaultShader);
-		virtual void BeginRender() override;
-		virtual void EndRender() override;
+		virtual void Render() override;
 		void EnqueueSprite(SpriteComponent* component);
 	private:
 		static constexpr uint32 SPRITE_VERTEX_COUNT = 4;

@@ -32,18 +32,18 @@ namespace Bambo
 
 	void World::Update(float deltaSeconds)
 	{
-		auto it = m_gameObjectMap.begin();
-		auto end = m_gameObjectMap.end();
-		for (; it != end; ++it)
+		GameObject* root = GetGameObject(m_root);
+		std::vector<IID>& children = root->GetChildren();
+		for (size_t i = 0; i < children.size(); ++i)
 		{
-			it->second->Tick(deltaSeconds);
+			GameObject* child = GetGameObject(children[i]);
+			child->Tick(deltaSeconds);
 		}
 	}
 
 	void World::Render()
 	{
-		m_spriteRenderer->BeginRender();
-		m_spriteRenderer->EndRender();
+		m_spriteRenderer->Render();
 	}
 
 	GameObject* World::CreateGameObject(IID parent, IID id)

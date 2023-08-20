@@ -128,9 +128,21 @@ namespace Bambo
 	}
 	void GameObject::Tick(float deltaSeconds)
 	{
+		BAMBO_ASSERT_S(m_parent.IsValid())
+
+		GameObject* parentGo = m_world->GetGameObject(m_parent);
+		Transform* parentTransform = parentGo->GetTransform();
+		m_transform.Update(parentTransform);
+
 		for (size_t i = 0; i < m_components.size(); ++i)
 		{
 			m_components[i]->Tick(deltaSeconds);
+		}
+
+		for (size_t i = 0; i < m_children.size(); ++i)
+		{
+			GameObject* childGo = m_world->GetGameObject(m_children[i]);
+			childGo->Tick(deltaSeconds);
 		}
 	}
 	void GameObject::End()
