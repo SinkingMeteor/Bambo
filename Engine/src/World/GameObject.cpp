@@ -67,7 +67,7 @@ namespace Bambo
 			IID id = childrenNode.at(i)["id"].get<uint64_t>();
 			GameObject* child = m_world->CreateGameObject(m_id, id);
 			BAMBO_ASSERT_S(child->IsValid())
-				child->Deserialize(childrenNode.at(i));
+			child->Deserialize(childrenNode.at(i));
 		}
 	}
 

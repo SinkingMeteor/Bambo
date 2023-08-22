@@ -57,12 +57,11 @@ namespace Bambo
 		GameObject* root = GetGameObject(m_root);
 		
 		m_globalMatrices.push_back(root->GetTransform()->GetMatrix());
-		
 		std::vector<IID>& children = root->GetChildren();
 		for (size_t i = 0; i < children.size(); ++i)
 		{
 			GameObject* child = GetGameObject(children[i]);
-			child->OnRender(m_globalMatrices, m_globalMatrices.size() - 1);
+			child->OnRender(m_globalMatrices, 0);
 		}
 
 		m_spriteRenderer->Render(m_globalMatrices);
