@@ -21,6 +21,7 @@ namespace Bambo
 		World(const std::filesystem::path& worldFilePath);
 		virtual ~World();
 
+		virtual void Start();
 		virtual void Update(float deltaSeconds);
 		virtual void OnGUI() {};
 		virtual void Render();
@@ -47,6 +48,8 @@ namespace Bambo
 		UPtr<SpriteRenderer> m_spriteRenderer;
 		ShaderProvider m_shaderProvider;
 		TextureProvider m_textureProvider;
+
+		std::vector<glm::mat4> m_globalMatrices;
 
 		GameObject* CreateGameObjectInternal(IID parent, IID id);
 		void LoadWorld();

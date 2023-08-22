@@ -21,27 +21,20 @@ namespace Bambo
 		m_renderVertices[3] = QuadVertex{};
 	}
 
-	void SpriteRenderer::EnqueueSprite(SpriteComponent* sprite)
+	void SpriteRenderer::EnqueueSpriteToRender(const SpriteRenderRequest& renderRequest)
 	{
-		m_sprites.push_back(sprite);
+		m_sprites.push_back(renderRequest);
 	}
 
-	void SpriteRenderer::Render()
+	void SpriteRenderer::Render(std::vector<glm::mat4>& globalTransforms)
 	{
 		for (size_t i = 0; i < m_sprites.size(); ++i)
 		{
-			BAMBO_ASSERT_S(m_sprites[i])
-			GameObject* owner = m_sprites[i]->GetOwner();
-			BAMBO_ASSERT_S(owner)
-
-			glm::mat4& spriteModelMat = owner->GetTransform()->GetGlobalMatrixRef();
-			glm::mat4 modelMat = glm::translate(spriteModelMat, m_sprites[i]->GetOriginOffset());
-
-			Render(m_sprites[i]->GetTexture(), m_sprites[i]->GetRect(), modelMat, m_projViewMatrix);
+			const RectInt& rect = m_sprites[i].Texture->GetTextureRects()[m_sprites[i].RectIndex];
+			Render(m_sprites[i].Texture, rect, globalTransforms[m_sprites[i].GlobalPosIndex], m_projViewMatrix);
 		}
 
 		m_sprites.clear();
-
 	}
 
 	void SpriteRenderer::Render(const SPtr<Texture2D> texture, const RectInt& spriteRect, const glm::mat4& transform, const glm::mat4& projViewMatrix)

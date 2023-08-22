@@ -18,7 +18,7 @@ namespace BamboEditor
 		m_disksList()
 	{
 		Bambo::GetAvalaibleDisks(m_disksList);
-		BAMBO_ASSERT_S(m_disksList.size > 0)
+		BAMBO_ASSERT_S(m_disksList.size() > 0)
 		m_fileBrowserWidget.SetRootPath(m_disksList[0]);
 		m_fileBrowserWidget.OnFileClick().Bind(*this, &ProjectBrowserWindow::OnFileClicked);
 	}

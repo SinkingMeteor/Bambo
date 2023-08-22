@@ -39,6 +39,7 @@ namespace BamboEditor
 	{
 		IEditorState* editorState = m_states.GetCurrentState();
 		if (!editorState) return;
+
 		editorState->OnUpdate(deltaTime);
 	}
 	

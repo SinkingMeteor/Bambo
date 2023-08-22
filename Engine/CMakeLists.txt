@@ -25,6 +25,7 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Core/Log.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Core/IID.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Core/Utils.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Core/SingletonManager.cpp
+${CMAKE_CURRENT_LIST_DIR}/src/Core/GameInstance.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Core/Time/Timer.cpp
 ##======Graphics======
 ${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Shader.cpp
@@ -86,6 +87,7 @@ PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/STBI/
 PUBLIC ${OPENGL_INCLUDE_DIRS})
 
 target_compile_features(BamboEngine PUBLIC cxx_std_17)
+target_compile_definitions(BamboEngine PUBLIC BAMBO_DEBUG_ON)
 
 find_library(THIRDPARTY_LIBS NAMES glfw glad OpenAL STBI ${OPENGL_LIBRARIES} HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/)
 

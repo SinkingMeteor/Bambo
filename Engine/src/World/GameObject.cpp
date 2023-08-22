@@ -126,13 +126,27 @@ namespace Bambo
 		}
 
 	}
+
+	void GameObject::OnRender(std::vector<glm::mat4>& globals, int32 parentMatIndex)
+	{
+		globals.push_back(globals[parentMatIndex] * m_transform.GetMatrix());
+		int32 selfIndex = globals.size() - 1;
+
+		for (size_t i = 0; i < m_components.size(); ++i)
+		{
+			m_components[i]->OnRender(globals, selfIndex);
+		}
+
+		for (size_t i = 0; i < m_children.size(); ++i)
+		{
+			GameObject* childGo = m_world->GetGameObject(m_children[i]);
+			childGo->OnRender(globals, selfIndex);
+		}
+	}
+
 	void GameObject::Tick(float deltaSeconds)
 	{
 		BAMBO_ASSERT_S(m_parent.IsValid())
-
-		GameObject* parentGo = m_world->GetGameObject(m_parent);
-		Transform* parentTransform = parentGo->GetTransform();
-		m_transform.Update(parentTransform);
 
 		for (size_t i = 0; i < m_components.size(); ++i)
 		{

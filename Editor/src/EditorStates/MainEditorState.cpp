@@ -44,7 +44,12 @@ namespace BamboEditor
 	{
 		if (m_editorContext->CurrentWorld)
 		{
-			m_editorContext->CurrentWorld->Update(deltaTime);
+			//@TODO: Depends on editor state
+
+			//if editor state is play 
+			//editorState->OnUpdate(deltaTime);
+			//else
+			//m_editorContext->CurrentWorld->Update(0);
 		}
 	}
 

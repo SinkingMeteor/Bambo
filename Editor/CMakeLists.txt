@@ -40,6 +40,8 @@ add_definitions(-DBAMBO_EDITOR_RESOURCE_DIR=${BAMBO_EDITOR_RESOURCE_DIR})
 configure_file(include/EditorPaths.h.in "${BamboEngine_BINARY_DIR}/Editor/generated/EditorPaths.h")
 configure_file(include/EditorConfig.json.in "${BamboEngine_BINARY_DIR}/Editor/EditorConfig.json")
 
+target_compile_definitions(BamboEditor PUBLIC BAMBO_EDITOR_ON)
+
 target_link_libraries(BamboEditor 
 PRIVATE BamboEngine 
 PRIVATE imgui)

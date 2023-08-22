@@ -11,6 +11,8 @@ namespace Bambo
 
 	void SpriteComponent::PostConstruct()
 	{
+		Component::PostConstruct();
+
 		if (!m_owner) return;
 
 		World* world = m_owner->GetWorld();
@@ -18,14 +20,23 @@ namespace Bambo
 		m_texture = world->GetTextureProvider()->Load(ToId("Square"), BamboPaths::BamboResourcesDir + "Textures/Square.png");
 	}
 
-	void SpriteComponent::Tick(float deltaSeconds)
+	void SpriteComponent::OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex)
 	{
 		if (!m_owner) return;
 
 		World* world = m_owner->GetWorld();
 		if (!world) return;
 
-		world->GetRenderer()->EnqueueSprite(this);
+		SpriteRenderer* renderer = world->GetRenderer();
+
+		globals[ownerMatIndex] = glm::translate(globals[ownerMatIndex], GetOriginOffset());
+
+		SpriteRenderRequest request{};
+		request.Texture = m_texture;
+		request.RectIndex = m_spriteRectIndex;
+		request.GlobalPosIndex = ownerMatIndex;
+
+		renderer->EnqueueSpriteToRender(request);
 	}
 
 	void SpriteComponent::Serialize(nlohmann::json& node)

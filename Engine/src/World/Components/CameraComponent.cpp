@@ -31,7 +31,7 @@ namespace Bambo
 		m_camera.SetPerspectiveFar(node["perspectiveFar"].get<float>());
 	}
 
-	void CameraComponent::Tick(float deltaSeconds)
+	void CameraComponent::OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex)
 	{
 		if (!m_owner) return;
 

@@ -19,7 +19,6 @@ namespace Bambo
 		glm::vec3 GetScale() const { return m_scale; }
 
 		glm::mat4& GetMatrix();
-		glm::mat4& GetGlobalMatrixRef();
 
 		bool IsNeedUpdate() const { return m_isNeedUpdate; }
 		void SetNeedUpdate() { m_isNeedUpdate = true; }
@@ -29,7 +28,6 @@ namespace Bambo
 		void AddRotation(const glm::vec3& rotation);
 		void SetScale(const glm::vec3& scale);
 
-		void Update(Transform* parentTransform);
 	private:
 		glm::vec3 m_position;
 		glm::vec3 m_rotation;
@@ -38,6 +36,5 @@ namespace Bambo
 		bool m_isNeedUpdate;
 
 		glm::mat4 m_matrix;
-		glm::mat4 m_globalMatrix;
 	};
 }

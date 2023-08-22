@@ -17,7 +17,8 @@ namespace Bambo
 		m_root(),
 		m_spriteRenderer(),
 		m_shaderProvider(),
-		m_textureProvider()
+		m_textureProvider(),
+		m_globalMatrices()
 	{
 		SPtr<Shader> defaultShader = m_shaderProvider.Load(ToId("DefaultShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
 		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultShader);
@@ -28,6 +29,16 @@ namespace Bambo
 	World::~World()
 	{
 		Reset();
+	}
+
+	void World::Start()
+	{
+		auto it = m_gameObjectMap.begin();
+		auto end = m_gameObjectMap.end();
+		for (; it != end; ++it)
+		{
+			it->second->Start();
+		}
 	}
 
 	void World::Update(float deltaSeconds)
@@ -43,7 +54,19 @@ namespace Bambo
 
 	void World::Render()
 	{
-		m_spriteRenderer->Render();
+		GameObject* root = GetGameObject(m_root);
+		
+		m_globalMatrices.push_back(root->GetTransform()->GetMatrix());
+		
+		std::vector<IID>& children = root->GetChildren();
+		for (size_t i = 0; i < children.size(); ++i)
+		{
+			GameObject* child = GetGameObject(children[i]);
+			child->OnRender(m_globalMatrices, m_globalMatrices.size() - 1);
+		}
+
+		m_spriteRenderer->Render(m_globalMatrices);
+		m_globalMatrices.clear();
 	}
 
 	GameObject* World::CreateGameObject(IID parent, IID id)
@@ -81,6 +104,8 @@ namespace Bambo
 		{
 			DestroyGameObject(children[i]);
 		}
+
+		gameObject->End();
 
 		IID id = gameObject->GetID();
 		m_gameObjectMap.erase(id);
@@ -164,12 +189,6 @@ namespace Bambo
 
 	void World::Reset()
 	{
-		// Remove ???
-		for (auto& pair : m_gameObjectMap)
-		{
-			pair.second.release();
-		}
-
-		m_gameObjectMap.clear();
+		DestroyGameObject(m_root);
 	}
 }

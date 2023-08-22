@@ -30,14 +30,25 @@ class GameObject;
 		Component& operator=(const Component&) = delete;
 		Component& operator=(Component&&) = delete;
 
-		virtual void PostConstruct() {}
+		bool IsValid() const { return m_isValid; }
+
+		virtual void PostConstruct() 
+		{
+			m_isValid = true;
+		}
 		virtual void Start() {}
 		virtual void Tick(float deltaSeconds) {}
-		virtual void End() {}
+		virtual void OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex) {}
+		virtual void End() 
+		{
+			m_isValid = false;
+		}
 
 		virtual std::size_t GetID() const { return 0; }
 		GameObject* GetOwner() { return m_owner; }
 	protected:
+		bool m_isValid;
+
 		Component() = default;
 		GameObject* m_owner;
 
