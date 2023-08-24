@@ -17,6 +17,7 @@ namespace BamboEditor
 
 		ImGui::Text("SpriteComponent");
 		DrawInteger("Rect index", &spriteComponent->GetRectIndexRef());
+		DrawInteger("Sorting order", &spriteComponent->GetSortingOrderRef());
 		DrawVector3("Origin", &spriteComponent->GetOriginRef());
 		DrawReadonlyString(&spriteComponent->GetTexture()->GetTexturePath());
 	}

@@ -19,6 +19,7 @@ namespace Bambo
 		SPtr<Texture2D> Texture;
 		int32 RectIndex;
 		int32 GlobalPosIndex;
+		int32 SortingOrder;
 	};
 
 	class BAMBO_API SpriteRenderer final : public Renderer

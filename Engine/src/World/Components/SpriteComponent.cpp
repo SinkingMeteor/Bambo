@@ -33,8 +33,12 @@ namespace Bambo
 
 		SpriteRenderRequest request{};
 		request.Texture = m_texture;
+
+		int32 rectsAmount = m_texture->GetTextureRects().size();
+		m_spriteRectIndex = std::clamp(m_spriteRectIndex, 0, rectsAmount - 1);
 		request.RectIndex = m_spriteRectIndex;
 		request.GlobalPosIndex = ownerMatIndex;
+		request.SortingOrder = m_sortingOrder;
 
 		renderer->EnqueueSpriteToRender(request);
 	}
@@ -45,6 +49,7 @@ namespace Bambo
 		node["texturePath"] = m_texture->GetTexturePath();
 		node["textureID"] = m_texture->GetAssetID();
 		node["rectId"] = m_spriteRectIndex;
+		node["sortingOrder"] = m_sortingOrder;
 		Serialization::Serialize(m_origin, node["origin"]);
 	}
 
@@ -55,6 +60,11 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_owner->GetWorld())
 
 		m_spriteRectIndex = node["rectId"].get<int32>();
+		nlohmann::json& sortingOrderNode = node["sortingOrder"];
+		if (!sortingOrderNode.is_null())
+		{
+			m_sortingOrder = sortingOrderNode.get<int32>();
+		}
 		Serialization::Deserialize(m_origin, node["origin"]);
 
 		World* world = m_owner->GetWorld();

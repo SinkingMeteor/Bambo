@@ -19,6 +19,7 @@ namespace Bambo
 		}
 
 		int32& GetRectIndexRef() { return m_spriteRectIndex; }
+		int32& GetSortingOrderRef() { return m_sortingOrder; }
 		glm::vec3& GetOriginRef() { return m_origin; }
 		glm::vec3 GetOrigin() const { return m_origin; }
 		glm::vec3 GetOriginOffset() const 
@@ -31,6 +32,7 @@ namespace Bambo
 		void SetOrigin(const glm::vec3& origin) { m_origin = origin; }
 		void SetTexture(SPtr<Texture2D> texture) { m_texture = texture; }
 		void SetRectIndex(int32 rectIndex) { m_spriteRectIndex = rectIndex; }
+		void SetSortingOrder(int32 sortingOrder) { m_sortingOrder = sortingOrder; }
 
 		virtual void Serialize(nlohmann::json& node) override;
 		virtual void Deserialize(nlohmann::json& node) override;
@@ -41,5 +43,6 @@ namespace Bambo
 		SPtr<Texture2D> m_texture{ nullptr };
 		glm::vec3 m_origin{ 0.5f, 0.5f, 0.5f };
 		int32 m_spriteRectIndex{ 0 };
+		int32 m_sortingOrder{ 0 };
 	};
 }

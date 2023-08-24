@@ -28,6 +28,8 @@ namespace Bambo
 
 	void SpriteRenderer::Render(std::vector<glm::mat4>& globalTransforms)
 	{
+		std::sort(m_sprites.begin(), m_sprites.end(), [](SpriteRenderRequest& r1, SpriteRenderRequest& r2) { return r1.SortingOrder < r2.SortingOrder; });
+
 		for (size_t i = 0; i < m_sprites.size(); ++i)
 		{
 			const RectInt& rect = m_sprites[i].Texture->GetTextureRects()[m_sprites[i].RectIndex];
