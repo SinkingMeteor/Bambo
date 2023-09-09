@@ -25,7 +25,6 @@ ${CMAKE_CURRENT_LIST_DIR}/src/Core/Log.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Core/IID.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Core/Utils.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Core/SingletonManager.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Core/GameInstance.cpp
 ${CMAKE_CURRENT_LIST_DIR}/src/Core/Time/Timer.cpp
 ##======Graphics======
 ${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Shader.cpp
