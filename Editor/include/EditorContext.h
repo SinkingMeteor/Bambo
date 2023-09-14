@@ -1,7 +1,7 @@
 #pragma once
-#include "Core/Essentials.h"
+#include "Essentials.h"
 #include "Project.h"
-#include "World/World.h"
+#include "World.h"
 
 namespace BamboEditor
 {

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(BamboEngine)
+project(Bambo)
 
 add_subdirectory(Engine)
 add_subdirectory(Editor)

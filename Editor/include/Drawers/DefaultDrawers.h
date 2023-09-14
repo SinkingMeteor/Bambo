@@ -1,8 +1,8 @@
 #pragma once
-#include "World/Components/Components.h"
+#include "Components/Components.h"
 #include "Drawers/InspectorDrawer.h"
 #include "Drawers/PrimitiveDrawers.h"
-#include "Graphics/Transform.h"
+#include "Transform.h"
 
 namespace BamboEditor
 {

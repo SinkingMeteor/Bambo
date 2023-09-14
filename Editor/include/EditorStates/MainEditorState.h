@@ -1,11 +1,11 @@
 #pragma once
-#include "Core/Essentials.h"
+#include "Essentials.h"
 #include "EditorEssentials.h"
 #include "EditorStates/IEditorState.h"
 #include "Project.h"
-#include "World/World.h"
+#include "World.h"
 #include "Windows/GUIWindow.h"
-#include "Graphics/Framebuffer.h"
+#include "Framebuffer.h"
 #include "EditorContext.h"
 
 namespace BamboEditor

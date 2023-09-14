@@ -4,7 +4,7 @@
 #include "Windows/GameViewport.h"
 #include "Windows/Inspector.h"
 #include "BamboPaths.h"
-#include "Graphics/RenderManager.h"
+#include "RenderManager.h"
 
 namespace BamboEditor
 {

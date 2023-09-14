@@ -1,7 +1,7 @@
 #pragma once
-#include "Core/Essentials.h"
-#include "Core/SingletonManager.h"
-#include "World/Components/Components.h"
+#include "Essentials.h"
+#include "SingletonManager.h"
+#include "Components/Components.h"
 
 using namespace Bambo;
 

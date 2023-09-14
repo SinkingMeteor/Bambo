@@ -1,9 +1,9 @@
 #pragma once
-#include "Core/Essentials.h"
-#include "Core/Module.h"
+#include "Essentials.h"
+#include "Module.h"
 #include "Project.h"
 #include "EditorPaths.h"
-#include "Core/Patterns/StateMachine.h"
+#include "Patterns/StateMachine.h"
 #include "EditorStates/IEditorState.h"
 #include "EditorContext.h"
 #include "GUIWorld.h"

@@ -1,104 +1,83 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_subdirectory(thirdparty/GLAD)
-add_subdirectory(thirdparty/GLFW)
-add_subdirectory(thirdparty/STBI)
-add_subdirectory(thirdparty/GLM)
-add_subdirectory(thirdparty/OpenAL)
+set(BAMBO_ENGINE_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(BAMBO_ENGINE_BINARY_DIR ${BamboEngine_BINARY_DIR}/Engine)
 
-set(BAMBO_ENGINE_SOURCES
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/Audio.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/AudioDevice.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/AudioSource.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/AudioListener.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/AudioWavLoader.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/StreamingAudio.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/Sound.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/Music.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/AudioUtils.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/AudioManager.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Audio/ALCheck.cpp
+set(BAMBO_ENGINE_SOURCES)
 
-${CMAKE_CURRENT_LIST_DIR}/src/Core/Engine.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Core/TimeManager.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Core/Log.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Core/IID.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Core/Utils.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Core/SingletonManager.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Core/Time/Timer.cpp
-##======Graphics======
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Shader.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Texture2D.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Camera.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Renderer.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/SpriteRenderer.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/OpenGL/OpenGLCheck.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Framebuffer.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/OpenGL/OpenGLFramebuffer.cpp
-#VBO
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/OpenGL/OpenGLVertexBufferObject.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/VertexBufferObject.cpp
-#VAO
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/VertexArrayObject.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/OpenGL/OpenGLVertexArrayObject.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/BufferLayout.cpp
-#Contexts
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/OpenGL/OpenGLGraphicsContext.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/GraphicsContext.cpp
-#Texture
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/OpenGL/OpenGLTexture.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/TextureImplementation.cpp
-#Shader
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/OpenGL/OpenGLShader.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/ShaderImplementation.cpp
-#Renderer
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/RenderManager.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/OpenGL/OpenGLRenderer.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/RendererImplementation.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Graphics/Transform.cpp
-##======End Graphics======
+set(BAMBO_ENGINE_PUBLIC_LIBS)
+set(BAMBO_ENGINE_PRIVATE_LIBS)
 
-${CMAKE_CURRENT_LIST_DIR}/src/Window/WindowsWindow.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Window/WindowManager.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Window/Window.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Window/Input.cpp
+set(BAMBO_ENGINE_PUBLIC_DIRS)
+set(BAMBO_ENGINE_PRIVATE_DIRS)
 
-${CMAKE_CURRENT_LIST_DIR}/src/World/World.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/World/GameObject.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/World/Components/ComponentFactory.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/World/Components/SpriteComponent.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/World/Components/CameraComponent.cpp
+set(MODULE_SOURCES)
+set(MODULE_PUBLIC_LIBS)
+set(MODULE_PRIVATE_LIBS)
+set(MODULE_PUBLIC_PATHS)
+set(MODULE_PRIVATE_PATHS)
 
-${CMAKE_CURRENT_LIST_DIR}/src/Serialization/WorldSerialization.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/Serialization/MathSerialization.cpp)
+add_subdirectory(Thirdparty/GLAD)
+add_subdirectory(Thirdparty/GLFW)
+add_subdirectory(Thirdparty/STBI)
+add_subdirectory(Thirdparty/GLM)
+add_subdirectory(Thirdparty/OpenAL)
+
+set(BAMBO_ENGINE_MODULES 
+Runtime/Graphics
+Runtime/World
+Runtime/Window
+Runtime/Core
+Runtime/Serialization
+Runtime/Audio)
+
+foreach(MODULE ${BAMBO_ENGINE_MODULES})
+
+	add_subdirectory(${MODULE})
+
+	list(APPEND BAMBO_ENGINE_SOURCES ${MODULE_SOURCES})
+
+	list(APPEND BAMBO_ENGINE_PUBLIC_LIBS ${MODULE_PUBLIC_LIBS})
+	list(APPEND BAMBO_ENGINE_PRIVATE_LIBS ${MODULE_PRIVATE_LIBS})
+
+	list(APPEND BAMBO_ENGINE_PUBLIC_PATHS ${MODULE_PUBLIC_PATHS})
+	list(APPEND BAMBO_ENGINE_PRIVATE_PATHS ${MODULE_PRIVATE_PATHS})
+
+endforeach()
 
 add_library(BamboEngine STATIC ${BAMBO_ENGINE_SOURCES})
 
 target_include_directories(BamboEngine
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/
-PUBLIC ${BamboEngine_BINARY_DIR}/Engine/generated/
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLFW/include/
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/OpenAL/include/
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLM/glm
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/GLAD/include
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/thirdparty/STBI/
+PUBLIC ${BAMBO_ENGINE_PUBLIC_PATHS}
+PRIVATE ${BAMBO_ENGINE_PRIVATE_PATHS}
+
+PUBLIC ${BAMBO_ENGINE_BINARY_DIR}/Runtime/generated/
+PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Runtime/
+PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/
+PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/GLFW/include/
+PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/OpenAL/include/
+PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/GLM/glm
+PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/GLAD/include
+PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/STBI/
 PUBLIC ${OPENGL_INCLUDE_DIRS})
+
+list(REMOVE_DUPLICATES BAMBO_ENGINE_PUBLIC_DIRS)
+list(REMOVE_DUPLICATES BAMBO_ENGINE_PRIVATE_DIRS)
+list(REMOVE_DUPLICATES BAMBO_ENGINE_PUBLIC_LIBS)
+list(REMOVE_DUPLICATES BAMBO_ENGINE_PRIVATE_LIBS)
 
 target_compile_features(BamboEngine PUBLIC cxx_std_17)
 target_compile_definitions(BamboEngine PUBLIC BAMBO_DEBUG_ON)
 
-find_library(THIRDPARTY_LIBS NAMES glfw glad OpenAL STBI ${OPENGL_LIBRARIES} HINTS ${BamboEngine_BINARY_DIR}/Engine/thirdparty/)
+find_library(THIRDPARTY_LIBS NAMES ${BAMBO_ENGINE_PUBLIC_LIBS} ${BAMBO_ENGINE_PRIVATE_LIBS} HINTS ${BamboEngine_BINARY_DIR}/Engine/Thirdparty/)
 
 target_link_libraries(BamboEngine
-PUBLIC glfw 
-PUBLIC glad 
-PUBLIC STBI 
-PUBLIC OpenAL)
+PUBLIC ${BAMBO_ENGINE_PUBLIC_LIBS}
+PRIVATE ${BAMBO_ENGINE_PRIVATE_LIBS})
 
-set(BAMBO_ENGINE_RESOURCE_DIR "${BamboEngine_SOURCE_DIR}/Engine/resources")
+set(BAMBO_ENGINE_RESOURCE_DIR "${BamboEngine_SOURCE_DIR}/Engine/Resources")
 add_definitions(-DBAMBO_ENGINE_RESOURCE_DIR=${BAMBO_ENGINE_RESOURCE_DIR})
 
-configure_file(include/BamboPaths.h.in "${BamboEngine_BINARY_DIR}/Engine/generated/BamboPaths.h")
+configure_file(${BAMBO_ENGINE_SOURCE_DIR}/Runtime/BamboPaths.h.in "${BAMBO_ENGINE_BINARY_DIR}/Runtime/generated/BamboPaths.h")
 
-target_precompile_headers(BamboEngine PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/pch.h)
+target_precompile_headers(BamboEngine PUBLIC "${CMAKE_CURRENT_LIST_DIR}/Runtime/pch.h")

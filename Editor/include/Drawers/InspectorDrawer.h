@@ -1,3 +1,3 @@
 #pragma once
-#include "Core/Essentials.h"
+#include "Essentials.h"
 #include "EditorEssentials.h"

@@ -1,10 +1,10 @@
 #pragma once
-#include "Core/Essentials.h"
+#include "Essentials.h"
 #include "EditorEssentials.h"
 #include "GUIWindow.h"
 #include "Project.h"
-#include "Graphics/TextureProvider.h"
-#include "Graphics/Texture2D.h"
+#include "TextureProvider.h"
+#include "Texture2D.h"
 #include "EditorPaths.h"
 #include "EditorContext.h"
 #include "Widget/FileBrowserWidget.h"

@@ -1,7 +1,7 @@
 #pragma once
-#include "Core/Essentials.h"
+#include "Essentials.h"
 #include "EditorStates/IEditorState.h"
-#include "Core/Patterns/StateMachine.h"
+#include "Patterns/StateMachine.h"
 #include "Project.h"
 #include "Windows/GUIWindow.h"
 #include "EditorContext.h"

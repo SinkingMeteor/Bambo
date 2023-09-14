@@ -1,6 +1,6 @@
 #pragma once
 #include "Drawers/InspectorDrawer.h"
-#include "Core/Essentials.h"
+#include "Essentials.h"
 
 namespace BamboEditor
 {

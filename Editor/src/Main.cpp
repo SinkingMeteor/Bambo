@@ -1,5 +1,5 @@
-#include "Core/Essentials.h"
-#include "Core/Engine.h"
+#include "Essentials.h"
+#include "Engine.h"
 #include "EditorModule.h"
 
 int main()

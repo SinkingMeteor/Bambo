@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/Essentials.h"
+#include "Essentials.h"
 #include "EditorContext.h"
 #include "Windows/GUIWindow.h"
 #include "Drawers/DefaultDrawers.h"

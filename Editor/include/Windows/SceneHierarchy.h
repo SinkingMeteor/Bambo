@@ -1,9 +1,9 @@
 #pragma once
-#include "Core/Essentials.h"
+#include "Essentials.h"
 #include "EditorEssentials.h"
 #include "Windows/GUIWindow.h"
-#include "World/World.h"
-#include "World/Components/Components.h"
+#include "World.h"
+#include "Components/Components.h"
 #include "EditorContext.h"
 
 namespace BamboEditor

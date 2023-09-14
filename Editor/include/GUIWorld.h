@@ -1,6 +1,6 @@
 #pragma once
-#include "Core/Essentials.h"
-#include "Window/WindowManager.h"
+#include "Essentials.h"
+#include "WindowManager.h"
 #include "EditorEssentials.h"
 
 namespace BamboEditor
