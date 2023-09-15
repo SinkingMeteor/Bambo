@@ -1,53 +1,88 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_subdirectory(thirdparty/imgui)
+set(BAMBO_EDITOR_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(BAMBO_EDITOR_BINARY_DIR ${Bambo_BINARY_DIR}/Editor)
 
-set(BAMBO_EDITOR_SOURCES
-${Bambo_SOURCE_DIR}/Editor/src/Windows/SceneHierarchy.cpp
-${Bambo_SOURCE_DIR}/Editor/src/Windows/GameViewport.cpp
-${Bambo_SOURCE_DIR}/Editor/src/Windows/Inspector.cpp
-${Bambo_SOURCE_DIR}/Editor/src/Windows/ContentBrowser.cpp
-${Bambo_SOURCE_DIR}/Editor/src/Windows/ProjectBrowser.cpp
+set(BAMBO_EDITOR_SOURCES)
 
-${Bambo_SOURCE_DIR}/Editor/src/Drawers/InspectorDrawersRegistry.cpp
-${Bambo_SOURCE_DIR}/Editor/src/Drawers/PrimitiveDrawers.cpp
-${Bambo_SOURCE_DIR}/Editor/src/Drawers/DefaultDrawers.cpp
+set(BAMBO_EDITOR_PUBLIC_LIBS)
+set(BAMBO_EDITOR_PRIVATE_LIBS)
 
-${Bambo_SOURCE_DIR}/Editor/src/EditorStates/OpenProjectEditorState.cpp
-${Bambo_SOURCE_DIR}/Editor/src/EditorStates/MainEditorState.cpp
-${Bambo_SOURCE_DIR}/Editor/src/Widget/FileBrowserWidget.cpp
-${Bambo_SOURCE_DIR}/Editor/src/EditorModule.cpp
-${Bambo_SOURCE_DIR}/Editor/src/Project.cpp
-${Bambo_SOURCE_DIR}/Editor/src/GUIWorld.cpp
-${Bambo_SOURCE_DIR}/Editor/src/Main.cpp)
+set(BAMBO_EDITOR_PUBLIC_PATHS)
+set(BAMBO_EDITOR_PRIVATE_PATHS)
+
+set(MODULE_SOURCES)
+set(MODULE_PUBLIC_LIBS)
+set(MODULE_PRIVATE_LIBS)
+set(MODULE_PUBLIC_PATHS)
+set(MODULE_PRIVATE_PATHS)
+
+set(BAMBO_EDITOR_THIRDPARTY_PUBLIC_PATHS)
+set(BAMBO_EDITOR_THIRDPARTY_PRIVATE_PATHS)
+
+add_subdirectory(Thirdparty/)
+
+set(BAMBO_EDITOR_MODULES 
+Runtime/Core
+Runtime/EditorWidgets
+Runtime/InspectorDrawers)
+
+foreach(MODULE ${BAMBO_EDITOR_MODULES})
+
+	add_subdirectory(${MODULE})
+
+	list(APPEND BAMBO_EDITOR_SOURCES ${MODULE_SOURCES})
+
+	list(APPEND BAMBO_EDITOR_PUBLIC_LIBS ${MODULE_PUBLIC_LIBS})
+	list(APPEND BAMBO_EDITOR_PRIVATE_LIBS ${MODULE_PRIVATE_LIBS})
+
+	list(APPEND BAMBO_EDITOR_PUBLIC_PATHS ${MODULE_PUBLIC_PATHS})
+	list(APPEND BAMBO_EDITOR_PRIVATE_PATHS ${MODULE_PRIVATE_PATHS})
+
+endforeach()
 
 add_executable(BamboEditor ${BAMBO_EDITOR_SOURCES})
 
-target_include_directories(BamboEditor 
-PRIVATE ${CMAKE_CURRENT_LIST_DIR}/thirdparty/imgui/include/
-PRIVATE ${Bambo_SOURCE_DIR}/Editor/include/
-PRIVATE ${Bambo_BINARY_DIR}/Editor/generated/)
+list(REMOVE_DUPLICATES BAMBO_EDITOR_PUBLIC_PATHS)
+list(REMOVE_DUPLICATES BAMBO_EDITOR_PRIVATE_PATHS)
+
+list(APPEND BAMBO_EDITOR_PUBLIC_PATHS ${BAMBO_EDITOR_BINARY_DIR}/Generated/)
+
+target_include_directories(BamboEditor
+PUBLIC ${BAMBO_EDITOR_PUBLIC_PATHS}
+PRIVATE ${BAMBO_EDITOR_PRIVATE_PATHS}
+PRIVATE ${ROOT_BAMBO_ENGINE_PUBLIC_PATHS}
+
+PUBLIC ${BAMBO_EDITOR_THIRDPARTY_PUBLIC_PATHS}
+PRIVATE ${BAMBO_EDITOR_THIRDPARTY_PRIVATE_PATHS}
+PRIVATE ${ROOT_BAMBO_ENGINE_THIRDPARTY_PUBLIC_PATHS})
+
+list(REMOVE_DUPLICATES BAMBO_EDITOR_PUBLIC_LIBS)
+list(REMOVE_DUPLICATES BAMBO_EDITOR_PRIVATE_LIBS)
 
 find_library(BAMBO_ENGINE_LIB NAMES BamboEngine HINTS ${Bambo_BINARY_DIR}/Engine/)
-find_library(THIRDPARTY_LIB NAMES imgui HINTS ${Bambo_BINARY_DIR}/Editor/)
+find_library(THIRDPARTY_PUBLIC_LIBS NAMES ${BAMBO_EDITOR_PUBLIC_LIBS} HINTS ${Bambo_BINARY_DIR}/Editor/Thirdparty/)
+find_library(THIRDPARTY_PRIVATE_LIBS NAMES ${BAMBO_EDITOR_PRIVATE_LIBS} HINTS ${Bambo_BINARY_DIR}/Editor/Thirdparty/)
+
+target_link_libraries(BamboEditor
+PUBLIC ${BAMBO_EDITOR_PUBLIC_LIBS}
+PRIVATE ${BAMBO_EDITOR_PRIVATE_LIBS}
+PRIVATE BamboEngine)
 
 set(BAMBO_EDITOR_CONFIG_DIR "${Bambo_BINARY_DIR}/Editor/")
-set(BAMBO_EDITOR_RESOURCE_DIR "${Bambo_BINARY_DIR}/Editor/")
+set(BAMBO_EDITOR_RESOURCE_DIR "${Bambo_BINARY_DIR}/Editor/Resources")
 
+target_compile_features(BamboEditor PUBLIC cxx_std_17)
 add_definitions(-DBAMBO_EDITOR_CONFIG_DIR=${BAMBO_EDITOR_CONFIG_DIR})
 add_definitions(-DBAMBO_EDITOR_RESOURCE_DIR=${BAMBO_EDITOR_RESOURCE_DIR})
 
-configure_file(include/EditorPaths.h.in "${Bambo_BINARY_DIR}/Editor/generated/EditorPaths.h")
-configure_file(include/EditorConfig.json.in "${Bambo_BINARY_DIR}/Editor/EditorConfig.json")
+configure_file(${BAMBO_EDITOR_SOURCE_DIR}/Runtime/EditorPaths.h.in "${BAMBO_EDITOR_BINARY_DIR}/Generated/EditorPaths.h")
+configure_file(${BAMBO_EDITOR_SOURCE_DIR}/Runtime/EditorConfig.json.in "${BAMBO_EDITOR_BINARY_DIR}/EditorConfig.json")
 
 target_compile_definitions(BamboEditor PUBLIC BAMBO_EDITOR_ON)
 
-target_link_libraries(BamboEditor 
-PRIVATE BamboEngine 
-PRIVATE imgui)
-
 add_custom_command(TARGET BamboEditor POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_CURRENT_LIST_DIR}/resources
-    ${Bambo_BINARY_DIR}/Editor/resources
+    ${CMAKE_CURRENT_LIST_DIR}/Resources
+    ${Bambo_BINARY_DIR}/Editor/Resources
     COMMENT "Copying graphics resources")

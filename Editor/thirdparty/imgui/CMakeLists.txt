@@ -1,19 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(IMGUI_SOURCES 
-${CMAKE_CURRENT_LIST_DIR}/src/imgui.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/imgui_draw.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/imgui_impl_glfw.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/imgui_impl_opengl3.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/imgui_tables.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/imgui_demo.cpp
-${CMAKE_CURRENT_LIST_DIR}/src/imgui_widgets.cpp)
+add_subdirectory(Lib/)
 
-add_library(imgui STATIC ${IMGUI_SOURCES})
+set(TP_MODULE_NAME imgui)
+set(CURRENT_TP_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR}/Lib)
 
-target_include_directories(imgui
-PRIVATE ${Bambo_SOURCE_DIR}/Engine/Thirdparty/GLFW/Lib/include
-PRIVATE ${Bambo_SOURCE_DIR}/Engine/Thirdparty/GLAD/Lib/include
-PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/
-PRIVATE ${CMAKE_CURRENT_LIST_DIR}/misc/)
+set(BAMBO_${TP_MODULE_NAME}_PUBLIC_PATHS ${CURRENT_TP_MODULE_DIR}/include/)
+set(BAMBO_${TP_MODULE_NAME}_PRIVATE_PATHS)
 
+set(TP_MODULE_PUBLIC_PATHS ${BAMBO_${TP_MODULE_NAME}_PUBLIC_PATHS} PARENT_SCOPE)
+set(TP_MODULE_PRIVATE_PATHS ${BAMBO_${TP_MODULE_NAME}_PRIVATE_PATHS} PARENT_SCOPE)
