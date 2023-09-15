@@ -12,8 +12,8 @@ ${CMAKE_CURRENT_LIST_DIR}/src/imgui_widgets.cpp)
 add_library(imgui STATIC ${IMGUI_SOURCES})
 
 target_include_directories(imgui
-PRIVATE ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/GLFW/include
-PRIVATE ${BamboEngine_SOURCE_DIR}/Engine/thirdparty/GLAD/include
+PRIVATE ${Bambo_SOURCE_DIR}/Engine/Thirdparty/GLFW/Lib/include
+PRIVATE ${Bambo_SOURCE_DIR}/Engine/Thirdparty/GLAD/Lib/include
 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include/
 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/misc/)
 

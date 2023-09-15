@@ -8,8 +8,8 @@ set(BAMBO_ENGINE_SOURCES)
 set(BAMBO_ENGINE_PUBLIC_LIBS)
 set(BAMBO_ENGINE_PRIVATE_LIBS)
 
-set(BAMBO_ENGINE_PUBLIC_DIRS)
-set(BAMBO_ENGINE_PRIVATE_DIRS)
+set(BAMBO_ENGINE_PUBLIC_PATHS)
+set(BAMBO_ENGINE_PRIVATE_PATHS)
 
 set(MODULE_SOURCES)
 set(MODULE_PUBLIC_LIBS)
@@ -17,11 +17,10 @@ set(MODULE_PRIVATE_LIBS)
 set(MODULE_PUBLIC_PATHS)
 set(MODULE_PRIVATE_PATHS)
 
-add_subdirectory(Thirdparty/GLAD)
-add_subdirectory(Thirdparty/GLFW)
-add_subdirectory(Thirdparty/STBI)
-add_subdirectory(Thirdparty/GLM)
-add_subdirectory(Thirdparty/OpenAL)
+set(BAMBO_ENGINE_THIRDPARTY_PUBLIC_PATHS)
+set(BAMBO_ENGINE_THIRDPARTY_PRIVATE_PATHS)
+
+add_subdirectory(Thirdparty/)
 
 set(BAMBO_ENGINE_MODULES 
 Runtime/Graphics
@@ -47,27 +46,23 @@ endforeach()
 
 add_library(BamboEngine STATIC ${BAMBO_ENGINE_SOURCES})
 
+message("XXX")
+message(STATUS ${BAMBO_ENGINE_THIRDPARTY_PUBLIC_PATHS})
+
 target_include_directories(BamboEngine
 PUBLIC ${BAMBO_ENGINE_PUBLIC_PATHS}
 PRIVATE ${BAMBO_ENGINE_PRIVATE_PATHS}
 
+PUBLIC ${BAMBO_ENGINE_THIRDPARTY_PUBLIC_PATHS}
+PRIVATE ${BAMBO_ENGINE_THIRDPARTY_PRIVATE_PATHS}
+
 PUBLIC ${BAMBO_ENGINE_BINARY_DIR}/Runtime/generated/
-PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Runtime/
-PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/
-PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/GLFW/include/
-PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/OpenAL/include/
-PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/GLM/glm
-PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/GLAD/include
-PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Thirdparty/STBI/
-PUBLIC ${OPENGL_INCLUDE_DIRS})
+PUBLIC ${BAMBO_ENGINE_SOURCE_DIR}/Runtime/)
 
 list(REMOVE_DUPLICATES BAMBO_ENGINE_PUBLIC_DIRS)
 list(REMOVE_DUPLICATES BAMBO_ENGINE_PRIVATE_DIRS)
 list(REMOVE_DUPLICATES BAMBO_ENGINE_PUBLIC_LIBS)
 list(REMOVE_DUPLICATES BAMBO_ENGINE_PRIVATE_LIBS)
-
-target_compile_features(BamboEngine PUBLIC cxx_std_17)
-target_compile_definitions(BamboEngine PUBLIC BAMBO_DEBUG_ON)
 
 find_library(THIRDPARTY_LIBS NAMES ${BAMBO_ENGINE_PUBLIC_LIBS} ${BAMBO_ENGINE_PRIVATE_LIBS} HINTS ${BamboEngine_BINARY_DIR}/Engine/Thirdparty/)
 
@@ -75,9 +70,12 @@ target_link_libraries(BamboEngine
 PUBLIC ${BAMBO_ENGINE_PUBLIC_LIBS}
 PRIVATE ${BAMBO_ENGINE_PRIVATE_LIBS})
 
+target_compile_features(BamboEngine PUBLIC cxx_std_17)
+target_compile_definitions(BamboEngine PUBLIC BAMBO_DEBUG_ON)
+target_precompile_headers(BamboEngine PUBLIC "${CMAKE_CURRENT_LIST_DIR}/Runtime/pch.h")
+
 set(BAMBO_ENGINE_RESOURCE_DIR "${BamboEngine_SOURCE_DIR}/Engine/Resources")
 add_definitions(-DBAMBO_ENGINE_RESOURCE_DIR=${BAMBO_ENGINE_RESOURCE_DIR})
 
 configure_file(${BAMBO_ENGINE_SOURCE_DIR}/Runtime/BamboPaths.h.in "${BAMBO_ENGINE_BINARY_DIR}/Runtime/generated/BamboPaths.h")
 
-target_precompile_headers(BamboEngine PUBLIC "${CMAKE_CURRENT_LIST_DIR}/Runtime/pch.h")

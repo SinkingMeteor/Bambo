@@ -1,9 +1,3 @@
-[submodule "Engine/thirdparty/GLFW"]
-	path = Engine/thirdparty/GLFW
-	url = https://github.com/glfw/glfw
-[submodule "Engine/thirdparty/GLM"]
-	path = Engine/thirdparty/GLM
-	url = https://github.com/g-truc/glm
 [submodule "Engine/thirdparty/flecs"]
 	path = Engine/thirdparty/flecs
 	url = https://github.com/SanderMertens/flecs
