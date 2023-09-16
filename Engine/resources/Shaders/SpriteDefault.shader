@@ -1,4 +1,1 @@
-{
-	"vertex" : "VSpriteDefault.txt",
-	"fragment" : "FSpriteDefault.txt"
-}
+{"vertex":"VSpriteDefault.txt","fragment":"FSpriteDefault.txt"}

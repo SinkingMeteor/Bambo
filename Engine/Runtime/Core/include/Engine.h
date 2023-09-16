@@ -5,6 +5,7 @@
 #include "WindowManager.h"
 #include "AudioManager.h"
 #include "RenderManager.h"
+#include "Resource/ResourceManager.h"
 #include "Components/ComponentFactory.h"
 #include "World.h"
 #include "Module.h"

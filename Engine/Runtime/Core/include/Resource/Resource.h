@@ -1,6 +1,6 @@
 #pragma once
 #include "Essentials.h"
-
+#include "Resource/ResourceInfo.h"
 namespace Bambo
 {
 #define RESOURCE_BODY(ResourceType, ID) public:\

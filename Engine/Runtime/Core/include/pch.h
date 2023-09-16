@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <type_traits>
+#include <optional>
 #include <chrono>
 #include <iostream>
 #include <filesystem>

@@ -5,7 +5,8 @@ set(MODULE_NAME CORE)
 set(CURRENT_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 set(BAMBO_${MODULE_NAME}_SOURCES
-${CURRENT_MODULE_DIR}/src/Resource/ResourceCache.cpp
+${CURRENT_MODULE_DIR}/src/Resource/ResourceInfo.cpp
+${CURRENT_MODULE_DIR}/src/Resource/ResourceManager.cpp
 ${CURRENT_MODULE_DIR}/src/Engine.cpp
 ${CURRENT_MODULE_DIR}/src/TimeManager.cpp
 ${CURRENT_MODULE_DIR}/src/Log.cpp

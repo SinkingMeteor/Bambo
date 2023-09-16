@@ -52,7 +52,6 @@ namespace Bambo
 		std::unordered_map<IID, UPtr<GameObject>> m_gameObjectMap;
 		IID m_root;
 		UPtr<SpriteRenderer> m_spriteRenderer;
-		SPtr<ResourceCache> m_resourceCache;
 
 		ShaderProvider m_shaderProvider;
 		TextureProvider m_textureProvider;

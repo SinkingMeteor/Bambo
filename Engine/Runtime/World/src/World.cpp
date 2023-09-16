@@ -16,9 +16,8 @@ namespace Bambo
 		m_gameObjectMap(),
 		m_root(),
 		m_spriteRenderer(),
-		m_resourceCache(std::make_shared<ResourceCache>(m_worldParameters.AssetsFolderPath.string() + "/ResourceCache.json")),
-		m_shaderProvider(m_resourceCache),
-		m_textureProvider(m_resourceCache),
+		m_shaderProvider(),
+		m_textureProvider(),
 		m_globalMatrices()
 	{
 		SPtr<Shader> defaultShader = m_shaderProvider.Load(BamboPaths::BamboResourcesDir + "Shaders/SpriteDefault.shader");

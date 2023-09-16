@@ -13,6 +13,8 @@ namespace Bambo
 
 		Logger* logger = singletonManager->Register<Logger>();
 		BAMBO_ASSERT_S(logger)
+		ResourceManager* resourceManager = singletonManager->Register<ResourceManager>();
+		BAMBO_ASSERT_S(resourceManager)
 		TimeManager* timeManager = singletonManager->Register<TimeManager>();
 		BAMBO_ASSERT_S(timeManager)
 		ComponentFactory* componentFactory = singletonManager->Register<ComponentFactory>();
