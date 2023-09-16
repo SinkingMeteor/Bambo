@@ -17,7 +17,7 @@ namespace Bambo
 
 		World* world = m_owner->GetWorld();
 		if (!world) return;
-		m_texture = world->GetTextureProvider()->Load(ToId("Square"), BamboPaths::BamboResourcesDir + "Textures/Square.png");
+		m_texture = world->GetTextureProvider()->Load(BamboPaths::BamboResourcesDir + "Textures/Square.png");
 	}
 
 	void SpriteComponent::OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex)
@@ -46,8 +46,7 @@ namespace Bambo
 	void SpriteComponent::Serialize(nlohmann::json& node)
 	{
 		node["name"] = "SpriteComponent";
-		node["texturePath"] = m_texture->GetTexturePath();
-		node["textureID"] = m_texture->GetAssetID();
+		node["textureID"] = m_texture->GetAssetInstanceID();
 		node["rectId"] = m_spriteRectIndex;
 		node["sortingOrder"] = m_sortingOrder;
 		Serialization::Serialize(m_origin, node["origin"]);
@@ -70,8 +69,7 @@ namespace Bambo
 		World* world = m_owner->GetWorld();
 		TextureProvider* textureProvider = world->GetTextureProvider();
 		std::size_t assetId = node["textureID"].get<std::size_t>();
-		std::string assetPath = node["texturePath"];
 
-		m_texture = textureProvider->Load(assetId, assetPath);
+		m_texture = textureProvider->Load(assetId);
 	}
 }

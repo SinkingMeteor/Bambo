@@ -13,12 +13,18 @@
 
 namespace Bambo
 {
+	struct WorldParameters
+	{
+		std::filesystem::path WorldFilePath;
+		std::filesystem::path AssetsFolderPath;
+	};
+
 	const std::string WORLD_FILE_EXTENSION_DOT = ".bworld";
 
 	class BAMBO_API World
 	{
 	public:
-		World(const std::filesystem::path& worldFilePath);
+		World(const WorldParameters& worldParameters);
 		virtual ~World();
 
 		virtual void Start();
@@ -42,10 +48,12 @@ namespace Bambo
 		bool IsValidGameObject(IID id);
 
 	private:
-		std::filesystem::path m_worldFilePath;
+		WorldParameters m_worldParameters;
 		std::unordered_map<IID, UPtr<GameObject>> m_gameObjectMap;
 		IID m_root;
 		UPtr<SpriteRenderer> m_spriteRenderer;
+		SPtr<ResourceCache> m_resourceCache;
+
 		ShaderProvider m_shaderProvider;
 		TextureProvider m_textureProvider;
 

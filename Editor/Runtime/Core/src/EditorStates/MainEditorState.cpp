@@ -99,7 +99,11 @@ namespace BamboEditor
 
 	void MainEditorState::OpenWorld(const std::filesystem::path& worldPath)
 	{
-		m_editorContext->CurrentWorld = std::make_shared<Bambo::World>(worldPath);
+		WorldParameters parameters{};
+		parameters.AssetsFolderPath = m_editorContext->CurrentProject->GetAssetsPath();
+		parameters.WorldFilePath = worldPath;
+
+		m_editorContext->CurrentWorld = std::make_shared<Bambo::World>(parameters);
 	}
 
 	void MainEditorState::SaveProject()

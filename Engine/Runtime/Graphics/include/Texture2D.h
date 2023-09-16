@@ -1,11 +1,15 @@
 #pragma once
 #include "pch.h"
+#include "Resource/Resource.h"
 #include "TextureImplementation.h"
 namespace Bambo 
 {
-	class BAMBO_API Texture2D final
+	class BAMBO_API Texture2D final : public Resource
 	{
 		friend class TextureLoader;
+
+		RESOURCE_BODY(Texture2D, 'TEX2')
+
 	public:
 		Texture2D(const std::size_t assetId = 0);
 		Texture2D(const Texture2D&) = delete;
@@ -14,11 +18,9 @@ namespace Bambo
 		void Use() const { m_textureImplementation->Use(); }
 		RectInt GetTextureRect() const { return m_textureImplementation->GetTextureRect(); }
 		const std::vector<RectInt>& GetTextureRects() const { return m_textureRects; }
-		uint32 GetID() const { return m_textureImplementation->GetID(); }
-		std::size_t GetAssetID() const { return m_assetId; }
+		uint32 GetGraphicsID() const { return m_textureImplementation->GetID(); }
 		const std::string& GetTexturePath() const { return m_textureImplementation->GetTexturePath(); }
 	private:
-		std::size_t m_assetId;
 		std::unique_ptr<TextureImplementation> m_textureImplementation;
 		std::vector<RectInt> m_textureRects;
 

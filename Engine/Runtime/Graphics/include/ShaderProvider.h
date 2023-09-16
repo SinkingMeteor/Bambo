@@ -9,10 +9,10 @@ namespace Bambo
 	{
 		using result_type = std::shared_ptr<Shader>;
 
-		result_type operator()(const std::size_t id, const std::string& vertexShaderPath, const std::string& fragmentShaderPath) const
+		result_type operator()(const std::size_t id, const std::string& shaderPath) const
 		{
 			std::shared_ptr<Shader> shader = std::make_shared<Shader>(id);
-			shader->LoadFromFile(vertexShaderPath, fragmentShaderPath);
+			shader->LoadFromFile(shaderPath);
 			return shader;
 		}
 	};

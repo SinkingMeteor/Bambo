@@ -12,7 +12,7 @@ namespace Bambo
 		virtual ~ShaderImplementation() {}
 
 		virtual void Use() = 0;
-		virtual void LoadFromFile(const std::string& vertexSourceFile, const std::string& fragmentSourceFile) = 0;
+		virtual void LoadFromFile(const std::string& sourceFile) = 0;
 		virtual void SetFloat(const char* name, float value) = 0;
 		virtual void SetInteger(const char* name, int value) = 0;
 		virtual void SetVector2f(const char* name, const glm::vec2& value) = 0;

@@ -1,12 +1,14 @@
 #pragma once
 #include "Essentials.h"
+#include "Resource/Resource.h"
 #include "ALCheck.h"
 #include "AudioUtils.h"
 
 namespace Bambo
 {
-	class BAMBO_API Audio final
+	class BAMBO_API Audio final : public Resource
 	{
+		RESOURCE_BODY(Audio, 'AUDI')
 	public:
 		Audio(const std::size_t assetId, char* data, ALsizei dataSize, ALsizei sampleRate, int32 channels, int32 bps);
 		~Audio();
@@ -21,7 +23,6 @@ namespace Bambo
 		const char* GetRawData() const { return m_data.get(); }
 
 	private:
-		std::size_t m_assetId;
 		ALuint m_buffer;
 
 		std::unique_ptr<char[]> m_data;

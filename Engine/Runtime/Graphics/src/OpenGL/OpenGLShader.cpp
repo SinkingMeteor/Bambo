@@ -20,17 +20,41 @@ namespace Bambo
 		OpenGLCheck(glUseProgram(m_id));
 	}
 
-	void OpenGLShader::LoadFromFile(const std::string& vertexSourceFile, const std::string& fragmentSourceFile)
+	void OpenGLShader::LoadFromFile(const std::string& sourceFile)
 	{
-		std::ifstream tv(vertexSourceFile.c_str());
-		std::stringstream vertexBuffer;
-		vertexBuffer << tv.rdbuf();
+		std::filesystem::path sourcePath{ sourceFile };
+		std::ifstream stream(sourcePath);
+		BAMBO_ASSERT_S(!stream.fail())
 
-		std::ifstream tf(fragmentSourceFile.c_str());
-		std::stringstream fragmentBuffer;
-		fragmentBuffer << tf.rdbuf();
+		nlohmann::json rootConfig{};
+		stream >> rootConfig;
+		stream.close();
 
-		Compile(vertexBuffer.str().c_str(), fragmentBuffer.str().c_str());
+		BAMBO_ASSERT_S(!rootConfig["vertex"].is_null())
+		BAMBO_ASSERT_S(!rootConfig["fragment"].is_null())
+
+		std::string vertex = rootConfig["vertex"];
+		std::string fragment = rootConfig["fragment"];
+
+		rootConfig.clear();
+
+		std::filesystem::path vPath = sourcePath.parent_path() / vertex;
+		std::filesystem::path fPath = sourcePath.parent_path() / fragment;
+		std::ifstream vstream(vPath);
+		std::ifstream fstream(fPath);
+
+		BAMBO_ASSERT_S(!vstream.fail())
+		BAMBO_ASSERT_S(!fstream.fail())
+
+		std::stringstream vsStream{};
+		vsStream << vstream.rdbuf();
+		vstream.close();
+
+		std::stringstream fsStream{};
+		fsStream << fstream.rdbuf();
+		fstream.close();
+
+		Compile(vsStream.str().c_str(), fsStream.str().c_str());
 	}
 
 	void OpenGLShader::SetFloat(const char* name, float value)

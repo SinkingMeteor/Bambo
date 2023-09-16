@@ -74,7 +74,7 @@ target_compile_features(BamboEngine PUBLIC cxx_std_17)
 target_compile_definitions(BamboEngine PUBLIC BAMBO_DEBUG_ON)
 target_precompile_headers(BamboEngine PUBLIC "${CMAKE_CURRENT_LIST_DIR}/Runtime/Core/include/pch.h")
 
-set(BAMBO_ENGINE_RESOURCE_DIR "${BamboEngine_SOURCE_DIR}/Engine/Resources")
+set(BAMBO_ENGINE_RESOURCE_DIR "${Bambo_SOURCE_DIR}/Engine/Resources/")
 add_definitions(-DBAMBO_ENGINE_RESOURCE_DIR=${BAMBO_ENGINE_RESOURCE_DIR})
 
 configure_file(${BAMBO_ENGINE_SOURCE_DIR}/Runtime/BamboPaths.h.in "${BAMBO_ENGINE_BINARY_DIR}/Runtime/generated/BamboPaths.h")

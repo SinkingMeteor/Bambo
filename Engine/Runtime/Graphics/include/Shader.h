@@ -1,12 +1,15 @@
 #pragma once
 #include "Essentials.h"
+#include "Resource/Resource.h"
 #include "ShaderImplementation.h"
 
 namespace Bambo 
 {
-	class BAMBO_API Shader final
+	class BAMBO_API Shader final : public Resource
 	{
 		friend class ShaderLoader;
+
+		RESOURCE_BODY(Shader, 'SHDR')
 	public:
 		Shader(const std::size_t assetId = 0);
 		Shader(const Shader&) = delete;
@@ -18,9 +21,8 @@ namespace Bambo
 		void SetVector3f(const char* name, const glm::vec3& value) { m_shaderImplementation->SetVector3f(name, value); }
 		void SetMatrix4(const char* name, const glm::mat4& matrix) { m_shaderImplementation->SetMatrix4(name, matrix); }
 	private:
-		std::size_t m_assetId;
 		std::unique_ptr<ShaderImplementation> m_shaderImplementation;
 
-		void LoadFromFile(const std::string& vertexSourceFile, const std::string& fragmentSourceFile) { m_shaderImplementation->LoadFromFile(vertexSourceFile, fragmentSourceFile); }
+		void LoadFromFile(const std::string& sourceFile) { m_shaderImplementation->LoadFromFile(sourceFile); }
 	};
 }

@@ -1,9 +1,10 @@
 #include "Texture2D.h"
+#include "Utils.h"
 
-namespace Bambo 
+namespace Bambo
 {
 	Texture2D::Texture2D(const std::size_t assetId) :
-		m_assetId(assetId),
+		Resource(assetId),
 		m_textureImplementation(),
 		m_textureRects()
 	{

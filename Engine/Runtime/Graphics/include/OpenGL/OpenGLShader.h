@@ -10,7 +10,7 @@ namespace Bambo
 		OpenGLShader();
 		virtual ~OpenGLShader();
 		virtual void Use() override;
-		virtual void LoadFromFile(const std::string& vertexSourceFile, const std::string& fragmentSourceFile) override;
+		virtual void LoadFromFile(const std::string& sourceFile) override;
 		virtual void SetFloat(const char* name, float value) override;
 		virtual void SetInteger(const char* name, int32 value) override;
 		virtual void SetVector2f(const char* name, const glm::vec2& value) override;

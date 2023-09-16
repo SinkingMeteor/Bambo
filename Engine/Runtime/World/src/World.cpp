@@ -11,16 +11,17 @@ DECLARE_LOG_CATEGORY_STATIC(WorldLog)
 
 namespace Bambo
 {
-	World::World(const std::filesystem::path& worldFilePath) :
-		m_worldFilePath(worldFilePath),
+	World::World(const WorldParameters& worldParameters) :
+		m_worldParameters(worldParameters),
 		m_gameObjectMap(),
 		m_root(),
 		m_spriteRenderer(),
-		m_shaderProvider(),
-		m_textureProvider(),
+		m_resourceCache(std::make_shared<ResourceCache>(m_worldParameters.AssetsFolderPath.string() + "/ResourceCache.json")),
+		m_shaderProvider(m_resourceCache),
+		m_textureProvider(m_resourceCache),
 		m_globalMatrices()
 	{
-		SPtr<Shader> defaultShader = m_shaderProvider.Load(ToId("DefaultShader"), BamboPaths::BamboResourcesDir + "Shaders/VSpriteDefault.txt", BamboPaths::BamboResourcesDir + "Shaders/FSpriteDefault.txt");
+		SPtr<Shader> defaultShader = m_shaderProvider.Load(BamboPaths::BamboResourcesDir + "Shaders/SpriteDefault.shader");
 		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultShader);
 		CreateRoot(IID::GenerateNew());
 		LoadWorld();
@@ -147,7 +148,7 @@ namespace Bambo
 
 	void World::LoadWorld() 
 	{
-		std::ifstream worldFileStream{ m_worldFilePath };
+		std::ifstream worldFileStream{ m_worldParameters.WorldFilePath };
 
 		if (worldFileStream.fail())
 		{
@@ -173,12 +174,12 @@ namespace Bambo
 	
 	void World::SaveWorld() 
 	{
-		std::ofstream worldFileStream{ m_worldFilePath };
+		std::ofstream worldFileStream{ m_worldParameters.WorldFilePath };
 		BAMBO_ASSERT_S(!worldFileStream.fail())
 		
 		nlohmann::json worldConfigFile{};
 
-		worldConfigFile[WORLD_NAME_KEY] = m_worldFilePath.filename().replace_extension().string();
+		worldConfigFile[WORLD_NAME_KEY] = m_worldParameters.WorldFilePath.filename().replace_extension().string();
 		worldConfigFile[ID_COUNTER] = IID::GetGlobalCounter();
 		Serialization::Serialize(*this, worldConfigFile[WORLD_CONTENT_KEY]);
 
