@@ -33,20 +33,19 @@ namespace Bambo
 
 		std::size_t id = ToId(path.string());
 
+		if (!ResourceManager::Get()->HasResourceMetaFile(id))
+		{
+			ResourceManager::Get()->RegisterFile(path);
+			if (!ResourceManager::Get()->HasResourceMetaFile(id)) return nullptr;
+		}
+
+		ResourceInfo* info = ResourceManager::Get()->GetResourceMetaFile(id);
+		BAMBO_ASSERT_S(info)
+		id = info->AssetId;
+
 		if (Contains(id))
 		{
 			return GetResource(id);
-		}
-
-		if (ResourceManager::Get()->HasFile(id))
-		{
-			ResourceInfo* info = ResourceManager::Get()->GetFile(id);
-			BAMBO_ASSERT_S(info)
-			id = info->AssetId;
-		}
-		else
-		{
-			ResourceManager::Get()->AddFile(ResourceInfo::Create(id, ResType::GetStaticID(), path));
 		}
 
 		SPtr<ResType> resource = m_loader(id, path.string());
@@ -57,14 +56,14 @@ namespace Bambo
 	template<typename ResType, typename Loader>
 	SPtr<ResType> ResourceProvider<ResType, Loader>::Load(bambo_id id)
 	{
+		if (!ResourceManager::Get()->HasResourceMetaFile(id)) return nullptr;
+
 		if (Contains(id))
 		{
 			return GetResource(id);
 		}
 
-		if (!ResourceManager::Get()->HasFile(id)) return nullptr;
-
-		ResourceInfo* info = ResourceManager::Get()->GetFile(id);
+		ResourceInfo* info = ResourceManager::Get()->GetResourceMetaFile(id);
 		BAMBO_ASSERT_S(info)
 		id = info->AssetId;
 

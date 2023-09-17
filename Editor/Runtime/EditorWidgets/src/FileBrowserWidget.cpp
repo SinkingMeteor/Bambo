@@ -1,9 +1,28 @@
 #include "FileBrowserWidget.h"
-
+#include "Resource/ResourceManager.h"
+#include "Resource/Resource.h"
+#include "Resource/ResourceInfo.h"
 namespace
 {
-	const char* BROWSER_FILETYPE_FILE = "file";
-	const char* BROWSER_FILETYPE_FOLDER = "folder";
+	const char* BROWSER_FILETYPE_FILE = "File";
+	const char* BROWSER_FILETYPE_FOLDER = "Folder";
+	const char* META_EXTENSION = ".meta";
+
+	template<typename ResourceProviderType>
+	std::size_t TEXTURE_ASSET_ID = ResourceProviderType::GetStaticID();
+
+	const char* GetResourceTypeName(std::size_t typeId)
+	{
+		switch (typeId)
+		{
+		case (int32)Bambo::AssetType::None: return "Unknown";
+		case (int32)Bambo::AssetType::Texture2D: return "Texture2D";
+		case (int32)Bambo::AssetType::Shader: return "Shader";
+		case (int32)Bambo::AssetType::Audio: return "Audio";
+		case (int32)Bambo::AssetType::World: return "World";
+		default: return "File";
+		}
+	}
 }
 
 namespace BamboEditor
@@ -36,33 +55,69 @@ namespace BamboEditor
 		return hasExtension;
 	}
 
+	void FileBrowserWidget::ProcessFile(const std::filesystem::path& filePath, FileDisplayParameters& displayParameters)
+	{
+		if (filePath.extension() == META_EXTENSION)
+		{
+			displayParameters.NeedToDisplay = false;
+			return;
+		}
+
+		displayParameters.NeedToDisplay = true;
+		displayParameters.FileSize = std::filesystem::file_size(filePath);
+
+		std::filesystem::path metaFilePath = filePath;
+		metaFilePath.concat(".meta");
+
+		if (!std::filesystem::exists(metaFilePath))
+		{
+			displayParameters.FileType = BROWSER_FILETYPE_FILE;
+			return;
+		}
+
+
+		Bambo::ResourceInfo info{};
+		info.LoadInfo(metaFilePath);
+		displayParameters.FileType = GetResourceTypeName(info.TypeId);
+	}
+
+	void FileBrowserWidget::ProcessDirectory(const std::filesystem::path& folderPath, FileDisplayParameters& displayParameters)
+	{
+		if (Bambo::IsHiddenFolder(folderPath))
+		{
+			displayParameters.NeedToDisplay = false;
+			return;
+		}
+
+		displayParameters.FileType = BROWSER_FILETYPE_FOLDER;
+		displayParameters.FileSize = 0u;
+		displayParameters.NeedToDisplay = true;
+	}
+
     void FileBrowserWidget::DisplayPath(const std::filesystem::directory_entry& entry)
     {
 		const std::filesystem::path& path = entry.path();
 		std::string filenameString = path.filename().string();
 
 		bool isDirectory = entry.is_directory();
-		uint32 fileSize = 0;
-		const char* fileType = BROWSER_FILETYPE_FOLDER;
+		FileDisplayParameters displayParameters{};
 
 		if (isDirectory)
 		{
-			if (Bambo::IsHiddenFolder(path))
-				return;
+			ProcessDirectory(path, displayParameters);
+	
 		}
 		else
 		{
-			fileType = BROWSER_FILETYPE_FILE;
-			fileSize = entry.file_size();
-			//@TODO: Add filters
-			//if (!Bambo::HasExtension(filenameString, TARGET_EXTENSION))
-				//continue;
+			ProcessFile(path, displayParameters);
 		}
+
+		if (!displayParameters.NeedToDisplay) return;
 
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
 
-		ImGui::TextUnformatted(fileType);
+		ImGui::TextUnformatted(displayParameters.FileType.c_str());
 		ImGui::TableNextColumn();
 
 		static ImGuiTreeNodeFlags fileFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_SpanFullWidth;
@@ -82,7 +137,7 @@ namespace BamboEditor
 			}
 
 			ImGui::TableNextColumn();
-			ImGui::Text("%u KB", fileSize);
+			ImGui::Text("%u KB", displayParameters.FileSize);
 
 			ImGui::TreePop();
 		}

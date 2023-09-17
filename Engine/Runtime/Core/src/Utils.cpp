@@ -80,15 +80,18 @@ namespace Bambo
 		return targetString.substr(targetString.find_last_of(".") + 1) == extension;
 	}
 
-	constexpr static int SIZE = 47;
 	constexpr static int SEED = 131;
+	constexpr static std::size_t MAX_SIZE = SIZE_MAX;
+	constexpr static std::size_t SIZE = MAX_SIZE / SEED;
 	
 	std::size_t HashString(const std::string_view& str)
 	{
 		std::size_t hash = 0;
 		for (int i = 0; i < str.length(); ++i)
 		{
-			hash = (hash * SEED) + str[i];
+			BAMBO_ASSERT_S(hash < MAX_SIZE / SEED)
+
+			hash = (hash * SEED % SIZE) + str[i];
 		}
 		return hash % SIZE;
 	}

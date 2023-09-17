@@ -6,14 +6,18 @@ namespace Bambo
 {
 	class BAMBO_API ResourceManager : public ISingleton
 	{
+		using ResourceUniqueId = bambo_id;
+
 		SINGLETON_BODY(ResourceManager, 'RESM')
 	public:
 		ResourceManager();
 		void ScanFiles(const std::filesystem::path& startPath);
-		bool HasFile(bambo_id id);
-		ResourceInfo* GetFile(bambo_id id);
-		void AddFile(ResourceInfo&& fileInfo);
+		void RegisterMetaFile(const std::filesystem::path& metaFilePath);
+		void RegisterFile(const std::filesystem::path& filePath);
+		bool HasResourceMetaFile(ResourceUniqueId id);
+		ResourceInfo* GetResourceMetaFile(ResourceUniqueId id);
+		void AddResourceMetaFile(ResourceInfo&& fileInfo);
 	private:
-		std::unordered_map<bambo_id, ResourceInfo> m_resources;
+		std::unordered_map<ResourceUniqueId, ResourceInfo> m_resources;
 	};
 }

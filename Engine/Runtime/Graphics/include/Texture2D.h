@@ -8,7 +8,7 @@ namespace Bambo
 	{
 		friend class TextureLoader;
 
-		RESOURCE_BODY(Texture2D, 'TEX2')
+		RESOURCE_BODY(Texture2D, AssetType::Texture2D)
 
 	public:
 		Texture2D(const std::size_t assetId = 0);

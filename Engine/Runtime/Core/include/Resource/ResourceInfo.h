@@ -12,8 +12,8 @@ namespace Bambo
 		std::filesystem::path FileName{};
 		std::filesystem::path Extension{};
 
-		void LoadInfo(const std::filesystem::path& pathFromLoad);
-		void SaveInfo(const std::filesystem::path& pathToSave);
+		void LoadInfo(const std::filesystem::path& pathFromLoadMeta);
+		void SaveInfo();
 		static ResourceInfo Create(bambo_id assetId, bambo_id typeId, const std::filesystem::path& fullpath);
 	};
 }

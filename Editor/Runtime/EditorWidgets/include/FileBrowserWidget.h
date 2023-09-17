@@ -9,6 +9,14 @@ namespace BamboEditor
 
 	class FileBrowserWidget : public Widget
 	{
+		struct FileDisplayParameters
+		{
+		public:
+			std::string FileType{};
+			uint32 FileSize{0};
+			bool NeedToDisplay{ false };
+		};
+
 	public:
 		FileBrowserWidget();
 		
@@ -20,6 +28,9 @@ namespace BamboEditor
 		bool IsOnRootPath() const { return m_rootPath == m_currentPath; }
 		void ToParentPath() { m_currentPath = m_currentPath.parent_path(); }
 		virtual void Draw() override;
+	protected:
+		virtual void ProcessFile(const std::filesystem::path& filePath, FileDisplayParameters& displayParameters);
+		virtual void ProcessDirectory(const std::filesystem::path& filePath, FileDisplayParameters& displayParameters);
 	private:
 		std::filesystem::path m_rootPath;
 		std::filesystem::path m_currentPath;

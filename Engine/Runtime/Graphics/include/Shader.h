@@ -9,7 +9,7 @@ namespace Bambo
 	{
 		friend class ShaderLoader;
 
-		RESOURCE_BODY(Shader, 'SHDR')
+		RESOURCE_BODY(Shader, AssetType::Shader)
 	public:
 		Shader(const std::size_t assetId = 0);
 		Shader(const Shader&) = delete;

@@ -31,6 +31,8 @@ namespace Bambo
 
 		globals[ownerMatIndex] = glm::translate(globals[ownerMatIndex], GetOriginOffset());
 
+		if (!m_texture) return;
+
 		SpriteRenderRequest request{};
 		request.Texture = m_texture;
 

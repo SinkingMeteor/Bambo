@@ -1,5 +1,10 @@
 #include "DefaultDrawers.h"
 
+namespace
+{
+	const std::string NONE_TEXTURE = "No texture";
+}
+
 namespace BamboEditor
 {
 	void DrawTransformComponent(Bambo::Transform* transform)
@@ -19,7 +24,15 @@ namespace BamboEditor
 		DrawInteger("Rect index", &spriteComponent->GetRectIndexRef());
 		DrawInteger("Sorting order", &spriteComponent->GetSortingOrderRef());
 		DrawVector3("Origin", &spriteComponent->GetOriginRef());
-		DrawReadonlyString(&spriteComponent->GetTexture()->GetTexturePath());
+
+		if (spriteComponent->GetTexture())
+		{
+			DrawReadonlyString(&spriteComponent->GetTexture()->GetTexturePath());
+		}
+		else
+		{
+			DrawReadonlyString(&NONE_TEXTURE);
+		}
 	}
 
 	void DrawCameraComponent(Bambo::Component* component)

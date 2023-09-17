@@ -8,7 +8,7 @@ namespace Bambo
 {
 	class BAMBO_API Audio final : public Resource
 	{
-		RESOURCE_BODY(Audio, 'AUDI')
+		RESOURCE_BODY(Audio, AssetType::Audio)
 	public:
 		Audio(const std::size_t assetId, char* data, ALsizei dataSize, ALsizei sampleRate, int32 channels, int32 bps);
 		~Audio();

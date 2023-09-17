@@ -14,7 +14,11 @@ namespace Bambo
 		SPtr<Texture2D> GetTexture() const { return m_texture; }
 		RectInt GetRect() const 
 		{
-			BAMBO_ASSERT_S(m_texture)
+			if (!m_texture)
+			{
+				return RectInt{};
+			}
+
 			return m_texture->GetTextureRects()[m_spriteRectIndex];
 		}
 
@@ -24,7 +28,8 @@ namespace Bambo
 		glm::vec3 GetOrigin() const { return m_origin; }
 		glm::vec3 GetOriginOffset() const 
 		{
-			BAMBO_ASSERT_S(m_texture)
+			if (!m_texture) return glm::vec3{0.0f};
+
 			RectInt texRect = m_texture->GetTextureRect();
 			return glm::vec3{ -texRect.Width * m_origin.x, -texRect.Height * m_origin.y, 0.0f };
 		}

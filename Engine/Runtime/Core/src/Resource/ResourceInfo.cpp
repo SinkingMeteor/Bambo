@@ -4,6 +4,8 @@ namespace Bambo
 {
 	void ResourceInfo::LoadInfo(const std::filesystem::path& metaFilePath)
 	{
+		if (!std::filesystem::exists(metaFilePath)) return;
+
 		std::ifstream stream{ metaFilePath };
 		BAMBO_ASSERT_S(!stream.fail())
 
@@ -22,9 +24,9 @@ namespace Bambo
 		Extension = filePath.extension();
 	}
 
-	void ResourceInfo::SaveInfo(const std::filesystem::path& filePath)
+	void ResourceInfo::SaveInfo()
 	{
-		std::ofstream stream{ filePath.string() + ".meta" };
+		std::ofstream stream{ FullPath.string() + ".meta"};
 		BAMBO_ASSERT_S(!stream.fail())
 
 		nlohmann::json rootNode{};
@@ -44,7 +46,7 @@ namespace Bambo
 		info.Extension = fullpath.extension();
 		info.FileName = fullpath.filename();
 
-		info.SaveInfo(fullpath);
+		info.SaveInfo();
 
 		return info;
 	}
