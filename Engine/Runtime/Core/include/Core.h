@@ -23,9 +23,9 @@ using WPtr = std::weak_ptr<T>;
 #endif
 
 #ifdef BAMBO_DEBUG_ON
-	#define BAMBO_ASSERT(x, msg) { if(!(x)) { fprintf(stderr, "Fatal error: %s\n", msg); __debugbreak(); }};
-	#define BAMBO_ASSERT_S(x) { if(!(x)) { __debugbreak(); }};
-	#define BAMBO_NOT_IMPLEMENTED() BAMBO_ASSERT(false, "Not implemented function reached.");
+	#define BAMBO_ASSERT(x, msg) { if(!(x)) { fprintf(stderr, "Fatal error: %s\n", msg); __debugbreak(); }};;
+	#define BAMBO_ASSERT_S(x) { if(!(x)) { __debugbreak(); }};;
+	#define BAMBO_NOT_IMPLEMENTED() BAMBO_ASSERT(false, "Not implemented function reached.");;
 #else
 	#define BAMBO_ASSERT(x, msg); 
 	#define BAMBO_ASSERT_S(x); 

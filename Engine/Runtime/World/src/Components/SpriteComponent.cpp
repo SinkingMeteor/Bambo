@@ -1,6 +1,7 @@
 #include "Components/SpriteComponent.h"
 #include "World.h"
 #include "MathSerialization.h"
+
 namespace Bambo
 {
 	SpriteComponent::SpriteComponent() :
@@ -17,7 +18,7 @@ namespace Bambo
 
 		World* world = m_owner->GetWorld();
 		if (!world) return;
-		m_texture = world->GetTextureProvider()->Load(BamboPaths::BamboResourcesDir + "Textures/Square.png");
+		m_texture = world->GetTextureProvider()->Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultSpritePath_A);
 	}
 
 	void SpriteComponent::OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex)

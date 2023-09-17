@@ -20,7 +20,7 @@ namespace Bambo
 		m_textureProvider(),
 		m_globalMatrices()
 	{
-		SPtr<Shader> defaultShader = m_shaderProvider.Load(BamboPaths::BamboResourcesDir + "Shaders/SpriteDefault.shader");
+		SPtr<Shader> defaultShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultShaderPath_A);
 		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultShader);
 		CreateRoot(IID::GenerateNew());
 		LoadWorld();

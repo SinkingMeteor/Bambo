@@ -1,5 +1,5 @@
 {
-	"WindowWidth" : 1280,
-	"WindowHeight" : 720,
-	"WindowTitle" : "TestWindowName"
+	"windowWidth" : 1280,
+	"windowHeight" : 720,
+	"windowTitle" : "TestWindowName"
 }

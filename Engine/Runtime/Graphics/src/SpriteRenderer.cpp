@@ -12,6 +12,9 @@ namespace Bambo
 		m_sprites()
 	{
 		m_defaultShader = defaultShader;
+
+		BAMBO_ASSERT(!m_defaultShader.expired() && m_defaultShader.lock(), "Default shader wasn't loaded")
+
 		m_vbo->SetLayout(std::make_shared<BufferLayout>(std::initializer_list{ ShaderDataType::Float3, ShaderDataType::Float2, ShaderDataType::Float4 }));
 		m_vao->AddVertexBufferObject(m_vbo);
 

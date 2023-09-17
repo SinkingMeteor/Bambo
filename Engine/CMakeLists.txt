@@ -74,8 +74,15 @@ target_compile_features(BamboEngine PUBLIC cxx_std_17)
 target_compile_definitions(BamboEngine PUBLIC BAMBO_DEBUG_ON)
 target_precompile_headers(BamboEngine PUBLIC "${CMAKE_CURRENT_LIST_DIR}/Runtime/Core/include/pch.h")
 
-set(BAMBO_ENGINE_RESOURCE_DIR "${Bambo_SOURCE_DIR}/Engine/Resources/")
+set(BAMBO_ENGINE_RESOURCE_DIR "${Bambo_SOURCE_DIR}/Engine/Resources")
+set(BAMBO_ENGINE_CONFIG_FILE_PATH "${Bambo_SOURCE_DIR}/Engine/Resources/config.json")
+set(BAMBO_ENGINE_DEFAULT_SPRITE_PATH_A "Textures/Square.png")
+set(BAMBO_ENGINE_DEFAULT_SHADER_PATH_A "Shaders/SpriteDefault.shader")
+
 add_definitions(-DBAMBO_ENGINE_RESOURCE_DIR=${BAMBO_ENGINE_RESOURCE_DIR})
+add_definitions(-DBAMBO_ENGINE_CONFIG_FILE_PATH_A=${BAMBO_ENGINE_CONFIG_FILE_PATH_A})
+add_definitions(-DBAMBO_ENGINE_DEFAULT_SPRITE_PATH_A=${BAMBO_ENGINE_DEFAULT_SPRITE_PATH_A})
+add_definitions(-DBAMBO_ENGINE_DEFAULT_SHADER_PATH_A=${BAMBO_ENGINE_DEFAULT_SHADER_PATH_A})
 
 configure_file(${BAMBO_ENGINE_SOURCE_DIR}/Runtime/BamboPaths.h.in "${BAMBO_ENGINE_BINARY_DIR}/Runtime/generated/BamboPaths.h")
 

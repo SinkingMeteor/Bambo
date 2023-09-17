@@ -29,27 +29,33 @@ namespace Bambo
 	template<typename ResType, typename Loader>
 	SPtr<ResType> ResourceProvider<ResType, Loader>::Load(const std::filesystem::path& path)
 	{
-		if (!std::filesystem::exists(path)) return nullptr;
-
-		std::size_t id = ToId(path.string());
-
-		if (!ResourceManager::Get()->HasResourceMetaFile(id))
+		if (!std::filesystem::exists(path)) 
 		{
-			ResourceManager::Get()->RegisterFile(path);
-			if (!ResourceManager::Get()->HasResourceMetaFile(id)) return nullptr;
+			Logger::Get()->Log("ResourceProvider", Verbosity::Warning, "Can't load the file with path %s", path.string().c_str());
+			return nullptr;
 		}
 
-		ResourceInfo* info = ResourceManager::Get()->GetResourceMetaFile(id);
-		BAMBO_ASSERT_S(info)
-		id = info->AssetId;
-
-		if (Contains(id))
+		std::filesystem::path metaPath = path;
+		metaPath.concat(".meta");
+		
+		if (!std::filesystem::exists(metaPath)) 
 		{
-			return GetResource(id);
+			Logger::Get()->Log("ResourceProvider", Verbosity::Warning, "Can't find a meta file for the file with path %s", path.string().c_str());
+			return nullptr;
 		}
 
-		SPtr<ResType> resource = m_loader(id, path.string());
-		m_resourceMap.emplace(id, resource);
+		ResourceInfo info{};
+		info.LoadInfo(metaPath);
+
+		BAMBO_ASSERT_S(ResourceManager::Get()->HasResourceMetaFile(info.AssetId));
+
+		if (Contains(info.AssetId))
+		{
+			return GetResource(info.AssetId);
+		}
+
+		SPtr<ResType> resource = m_loader(info.AssetId, path.string());
+		m_resourceMap.emplace(info.AssetId, resource);
 		return resource;
 	}
 

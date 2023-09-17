@@ -3,6 +3,13 @@
 namespace
 {
 	const constexpr float DESIRED_DELTA_TIME = 1.0f / 60.0f;
+	const uint32 DEFAULT_WIDHT = 1280u;
+	const uint32 DEFAULT_HEIGHT = 720u;
+	const std::string DEFAULT_TITLE = "Bambo Engine";
+
+	const std::string WINDOW_TITLE_PARAMETER = "windowTitle";
+	const std::string WINDOW_WIDTH_PARAMETER = "windowWidth";
+	const std::string WINDOW_HEIGHT_PARAMETER = "windowHeight";
 }
 
 namespace Bambo
@@ -15,7 +22,7 @@ namespace Bambo
 		BAMBO_ASSERT_S(logger)
 		ResourceManager* resourceManager = singletonManager->Register<ResourceManager>();
 		BAMBO_ASSERT_S(resourceManager)
-		resourceManager->ScanFiles(BamboPaths::BamboResourcesDir);
+		resourceManager->ScanFiles(BamboPaths::EngineResourcesDir);
 
 		TimeManager* timeManager = singletonManager->Register<TimeManager>();
 		BAMBO_ASSERT_S(timeManager)
@@ -23,12 +30,13 @@ namespace Bambo
 		componentFactory->Register(CameraComponent::GetTypeID(), []() { return std::make_unique<CameraComponent>(); });
 		componentFactory->Register(SpriteComponent::GetTypeID(), []() { return std::make_unique<SpriteComponent>(); });
 
-		WindowSettings settings{ 1280u, 720u, "Bambo Engine" };
+		WindowSettings settings{ DEFAULT_WIDHT, DEFAULT_HEIGHT, DEFAULT_TITLE };
+		LoadConfigurationFile(settings);
 
 		WindowManager* windowManager = singletonManager->Register<WindowManager>();
-		RenderManager* renderManager = singletonManager->Register<RenderManager>();
-
 		BAMBO_ASSERT_S(windowManager)
+
+		RenderManager* renderManager = singletonManager->Register<RenderManager>();
 		BAMBO_ASSERT_S(renderManager)
 
 		windowManager->Initialize(settings);
@@ -112,6 +120,34 @@ namespace Bambo
 		return 0;
 	}
 
+	void Engine::LoadConfigurationFile(WindowSettings& windowSettings)
+	{
+		if (!std::filesystem::exists(BamboPaths::EngineConfigPath))	return;
+
+		std::ifstream stream{ BamboPaths::EngineConfigPath };
+		BAMBO_ASSERT_S(!stream.fail());
+
+		nlohmann::json configRoot{};
+		stream >> configRoot;
+
+		stream.close();
+
+		if (!configRoot[WINDOW_TITLE_PARAMETER].is_null())
+		{
+			windowSettings.Title = configRoot[WINDOW_TITLE_PARAMETER];
+		}
+
+		if (!configRoot[WINDOW_WIDTH_PARAMETER].is_null())
+		{
+			windowSettings.Width = configRoot[WINDOW_WIDTH_PARAMETER].get<uint32>();
+		}
+
+		if (!configRoot[WINDOW_HEIGHT_PARAMETER].is_null())
+		{
+			windowSettings.Height = configRoot[WINDOW_HEIGHT_PARAMETER].get<uint32>();
+		}
+
+	}
 
 	void Engine::OnWindowResize(uint32 width, uint32 height)
 	{

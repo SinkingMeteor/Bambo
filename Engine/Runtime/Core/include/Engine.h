@@ -26,6 +26,7 @@ namespace Bambo
 	private:
 		std::vector<UPtr<Module>> m_modules;
 
+		void LoadConfigurationFile(WindowSettings& windowSettings);
 		void OnWindowResize(uint32 width, uint32 height);
 		void Dispose();
 	};
