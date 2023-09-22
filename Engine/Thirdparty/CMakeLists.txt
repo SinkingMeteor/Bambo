@@ -11,6 +11,7 @@ GLAD
 GLFW
 STBI
 GLM
+FreeType
 OpenAL
 NLJson)
 

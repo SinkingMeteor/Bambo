@@ -1,5 +1,4 @@
 #pragma once
-#include "Essentials.h"
 #include "Vectors.h"
 
 namespace Bambo 
