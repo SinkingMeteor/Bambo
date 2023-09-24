@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "Rect.h"
+#include "TextureBuffer.h"
 namespace Bambo
 {
 	class BAMBO_API TextureImplementation
@@ -12,7 +13,7 @@ namespace Bambo
 		virtual ~TextureImplementation() {}
 
 		virtual void LoadFromFile(const std::string& file) = 0;
-		virtual const std::string& GetTexturePath() const = 0;
+		virtual void LoadFromBuffer(const TextureBuffer& buffer) = 0;
 		virtual RectInt GetTextureRect() const = 0;
 		virtual void Use() const = 0;
 		virtual uint32 GetID() const = 0;

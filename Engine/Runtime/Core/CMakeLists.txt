@@ -11,6 +11,7 @@ ${CURRENT_MODULE_DIR}/src/Engine.cpp
 ${CURRENT_MODULE_DIR}/src/TimeManager.cpp
 ${CURRENT_MODULE_DIR}/src/Log.cpp
 ${CURRENT_MODULE_DIR}/src/IID.cpp
+${CURRENT_MODULE_DIR}/src/Color.cpp
 ${CURRENT_MODULE_DIR}/src/Utils.cpp
 ${CURRENT_MODULE_DIR}/src/SingletonManager.cpp
 ${CURRENT_MODULE_DIR}/src/Time/Timer.cpp)

@@ -13,7 +13,8 @@ enum class AssetType
 	Texture2D,
 	Shader,
 	Audio,
-	World
+	World,
+	Font
 };
 
 class Resource

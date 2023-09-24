@@ -5,13 +5,6 @@
 
 namespace Bambo
 {
-	struct Glyph
-	{
-	public:
-		RectInt TextureRect{};
-		RectFloat Bounds{};
-		float Advance{};
-	};
 
 	class BAMBO_API Font final : public Resource
 	{

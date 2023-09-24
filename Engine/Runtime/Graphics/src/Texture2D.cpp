@@ -58,4 +58,15 @@ namespace Bambo
 		}
 	}
 
+	void Texture2D::LoadFromBuffer(const TextureBuffer& buffer)
+	{
+		m_textureRects.clear();
+		m_textureImplementation->
+
+
+		int32 texWidth = m_textureImplementation->GetTextureWidth();
+		int32 texHeight = m_textureImplementation->GetTextureHeight();
+		m_textureRects.push_back(RectInt{ 0, 0, texWidth, texHeight });
+	}
+
 }

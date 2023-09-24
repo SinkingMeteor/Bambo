@@ -6,6 +6,7 @@
 #include "Vectors.h"
 #include "BMath.h"
 #include "Rect.h"
+#include "Color.h"
 #include "IID.h"
 #include "Patterns/Delegate/Delegate.h"
 #include "Patterns/Delegate/MulticastDelegate.h"

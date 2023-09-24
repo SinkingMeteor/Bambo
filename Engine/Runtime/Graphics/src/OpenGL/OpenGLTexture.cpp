@@ -12,8 +12,7 @@ namespace Bambo
 		m_wrapS(GL_REPEAT),
 		m_wrapT(GL_REPEAT),
 		m_filterMin(GL_NEAREST),
-		m_filterMax(GL_NEAREST),
-		m_texturePath()
+		m_filterMax(GL_NEAREST)
 	{
 		OpenGLCheck(glGenTextures(1, &m_id));
 	}
@@ -25,6 +24,8 @@ namespace Bambo
 
 	void OpenGLTexture::LoadFromFile(const std::string& file)
 	{
+		BAMBO_ASSERT_S(m_id == 0u)
+
 		int channels{};
 		stbi_uc* data = stbi_load(file.c_str(), &m_width, &m_height, &channels, 0);
 		BAMBO_ASSERT(data, "Failed to load image");
@@ -49,7 +50,29 @@ namespace Bambo
 		OpenGLCheck(glBindTexture(GL_TEXTURE_2D, 0));
 
 		stbi_image_free(data);
-		m_texturePath = file;
+	}
+
+	void OpenGLTexture::LoadFromBuffer(const TextureBuffer& buffer)
+	{
+		BAMBO_ASSERT_S(m_id == 0u)
+
+		Vector2u size = buffer.GetSize();
+		m_width = static_cast<int32>(size.X);
+		m_height = static_cast<int32>(size.Y);
+
+		const uint8* data = buffer.GetData();
+
+		m_internalFormat = GL_RGBA8;
+		m_imageFormat = GL_RGBA;
+
+		OpenGLCheck(glBindTexture(GL_TEXTURE_2D, m_id));
+		OpenGLCheck(glTexImage2D(GL_TEXTURE_2D, 0, m_internalFormat, m_width, m_height, 0, m_imageFormat, GL_UNSIGNED_BYTE, data));
+		OpenGLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_wrapS));
+		OpenGLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_wrapT));
+		OpenGLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_filterMin));
+		OpenGLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_filterMax));
+
+		OpenGLCheck(glBindTexture(GL_TEXTURE_2D, 0));
 	}
 
 	void OpenGLTexture::Use() const

@@ -3,6 +3,12 @@
 #include "OpenGL/OpenGLFont.h"
 namespace Bambo
 {
+	Page::Page()
+	{
+
+	}
+
+
 	UPtr<FontImplementation> FontImplementation::CreateBamboFont()
 	{
 		RenderAPI renderApi = RenderManager::Get()->GetCurrentRenderAPI();
@@ -10,7 +16,7 @@ namespace Bambo
 		{
 		case RenderAPI::OpenGL: return std::make_unique<OpenGLFont>();
 		}
-		BAMBO_ASSERT(false, "Unrecognized render api while creating renderer")
+		BAMBO_ASSERT(false, "Unrecognized render api while creating font")
 			return nullptr;
 	}
 }

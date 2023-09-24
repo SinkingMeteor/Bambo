@@ -27,7 +27,8 @@ namespace BamboEditor
 
 		if (spriteComponent->GetTexture())
 		{
-			DrawReadonlyString(&spriteComponent->GetTexture()->GetTexturePath());
+			std::string idStr = std::to_string(spriteComponent->GetTexture()->GetAssetInstanceID());
+			DrawReadonlyString(&idStr);
 		}
 		else
 		{
