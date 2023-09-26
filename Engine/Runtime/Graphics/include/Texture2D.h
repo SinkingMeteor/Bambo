@@ -16,6 +16,9 @@ namespace Bambo
 		Texture2D& operator=(const Texture2D&) = delete;
 
 		void Use() const { m_textureImplementation->Use(); }
+		void AddSubTex(const RectUInt& rect, const TextureBuffer& buffer);
+		void AddSubTex(const RectUInt& rect, const uint8* data, TexChannelsAmount channels);
+
 		RectInt GetTextureRect() const { return m_textureImplementation->GetTextureRect(); }
 		const std::vector<RectInt>& GetTextureRects() const { return m_textureRects; }
 		uint32 GetGraphicsID() const { return m_textureImplementation->GetID(); }

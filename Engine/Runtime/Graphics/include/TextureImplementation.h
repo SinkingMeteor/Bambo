@@ -19,6 +19,8 @@ namespace Bambo
 		virtual uint32 GetID() const = 0;
 		virtual int32 GetTextureWidth() = 0;
 		virtual int32 GetTextureHeight() = 0;
+		virtual void AddSubTex(const RectUInt& rect, const TextureBuffer& buffer) = 0;
+		virtual void AddSubTex(const RectUInt& rect, const uint8* data, TexChannelsAmount channels) = 0;
 
 		static std::unique_ptr<TextureImplementation> CreateTexture();
 	};

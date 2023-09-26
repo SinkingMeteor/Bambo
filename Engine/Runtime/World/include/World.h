@@ -4,6 +4,7 @@
 #include "SpriteRenderer.h"
 #include "ShaderProvider.h"
 #include "TextureProvider.h"
+#include "FontProvider.h"
 #include "IID.h"
 #include "GameObject.h"
 #include "Components/Components.h"
@@ -55,6 +56,7 @@ namespace Bambo
 
 		ShaderProvider m_shaderProvider;
 		TextureProvider m_textureProvider;
+		FontProvider m_fontProvider;
 
 		std::vector<glm::mat4> m_globalMatrices;
 

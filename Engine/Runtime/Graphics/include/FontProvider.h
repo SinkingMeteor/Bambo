@@ -12,10 +12,10 @@ namespace Bambo
 		result_type operator()(const std::size_t id, const std::string& fontPath) const
 		{
 			std::shared_ptr<Font> font = std::make_shared<Font>(id);
-			font->LoadFromFile(shaderPath);
-			return shader;
+			font->LoadFromFile(fontPath);
+			return font;
 		}
 	};
 
-	using FontProvider = ResourceProvider<Shader, ShaderLoader>;
+	using FontProvider = ResourceProvider<Font, FontLoader>;
 }

@@ -4,9 +4,10 @@ namespace Bambo
 {
 	DECLARE_LOG_CATEGORY_STATIC(LogTextureBuffer)
 
-	TextureBuffer::TextureBuffer() :
+	TextureBuffer::TextureBuffer(TexChannelsAmount channels) :
 		m_colors(),
-		m_size()
+		m_size(),
+		m_channelsAmount(channels)
 	{}
 
 	void TextureBuffer::Create(const Vector2u& texSize, const ByteColor& fillColor)
@@ -17,16 +18,18 @@ namespace Bambo
 			return;
 		}
 
+		int32 channelsAmount = static_cast<int32>(m_channelsAmount);
+
 		m_size = texSize;
 		m_colors.resize(texSize.X * texSize.Y * 4);
 		size_t arrSize = m_colors.size();
 
-		for (int i = 0; i < arrSize; i += 4)
+		for (int32 i = 0; i < arrSize; i += 4)
 		{
-			m_colors[i] = fillColor.R;
-			m_colors[i + 1] = fillColor.G;
-			m_colors[i + 2] = fillColor.B;
-			m_colors[i + 3] = fillColor.A;
+			for (int32 j = 0; j < channelsAmount; ++j)
+			{
+				m_colors[i + j] = fillColor.Colors[j];
+			}
 		}
 	}
 
@@ -36,10 +39,12 @@ namespace Bambo
 		BAMBO_ASSERT_S(coordinates.Y < m_size.Y)
 
 		uint32 targetIndex = (coordinates.Y * m_size.X + coordinates.X) * 4u;
-		m_colors[targetIndex] = targetColor.R;
-		m_colors[targetIndex + 1] = targetColor.G;
-		m_colors[targetIndex + 2] = targetColor.B;
-		m_colors[targetIndex + 3] = targetColor.A;
+		int32 channelsAmount = static_cast<int32>(m_channelsAmount);
+
+		for (int32 j = 0; j < channelsAmount; ++j)
+		{
+			m_colors[targetIndex + j] = targetColor.Colors[j];
+		}
 	}
 
 	ByteColor TextureBuffer::GetColor(const Vector2u coordinates) const
@@ -48,10 +53,15 @@ namespace Bambo
 		BAMBO_ASSERT_S(coordinates.Y < m_size.Y)
 
 		uint32 targetIndex = (coordinates.Y * m_size.X + coordinates.X) * 4u;
-		uint8 r = m_colors[targetIndex];
-		uint8 g = m_colors[targetIndex + 1];
-		uint8 b = m_colors[targetIndex + 2];
-		uint8 a = m_colors[targetIndex + 3];
-		return { r, g, b, a };
+		int32 channelsAmount = static_cast<int32>(m_channelsAmount);
+
+		ByteColor color{};
+
+		for (int32 j = 0; j < channelsAmount; ++j)
+		{
+			color.Colors[j] = m_colors[targetIndex + j];
+		}
+
+		return color;
 	}
 }

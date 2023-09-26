@@ -9,6 +9,7 @@ namespace
 	std::size_t FILE_EXTENSION_WAV = Bambo::ToId(".wav");
 	std::size_t FILE_EXTENSION_PNG = Bambo::ToId(".png");
 	std::size_t FILE_EXTENSION_SHADER = Bambo::ToId(".shader");
+	std::size_t FILE_EXTENSION_FONT = Bambo::ToId(".ttf");
 
 
 	Bambo::AssetType GetAssetType(const std::string& fileExtension)
@@ -18,6 +19,7 @@ namespace
 		if (extensionId == FILE_EXTENSION_WAV) return Bambo::AssetType::Audio;
 		if (extensionId == FILE_EXTENSION_SHADER) return Bambo::AssetType::Shader;
 		if (extensionId == FILE_EXTENSION_WORLD) return Bambo::AssetType::World;
+		if (extensionId == FILE_EXTENSION_FONT) return Bambo::AssetType::Font;
 		return Bambo::AssetType::None;
 	}
 }

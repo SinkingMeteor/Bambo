@@ -1,5 +1,18 @@
 #include "OpenGL/OpenGLTexture.h"
 
+namespace
+{
+	void GetTexFormats(Bambo::TexChannelsAmount channelsAmount, uint32& internalFormat, uint32& imageFormat)
+	{
+		switch (channelsAmount)
+		{
+		case Bambo::TexChannelsAmount::R: imageFormat = GL_RED; internalFormat = GL_RED; break;
+		case Bambo::TexChannelsAmount::RGB: imageFormat = GL_RGB; internalFormat = GL_RGB8; break;
+		case Bambo::TexChannelsAmount::RGBA: imageFormat = GL_RGBA; internalFormat = GL_RGBA8; break;
+		}
+	}
+}
+
 namespace Bambo
 {
 	OpenGLTexture::OpenGLTexture() :
@@ -24,8 +37,6 @@ namespace Bambo
 
 	void OpenGLTexture::LoadFromFile(const std::string& file)
 	{
-		BAMBO_ASSERT_S(m_id == 0u)
-
 		int channels{};
 		stbi_uc* data = stbi_load(file.c_str(), &m_width, &m_height, &channels, 0);
 		BAMBO_ASSERT(data, "Failed to load image");
@@ -54,18 +65,22 @@ namespace Bambo
 
 	void OpenGLTexture::LoadFromBuffer(const TextureBuffer& buffer)
 	{
-		BAMBO_ASSERT_S(m_id == 0u)
-
 		Vector2u size = buffer.GetSize();
 		m_width = static_cast<int32>(size.X);
 		m_height = static_cast<int32>(size.Y);
 
 		const uint8* data = buffer.GetData();
 
-		m_internalFormat = GL_RGBA8;
-		m_imageFormat = GL_RGBA;
+		TexChannelsAmount channelsAmount = buffer.GetChannelsAmounts();
+		GetTexFormats(channelsAmount, m_internalFormat, m_imageFormat);
 
 		OpenGLCheck(glBindTexture(GL_TEXTURE_2D, m_id));
+
+		if (channelsAmount == TexChannelsAmount::R)
+		{
+			OpenGLCheck(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+		}
+
 		OpenGLCheck(glTexImage2D(GL_TEXTURE_2D, 0, m_internalFormat, m_width, m_height, 0, m_imageFormat, GL_UNSIGNED_BYTE, data));
 		OpenGLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_wrapS));
 		OpenGLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_wrapT));
@@ -79,4 +94,30 @@ namespace Bambo
 	{
 		OpenGLCheck(glBindTexture(GL_TEXTURE_2D, m_id));
 	}
+
+	void OpenGLTexture::AddSubTex(const RectUInt& rect, const TextureBuffer& buffer)
+	{
+		uint32 internalFormat = 0u;
+		uint32 imageFormat = 0u;
+
+		TexChannelsAmount channelsAmount = buffer.GetChannelsAmounts();
+		GetTexFormats(channelsAmount, internalFormat, imageFormat);
+
+		Use();
+
+		OpenGLCheck(glTexSubImage2D(GL_TEXTURE_2D, 0, rect.Left, rect.Top, rect.Width, rect.Height, imageFormat, GL_UNSIGNED_BYTE, buffer.GetData()));
+	}
+
+	void OpenGLTexture::AddSubTex(const RectUInt& rect, const uint8* data, TexChannelsAmount channels)
+	{
+		uint32 internalFormat = 0u;
+		uint32 imageFormat = 0u;
+
+		GetTexFormats(channels, internalFormat, imageFormat);
+
+		Use();
+
+		OpenGLCheck(glTexSubImage2D(GL_TEXTURE_2D, 0, rect.Left, rect.Top, rect.Width, rect.Height, imageFormat, GL_UNSIGNED_BYTE, data));
+	}
+
 }

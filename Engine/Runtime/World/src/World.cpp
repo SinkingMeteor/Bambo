@@ -18,12 +18,16 @@ namespace Bambo
 		m_spriteRenderer(),
 		m_shaderProvider(),
 		m_textureProvider(),
+		m_fontProvider(),
 		m_globalMatrices()
 	{
 		SPtr<Shader> defaultShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultShaderPath_A);
 		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultShader);
 		CreateRoot(IID::GenerateNew());
 		LoadWorld();
+
+		SPtr<Font> font = m_fontProvider.Load(BamboPaths::EngineResourcesDir / "Fonts/arial.ttf");
+		CreateGameObject()->AddComponent<SpriteComponent>()->SetTexture(font->GetFirstTex_TODELETE());
 	}
 
 	World::~World()

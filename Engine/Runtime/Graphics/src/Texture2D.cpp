@@ -11,6 +11,17 @@ namespace Bambo
 		m_textureImplementation = TextureImplementation::CreateTexture();
 	}
 
+	void Texture2D::AddSubTex(const RectUInt& rect, const TextureBuffer& buffer)
+	{
+		m_textureImplementation->AddSubTex(rect, buffer);
+	}
+
+	void Texture2D::AddSubTex(const RectUInt& rect, const uint8* data, TexChannelsAmount channels)
+	{
+		m_textureImplementation->AddSubTex(rect, data, channels);
+	}
+
+
 	void Texture2D::LoadFromFile(const std::filesystem::path& filePath)
 	{
 		m_textureRects.clear();
@@ -61,8 +72,7 @@ namespace Bambo
 	void Texture2D::LoadFromBuffer(const TextureBuffer& buffer)
 	{
 		m_textureRects.clear();
-		m_textureImplementation->
-
+		m_textureImplementation->LoadFromBuffer(buffer);
 
 		int32 texWidth = m_textureImplementation->GetTextureWidth();
 		int32 texHeight = m_textureImplementation->GetTextureHeight();

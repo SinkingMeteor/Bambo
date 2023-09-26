@@ -58,5 +58,6 @@ namespace Bambo
 	}
 
 	using RectInt = Rect<int32>;
+	using RectUInt = Rect<uint32>;
 	using RectFloat = Rect<float>;
 }

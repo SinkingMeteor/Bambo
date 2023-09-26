@@ -31,6 +31,7 @@ namespace BamboEditor
 
 	void EditorModule::OnDetach()
 	{
+		m_states.ExitCurrentState();
 		m_states.Clear();
 		m_guiWorld.Dispose();
 	}

@@ -37,6 +37,7 @@ namespace BamboEditor
 
 	void MainEditorState::Exit()
 	{
+		m_editorContext->CurrentWorld.reset();
 		m_framebuffer.reset();
 		m_windows.clear();
 	}
