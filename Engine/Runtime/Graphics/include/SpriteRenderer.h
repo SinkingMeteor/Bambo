@@ -12,6 +12,7 @@
 namespace Bambo
 {
 	class SpriteComponent;
+	class World;
 
 	struct SpriteRenderRequest
 	{
@@ -27,9 +28,9 @@ namespace Bambo
 	public:
 		SpriteRenderer(SPtr<Shader> defaultShader);
 		void EnqueueSpriteToRender(const SpriteRenderRequest& renderRequest);
-		virtual void Render(std::vector<glm::mat4>& globalTransforms) override;
+		void Render(World* world, std::vector<glm::mat4>& globalTransforms);
 	private:
-		static constexpr uint32 SPRITE_VERTEX_COUNT = 4;
+		static constexpr uint32 SPRITE_VERTEX_COUNT = 4u;
 
 		SPtr<VertexBufferObject> m_vbo;
 		SPtr<VertexArrayObject> m_vao;

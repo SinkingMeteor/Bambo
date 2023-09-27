@@ -13,5 +13,5 @@ void main()
 {
     Color = aColor;
     TexCoords = texCoords;
-    gl_Position = projView * model * vec4(aPos.x, aPos.y, aPos.z, 1.0);
+    gl_Position = projView * vec4(aPos.x, aPos.y, aPos.z, 1.0);
 }

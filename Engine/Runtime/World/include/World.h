@@ -2,7 +2,9 @@
 #include "Essentials.h"
 #include "Camera.h"
 #include "SpriteRenderer.h"
+#include "DebugLineRenderer.h"
 #include "ShaderProvider.h"
+#include "WorldCameraManager.h"
 #include "TextureProvider.h"
 #include "FontProvider.h"
 #include "IID.h"
@@ -33,7 +35,10 @@ namespace Bambo
 		virtual void OnGUI() {};
 		virtual void Render();
 
-		SpriteRenderer* GetRenderer() { return m_spriteRenderer.get(); }
+		DebugLineRenderer* GetDebugLineRenderer() { return m_debugLineRenderer.get(); }
+		SpriteRenderer* GetSpriteRenderer() { return m_spriteRenderer.get(); }
+		WorldCameraManager* GetCameraManager() { return &m_cameraManager; }
+
 		GameObject* CreateGameObject(IID parent = IID{}, IID id = IID{});
 		GameObject* GetGameObject(IID id);
 		GameObject* GetRoot() { return GetGameObject(m_root); }
@@ -41,6 +46,8 @@ namespace Bambo
 		void DestroyGameObject(GameObject* gameObject);
 		void DestroyGameObject(IID id);
 		TextureProvider* GetTextureProvider() { return &m_textureProvider; }
+		ShaderProvider* GetShaderProvider() { return &m_shaderProvider; }
+		FontProvider* GetFontProvider() { return &m_fontProvider; }
 		void SaveWorld();
 		void Reset();
 
@@ -52,7 +59,10 @@ namespace Bambo
 		WorldParameters m_worldParameters;
 		std::unordered_map<IID, UPtr<GameObject>> m_gameObjectMap;
 		IID m_root;
+
 		UPtr<SpriteRenderer> m_spriteRenderer;
+		UPtr<DebugLineRenderer> m_debugLineRenderer;
+		WorldCameraManager m_cameraManager;
 
 		ShaderProvider m_shaderProvider;
 		TextureProvider m_textureProvider;

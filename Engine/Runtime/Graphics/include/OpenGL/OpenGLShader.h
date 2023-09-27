@@ -15,6 +15,7 @@ namespace Bambo
 		virtual void SetInteger(const char* name, int32 value) override;
 		virtual void SetVector2f(const char* name, const glm::vec2& value) override;
 		virtual void SetVector3f(const char* name, const glm::vec3& value) override;
+		virtual void SetVector4f(const char* name, const glm::vec4& value) override;
 		virtual void SetMatrix4(const char* name, const glm::mat4& matrix) override;
 	private:
 		enum class CheckType

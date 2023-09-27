@@ -77,6 +77,11 @@ namespace Bambo
 		OpenGLCheck(glUniform3f(glGetUniformLocation(m_id, name), value.x, value.y, value.z));
 	}
 
+	void OpenGLShader::SetVector4f(const char* name, const glm::vec4& value)
+	{
+		OpenGLCheck(glUniform4f(glGetUniformLocation(m_id, name), value.x, value.y, value.z, value.w));
+	}
+
 	void OpenGLShader::SetMatrix4(const char* name, const glm::mat4& matrix)
 	{
 		OpenGLCheck(glUniformMatrix4fv(glGetUniformLocation(m_id, name), 1, false, static_cast<const float*>(glm::value_ptr(matrix))));

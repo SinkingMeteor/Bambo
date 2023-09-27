@@ -41,8 +41,6 @@ namespace Bambo
 			return;
 		}
 
-		Logger::Get()->Log(LogFont, Verbosity::Info, "Num of available glyphs: %i", m_fontFace->num_glyphs);
-
 		LoadPage(DEFAULT_GLYPH_SIZE);
 	}
 

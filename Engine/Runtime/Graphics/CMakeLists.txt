@@ -14,6 +14,8 @@ ${CURRENT_MODULE_DIR}/src/Camera.cpp
 ${CURRENT_MODULE_DIR}/src/Renderer.cpp
 ${CURRENT_MODULE_DIR}/src/SpriteRenderer.cpp
 ${CURRENT_MODULE_DIR}/src/OpenGL/OpenGLCheck.cpp
+${CURRENT_MODULE_DIR}/src/DrawDebugHelpers.cpp
+${CURRENT_MODULE_DIR}/src/DebugLineRenderer.cpp
 ${CURRENT_MODULE_DIR}/src/Framebuffer.cpp
 ${CURRENT_MODULE_DIR}/src/OpenGL/OpenGLFramebuffer.cpp
 #VBO

@@ -28,7 +28,7 @@ namespace Bambo
 		World* world = m_owner->GetWorld();
 		if (!world) return;
 
-		SpriteRenderer* renderer = world->GetRenderer();
+		SpriteRenderer* renderer = world->GetSpriteRenderer();
 
 		globals[ownerMatIndex] = glm::translate(globals[ownerMatIndex], GetOriginOffset());
 

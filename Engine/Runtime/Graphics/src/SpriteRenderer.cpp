@@ -1,7 +1,7 @@
 #include "SpriteRenderer.h"
 #include "GameObject.h"
 #include "Components/SpriteComponent.h"
-
+#include "World.h"
 namespace Bambo
 {
 	SpriteRenderer::SpriteRenderer(SPtr<Shader> defaultShader) :
@@ -29,14 +29,15 @@ namespace Bambo
 		m_sprites.push_back(renderRequest);
 	}
 
-	void SpriteRenderer::Render(std::vector<glm::mat4>& globalTransforms)
+	void SpriteRenderer::Render(World* world, std::vector<glm::mat4>& globalTransforms)
 	{
+		const glm::mat4& projViewMat = world->GetCameraManager()->GetProjViewMatrix();
 		std::sort(m_sprites.begin(), m_sprites.end(), [](SpriteRenderRequest& r1, SpriteRenderRequest& r2) { return r1.SortingOrder < r2.SortingOrder; });
 
 		for (size_t i = 0; i < m_sprites.size(); ++i)
 		{
 			const RectInt& rect = m_sprites[i].Texture->GetTextureRects()[m_sprites[i].RectIndex];
-			Render(m_sprites[i].Texture, rect, globalTransforms[m_sprites[i].GlobalPosIndex], m_projViewMatrix);
+			Render(m_sprites[i].Texture, rect, globalTransforms[m_sprites[i].GlobalPosIndex], projViewMat);
 		}
 
 		m_sprites.clear();

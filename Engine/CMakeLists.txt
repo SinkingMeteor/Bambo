@@ -77,7 +77,7 @@ target_precompile_headers(BamboEngine PUBLIC "${CMAKE_CURRENT_LIST_DIR}/Runtime/
 set(BAMBO_ENGINE_RESOURCE_DIR "${Bambo_SOURCE_DIR}/Engine/Resources")
 set(BAMBO_ENGINE_CONFIG_FILE_PATH "${Bambo_SOURCE_DIR}/Engine/Resources/config.json")
 set(BAMBO_ENGINE_DEFAULT_SPRITE_PATH_A "Textures/Square.png")
-set(BAMBO_ENGINE_DEFAULT_SHADER_PATH_A "Shaders/SpriteDefault.shader")
+set(BAMBO_ENGINE_DEFAULT_SHADER_PATH_A "Shaders/ColorDefault.shader")
 set(BAMBO_ENGINE_DEFAULT_FONT_PATH_A "Fonts/arial.ttf")
 
 add_definitions(-DBAMBO_ENGINE_RESOURCE_DIR=${BAMBO_ENGINE_RESOURCE_DIR})

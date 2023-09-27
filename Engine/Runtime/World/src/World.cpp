@@ -1,5 +1,6 @@
 #include "World.h"
 #include "WorldSerialization.h"
+#include "DrawDebugHelpers.h"
 namespace
 {
 	const char* WORLD_NAME_KEY = "name";
@@ -16,13 +17,18 @@ namespace Bambo
 		m_gameObjectMap(),
 		m_root(),
 		m_spriteRenderer(),
+		m_debugLineRenderer(),
+		m_cameraManager(),
 		m_shaderProvider(),
 		m_textureProvider(),
 		m_fontProvider(),
 		m_globalMatrices()
 	{
-		SPtr<Shader> defaultShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultShaderPath_A);
-		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultShader);
+		SPtr<Shader> defaultSpriteShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / "Shaders/SpriteDefault.shader");
+		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultSpriteShader);
+		SPtr<Shader> defaultLineShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultShaderPath_A);
+		m_debugLineRenderer = std::make_unique<DebugLineRenderer>(defaultLineShader);
+
 		CreateRoot(IID::GenerateNew());
 		LoadWorld();
 
@@ -60,6 +66,9 @@ namespace Bambo
 	{
 		GameObject* root = GetGameObject(m_root);
 		
+		DrawDebugLine(this, { 0.0f, 0.0f, 0.0f }, { 100.0f, 100.0f, 0.0f }, Color::Green());
+
+
 		m_globalMatrices.push_back(root->GetTransform()->GetMatrix());
 		std::vector<IID>& children = root->GetChildren();
 		for (size_t i = 0; i < children.size(); ++i)
@@ -68,7 +77,9 @@ namespace Bambo
 			child->OnRender(m_globalMatrices, 0);
 		}
 
-		m_spriteRenderer->Render(m_globalMatrices);
+		m_spriteRenderer->Render(this, m_globalMatrices);
+		m_debugLineRenderer->Render(this);
+
 		m_globalMatrices.clear();
 	}
 
