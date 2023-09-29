@@ -24,7 +24,7 @@ namespace Bambo
 			glm::mat4 rotationMat{ glm::quat(radVec)};
 			m_matrix = glm::translate(glm::mat4{1.0f}, m_position);
 			m_matrix = m_matrix * rotationMat;
-			m_matrix = glm::scale(m_matrix, glm::vec3{ m_scale.x, m_scale.y, 1.0f });
+			m_matrix = glm::scale(m_matrix, glm::vec3{ m_scale.x, m_scale.y, m_scale.z });
 
 			m_isNeedUpdate = false;
 		}

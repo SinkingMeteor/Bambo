@@ -64,8 +64,7 @@ namespace Bambo
 
 	void WindowsWindow::SetNewWindowSize(uint32 width, uint32 height)
 	{
-		BAMBO_ASSERT_S(width != 0u)
-		BAMBO_ASSERT_S(height != 0u)
+		if (width == 0u || height == 0u) return;
 
 		m_width = width;
 		m_height = height;

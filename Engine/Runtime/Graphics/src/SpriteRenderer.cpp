@@ -52,10 +52,10 @@ namespace Bambo
 
 		RectFloat localBounds(Vector2f{ 0.f, 0.f }, Vector2f{ width, height });
 
-		m_renderVertices[0].Position = glm::vec3{ 0.0f, 0.0f, 0.0f };
-		m_renderVertices[1].Position = glm::vec3{ 0.0f, localBounds.Height, 0.0f };
-		m_renderVertices[2].Position = glm::vec3{ localBounds.Width, 0.0f, 0.0f };
-		m_renderVertices[3].Position = glm::vec3{ localBounds.Width, localBounds.Height, 0.0f };
+		m_renderVertices[0].Position = glm::vec3{ 0.0f, localBounds.Height, 0.0f };
+		m_renderVertices[1].Position = glm::vec3{ 0.0f, 0.0f, 0.0f };
+		m_renderVertices[2].Position = glm::vec3{ localBounds.Width, localBounds.Height, 0.0f };
+		m_renderVertices[3].Position = glm::vec3{ localBounds.Width, 0.0f, 0.0f };
 
 		RectInt texRect = texture->GetTextureRect();
 		float texWidth = static_cast<float>(texRect.Width);

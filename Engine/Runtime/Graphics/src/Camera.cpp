@@ -34,7 +34,7 @@ namespace Bambo
 
 		if (m_projection == CameraProjectionType::Orthographic)
 		{
-			m_projectionMatrix = glm::ortho(0.0f, m_orthoSize * m_aspectRatio, m_orthoSize, 0.0f, m_orthoNear, m_orthoFar);
+			m_projectionMatrix = glm::ortho(0.0f, m_orthoSize * m_aspectRatio, 0.0f, m_orthoSize, m_orthoNear, m_orthoFar);
 
 		}
 		else
