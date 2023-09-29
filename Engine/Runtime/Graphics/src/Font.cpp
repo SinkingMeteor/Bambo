@@ -44,6 +44,17 @@ namespace Bambo
 		LoadPage(DEFAULT_GLYPH_SIZE);
 	}
 
+	Page* Font::GetPage(uint32 charSize)
+	{
+		auto it = m_pages.find(charSize);
+		if (it == m_pages.end())
+		{
+			if (!LoadPage(charSize)) return nullptr;
+		}
+
+		return &(m_pages[charSize]);
+	}
+
 	bool Font::LoadPage(uint32 charSize)
 	{
 		if (HasPage(charSize)) return true;

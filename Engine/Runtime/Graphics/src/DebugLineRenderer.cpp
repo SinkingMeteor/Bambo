@@ -46,7 +46,9 @@ namespace Bambo
 			glm::vec3 dirNormalized = glm::normalize(glm::vec3{ dir.X, dir.Y, dir.Z });
 
 			glm::vec3 leftDir = glm::rotate(glm::mat4{ 1.0f }, -90.0f, glm::vec3{ 0.0f, 0.0f, 1.0f }) * glm::vec4{ dirNormalized, 0.0f };
+			leftDir *= drawRequest.Thickness * 0.5f;
 			glm::vec3 rightDir = glm::rotate(glm::mat4{ 1.0f }, 90.0f, glm::vec3{ 0.0f, 0.0f, 1.0f }) * glm::vec4{ dirNormalized, 0.0f };
+			rightDir *= drawRequest.Thickness * 0.5f;
 
 			m_renderVertices[0].Position = { drawRequest.FromPos.X + leftDir.x, drawRequest.FromPos.Y + leftDir.y, drawRequest.FromPos.Z + leftDir.z };
 			m_renderVertices[0].TexCoord = { 0.0f, 1.0f };

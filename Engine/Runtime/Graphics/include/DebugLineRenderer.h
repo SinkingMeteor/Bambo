@@ -12,6 +12,7 @@ namespace Bambo
 		Vector3f FromPos;
 		Vector3f ToPos;
 		Color LineColor;
+		float Thickness;
 	};
 
 	class BAMBO_API DebugLineRenderer : public Renderer

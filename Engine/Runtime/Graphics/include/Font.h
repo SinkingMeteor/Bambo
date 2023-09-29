@@ -30,10 +30,8 @@ namespace Bambo
 		Font(std::size_t instanceID);
 		virtual ~Font();
 		void LoadFromFile(const std::string& fontFile);
-		SPtr<Texture2D> GetFirstTex_TODELETE() 
-		{ 
-			return m_pages.begin()->second.FontTexture; 
-		}
+		Page* GetPage(uint32 charSize);
+
 	private:
 		std::unordered_map<uint32, Page> m_pages;
 		FT_Face m_fontFace;
