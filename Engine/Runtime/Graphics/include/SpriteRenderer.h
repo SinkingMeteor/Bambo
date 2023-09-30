@@ -18,6 +18,7 @@ namespace Bambo
 	{
 	public:
 		SPtr<Texture2D> Texture;
+		SPtr<Shader> Shader;
 		RectInt Rect;
 		glm::mat4 Model;
 		int32 SortingOrder;
@@ -37,6 +38,6 @@ namespace Bambo
 		std::array<QuadVertex, SPRITE_VERTEX_COUNT> m_renderVertices;
 		std::vector<SpriteRenderRequest> m_sprites;
 
-		void Render(const SPtr<Texture2D> texture, const RectInt& spriteRect, const glm::mat4& transform, const glm::mat4& projViewMatrix);
+		void Render(SpriteRenderRequest& sprite, const glm::mat4& projViewMatrix);
 	};
 }

@@ -9,12 +9,14 @@ namespace BamboPaths
 	#define BAMBO_ENGINE_CONFIG_FILE_PATH "@BAMBO_ENGINE_CONFIG_FILE_PATH@"
 	#define BAMBO_ENGINE_DEFAULT_SPRITE_PATH_A "@BAMBO_ENGINE_DEFAULT_SPRITE_PATH_A@"
 	#define BAMBO_ENGINE_DEFAULT_SHADER_PATH_A "@BAMBO_ENGINE_DEFAULT_SHADER_PATH_A@"
+	#define BAMBO_ENGINE_DEFAULT_FONT_SHADER_PATH_A "@BAMBO_ENGINE_DEFAULT_FONT_SHADER_PATH_A@"
 	#define BAMBO_ENGINE_DEFAULT_FONT_PATH_A "@BAMBO_ENGINE_DEFAULT_FONT_PATH_A@"
 
 	const std::filesystem::path EngineResourcesDir = BAMBO_ENGINE_RESOURCE_DIR;
 	const std::filesystem::path EngineConfigPath = BAMBO_ENGINE_CONFIG_FILE_PATH;
 	const std::filesystem::path EngineDefaultSpritePath_A = BAMBO_ENGINE_DEFAULT_SPRITE_PATH_A;
 	const std::filesystem::path EngineDefaultShaderPath_A = BAMBO_ENGINE_DEFAULT_SHADER_PATH_A;
+	const std::filesystem::path EngineDefaultFontShaderPath_A = BAMBO_ENGINE_DEFAULT_FONT_SHADER_PATH_A;
 	const std::filesystem::path EngineDefaultFontPath_A = BAMBO_ENGINE_DEFAULT_FONT_PATH_A;
 }
 

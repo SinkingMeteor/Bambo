@@ -36,33 +36,38 @@ namespace Bambo
 
 		for (size_t i = 0; i < m_sprites.size(); ++i)
 		{
-			Render(m_sprites[i].Texture, m_sprites[i].Rect, m_sprites[i].Model, projViewMat);
+			Render(m_sprites[i], projViewMat);
 		}
 
 		m_sprites.clear();
 	}
 
-	void SpriteRenderer::Render(const SPtr<Texture2D> texture, const RectInt& spriteRect, const glm::mat4& transform, const glm::mat4& projViewMatrix)
+	void SpriteRenderer::Render(SpriteRenderRequest& sprite, const glm::mat4& projViewMatrix)
 	{
-		SPtr<Shader> currentShader{m_defaultShader.lock()};
+		SPtr<Shader> currentShader = sprite.Shader;
 
-		float width = static_cast<float>(std::abs(spriteRect.Width));
-		float height = static_cast<float>(std::abs(spriteRect.Height));
+		if (!sprite.Shader)
+		{
+			currentShader = m_defaultShader.lock();
+		}
+
+		float width = static_cast<float>(std::abs(sprite.Rect.Width));
+		float height = static_cast<float>(std::abs(sprite.Rect.Height));
 
 		m_renderVertices[0].Position = glm::vec3{ 0.0f, height, 0.0f };
 		m_renderVertices[1].Position = glm::vec3{ 0.0f, 0.0f, 0.0f };
 		m_renderVertices[2].Position = glm::vec3{ width, height, 0.0f };
 		m_renderVertices[3].Position = glm::vec3{ width, 0.0f, 0.0f };
 
-		RectInt texRect = texture->GetTextureRect();
+		RectInt texRect = sprite.Texture->GetTextureRect();
 		float texWidth = static_cast<float>(texRect.Width);
 		float texHeight = static_cast<float>(texRect.Height);
 
-		float left = static_cast<float>(spriteRect.Left) / texWidth;
-		float top = static_cast<float>(spriteRect.Top) / texHeight;
+		float left = static_cast<float>(sprite.Rect.Left) / texWidth;
+		float top = static_cast<float>(sprite.Rect.Top) / texHeight;
 
-		float right = (static_cast<float>(spriteRect.Left) + static_cast<float>(spriteRect.Width)) / texWidth;
-		float bottom = (static_cast<float>(spriteRect.Top) + static_cast<float>(spriteRect.Height)) / texHeight;
+		float right = (static_cast<float>(sprite.Rect.Left) + static_cast<float>(sprite.Rect.Width)) / texWidth;
+		float bottom = (static_cast<float>(sprite.Rect.Top) + static_cast<float>(sprite.Rect.Height)) / texHeight;
 
 		m_renderVertices[0].TexCoord = glm::vec2(left, top);
 		m_renderVertices[1].TexCoord = glm::vec2(left, bottom);
@@ -72,12 +77,12 @@ namespace Bambo
 		m_vbo->SetData(m_renderVertices.data(), SPRITE_VERTEX_COUNT * sizeof(QuadVertex));
 
 		currentShader->Use();
-		currentShader->SetMatrix4("model", transform);
+		currentShader->SetMatrix4("model", sprite.Model);
 		currentShader->SetMatrix4("projView", projViewMatrix);
 
-		if (texture)
+		if (sprite.Texture)
 		{
-			texture->Use();
+			sprite.Texture->Use();
 		}
 
 		RenderInternal(m_vao, SPRITE_VERTEX_COUNT);

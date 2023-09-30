@@ -2,6 +2,7 @@
 #include "Essentials.h"
 #include "Component.h"
 #include "Font.h"
+#include "Shader.h"
 #include "Text.h"
 
 namespace Bambo
@@ -24,6 +25,7 @@ namespace Bambo
 		virtual void PostConstruct() override;
 	private:
 		Text m_internalText;
+		SPtr<Shader> m_shader;
 		int32 m_sortingOrder{ 0 };
 	};
 }

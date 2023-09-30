@@ -24,7 +24,7 @@ namespace Bambo
 		m_fontProvider(),
 		m_globalMatrices()
 	{
-		SPtr<Shader> defaultSpriteShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / "Shaders/SpriteDefault.shader");
+		SPtr<Shader> defaultSpriteShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / "Shaders/SpriteDefault/SpriteDefault.shader");
 		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultSpriteShader);
 		SPtr<Shader> defaultLineShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultShaderPath_A);
 		m_debugLineRenderer = std::make_unique<DebugLineRenderer>(defaultLineShader);
@@ -39,7 +39,7 @@ namespace Bambo
 
 		TextComponent* text = CreateGameObject()->AddComponent<TextComponent>();
 		text->SetFont(font);
-		text->SetText(U"Hello world!");
+		text->SetText(U"Privet malusiiiii!");
 		text->SetSortingOrder(50);
 	}
 

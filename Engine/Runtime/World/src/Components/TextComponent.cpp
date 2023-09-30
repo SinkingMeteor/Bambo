@@ -6,6 +6,7 @@ namespace Bambo
 {
 	TextComponent::TextComponent() :
 		m_internalText(),
+		m_shader(),
 		m_sortingOrder()
 	{}
 
@@ -18,6 +19,7 @@ namespace Bambo
 		World* world = m_owner->GetWorld();
 		if (!world) return;
 		m_internalText.SetFont(world->GetFontProvider()->Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultFontPath_A));
+		m_shader = world->GetShaderProvider()->Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultFontShaderPath_A);
 	}
 
 	void TextComponent::OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex)
@@ -41,6 +43,7 @@ namespace Bambo
 			request.Texture = textRenderData[i].Texture;
 			request.Rect = textRenderData[i].GlyphTexRect;
 			request.SortingOrder = m_sortingOrder;
+			request.Shader = m_shader;
 
 			Vector3f glyphWorldPos = textRenderData[i].GlyphWorldPos;
 			request.Model = glm::translate(objectPos, { glyphWorldPos.X, glyphWorldPos.Y, glyphWorldPos.Z });
