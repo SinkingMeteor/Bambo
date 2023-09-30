@@ -38,9 +38,8 @@ namespace Bambo
 		request.Texture = m_texture;
 
 		int32 rectsAmount = m_texture->GetTextureRects().size();
-		m_spriteRectIndex = std::clamp(m_spriteRectIndex, 0, rectsAmount - 1);
-		request.RectIndex = m_spriteRectIndex;
-		request.GlobalPosIndex = ownerMatIndex;
+		request.Rect = m_texture->GetTextureRects()[std::clamp(m_spriteRectIndex, 0, rectsAmount - 1)];
+		request.Model = globals[ownerMatIndex];
 		request.SortingOrder = m_sortingOrder;
 
 		renderer->EnqueueSpriteToRender(request);

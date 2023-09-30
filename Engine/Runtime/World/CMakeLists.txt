@@ -14,6 +14,7 @@ ${CURRENT_MODULE_DIR}/src/World.cpp
 ${CURRENT_MODULE_DIR}/src/GameObject.cpp
 ${CURRENT_MODULE_DIR}/src/Components/ComponentFactory.cpp
 ${CURRENT_MODULE_DIR}/src/Components/SpriteComponent.cpp
+${CURRENT_MODULE_DIR}/src/Components/TextComponent.cpp
 ${CURRENT_MODULE_DIR}/src/Components/CameraComponent.cpp)
 
 set(BAMBO_${MODULE_NAME}_PUBLIC_LIBS)

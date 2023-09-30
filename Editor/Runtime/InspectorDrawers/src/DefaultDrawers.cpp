@@ -42,4 +42,11 @@ namespace BamboEditor
 
 		ImGui::Text("CameraComponent");
 	}
+
+	void DrawTextComponent(Bambo::Component* component)
+	{
+		Bambo::TextComponent* textComponent = Bambo::Cast<Bambo::TextComponent>(component);
+		DrawInteger("Sorting order", &textComponent->GetSortingOrderRef());
+	}
+
 }

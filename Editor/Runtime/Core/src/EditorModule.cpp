@@ -25,6 +25,7 @@ namespace BamboEditor
 		InspectorDrawersRegistry* drawerRegistry = SingletonManager::Get()->Register<InspectorDrawersRegistry>();
 		drawerRegistry->Register(SpriteComponent::GetTypeID(), DrawSpriteComponent);
 		drawerRegistry->Register(CameraComponent::GetTypeID(), DrawCameraComponent);
+		drawerRegistry->Register(TextComponent::GetTypeID(), DrawTextComponent);
 
 		m_states.EnterTo(static_cast<uint32>(EditorStateType::OpenProject));
 	}

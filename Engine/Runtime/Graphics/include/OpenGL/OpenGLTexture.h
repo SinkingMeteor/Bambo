@@ -20,7 +20,7 @@ namespace Bambo
 
 		virtual void Use() const override;
 		virtual uint32 GetID() const override { return m_id; }
-		virtual RectInt GetTextureRect() const override { return RectInt{ 0, 0, m_width, m_height }; }
+		virtual RectInt GetTextureRect() const override { return RectInt{ 0, m_height, m_width, m_height }; }
 		virtual int32 GetTextureWidth() override { return m_width; }
 		virtual int32 GetTextureHeight() override { return m_height; }
 	private:

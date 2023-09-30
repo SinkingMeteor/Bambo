@@ -6,7 +6,7 @@ set(CURRENT_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(BAMBO_${MODULE_NAME}_SOURCES
 
 ${CURRENT_MODULE_DIR}/src/Font.cpp
-
+${CURRENT_MODULE_DIR}/src/Text.cpp
 ${CURRENT_MODULE_DIR}/src/Shader.cpp
 ${CURRENT_MODULE_DIR}/src/Texture2D.cpp
 ${CURRENT_MODULE_DIR}/src/TextureBuffer.cpp

@@ -29,6 +29,7 @@ namespace Bambo
 		ComponentFactory* componentFactory = singletonManager->Register<ComponentFactory>();
 		componentFactory->Register(CameraComponent::GetTypeID(), []() { return std::make_unique<CameraComponent>(); });
 		componentFactory->Register(SpriteComponent::GetTypeID(), []() { return std::make_unique<SpriteComponent>(); });
+		componentFactory->Register(TextComponent::GetTypeID(), []() { return std::make_unique<TextComponent>(); });
 
 		WindowSettings settings{ DEFAULT_WIDHT, DEFAULT_HEIGHT, DEFAULT_TITLE };
 		LoadConfigurationFile(settings);

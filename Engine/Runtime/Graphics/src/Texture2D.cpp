@@ -33,7 +33,7 @@ namespace Bambo
 
 		if (!std::filesystem::exists(metaPath))
 		{
-			m_textureRects.push_back(RectInt{0, 0, texWidth, texHeight});
+			m_textureRects.push_back(RectInt{ 0, texHeight, texWidth, texHeight});
 			return;
 		}
 
@@ -60,11 +60,11 @@ namespace Bambo
 		const int32 yStep = texHeight / rowsNum;
 		m_textureRects.reserve(xStep * yStep);
 
-		for (int32 x = 0; x < columnsNum; ++x)
+		for (int32 x = texWidth; x >= 0; x -= xStep)
 		{
-			for (int32 y = 0; y < rowsNum; ++y)
+			for (int32 y = texHeight; y >= 0; y -= yStep)
 			{
-				m_textureRects.push_back(RectInt{ xStep * x, yStep * y, xStep, yStep });
+				m_textureRects.push_back(RectInt{ x, y, xStep, yStep });
 			}
 		}
 	}
@@ -76,7 +76,7 @@ namespace Bambo
 
 		int32 texWidth = m_textureImplementation->GetTextureWidth();
 		int32 texHeight = m_textureImplementation->GetTextureHeight();
-		m_textureRects.push_back(RectInt{ 0, 0, texWidth, texHeight });
+		m_textureRects.push_back(RectInt{ 0, texHeight, texWidth, texHeight });
 	}
 
 }

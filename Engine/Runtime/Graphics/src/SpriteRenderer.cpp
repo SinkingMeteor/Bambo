@@ -29,15 +29,14 @@ namespace Bambo
 		m_sprites.push_back(renderRequest);
 	}
 
-	void SpriteRenderer::Render(World* world, std::vector<glm::mat4>& globalTransforms)
+	void SpriteRenderer::Render(World* world)
 	{
 		const glm::mat4& projViewMat = world->GetCameraManager()->GetProjViewMatrix();
 		std::sort(m_sprites.begin(), m_sprites.end(), [](SpriteRenderRequest& r1, SpriteRenderRequest& r2) { return r1.SortingOrder < r2.SortingOrder; });
 
 		for (size_t i = 0; i < m_sprites.size(); ++i)
 		{
-			const RectInt& rect = m_sprites[i].Texture->GetTextureRects()[m_sprites[i].RectIndex];
-			Render(m_sprites[i].Texture, rect, globalTransforms[m_sprites[i].GlobalPosIndex], projViewMat);
+			Render(m_sprites[i].Texture, m_sprites[i].Rect, m_sprites[i].Model, projViewMat);
 		}
 
 		m_sprites.clear();
@@ -50,21 +49,20 @@ namespace Bambo
 		float width = static_cast<float>(std::abs(spriteRect.Width));
 		float height = static_cast<float>(std::abs(spriteRect.Height));
 
-		RectFloat localBounds(Vector2f{ 0.f, 0.f }, Vector2f{ width, height });
-
-		m_renderVertices[0].Position = glm::vec3{ 0.0f, localBounds.Height, 0.0f };
+		m_renderVertices[0].Position = glm::vec3{ 0.0f, height, 0.0f };
 		m_renderVertices[1].Position = glm::vec3{ 0.0f, 0.0f, 0.0f };
-		m_renderVertices[2].Position = glm::vec3{ localBounds.Width, localBounds.Height, 0.0f };
-		m_renderVertices[3].Position = glm::vec3{ localBounds.Width, 0.0f, 0.0f };
+		m_renderVertices[2].Position = glm::vec3{ width, height, 0.0f };
+		m_renderVertices[3].Position = glm::vec3{ width, 0.0f, 0.0f };
 
 		RectInt texRect = texture->GetTextureRect();
 		float texWidth = static_cast<float>(texRect.Width);
 		float texHeight = static_cast<float>(texRect.Height);
 
 		float left = static_cast<float>(spriteRect.Left) / texWidth;
-		float right = (left + static_cast<float>(spriteRect.Width)) / texWidth;
 		float top = static_cast<float>(spriteRect.Top) / texHeight;
-		float bottom = (top + static_cast<float>(spriteRect.Height)) / texHeight;
+
+		float right = (static_cast<float>(spriteRect.Left) + static_cast<float>(spriteRect.Width)) / texWidth;
+		float bottom = (static_cast<float>(spriteRect.Top) + static_cast<float>(spriteRect.Height)) / texHeight;
 
 		m_renderVertices[0].TexCoord = glm::vec2(left, top);
 		m_renderVertices[1].TexCoord = glm::vec2(left, bottom);

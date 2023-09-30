@@ -18,8 +18,8 @@ namespace Bambo
 	{
 	public:
 		SPtr<Texture2D> Texture;
-		int32 RectIndex;
-		int32 GlobalPosIndex;
+		RectInt Rect;
+		glm::mat4 Model;
 		int32 SortingOrder;
 	};
 
@@ -28,7 +28,7 @@ namespace Bambo
 	public:
 		SpriteRenderer(SPtr<Shader> defaultShader);
 		void EnqueueSpriteToRender(const SpriteRenderRequest& renderRequest);
-		void Render(World* world, std::vector<glm::mat4>& globalTransforms);
+		void Render(World* world);
 	private:
 		static constexpr uint32 SPRITE_VERTEX_COUNT = 4u;
 

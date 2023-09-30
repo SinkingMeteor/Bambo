@@ -34,7 +34,13 @@ namespace Bambo
 
 		SPtr<Font> font = m_fontProvider.Load(BamboPaths::EngineResourcesDir / "Fonts/arial.ttf");
 		SpriteComponent* sprite = CreateGameObject()->AddComponent<SpriteComponent>();
+		sprite->GetOwner()->GetTransform()->AddToPosition({ -150.0f, 150.0f, 0.0f });
 		sprite->SetTexture(font->GetPage(16u)->FontTexture);
+
+		TextComponent* text = CreateGameObject()->AddComponent<TextComponent>();
+		text->SetFont(font);
+		text->SetText(U"Hello world!");
+		text->SetSortingOrder(50);
 	}
 
 	World::~World()
@@ -67,24 +73,24 @@ namespace Bambo
 	{
 		GameObject* root = GetGameObject(m_root);
 		
-		DrawDebugLine(this, { 0.0f, 0.0f, 0.0f }, { 100.0f, 100.0f, 0.0f }, Color::Green());
-		DrawDebugRect(this, {-50.0f, 50.0f, 200.0f, 200.0f}, Color::Red());
+		//DrawDebugLine(this, { 0.0f, 0.0f, 0.0f }, { 100.0f, 100.0f, 0.0f }, Color::Green());
+		//DrawDebugRect(this, {-50.0f, 50.0f, 200.0f, 200.0f}, Color::Red());
 
-		SPtr<Font> font = m_fontProvider.Load(BamboPaths::EngineResourcesDir / "Fonts/arial.ttf");
-		Page* page = font->GetPage(16u);
-		BAMBO_ASSERT_S(page)
+		//SPtr<Font> font = m_fontProvider.Load(BamboPaths::EngineResourcesDir / "Fonts/arial.ttf");
+		//Page* page = font->GetPage(16u);
+		//BAMBO_ASSERT_S(page)
 
-		for (auto& pair : page->Glyphs)
-		{
-			RectUInt rect = pair.second.TextureRect;
+		//for (auto& pair : page->Glyphs)
+		//{
+		//	RectUInt rect = pair.second.TextureRect;
 
-			float left = static_cast<float>(rect.Left);
-			float top = static_cast<float>(rect.Top);
-			float width = static_cast<float>(rect.Width);
-			float height = static_cast<float>(rect.Height);
+		//	float left = static_cast<float>(rect.Left);
+		//	float top = static_cast<float>(rect.Top);
+		//	float width = static_cast<float>(rect.Width);
+		//	float height = static_cast<float>(rect.Height);
 
-			DrawDebugRect(this, RectFloat{left - 64.0f, -top + 64.0f, width, height}, Color::White());
-		}
+		//	DrawDebugRect(this, RectFloat{left - 64.0f, -top + 64.0f, width, height}, Color::White());
+		//}
 
 
 		m_globalMatrices.push_back(root->GetTransform()->GetMatrix());
@@ -95,7 +101,7 @@ namespace Bambo
 			child->OnRender(m_globalMatrices, 0);
 		}
 
-		m_spriteRenderer->Render(this, m_globalMatrices);
+		m_spriteRenderer->Render(this);
 		m_debugLineRenderer->Render(this);
 
 		m_globalMatrices.clear();

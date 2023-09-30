@@ -9,4 +9,5 @@ namespace BamboEditor
 	void DrawTransformComponent(Bambo::Transform* component);
 	void DrawSpriteComponent(Bambo::Component* component);
 	void DrawCameraComponent(Bambo::Component* component);
+	void DrawTextComponent(Bambo::Component* component);
 }
