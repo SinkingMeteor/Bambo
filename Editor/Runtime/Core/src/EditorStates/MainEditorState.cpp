@@ -42,18 +42,7 @@ namespace BamboEditor
 		m_windows.clear();
 	}
 
-	void MainEditorState::OnUpdate(float deltaTime)
-	{
-		if (m_editorContext->CurrentWorld)
-		{
-			//@TODO: Depends on editor state
-
-			//if editor state is play 
-			//editorState->OnUpdate(deltaTime);
-			//else
-			//m_editorContext->CurrentWorld->Update(0);
-		}
-	}
+	void MainEditorState::OnUpdate(float deltaTime) {}
 
 	void MainEditorState::OnRender()
 	{
@@ -77,8 +66,8 @@ namespace BamboEditor
 		bool isToolActive = true;
 
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
-		ImGui::DockSpaceOverViewport(viewport, ImGuiDockNodeFlags_::ImGuiDockNodeFlags_PassthruCentralNode);
-
+		ImGuiID mainWindowId = ImGui::DockSpaceOverViewport(viewport, ImGuiDockNodeFlags_PassthruCentralNode);
+		
 		if (ImGui::BeginMainMenuBar())
 		{
 			if (ImGui::BeginMenu("File"))
@@ -96,6 +85,7 @@ namespace BamboEditor
 			window->OnGUI();
 		}
 
+		return;
 		ImGui::ShowDemoWindow();
 	}
 

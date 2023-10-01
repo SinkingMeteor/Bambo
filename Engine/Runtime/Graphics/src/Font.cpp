@@ -98,6 +98,7 @@ namespace Bambo
 		BAMBO_ASSERT_S(texWidth != 0u)
 
 		uint32 totalMapSquare = texWidth * maxGlyphHeight;
+		page.RowHeight = maxGlyphHeight;
 
 		if (totalMapSquare > MAX_SUPPORTED_SIZE * MAX_SUPPORTED_SIZE)
 		{

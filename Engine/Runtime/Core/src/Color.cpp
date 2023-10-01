@@ -8,6 +8,12 @@ namespace Bambo
 		return color;
 	}
 
+	Color Color::Yellow()
+	{
+		static Color color{ 1.0f, 1.0f, 0.0f, 1.0f };
+		return color;
+	}
+
 	Color Color::Red()
 	{
 		static Color color{ 1.0f, 0.0f, 0.0f, 1.0f };

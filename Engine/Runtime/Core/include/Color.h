@@ -19,6 +19,7 @@ namespace Bambo
 		float A{};
 
 		static Color White();
+		static Color Yellow();
 		static Color Red();
 		static Color Green();
 		static Color Blue();

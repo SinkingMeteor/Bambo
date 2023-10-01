@@ -1,6 +1,7 @@
 #include "Components/TextComponent.h"
 #include "MathSerialization.h"
 #include "World.h"
+#include "DrawDebugHelpers.h"
 
 namespace Bambo
 {
@@ -28,6 +29,13 @@ namespace Bambo
 
 		World* world = m_owner->GetWorld();
 		if (!world) return;
+
+		RectFloat textArea = m_internalText.GetAreaRect();
+		glm::vec3 selfWorldPos = m_owner->GetTransform()->GetPosition();
+		textArea.Left = selfWorldPos.x;
+		textArea.Top = selfWorldPos.y;
+
+		DrawDebugRect(world, textArea, Color::Yellow());
 
 		SpriteRenderer* renderer = world->GetSpriteRenderer();
 

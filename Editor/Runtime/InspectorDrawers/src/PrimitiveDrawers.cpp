@@ -2,14 +2,43 @@
 
 namespace BamboEditor
 {
-    void DrawInteger(const char* name, int32* value, ImGuiInputTextFlags flags)
+    bool DrawInteger(const char* name, int32* value, ImGuiInputTextFlags flags)
     {
-        ImGui::InputInt(name, value, 1, 100, flags);
+        int32 iVal = *value;
+        ImGui::InputInt(name, &iVal, 1, 100, flags);
+
+        if (iVal != *value)
+        {
+            *value = iVal;
+            return true;
+        }
+        return false;
     }
 
-    void DrawFloat(const char* name, float* value, ImGuiInputTextFlags flags)
+    bool DrawUInteger(const char* name, uint32* value, ImGuiInputTextFlags flags)
     {
-        ImGui::InputFloat(name, value, 1, 100, "%.3f", flags);
+        int32 iVal = static_cast<int32>(*value);
+        ImGui::InputInt(name, &iVal, 1, 100, flags);
+        if (iVal != *value)
+        {
+            iVal = std::max(0, iVal);
+            *value = static_cast<uint32>(iVal);
+
+            return true;
+        }
+        return false;
+    }
+
+    bool DrawFloat(const char* name, float* value, ImGuiInputTextFlags flags)
+    {
+        float iVal = *value;
+        ImGui::InputFloat(name, &iVal, 1, 100, "%.3f", flags);
+        if (iVal != *value)
+        {
+            *value = iVal;
+            return true;
+        }
+        return false;
     }
 
     struct InputTextCallback_UserData

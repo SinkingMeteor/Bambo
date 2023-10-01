@@ -20,6 +20,7 @@ namespace Bambo
 	public:
 		std::unordered_map<uint32, Glyph> Glyphs{};
 		SPtr<Texture2D> FontTexture{};
+		float RowHeight;
 	};
 
 

@@ -3,6 +3,7 @@
 namespace Bambo
 {
 	Text::Text() :
+		m_textAreaRect(0.0f, 0.0f, 300.0f, 150.0f),
 		m_font(),
 		m_displayText(),
 		m_charSize(16u),
@@ -56,6 +57,7 @@ namespace Bambo
 
 		std::size_t textSize = m_displayText.size();
 		float xPos = 0.0f;
+		float yPos = -page->RowHeight;
 
 		for (size_t i = 0; i < textSize; ++i)
 		{
@@ -71,8 +73,13 @@ namespace Bambo
 			Glyph& glyph = it->second;
 
 			//@TODO: добавить rect всему тексту
-			renderData.GlyphWorldPos = {xPos, 0.0f, 0.0f};
+			renderData.GlyphWorldPos = {xPos, yPos, 0.0f};
 			xPos += glyph.Advance.X;
+			if (xPos > m_textAreaRect.Width)
+			{
+				xPos = 0.0f;
+				yPos -= page->RowHeight;
+			}
 
 			RectInt glyphTexRect{};
  			glyphTexRect.Left = static_cast<int32>(glyph.TextureRect.Left);

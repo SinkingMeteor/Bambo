@@ -46,6 +46,23 @@ namespace BamboEditor
 	void DrawTextComponent(Bambo::Component* component)
 	{
 		Bambo::TextComponent* textComponent = Bambo::Cast<Bambo::TextComponent>(component);
+		ImGui::Text("Text Component");
+
+		if (DrawFloat("Width", &textComponent->GetInternalText().GetAreaWidthRef(), 0))
+		{
+			textComponent->GetInternalText().SetRebuildFlag();
+		}
+
+		if (DrawFloat("Height", &textComponent->GetInternalText().GetAreaHeightRef()))
+		{
+			textComponent->GetInternalText().SetRebuildFlag();
+		}
+
+		if (DrawUInteger("Size", &textComponent->GetInternalText().GetTextSizeRef()))
+		{
+			textComponent->GetInternalText().SetRebuildFlag();
+		}
+
 		DrawInteger("Sorting order", &textComponent->GetSortingOrderRef());
 	}
 

@@ -39,7 +39,7 @@ namespace Bambo
 
 		TextComponent* text = CreateGameObject()->AddComponent<TextComponent>();
 		text->SetFont(font);
-		text->SetText(U"Privet malusiiiii!");
+		text->SetText("Hello world");
 		text->SetSortingOrder(50);
 	}
 
