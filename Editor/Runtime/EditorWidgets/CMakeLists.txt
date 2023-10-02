@@ -6,6 +6,7 @@ set(CURRENT_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 set(BAMBO_${MODULE_NAME}_SOURCES
 ${CURRENT_MODULE_DIR}/src/FileBrowserWidget.cpp
+${CURRENT_MODULE_DIR}/src/AssetReferenceWidget.cpp
 ${CURRENT_MODULE_DIR}/src/EditorWindows/SceneHierarchy.cpp
 ${CURRENT_MODULE_DIR}/src/EditorWindows/GameViewport.cpp
 ${CURRENT_MODULE_DIR}/src/EditorWindows/Inspector.cpp

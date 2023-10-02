@@ -16,7 +16,7 @@ namespace BamboEditor
 
 		std::filesystem::path assetsNewPath{ projFilePath.parent_path() / "Assets" };
 
-		if (!CreateDirectory(assetsNewPath.string().c_str(), NULL))
+		if (!CreateDirectoryA(assetsNewPath.string().c_str(), NULL))
 		{
 			Bambo::Logger::Get()->Log(ProjectLog, Bambo::Verbosity::Fatal, "Can't create an asset directory while constructing a project");
 		}

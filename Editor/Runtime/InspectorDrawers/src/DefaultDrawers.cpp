@@ -1,4 +1,7 @@
 #include "DefaultDrawers.h"
+#include "AssetReferenceWidget.h"
+#include "GameObject.h"
+#include "World.h"
 
 namespace
 {
@@ -25,14 +28,23 @@ namespace BamboEditor
 		DrawInteger("Sorting order", &spriteComponent->GetSortingOrderRef());
 		DrawVector3("Origin", &spriteComponent->GetOriginRef());
 
+		AssetReferenceWidget texReference{ Bambo::AssetType::Texture2D };
+
 		if (spriteComponent->GetTexture())
 		{
-			std::string idStr = std::to_string(spriteComponent->GetTexture()->GetAssetInstanceID());
-			DrawReadonlyString(&idStr);
+			texReference.SetAssetID(spriteComponent->GetTexture()->GetAssetInstanceID());
 		}
-		else
+
+		ImGui::Text("Texture");
+		ImGui::SameLine();
+
+		std::size_t cachedTex = texReference.GetAssetID();
+		texReference.Draw();
+
+		if (cachedTex != texReference.GetAssetID())
 		{
-			DrawReadonlyString(&NONE_TEXTURE);
+			Bambo::TextureProvider* textureProvider = component->GetOwner()->GetWorld()->GetTextureProvider();
+			spriteComponent->SetTexture(textureProvider->Load(texReference.GetAssetID()));
 		}
 	}
 

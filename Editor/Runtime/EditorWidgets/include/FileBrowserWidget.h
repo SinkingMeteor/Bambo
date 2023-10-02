@@ -2,6 +2,7 @@
 #include "Essentials.h"
 #include "EditorEssentials.h"
 #include "Widget.h"
+#include "Resource/ResourceInfo.h"
 
 namespace BamboEditor
 {
@@ -29,7 +30,7 @@ namespace BamboEditor
 		void ToParentPath() { m_currentPath = m_currentPath.parent_path(); }
 		virtual void Draw() override;
 	protected:
-		virtual void ProcessFile(const std::filesystem::path& filePath, FileDisplayParameters& displayParameters);
+		virtual void ProcessFile(const std::filesystem::path& filePath, FileDisplayParameters& displayParameters, Bambo::ResourceInfo& info);
 		virtual void ProcessDirectory(const std::filesystem::path& filePath, FileDisplayParameters& displayParameters);
 	private:
 		std::filesystem::path m_rootPath;

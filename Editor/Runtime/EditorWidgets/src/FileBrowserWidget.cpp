@@ -8,6 +8,8 @@ namespace
 	const char* BROWSER_FILETYPE_FOLDER = "Folder";
 	const char* META_EXTENSION = ".meta";
 
+	std::size_t cachedResourceId = 0;
+
 	template<typename ResourceProviderType>
 	std::size_t TEXTURE_ASSET_ID = ResourceProviderType::GetStaticID();
 
@@ -55,7 +57,7 @@ namespace BamboEditor
 		return hasExtension;
 	}
 
-	void FileBrowserWidget::ProcessFile(const std::filesystem::path& filePath, FileDisplayParameters& displayParameters)
+	void FileBrowserWidget::ProcessFile(const std::filesystem::path& filePath, FileDisplayParameters& displayParameters, Bambo::ResourceInfo& info)
 	{
 		if (filePath.extension() == META_EXTENSION)
 		{
@@ -75,8 +77,6 @@ namespace BamboEditor
 			return;
 		}
 
-
-		Bambo::ResourceInfo info{};
 		info.LoadInfo(metaFilePath);
 		displayParameters.FileType = GetResourceTypeName(info.TypeId);
 	}
@@ -101,6 +101,7 @@ namespace BamboEditor
 
 		bool isDirectory = entry.is_directory();
 		FileDisplayParameters displayParameters{};
+		Bambo::ResourceInfo info{};
 
 		if (isDirectory)
 		{
@@ -109,7 +110,7 @@ namespace BamboEditor
 		}
 		else
 		{
-			ProcessFile(path, displayParameters);
+			ProcessFile(path, displayParameters, info);
 		}
 
 		if (!displayParameters.NeedToDisplay) return;
@@ -124,6 +125,13 @@ namespace BamboEditor
 		
 		if (ImGui::TreeNodeEx(filenameString.c_str(), fileFlags, filenameString.c_str()))
 		{
+			if (!isDirectory && ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+			{
+				cachedResourceId = info.AssetId;
+				ImGui::SetDragDropPayload("AssignAsset", &cachedResourceId, sizeof(std::size_t));
+				ImGui::EndDragDropSource();
+			}
+
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
 				if (isDirectory)

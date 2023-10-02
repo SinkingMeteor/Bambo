@@ -9,7 +9,11 @@ namespace BamboEditor
 		
 		ImGui::StyleColorsDark();
 
+		ImGuiIO& io = ImGui::GetIO();
+		io.Fonts->AddFontFromFileTTF((BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultFontPath_A).string().c_str(), 18.0f, NULL, io.Fonts->GetGlyphRangesCyrillic());
+
 		GLFWwindow* windowPtr = static_cast<GLFWwindow*>(m_targetWindow->GetWindowPtr());
+		
 		ImGui_ImplGlfw_InitForOpenGL(windowPtr, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
 	}

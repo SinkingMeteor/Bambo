@@ -68,6 +68,7 @@ namespace BamboEditor
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
 		ImGuiID mainWindowId = ImGui::DockSpaceOverViewport(viewport, ImGuiDockNodeFlags_PassthruCentralNode);
 		
+
 		if (ImGui::BeginMainMenuBar())
 		{
 			if (ImGui::BeginMenu("File"))
@@ -85,7 +86,6 @@ namespace BamboEditor
 			window->OnGUI();
 		}
 
-		return;
 		ImGui::ShowDemoWindow();
 	}
 
