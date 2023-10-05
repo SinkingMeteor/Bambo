@@ -1,6 +1,7 @@
 #include "SpriteRenderer.h"
 #include "GameObject.h"
 #include "Components/SpriteComponent.h"
+#include "RenderManager.h"
 #include "World.h"
 
 namespace Bambo
@@ -11,6 +12,7 @@ namespace Bambo
 		Renderer(),
 		m_vbo(VertexBufferObject::CreateVertexBufferObject(SPRITE_VERTEX_COUNT * sizeof(QuadVertex))),
 		m_vao(VertexArrayObject::CreateVertexArrayObject()),
+		m_ibo(IndexBufferObject::CreateIndexBuffer(INDEX_VERTEX_COUNT * sizeof(uint32))),
 		m_renderVertices(),
 		m_sprites()
 	{
@@ -25,8 +27,6 @@ namespace Bambo
 		m_renderVertices[1] = QuadVertex{};
 		m_renderVertices[2] = QuadVertex{};
 		m_renderVertices[3] = QuadVertex{};
-		m_renderVertices[4] = QuadVertex{};
-		m_renderVertices[5] = QuadVertex{};
 	}
 
 	void SpriteRenderer::EnqueueSpriteToRender(const SpriteRenderRequest& renderRequest)
@@ -59,6 +59,7 @@ namespace Bambo
 			}
 
 			std::vector<QuadVertex> verticesToDraw{};
+			std::vector<uint32> indicesToDraw{};
 
 			while (i < m_sprites.size() && initSprite.Texture == m_sprites[i].Texture && initSprite.Shader == m_sprites[i].Shader)
 			{
@@ -70,7 +71,7 @@ namespace Bambo
 				m_renderVertices[0].Position = sprite.Model * glm::vec4{ 0.0f, height, 0.0f, 1.0f };
 				m_renderVertices[1].Position = sprite.Model * glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f };
 				m_renderVertices[2].Position = sprite.Model * glm::vec4{ width, height, 0.0f, 1.0f };
-				m_renderVertices[4].Position = sprite.Model * glm::vec4{ width, 0.0f, 0.0f, 1.0f };
+				m_renderVertices[3].Position = sprite.Model * glm::vec4{ width, 0.0f, 0.0f, 1.0f };
 
 				RectInt texRect = sprite.Texture->GetTextureRect();
 				float texWidth = static_cast<float>(texRect.Width);
@@ -85,24 +86,29 @@ namespace Bambo
 				m_renderVertices[0].TexCoord = glm::vec2(left, top);
 				m_renderVertices[1].TexCoord = glm::vec2(left, bottom);
 				m_renderVertices[2].TexCoord = glm::vec2(right, top);
-				m_renderVertices[4].TexCoord = glm::vec2(right, bottom);
+				m_renderVertices[3].TexCoord = glm::vec2(right, bottom);
 
-				m_renderVertices[3] = m_renderVertices[1];
-				m_renderVertices[5] = m_renderVertices[2];
+				std::size_t verticesSize = verticesToDraw.size();
+
+				indicesToDraw.push_back(verticesSize + 0);
+				indicesToDraw.push_back(verticesSize + 1);
+				indicesToDraw.push_back(verticesSize + 2);
+				indicesToDraw.push_back(verticesSize + 2);
+				indicesToDraw.push_back(verticesSize + 1);
+				indicesToDraw.push_back(verticesSize + 3);
 
 				verticesToDraw.push_back(m_renderVertices[0]);
 				verticesToDraw.push_back(m_renderVertices[1]);
 				verticesToDraw.push_back(m_renderVertices[2]);
 				verticesToDraw.push_back(m_renderVertices[3]);
-				verticesToDraw.push_back(m_renderVertices[4]);
-				verticesToDraw.push_back(m_renderVertices[5]);
 
 				++i;
 			}
 
 			m_vbo->SetData(verticesToDraw.data(), verticesToDraw.size() * sizeof(QuadVertex));
+			m_ibo->SetIndices(indicesToDraw.data(), indicesToDraw.size());
 
-			RenderInternal(m_vao, verticesToDraw.size(), RenderPrimitive::Triangle);
+			RenderManager::Get()->GetRenderer()->DrawIndexed(m_vao, m_ibo, indicesToDraw.size(), RenderPrimitive::Triangle);
 		}
 		
 		Logger::Get()->Log(SpriteRendererLog, Verbosity::Info, "Draw calls: %i", drawCallCounter);

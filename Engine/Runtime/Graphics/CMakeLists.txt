@@ -11,7 +11,6 @@ ${CURRENT_MODULE_DIR}/src/Shader.cpp
 ${CURRENT_MODULE_DIR}/src/Texture2D.cpp
 ${CURRENT_MODULE_DIR}/src/TextureBuffer.cpp
 ${CURRENT_MODULE_DIR}/src/Camera.cpp
-${CURRENT_MODULE_DIR}/src/Renderer.cpp
 ${CURRENT_MODULE_DIR}/src/SpriteRenderer.cpp
 ${CURRENT_MODULE_DIR}/src/OpenGL/OpenGLCheck.cpp
 ${CURRENT_MODULE_DIR}/src/DrawDebugHelpers.cpp
@@ -25,6 +24,9 @@ ${CURRENT_MODULE_DIR}/src/VertexBufferObject.cpp
 ${CURRENT_MODULE_DIR}/src/VertexArrayObject.cpp
 ${CURRENT_MODULE_DIR}/src/OpenGL/OpenGLVertexArrayObject.cpp
 ${CURRENT_MODULE_DIR}/src/BufferLayout.cpp
+#IBO
+${CURRENT_MODULE_DIR}/src/IndexBufferObject.cpp
+${CURRENT_MODULE_DIR}/src/OpenGL/OpenGLIndexBufferObject.cpp
 #Contexts
 ${CURRENT_MODULE_DIR}/src/OpenGL/OpenGLGraphicsContext.cpp
 ${CURRENT_MODULE_DIR}/src/GraphicsContext.cpp

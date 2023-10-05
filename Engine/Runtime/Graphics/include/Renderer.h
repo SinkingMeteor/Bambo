@@ -16,9 +16,8 @@ namespace Bambo
 		virtual ~Renderer() {}
 		void SetDefaultShader(SPtr<Shader> defaultShader) { m_defaultShader = defaultShader; }
 	protected:
-		WPtr<Shader> m_defaultShader;
+		WPtr<Shader> m_defaultShader{};
 
-		Renderer();
-		void RenderInternal(const SPtr<VertexArrayObject> vao, uint32 vertexAmount, RenderPrimitive primitive);
+		Renderer() = default;
 	};
 }

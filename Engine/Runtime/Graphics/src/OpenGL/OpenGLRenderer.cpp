@@ -33,6 +33,15 @@ namespace Bambo
 		vao->Unbind();
 	}
 
+	void OpenGLRenderer::DrawIndexed(const SPtr<VertexArrayObject> vao, const SPtr<IndexBufferObject> ibo, uint32 vertexAmount, RenderPrimitive primitive)
+	{
+		vao->Bind();
+		ibo->Bind();
+		OpenGLCheck(glDrawElements(static_cast<GLenum>(GetRenderPrimitive(primitive)), vertexAmount, GL_UNSIGNED_INT, (void*)0));
+		ibo->Unbind();
+		vao->Unbind();
+	}
+
 	void OpenGLRenderer::SetClearColor(const Color & color)
 	{
 		OpenGLCheck(glClearColor(color.R, color.G, color.B, color.A));

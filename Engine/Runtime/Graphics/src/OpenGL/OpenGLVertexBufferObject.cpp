@@ -2,10 +2,10 @@
 
 namespace Bambo
 {
-	OpenGLVertexBufferObject::OpenGLVertexBufferObject(const void* data, uint32 size) :
+	OpenGLVertexBufferObject::OpenGLVertexBufferObject(const void* data, uint32 byteSize) :
 		VertexBufferObject(),
 		m_id(0),
-		m_size(size),
+		m_size(byteSize),
 		m_layout(nullptr)
 	{
 		OpenGLCheck(glGenBuffers(1, &m_id));
@@ -14,9 +14,9 @@ namespace Bambo
 		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
-	OpenGLVertexBufferObject::OpenGLVertexBufferObject(uint32 size) :
+	OpenGLVertexBufferObject::OpenGLVertexBufferObject(uint32 byteSize) :
 		m_id(0),
-		m_size(size),
+		m_size(byteSize),
 		m_layout(nullptr)
 	{
 		OpenGLCheck(glGenBuffers(1, &m_id));
@@ -40,13 +40,13 @@ namespace Bambo
 		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
 	}
 
-	void OpenGLVertexBufferObject::SetData(const void* data, uint32 size) 
+	void OpenGLVertexBufferObject::SetData(const void* data, uint32 byteSize)
 	{
 		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
 
-		if (size > m_size)
+		if (byteSize > m_size)
 		{
-			m_size = size;
+			m_size = byteSize;
 			OpenGLCheck(glBufferData(GL_ARRAY_BUFFER, m_size, data, GL_STATIC_DRAW));
 			return;
 		}
