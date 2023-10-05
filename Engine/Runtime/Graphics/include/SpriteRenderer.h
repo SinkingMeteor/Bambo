@@ -17,11 +17,12 @@ namespace Bambo
 	struct SpriteRenderRequest
 	{
 	public:
-		SPtr<Texture2D> Texture;
-		SPtr<Shader> Shader;
-		RectInt Rect;
-		glm::mat4 Model;
-		int32 SortingOrder;
+		SPtr<Texture2D> Texture{};
+		SPtr<Shader> Shader{};
+		RectInt Rect{};
+		glm::mat4 Model{ 1.0f };
+		int32 SortingOrder{ 0 };
+		RenderPrimitive RenderPrimitive{ RenderPrimitive::TriangleStrip };
 	};
 
 	class BAMBO_API SpriteRenderer final : public Renderer
@@ -31,13 +32,11 @@ namespace Bambo
 		void EnqueueSpriteToRender(const SpriteRenderRequest& renderRequest);
 		void Render(World* world);
 	private:
-		static constexpr uint32 SPRITE_VERTEX_COUNT = 4u;
+		static constexpr uint32 SPRITE_VERTEX_COUNT = 6u;
 
 		SPtr<VertexBufferObject> m_vbo;
 		SPtr<VertexArrayObject> m_vao;
 		std::array<QuadVertex, SPRITE_VERTEX_COUNT> m_renderVertices;
 		std::vector<SpriteRenderRequest> m_sprites;
-
-		void Render(SpriteRenderRequest& sprite, const glm::mat4& projViewMatrix);
 	};
 }

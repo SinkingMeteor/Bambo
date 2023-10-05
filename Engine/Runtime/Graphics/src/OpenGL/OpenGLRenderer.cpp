@@ -1,4 +1,17 @@
 #include "OpenGL/OpenGLRenderer.h"
+namespace
+{
+	GLenum GetRenderPrimitive(Bambo::RenderPrimitive primitive)
+	{
+		switch (primitive)
+		{
+			case Bambo::RenderPrimitive::TriangleStrip: return GL_TRIANGLE_STRIP;
+			case Bambo::RenderPrimitive::Triangle: return GL_TRIANGLES;
+			default: return GL_TRIANGLE_STRIP;
+		}
+	}
+}
+
 namespace Bambo
 {
 	void OpenGLRenderer::Initialize()
@@ -13,10 +26,10 @@ namespace Bambo
 		OpenGLCheck(glViewport(origin.X, origin.Y, size.X, size.Y));
 	}
 
-	void OpenGLRenderer::Draw(const SPtr<VertexArrayObject> vao, uint32 vertexAmount)
+	void OpenGLRenderer::Draw(const SPtr<VertexArrayObject> vao, uint32 vertexAmount, RenderPrimitive primitive)
 	{
 		vao->Bind();
-		OpenGLCheck(glDrawArrays(static_cast<GLenum>(GL_TRIANGLE_STRIP), 0, vertexAmount));
+		OpenGLCheck(glDrawArrays(static_cast<GLenum>(GetRenderPrimitive(primitive)), 0, vertexAmount));
 		vao->Unbind();
 	}
 

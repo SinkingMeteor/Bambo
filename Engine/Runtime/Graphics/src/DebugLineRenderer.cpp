@@ -68,7 +68,7 @@ namespace Bambo
 
 			m_vbo->SetData(m_renderVertices.data(), LINE_VERTEX_COUNT * sizeof(QuadVertex));
 
-			RenderInternal(m_vao, LINE_VERTEX_COUNT);
+			RenderInternal(m_vao, LINE_VERTEX_COUNT, RenderPrimitive::TriangleStrip);
 		}
 
 		m_lines.clear();

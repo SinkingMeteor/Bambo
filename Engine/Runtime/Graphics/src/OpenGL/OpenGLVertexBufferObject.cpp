@@ -43,6 +43,14 @@ namespace Bambo
 	void OpenGLVertexBufferObject::SetData(const void* data, uint32 size) 
 	{
 		OpenGLCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
+
+		if (size > m_size)
+		{
+			m_size = size;
+			OpenGLCheck(glBufferData(GL_ARRAY_BUFFER, m_size, data, GL_STATIC_DRAW));
+			return;
+		}
+
 		OpenGLCheck(glBufferSubData(GL_ARRAY_BUFFER, 0, m_size, data));
 
 	}

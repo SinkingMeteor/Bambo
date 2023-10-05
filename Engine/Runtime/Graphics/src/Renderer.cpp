@@ -6,8 +6,8 @@ namespace Bambo
 		m_defaultShader()
 	{}
 
-	void Renderer::RenderInternal(const SPtr<VertexArrayObject> vao, uint32 vertexAmount)
+	void Renderer::RenderInternal(const SPtr<VertexArrayObject> vao, uint32 vertexAmount, RenderPrimitive primitive)
 	{
-		RenderManager::Get()->GetRenderer()->Draw(vao, vertexAmount);
+		RenderManager::Get()->GetRenderer()->Draw(vao, vertexAmount, primitive);
 	}
 }

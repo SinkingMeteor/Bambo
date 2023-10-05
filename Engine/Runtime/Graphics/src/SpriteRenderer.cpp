@@ -2,11 +2,14 @@
 #include "GameObject.h"
 #include "Components/SpriteComponent.h"
 #include "World.h"
+
 namespace Bambo
 {
+	DECLARE_LOG_CATEGORY_STATIC(SpriteRendererLog)
+
 	SpriteRenderer::SpriteRenderer(SPtr<Shader> defaultShader) :
 		Renderer(),
-		m_vbo(VertexBufferObject::CreateVertexBufferObject(4 * sizeof(QuadVertex))),
+		m_vbo(VertexBufferObject::CreateVertexBufferObject(SPRITE_VERTEX_COUNT * sizeof(QuadVertex))),
 		m_vao(VertexArrayObject::CreateVertexArrayObject()),
 		m_renderVertices(),
 		m_sprites()
@@ -22,6 +25,8 @@ namespace Bambo
 		m_renderVertices[1] = QuadVertex{};
 		m_renderVertices[2] = QuadVertex{};
 		m_renderVertices[3] = QuadVertex{};
+		m_renderVertices[4] = QuadVertex{};
+		m_renderVertices[5] = QuadVertex{};
 	}
 
 	void SpriteRenderer::EnqueueSpriteToRender(const SpriteRenderRequest& renderRequest)
@@ -34,57 +39,73 @@ namespace Bambo
 		const glm::mat4& projViewMat = world->GetCameraManager()->GetProjViewMatrix();
 		std::sort(m_sprites.begin(), m_sprites.end(), [](SpriteRenderRequest& r1, SpriteRenderRequest& r2) { return r1.SortingOrder < r2.SortingOrder; });
 
-		for (size_t i = 0; i < m_sprites.size(); ++i)
+		int32 drawCallCounter = 0;
+		for (size_t i = 0; i < m_sprites.size(); ++i, ++drawCallCounter)
 		{
-			Render(m_sprites[i], projViewMat);
-		}
+			SpriteRenderRequest& initSprite = m_sprites[i];
+			SPtr<Shader> currentShader = m_sprites[i].Shader;
 
+			if (!currentShader)
+			{
+				currentShader = m_defaultShader.lock();
+			}
+
+			currentShader->Use();
+			currentShader->SetMatrix4("projView", projViewMat);
+
+			if (initSprite.Texture)
+			{
+				initSprite.Texture->Use();
+			}
+
+			std::vector<QuadVertex> verticesToDraw{};
+
+			while (i < m_sprites.size() && initSprite.Texture == m_sprites[i].Texture && initSprite.Shader == m_sprites[i].Shader)
+			{
+				SpriteRenderRequest sprite = m_sprites[i];
+
+				float width = static_cast<float>(std::abs(sprite.Rect.Width));
+				float height = static_cast<float>(std::abs(sprite.Rect.Height));
+
+				m_renderVertices[0].Position = sprite.Model * glm::vec4{ 0.0f, height, 0.0f, 1.0f };
+				m_renderVertices[1].Position = sprite.Model * glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f };
+				m_renderVertices[2].Position = sprite.Model * glm::vec4{ width, height, 0.0f, 1.0f };
+				m_renderVertices[4].Position = sprite.Model * glm::vec4{ width, 0.0f, 0.0f, 1.0f };
+
+				RectInt texRect = sprite.Texture->GetTextureRect();
+				float texWidth = static_cast<float>(texRect.Width);
+				float texHeight = static_cast<float>(texRect.Height);
+
+				float left = static_cast<float>(sprite.Rect.Left) / texWidth;
+				float top = static_cast<float>(sprite.Rect.Top) / texHeight;
+
+				float right = (static_cast<float>(sprite.Rect.Left) + static_cast<float>(sprite.Rect.Width)) / texWidth;
+				float bottom = (static_cast<float>(sprite.Rect.Top) + static_cast<float>(sprite.Rect.Height)) / texHeight;
+
+				m_renderVertices[0].TexCoord = glm::vec2(left, top);
+				m_renderVertices[1].TexCoord = glm::vec2(left, bottom);
+				m_renderVertices[2].TexCoord = glm::vec2(right, top);
+				m_renderVertices[4].TexCoord = glm::vec2(right, bottom);
+
+				m_renderVertices[3] = m_renderVertices[1];
+				m_renderVertices[5] = m_renderVertices[2];
+
+				verticesToDraw.push_back(m_renderVertices[0]);
+				verticesToDraw.push_back(m_renderVertices[1]);
+				verticesToDraw.push_back(m_renderVertices[2]);
+				verticesToDraw.push_back(m_renderVertices[3]);
+				verticesToDraw.push_back(m_renderVertices[4]);
+				verticesToDraw.push_back(m_renderVertices[5]);
+
+				++i;
+			}
+
+			m_vbo->SetData(verticesToDraw.data(), verticesToDraw.size() * sizeof(QuadVertex));
+
+			RenderInternal(m_vao, verticesToDraw.size(), RenderPrimitive::Triangle);
+		}
+		
+		Logger::Get()->Log(SpriteRendererLog, Verbosity::Info, "Draw calls: %i", drawCallCounter);
 		m_sprites.clear();
-	}
-
-	void SpriteRenderer::Render(SpriteRenderRequest& sprite, const glm::mat4& projViewMatrix)
-	{
-		SPtr<Shader> currentShader = sprite.Shader;
-
-		if (!sprite.Shader)
-		{
-			currentShader = m_defaultShader.lock();
-		}
-
-		float width = static_cast<float>(std::abs(sprite.Rect.Width));
-		float height = static_cast<float>(std::abs(sprite.Rect.Height));
-
-		m_renderVertices[0].Position = glm::vec3{ 0.0f, height, 0.0f };
-		m_renderVertices[1].Position = glm::vec3{ 0.0f, 0.0f, 0.0f };
-		m_renderVertices[2].Position = glm::vec3{ width, height, 0.0f };
-		m_renderVertices[3].Position = glm::vec3{ width, 0.0f, 0.0f };
-
-		RectInt texRect = sprite.Texture->GetTextureRect();
-		float texWidth = static_cast<float>(texRect.Width);
-		float texHeight = static_cast<float>(texRect.Height);
-
-		float left = static_cast<float>(sprite.Rect.Left) / texWidth;
-		float top = static_cast<float>(sprite.Rect.Top) / texHeight;
-
-		float right = (static_cast<float>(sprite.Rect.Left) + static_cast<float>(sprite.Rect.Width)) / texWidth;
-		float bottom = (static_cast<float>(sprite.Rect.Top) + static_cast<float>(sprite.Rect.Height)) / texHeight;
-
-		m_renderVertices[0].TexCoord = glm::vec2(left, top);
-		m_renderVertices[1].TexCoord = glm::vec2(left, bottom);
-		m_renderVertices[2].TexCoord = glm::vec2(right, top);
-		m_renderVertices[3].TexCoord = glm::vec2(right, bottom);
-
-		m_vbo->SetData(m_renderVertices.data(), SPRITE_VERTEX_COUNT * sizeof(QuadVertex));
-
-		currentShader->Use();
-		currentShader->SetMatrix4("model", sprite.Model);
-		currentShader->SetMatrix4("projView", projViewMatrix);
-
-		if (sprite.Texture)
-		{
-			sprite.Texture->Use();
-		}
-
-		RenderInternal(m_vao, SPRITE_VERTEX_COUNT);
 	}
 }

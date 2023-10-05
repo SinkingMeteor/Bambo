@@ -7,6 +7,12 @@
 #include "VertexArrayObject.h"
 namespace Bambo
 {
+	enum class RenderPrimitive
+	{
+		TriangleStrip = 0,
+		Triangle
+	};
+
 	class BAMBO_API RendererImplementation
 	{
 	public:
@@ -16,7 +22,7 @@ namespace Bambo
 		virtual ~RendererImplementation() {}
 		virtual void Initialize() = 0;
 		virtual void SetViewport(const Vector2u& origin, const Vector2u& size) = 0;
-		virtual void Draw(const SPtr<VertexArrayObject> vao, uint32 vertexAmount) = 0;
+		virtual void Draw(const SPtr<VertexArrayObject> vao, uint32 vertexAmount, RenderPrimitive primitive) = 0;
 		virtual void SetClearColor(const Color& color) = 0;
 		virtual void Clear() = 0;
 
