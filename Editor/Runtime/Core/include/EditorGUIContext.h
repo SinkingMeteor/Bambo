@@ -5,10 +5,10 @@
 
 namespace BamboEditor
 {
-	class GUIWorld
+	class EditorGUIContext final
 	{
 	public:
-		GUIWorld(Bambo::Window* targetWindow) : m_targetWindow(targetWindow) {}
+		EditorGUIContext(Bambo::Window* targetWindow) : m_targetWindow(targetWindow) {}
 		void Initialize();
 		void StartFrame();
 		void EndFrame();

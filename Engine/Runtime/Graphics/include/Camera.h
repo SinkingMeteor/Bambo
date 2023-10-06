@@ -3,7 +3,6 @@
 #include "Rect.h"
 #include "Transform.h"
 #include "Vectors.h"
-#include "Interfaces/ITransformable.h"
 
 namespace Bambo
 {

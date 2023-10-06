@@ -1,6 +1,4 @@
-#ifndef BAMBO_PATHS_H
-#define BAMBO_PATHS_H
-
+#pragma once
 #include<filesystem>
 
 namespace BamboPaths
@@ -19,5 +17,3 @@ namespace BamboPaths
 	const std::filesystem::path EngineDefaultFontShaderPath_A = BAMBO_ENGINE_DEFAULT_FONT_SHADER_PATH_A;
 	const std::filesystem::path EngineDefaultFontPath_A = BAMBO_ENGINE_DEFAULT_FONT_PATH_A;
 }
-
-#endif

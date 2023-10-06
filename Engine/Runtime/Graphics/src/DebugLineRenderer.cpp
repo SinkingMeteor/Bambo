@@ -32,7 +32,7 @@ namespace Bambo
 	void DebugLineRenderer::Render(World* world)
 	{
 		SPtr<Shader> defaultShader = m_defaultShader.lock();
-		BAMBO_ASSERT_S(defaultShader)
+		BAMBO_ASSERT_S(defaultShader);
 
 		const glm::mat4& projViewMat = world->GetCameraManager()->GetProjViewMatrix();
 

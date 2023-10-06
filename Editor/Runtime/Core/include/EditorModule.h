@@ -6,7 +6,7 @@
 #include "Patterns/StateMachine.h"
 #include "EditorStates/IEditorState.h"
 #include "EditorContext.h"
-#include "GUIWorld.h"
+#include "EditorGUIContext.h"
 
 namespace BamboEditor
 {
@@ -25,6 +25,6 @@ namespace BamboEditor
 	private:
 		EditorContext m_editorContext;
 		Bambo::StateMachine<IEditorState> m_states;
-		GUIWorld m_guiWorld;
+		EditorGUIContext m_guiWorld;
 	};
 }

@@ -76,8 +76,9 @@ target_compile_features(BamboEditor PUBLIC cxx_std_17)
 add_definitions(-DBAMBO_EDITOR_CONFIG_DIR=${BAMBO_EDITOR_CONFIG_DIR})
 add_definitions(-DBAMBO_EDITOR_RESOURCE_DIR=${BAMBO_EDITOR_RESOURCE_DIR})
 
-ADD_DEFINITIONS(-DUNICODE)
-ADD_DEFINITIONS(-D_UNICODE)
+add_definitions(-DUNICODE)
+add_definitions(-D_UNICODE)
+add_definitions(-DBAMBO_EDITOR_ON)
 
 configure_file(${BAMBO_EDITOR_SOURCE_DIR}/Runtime/EditorPaths.h.in "${BAMBO_EDITOR_BINARY_DIR}/Generated/EditorPaths.h")
 configure_file(${BAMBO_EDITOR_SOURCE_DIR}/Runtime/EditorConfig.json.in "${BAMBO_EDITOR_BINARY_DIR}/EditorConfig.json")

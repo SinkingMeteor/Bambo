@@ -9,7 +9,7 @@ ${CURRENT_MODULE_DIR}/src/EditorStates/OpenProjectEditorState.cpp
 ${CURRENT_MODULE_DIR}/src/EditorStates/MainEditorState.cpp
 ${CURRENT_MODULE_DIR}/src/EditorModule.cpp
 ${CURRENT_MODULE_DIR}/src/Project.cpp
-${CURRENT_MODULE_DIR}/src/GUIWorld.cpp
+${CURRENT_MODULE_DIR}/src/EditorGUIContext.cpp
 ${CURRENT_MODULE_DIR}/src/Main.cpp)
 
 set(BAMBO_${MODULE_NAME}_PUBLIC_LIBS)
