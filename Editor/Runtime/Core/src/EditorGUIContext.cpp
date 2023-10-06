@@ -10,7 +10,7 @@ namespace BamboEditor
 		ImGui::StyleColorsDark();
 
 		ImGuiIO& io = ImGui::GetIO();
-		io.Fonts->AddFontFromFileTTF((BamboPaths::BamboEditorResourceDir / "Fonts/cour.ttf").string().c_str(), 18.0f, NULL, io.Fonts->GetGlyphRangesCyrillic());
+		io.Fonts->AddFontFromFileTTF((BamboPaths::EditorResourceDir / "Fonts/cour.ttf").string().c_str(), 18.0f, NULL, io.Fonts->GetGlyphRangesCyrillic());
 
 		GLFWwindow* windowPtr = static_cast<GLFWwindow*>(m_targetWindow->GetWindowPtr());
 		

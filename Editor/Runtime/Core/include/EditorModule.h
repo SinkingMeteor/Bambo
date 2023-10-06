@@ -1,5 +1,6 @@
 #pragma once
 #include "Essentials.h"
+#include "EditorEssentials.h"
 #include "Module.h"
 #include "Project.h"
 #include "EditorPaths.h"
@@ -24,7 +25,12 @@ namespace BamboEditor
 		virtual void OnGUI() override;
 	private:
 		EditorContext m_editorContext;
+		EditorConfig m_editorConfig;
+
 		Bambo::StateMachine<IEditorState> m_states;
 		EditorGUIContext m_guiWorld;
+
+		void LoadEditorConfig();
+		void SaveEditorConfig();
 	};
 }

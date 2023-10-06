@@ -25,14 +25,7 @@ namespace BamboEditor
 
 	void ProjectBrowserWindow::OnGUI()
 	{
-		ImGuiViewport* viewport = ImGui::GetMainViewport();
-		ImVec2 viewportSize = viewport->Size;
-		ImVec2 windowPos{ 0.0f, 0.0f };
-
-		ImGui::SetNextWindowSize(viewportSize);
-		ImGui::SetNextWindowPos(windowPos);
-
-		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
+		ImGui::Begin(m_windowName.c_str(), nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
 		ImGui::Text(m_fileBrowserWidget.GetCurrentPath().string().c_str());
 
 		DrawDiskList();

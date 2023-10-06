@@ -3,7 +3,11 @@
 #include "EditorStates/OpenProjectEditorState.h"
 #include "InspectorDrawersRegistry.h"
 #include "DefaultDrawers.h"
-#include "EditorPaths.h"
+
+namespace
+{
+	const std::filesystem::path CONFIG_FILE_PATH = BamboPaths::EditorResourceDir / "EditorConfig.json";
+}
 
 namespace BamboEditor
 {
@@ -15,11 +19,12 @@ namespace BamboEditor
 
 	void EditorModule::OnAttach()
 	{
-		m_guiWorld.Initialize();
+		LoadEditorConfig();
 
+		m_guiWorld.Initialize();
 		m_editorContext.CurrentProject = std::make_unique<Project>();
 
-		m_states.AddState(std::make_shared<OpenProjectEditorState>(&m_editorContext, &m_states));
+		m_states.AddState(std::make_shared<OpenProjectEditorState>(&m_editorContext, &m_editorConfig, &m_states));
 		m_states.AddState(std::make_shared<MainEditorState>(&m_editorContext));
 
 		InspectorDrawersRegistry* drawerRegistry = SingletonManager::Get()->Register<InspectorDrawersRegistry>();
@@ -32,6 +37,8 @@ namespace BamboEditor
 
 	void EditorModule::OnDetach()
 	{
+		SaveEditorConfig();
+
 		m_states.ExitCurrentState();
 		m_states.Clear();
 		m_guiWorld.Dispose();
@@ -67,5 +74,34 @@ namespace BamboEditor
 	void EditorModule::OnGUIEnd()
 	{
 		m_guiWorld.EndFrame();
+	}
+
+	void EditorModule::LoadEditorConfig()
+	{
+		if (!std::filesystem::exists(CONFIG_FILE_PATH)) 
+		{
+			SaveEditorConfig();
+		}
+
+		std::ifstream configStream{ CONFIG_FILE_PATH };
+		BAMBO_ASSERT_S(!configStream.fail())
+
+		nlohmann::json configRoot{};
+		configStream >> configRoot;
+		configStream.close();
+
+		m_editorConfig.Projects = configRoot["projectsPaths"].get<std::vector<std::string>>();
+	}
+
+	void EditorModule::SaveEditorConfig()
+	{
+		std::ofstream configStream{ CONFIG_FILE_PATH };
+		BAMBO_ASSERT_S(!configStream.fail())
+
+		nlohmann::json configRoot{};
+		configRoot["projectsPaths"] = m_editorConfig.Projects;
+		configStream << configRoot;
+		configStream.close();
+
 	}
 }

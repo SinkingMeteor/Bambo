@@ -5,11 +5,15 @@
 
 namespace BamboEditor
 {
-
 	struct EditorContext
 	{
 		SPtr<Project> CurrentProject{};
 		SPtr<Bambo::World> CurrentWorld{};
 		Bambo::IID SelectedGameObject{};
+	};
+
+	struct EditorConfig
+	{
+		std::vector<std::string> Projects{};
 	};
 }

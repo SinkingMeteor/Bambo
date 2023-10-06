@@ -5,12 +5,14 @@
 #include "Project.h"
 #include "EditorWindows/GUIWindow.h"
 #include "EditorContext.h"
+#include "EditorWindows/ProjectBrowser.h"
+
 namespace BamboEditor
 {
 	class OpenProjectEditorState final : public IEditorState
 	{
 	public:
-		OpenProjectEditorState(EditorContext* editorContext, Bambo::StateMachine<IEditorState>* stateMachine);
+		OpenProjectEditorState(EditorContext* editorContext, EditorConfig* editorConfig, Bambo::StateMachine<IEditorState>* stateMachine);
 		virtual uint32 GetId() const override { return static_cast<uint32>(EditorStateType::OpenProject); };
 		virtual void Enter() override;
 		virtual void Exit() override;
@@ -22,7 +24,9 @@ namespace BamboEditor
 	private:
 		Bambo::StateMachine<IEditorState>* m_stateMachine;
 		EditorContext* m_editorContext;
-		std::vector<UPtr<GUIWindow>> m_windows;
+		EditorConfig* m_editorConfig;
+
+		UPtr<ProjectBrowserWindow> m_browserWindow;
 
 		void OpenEditor();
 	};
