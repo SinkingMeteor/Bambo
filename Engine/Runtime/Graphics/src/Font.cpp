@@ -33,6 +33,7 @@ namespace Bambo
 
 	void Font::LoadFromFile(const std::string& fontFile)
 	{
+		BAMBO_ASSERT_S(m_engine)
 		FT_Library* ffHandle = m_engine->GetRenderManager()->GetFontHandle();
 
 		if (FT_New_Face(*ffHandle, fontFile.c_str(), 0, &m_fontFace))

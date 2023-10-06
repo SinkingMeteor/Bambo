@@ -24,6 +24,11 @@ namespace BamboEditor
 			return;
 		}
 
+		Bambo::WorldContext* worldContext = m_editorContext->CurrentWorld->GetWorldContext();
+		BAMBO_ASSERT_S(worldContext)
+
+		ImGui::Text(">> : %s", worldContext->WorldFilePath.filename().string().c_str());
+
 		Bambo::IID previousSelected = m_editorContext->SelectedGameObject;
 
 		const Bambo::GameObject* rootGo = m_editorContext->CurrentWorld->GetRoot();

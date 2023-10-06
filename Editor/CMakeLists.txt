@@ -72,15 +72,11 @@ PRIVATE BamboEngine)
 set(BAMBO_EDITOR_RESOURCE_DIR "${Bambo_BINARY_DIR}/Editor/Resources")
 
 target_compile_features(BamboEditor PUBLIC cxx_std_17)
+target_compile_definitions(BamboEngine PUBLIC BAMBO_EDITOR_ON)
+
 add_definitions(-DBAMBO_EDITOR_RESOURCE_DIR=${BAMBO_EDITOR_RESOURCE_DIR})
 
-add_definitions(-DUNICODE)
-add_definitions(-D_UNICODE)
-add_definitions(-DBAMBO_EDITOR_ON)
-
 configure_file(${BAMBO_EDITOR_SOURCE_DIR}/Runtime/EditorPaths.h.in "${BAMBO_EDITOR_BINARY_DIR}/Generated/EditorPaths.h")
-
-target_compile_definitions(BamboEditor PUBLIC BAMB O_EDITOR_ON)
 
 add_custom_command(TARGET BamboEditor POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory

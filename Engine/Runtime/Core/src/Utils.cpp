@@ -56,7 +56,7 @@ namespace Bambo
 	{
 		DWORD dwSize = MAX_PATH;
 		char szLogicalDrives[MAX_PATH] = { 0 };
-		DWORD dwResult = GetLogicalDriveStrings(dwSize, szLogicalDrives);
+		DWORD dwResult = GetLogicalDriveStringsA(dwSize, szLogicalDrives);
 
 		if (dwResult > 0 && dwResult <= MAX_PATH)
 		{
@@ -71,7 +71,7 @@ namespace Bambo
 
 	bool IsHiddenFolder(const std::filesystem::path& path)
 	{
-		DWORD attributes = GetFileAttributes(path.string().c_str());
+		DWORD attributes = GetFileAttributesA(path.string().c_str());
 		return attributes & FILE_ATTRIBUTE_HIDDEN;
 	}
 

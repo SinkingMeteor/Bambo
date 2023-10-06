@@ -38,7 +38,6 @@ namespace Bambo
 
 	private:
 		std::unordered_map<uint32, Page> m_pages;
-		Engine* m_engine;
 		FT_Face m_fontFace;
 
 		bool LoadPage(uint32 charSize);

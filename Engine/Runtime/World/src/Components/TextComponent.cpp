@@ -31,20 +31,23 @@ namespace Bambo
 		World* world = m_owner->GetWorld();
 		if (!world) return;
 
+		glm::mat4 objectPos = globals[ownerMatIndex];
+
+#ifdef WITH_EDITOR
 		RectFloat textArea = m_internalText.GetAreaRect();
-		glm::vec3 selfWorldPos = m_owner->GetTransform()->GetPosition();
+		glm::vec4 selfWorldPos = objectPos * glm::vec4{ 1.0f };
+
 		textArea.Left = selfWorldPos.x;
 		textArea.Top = selfWorldPos.y;
 
 		DrawDebugRect(world, textArea, Color::Yellow());
+#endif
 
 		SpriteRenderer* renderer = world->GetSpriteRenderer();
 
 		if (!m_internalText.GetFont()) return;
 
 		const std::vector<GlyphRenderData>& textRenderData = m_internalText.GetTextData();
-
-		glm::mat4 objectPos = globals[ownerMatIndex];
 
 		for (size_t i = 0; i < textRenderData.size(); ++i)
 		{

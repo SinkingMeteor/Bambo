@@ -50,7 +50,7 @@ namespace Bambo
 		TextureProvider* GetTextureProvider() { return &m_textureProvider; }
 		ShaderProvider* GetShaderProvider() { return &m_shaderProvider; }
 		FontProvider* GetFontProvider() { return &m_fontProvider; }
-			 
+
 		void SaveWorld();
 		void Reset();
 

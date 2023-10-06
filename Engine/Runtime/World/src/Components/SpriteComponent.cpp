@@ -30,8 +30,6 @@ namespace Bambo
 
 		SpriteRenderer* renderer = world->GetSpriteRenderer();
 
-		globals[ownerMatIndex] = glm::translate(globals[ownerMatIndex], GetOriginOffset());
-
 		if (!m_texture) return;
 
 		SpriteRenderRequest request{};
@@ -39,7 +37,7 @@ namespace Bambo
 
 		int32 rectsAmount = m_texture->GetTextureRects().size();
 		request.Rect = m_texture->GetTextureRects()[std::clamp(m_spriteRectIndex, 0, rectsAmount - 1)];
-		request.Model = globals[ownerMatIndex];
+		request.Model = glm::translate(globals[ownerMatIndex], GetOriginOffset());
 		request.SortingOrder = m_sortingOrder;
 
 		renderer->EnqueueSpriteToRender(request);

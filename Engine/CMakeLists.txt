@@ -72,6 +72,7 @@ PRIVATE ${BAMBO_ENGINE_PRIVATE_LIBS})
 
 target_compile_features(BamboEngine PUBLIC cxx_std_17)
 target_compile_definitions(BamboEngine PUBLIC BAMBO_DEBUG_ON)
+
 target_precompile_headers(BamboEngine PUBLIC "${CMAKE_CURRENT_LIST_DIR}/Runtime/Core/include/pch.h")
 
 set(BAMBO_ENGINE_RESOURCE_DIR "${Bambo_SOURCE_DIR}/Engine/Resources")
@@ -87,6 +88,8 @@ add_definitions(-DBAMBO_ENGINE_DEFAULT_SPRITE_PATH_A=${BAMBO_ENGINE_DEFAULT_SPRI
 add_definitions(-DBAMBO_ENGINE_DEFAULT_SHADER_PATH_A=${BAMBO_ENGINE_DEFAULT_SHADER_PATH_A})
 add_definitions(-DBAMBO_ENGINE_DEFAULT_FONT_SHADER_PATH_A=${BAMBO_ENGINE_DEFAULT_FONT_SHADER_PATH_A})
 add_definitions(-DBAMBO_ENGINE_DEFAULT_FONT_PATH_A=${BAMBO_ENGINE_DEFAULT_FONT_PATH_A})
+add_definitions(-DUNICODE)
+add_definitions(-D_UNICODE)
 
 configure_file(${BAMBO_ENGINE_SOURCE_DIR}/Runtime/BamboPaths.h.in "${BAMBO_ENGINE_BINARY_DIR}/Runtime/generated/BamboPaths.h")
 
