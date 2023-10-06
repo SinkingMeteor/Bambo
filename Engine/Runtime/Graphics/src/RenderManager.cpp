@@ -5,11 +5,12 @@ DECLARE_LOG_CATEGORY_STATIC(LogRenderManager)
 namespace Bambo
 {
 	RenderManager::RenderManager():
-		m_freeTypeHandle{},
-		m_renderApiType{RenderAPI::OpenGL},
-		m_renderer{}
+		m_freeTypeHandle(),
+		m_renderStatistics(),
+		m_renderParameters(),
+		m_renderApiType(RenderAPI::OpenGL),
+		m_renderer()
 	{}
-
 
 	void RenderManager::Initialize(RenderAPI renderApi)
 	{
@@ -22,6 +23,12 @@ namespace Bambo
 		m_renderApiType = renderApi;
 		m_renderer = RendererImplementation::CreateRenderer();
 		m_renderer->Initialize();
+	}
+
+	void RenderManager::OnStartFrame()
+	{
+		m_renderStatistics.DrawCalls = 0;
+		m_renderStatistics.SavedByBatching = 0;
 	}
 
 	void RenderManager::Dispose()

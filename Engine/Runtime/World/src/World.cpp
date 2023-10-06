@@ -1,5 +1,6 @@
 #include "World.h"
 #include "WorldSerialization.h"
+#include "RenderManager.h"
 #include "DrawDebugHelpers.h"
 namespace
 {
@@ -31,16 +32,6 @@ namespace Bambo
 
 		CreateRoot(IID::GenerateNew());
 		LoadWorld();
-
-		SPtr<Font> font = m_fontProvider.Load(BamboPaths::EngineResourcesDir / "Fonts/arial.ttf");
-		SpriteComponent* sprite = CreateGameObject()->AddComponent<SpriteComponent>();
-		sprite->GetOwner()->GetTransform()->AddToPosition({ -150.0f, 150.0f, 0.0f });
-		sprite->SetTexture(font->GetPage(16u)->FontTexture);
-
-		TextComponent* text = CreateGameObject()->AddComponent<TextComponent>();
-		text->SetFont(font);
-		text->SetText("Hello world!");
-		text->SetSortingOrder(50);
 	}
 
 	World::~World()
@@ -82,7 +73,12 @@ namespace Bambo
 		}
 
 		m_spriteRenderer->Render(this);
-		m_debugLineRenderer->Render(this);
+
+		RenderParameters& renderParameters = RenderManager::Get()->GetRenderParameters();
+		if (renderParameters.DrawDebug)
+		{
+			m_debugLineRenderer->Render(this);
+		}
 
 		m_globalMatrices.clear();
 	}

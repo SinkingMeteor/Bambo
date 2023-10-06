@@ -41,5 +41,8 @@ namespace Bambo
 		SPtr<IndexBufferObject> m_ibo;
 		std::array<QuadVertex, SPRITE_VERTEX_COUNT> m_renderVertices;
 		std::vector<SpriteRenderRequest> m_sprites;
+
+		std::vector<QuadVertex> m_cachedVertices;
+		std::vector<uint32> m_cachedIndices;
 	};
 }

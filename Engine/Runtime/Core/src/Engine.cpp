@@ -73,7 +73,6 @@ namespace Bambo
 
 	int Engine::Run()
 	{
-
 		while (!WindowManager::Get()->WantsToClose())
 		{
 			float passedTime = TimeManager::Get()->MakeTick();
@@ -92,6 +91,8 @@ namespace Bambo
 			{
 				m_modules[i]->OnUpdate(DESIRED_DELTA_TIME);
 			}
+
+			RenderManager::Get()->OnStartFrame();
 
 			for (size_t i = 0; i < m_modules.size(); ++i)
 			{

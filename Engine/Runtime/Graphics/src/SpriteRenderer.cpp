@@ -14,7 +14,9 @@ namespace Bambo
 		m_vao(VertexArrayObject::CreateVertexArrayObject()),
 		m_ibo(IndexBufferObject::CreateIndexBuffer(INDEX_VERTEX_COUNT * sizeof(uint32))),
 		m_renderVertices(),
-		m_sprites()
+		m_sprites(),
+		m_cachedVertices(),
+		m_cachedIndices()
 	{
 		m_defaultShader = defaultShader;
 
@@ -40,7 +42,9 @@ namespace Bambo
 		std::sort(m_sprites.begin(), m_sprites.end(), [](SpriteRenderRequest& r1, SpriteRenderRequest& r2) { return r1.SortingOrder < r2.SortingOrder; });
 
 		int32 drawCallCounter = 0;
-		for (size_t i = 0; i < m_sprites.size(); ++i, ++drawCallCounter)
+		int32 savedByBatching = 0;
+
+		for (size_t i = 0; i < m_sprites.size(); ++drawCallCounter)
 		{
 			SpriteRenderRequest& initSprite = m_sprites[i];
 			SPtr<Shader> currentShader = m_sprites[i].Shader;
@@ -57,9 +61,6 @@ namespace Bambo
 			{
 				initSprite.Texture->Use();
 			}
-
-			std::vector<QuadVertex> verticesToDraw{};
-			std::vector<uint32> indicesToDraw{};
 
 			while (i < m_sprites.size() && initSprite.Texture == m_sprites[i].Texture && initSprite.Shader == m_sprites[i].Shader)
 			{
@@ -88,30 +89,38 @@ namespace Bambo
 				m_renderVertices[2].TexCoord = glm::vec2(right, top);
 				m_renderVertices[3].TexCoord = glm::vec2(right, bottom);
 
-				std::size_t verticesSize = verticesToDraw.size();
+				std::size_t verticesSize = m_cachedVertices.size();
 
-				indicesToDraw.push_back(verticesSize + 0);
-				indicesToDraw.push_back(verticesSize + 1);
-				indicesToDraw.push_back(verticesSize + 2);
-				indicesToDraw.push_back(verticesSize + 2);
-				indicesToDraw.push_back(verticesSize + 1);
-				indicesToDraw.push_back(verticesSize + 3);
+				m_cachedIndices.push_back(verticesSize + 0);
+				m_cachedIndices.push_back(verticesSize + 1);
+				m_cachedIndices.push_back(verticesSize + 2);
+				m_cachedIndices.push_back(verticesSize + 2);
+				m_cachedIndices.push_back(verticesSize + 1);
+				m_cachedIndices.push_back(verticesSize + 3);
 
-				verticesToDraw.push_back(m_renderVertices[0]);
-				verticesToDraw.push_back(m_renderVertices[1]);
-				verticesToDraw.push_back(m_renderVertices[2]);
-				verticesToDraw.push_back(m_renderVertices[3]);
+				m_cachedVertices.push_back(m_renderVertices[0]);
+				m_cachedVertices.push_back(m_renderVertices[1]);
+				m_cachedVertices.push_back(m_renderVertices[2]);
+				m_cachedVertices.push_back(m_renderVertices[3]);
 
 				++i;
+				++savedByBatching;
 			}
 
-			m_vbo->SetData(verticesToDraw.data(), verticesToDraw.size() * sizeof(QuadVertex));
-			m_ibo->SetIndices(indicesToDraw.data(), indicesToDraw.size());
+			m_vbo->SetData(m_cachedVertices.data(), m_cachedVertices.size() * sizeof(QuadVertex));
+			m_ibo->SetIndices(m_cachedIndices.data(), m_cachedIndices.size());
 
-			RenderManager::Get()->GetRenderer()->DrawIndexed(m_vao, m_ibo, indicesToDraw.size(), RenderPrimitive::Triangle);
+			RenderManager::Get()->GetRenderer()->DrawIndexed(m_vao, m_ibo, m_cachedIndices.size(), RenderPrimitive::Triangle);
+
+			m_cachedVertices.clear();
+			m_cachedIndices.clear();
+			--savedByBatching;
 		}
 		
-		Logger::Get()->Log(SpriteRendererLog, Verbosity::Info, "Draw calls: %i", drawCallCounter);
+		RenderStatistics& renderStatistics = RenderManager::Get()->GetRenderStatistics();
+		renderStatistics.DrawCalls += drawCallCounter;
+		renderStatistics.SavedByBatching += savedByBatching;
+
 		m_sprites.clear();
 	}
 }
