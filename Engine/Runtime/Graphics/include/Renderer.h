@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "RenderConfig.h"
 #include "VertexArrayObject.h"
 #include "RendererImplementation.h"
 #include "Shader.h"

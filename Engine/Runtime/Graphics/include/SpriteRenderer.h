@@ -6,7 +6,6 @@
 #include "VertexBufferObject.h"
 #include "IndexBufferObject.h"
 #include "BufferLayout.h"
-#include "RenderConfig.h"
 #include "Texture2D.h"
 #include "ShaderProvider.h"
 
@@ -29,7 +28,7 @@ namespace Bambo
 	class BAMBO_API SpriteRenderer final : public Renderer
 	{
 	public:
-		SpriteRenderer(SPtr<Shader> defaultShader);
+		SpriteRenderer(World* world, SPtr<Shader> defaultShader);
 		void EnqueueSpriteToRender(const SpriteRenderRequest& renderRequest);
 		void Render(World* world);
 	private:

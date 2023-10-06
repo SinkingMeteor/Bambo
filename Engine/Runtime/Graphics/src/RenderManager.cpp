@@ -4,7 +4,8 @@ DECLARE_LOG_CATEGORY_STATIC(LogRenderManager)
 
 namespace Bambo
 {
-	RenderManager::RenderManager():
+	RenderManager::RenderManager(Engine* engine):
+		m_engine(engine),
 		m_freeTypeHandle(),
 		m_renderStatistics(),
 		m_renderParameters(),
@@ -21,7 +22,7 @@ namespace Bambo
 		}
 
 		m_renderApiType = renderApi;
-		m_renderer = RendererImplementation::CreateRenderer();
+		m_renderer = RendererImplementation::CreateRenderer(renderApi);
 		m_renderer->Initialize();
 	}
 

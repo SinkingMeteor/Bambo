@@ -18,7 +18,7 @@ namespace Bambo
 	class BAMBO_API DebugLineRenderer : public Renderer
 	{
 	public:
-		DebugLineRenderer(SPtr<Shader> defaultShader);
+		DebugLineRenderer(World* world, SPtr<Shader> defaultShader);
 		void EnqueueLineToRender(const LineRenderRequest& renderRequest);
 		void Render(World* world);
 	private:

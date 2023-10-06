@@ -2,6 +2,7 @@
 #include "Essentials.h"
 #include "Project.h"
 #include "World.h"
+#include "Engine.h"
 
 namespace BamboEditor
 {
@@ -10,6 +11,7 @@ namespace BamboEditor
 		SPtr<Project> CurrentProject{};
 		SPtr<Bambo::World> CurrentWorld{};
 		Bambo::IID SelectedGameObject{};
+		Bambo::Engine* Engine;
 	};
 
 	struct EditorConfig

@@ -2,8 +2,15 @@
 
 namespace BamboEditor
 {
-	void EditorGUIContext::Initialize()
+	EditorGUIContext::EditorGUIContext() :
+		m_context(),
+		m_targetWindow()
+	{}
+
+	void EditorGUIContext::Initialize(Bambo::Window* targetWindow)
 	{
+		m_targetWindow = targetWindow;
+
 		IMGUI_CHECKVERSION();
 		m_context = ImGui::CreateContext();
 		

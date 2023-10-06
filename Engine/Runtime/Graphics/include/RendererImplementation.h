@@ -3,9 +3,9 @@
 #include "RenderAPI.h"
 #include "Color.h"
 #include "Vertex.h"
-#include "RenderConfig.h"
 #include "VertexArrayObject.h"
 #include "IndexBufferObject.h"
+#include "RenderAPI.h"
 namespace Bambo
 {
 	enum class RenderPrimitive
@@ -28,6 +28,6 @@ namespace Bambo
 		virtual void SetClearColor(const Color& color) = 0;
 		virtual void Clear() = 0;
 
-		static std::unique_ptr<RendererImplementation> CreateRenderer();
+		static std::unique_ptr<RendererImplementation> CreateRenderer(RenderAPI renderApi);
 	};
 }

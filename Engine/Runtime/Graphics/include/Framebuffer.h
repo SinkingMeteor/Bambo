@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include "RenderAPI.h"
 
 namespace Bambo
 {
@@ -23,6 +24,6 @@ namespace Bambo
 		virtual void Resize(uint32 width, uint32 height) = 0;
 		virtual int32 ReadPixel(uint32 attachmentIndex, int32 x, int32 y) = 0;
 
-		static SPtr<Framebuffer> Create(const std::vector<FramebufferTextureType>& textureTypes, uint32 textureWidth, uint32 textureHeight);
+		static SPtr<Framebuffer> Create(RenderAPI renderApi, const std::vector<FramebufferTextureType>& textureTypes, uint32 textureWidth, uint32 textureHeight);
 	};
 }

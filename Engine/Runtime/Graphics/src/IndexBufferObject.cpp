@@ -3,9 +3,8 @@
 #include "OpenGL/OpenGLIndexBufferObject.h"
 namespace Bambo
 {
-	SPtr<IndexBufferObject> IndexBufferObject::CreateIndexBuffer(std::size_t size)
+	SPtr<IndexBufferObject> IndexBufferObject::CreateIndexBuffer(RenderAPI renderApi, std::size_t size)
 	{
-		RenderAPI renderApi = RenderManager::Get()->GetCurrentRenderAPI();
 		switch (renderApi)
 		{
 			case RenderAPI::OpenGL: return std::make_shared<OpenGLIndexBufferObject>(size);

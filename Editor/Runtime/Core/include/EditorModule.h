@@ -8,15 +8,16 @@
 #include "EditorStates/IEditorState.h"
 #include "EditorContext.h"
 #include "EditorGUIContext.h"
+#include "Engine.h"
 
 namespace BamboEditor
 {
 	class EditorModule : public Bambo::Module
 	{
 	public:
-		EditorModule(Bambo::Window* targetWindow);
+		EditorModule();
 		virtual int32 GetModuleName() const override { return 'EDTM'; }
-		virtual void OnAttach() override;
+		virtual void OnAttach(Bambo::Engine* engine) override;
 		virtual void OnDetach() override;
 		virtual void OnUpdate(float deltaTIme) override;
 		virtual void OnRender() override;

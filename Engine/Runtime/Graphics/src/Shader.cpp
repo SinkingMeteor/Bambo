@@ -2,10 +2,10 @@
 
 namespace Bambo 
 {
-	Shader::Shader(const std::size_t assetId) :
+	Shader::Shader(RenderAPI renderApi, const std::size_t assetId) :
 		Resource(assetId),
 		m_shaderImplementation()
 	{
-		m_shaderImplementation = ShaderImplementation::CreateInternalShader();
+		m_shaderImplementation = ShaderImplementation::CreateInternalShader(renderApi);
 	}
 }

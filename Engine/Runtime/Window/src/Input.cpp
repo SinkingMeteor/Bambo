@@ -4,8 +4,7 @@ namespace Bambo
 {
 	bool Input::IsKeyPressed(int keyCode)
 	{
-
-		GLFWwindow* window = static_cast<GLFWwindow*>(WindowManager::Get()->GetWindow().GetWindowPtr());
+		GLFWwindow* window = static_cast<GLFWwindow*>(m_windowManager->GetWindow()->GetWindowPtr());
 
 		int result = glfwGetKey(window, keyCode);
 		return result == GLFW_PRESS || result == GLFW_REPEAT;
@@ -13,7 +12,7 @@ namespace Bambo
 
 	bool Input::IsKeyReleased(int keyCode)
 	{
-		GLFWwindow* window = static_cast<GLFWwindow*>(WindowManager::Get()->GetWindow().GetWindowPtr());
+		GLFWwindow* window = static_cast<GLFWwindow*>(m_windowManager->GetWindow()->GetWindowPtr());
 
 		int result = glfwGetKey(window, keyCode);
 		return result == GLFW_RELEASE;
@@ -21,7 +20,7 @@ namespace Bambo
 
 	bool Input::IsMouseButtonPressed(int mouseButton)
 	{
-		GLFWwindow* window = static_cast<GLFWwindow*>(WindowManager::Get()->GetWindow().GetWindowPtr());
+		GLFWwindow* window = static_cast<GLFWwindow*>(m_windowManager->GetWindow()->GetWindowPtr());
 
 		int result = glfwGetMouseButton(window, mouseButton);
 		return result == GLFW_PRESS || result == GLFW_REPEAT;
@@ -29,7 +28,7 @@ namespace Bambo
 
 	bool Input::IsMouseButtonReleased(int mouseButton)
 	{
-		GLFWwindow* window = static_cast<GLFWwindow*>(WindowManager::Get()->GetWindow().GetWindowPtr());
+		GLFWwindow* window = static_cast<GLFWwindow*>(m_windowManager->GetWindow()->GetWindowPtr());
 
 		int result = glfwGetMouseButton(window, mouseButton);
 		return result == GLFW_RELEASE;
@@ -38,7 +37,7 @@ namespace Bambo
 
 	glm::vec2 Input::GetMousePosition()
 	{
-		GLFWwindow* window = static_cast<GLFWwindow*>(WindowManager::Get()->GetWindow().GetWindowPtr());
+		GLFWwindow* window = static_cast<GLFWwindow*>(m_windowManager->GetWindow()->GetWindowPtr());
 
 		double x = 0.0f;
 		double y = 0.0f;

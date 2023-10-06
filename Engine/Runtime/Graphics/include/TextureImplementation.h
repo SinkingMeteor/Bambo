@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Rect.h"
 #include "TextureBuffer.h"
+#include "RenderAPI.h"
 namespace Bambo
 {
 	class BAMBO_API TextureImplementation
@@ -22,6 +23,6 @@ namespace Bambo
 		virtual void AddSubTex(const RectUInt& rect, const TextureBuffer& buffer) = 0;
 		virtual void AddSubTex(const RectUInt& rect, const uint8* data, TexChannelsAmount channels) = 0;
 
-		static std::unique_ptr<TextureImplementation> CreateTexture();
+		static std::unique_ptr<TextureImplementation> CreateTexture(RenderAPI renderApi);
 	};
 }

@@ -16,8 +16,9 @@
 
 namespace Bambo
 {
-	struct WorldParameters
+	struct WorldContext
 	{
+		Engine* Engine;
 		std::filesystem::path WorldFilePath;
 		std::filesystem::path AssetsFolderPath;
 	};
@@ -27,7 +28,7 @@ namespace Bambo
 	class BAMBO_API World
 	{
 	public:
-		World(const WorldParameters& worldParameters);
+		World(const WorldContext& worldParameters);
 		virtual ~World();
 
 		virtual void Start();
@@ -38,6 +39,7 @@ namespace Bambo
 		DebugLineRenderer* GetDebugLineRenderer() { return m_debugLineRenderer.get(); }
 		SpriteRenderer* GetSpriteRenderer() { return m_spriteRenderer.get(); }
 		WorldCameraManager* GetCameraManager() { return &m_cameraManager; }
+		WorldContext* GetWorldContext() { return &m_worldParameters; }
 
 		GameObject* CreateGameObject(IID parent = IID{}, IID id = IID{});
 		GameObject* GetGameObject(IID id);
@@ -48,6 +50,7 @@ namespace Bambo
 		TextureProvider* GetTextureProvider() { return &m_textureProvider; }
 		ShaderProvider* GetShaderProvider() { return &m_shaderProvider; }
 		FontProvider* GetFontProvider() { return &m_fontProvider; }
+			 
 		void SaveWorld();
 		void Reset();
 
@@ -56,7 +59,7 @@ namespace Bambo
 		bool IsValidGameObject(IID id);
 
 	private:
-		WorldParameters m_worldParameters;
+		WorldContext m_worldParameters;
 		std::unordered_map<IID, UPtr<GameObject>> m_gameObjectMap;
 		IID m_root;
 

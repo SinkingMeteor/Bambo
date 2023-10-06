@@ -3,9 +3,8 @@
 #include "OpenGL/OpenGLShader.h"
 namespace Bambo
 {
-	std::unique_ptr<ShaderImplementation> ShaderImplementation::CreateInternalShader()
+	std::unique_ptr<ShaderImplementation> ShaderImplementation::CreateInternalShader(RenderAPI renderApi)
 	{
-		RenderAPI renderApi = RenderManager::Get()->GetCurrentRenderAPI();
 		switch (renderApi)
 		{
 			case Bambo::RenderAPI::OpenGL: return std::make_unique<OpenGLShader>();

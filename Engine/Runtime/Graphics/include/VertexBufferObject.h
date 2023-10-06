@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "BufferLayout.h"
+#include "RenderAPI.h"
 namespace Bambo
 {
 	class BAMBO_API VertexBufferObject
@@ -17,7 +18,7 @@ namespace Bambo
 		virtual void SetLayout(SPtr<BufferLayout> layout) = 0;
 		virtual SPtr<BufferLayout> GetLayout() = 0;
 
-		static SPtr<VertexBufferObject> CreateVertexBufferObject(const void* data, uint32 byteSize);
-		static SPtr<VertexBufferObject> CreateVertexBufferObject(uint32 byteSize);
+		static SPtr<VertexBufferObject> CreateVertexBufferObject(RenderAPI renderApi, const void* data, uint32 byteSize);
+		static SPtr<VertexBufferObject> CreateVertexBufferObject(RenderAPI renderApi, uint32 byteSize);
 	};
 }

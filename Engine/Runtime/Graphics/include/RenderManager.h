@@ -6,6 +6,8 @@
 
 namespace Bambo
 {
+	class Engine;
+
 	struct RenderStatistics
 	{
 		int32 DrawCalls;
@@ -17,11 +19,10 @@ namespace Bambo
 		bool DrawDebug{true};
 	};
 
-	class BAMBO_API RenderManager final : public ISingleton
+	class BAMBO_API RenderManager final
 	{
-		SINGLETON_BODY(RenderManager, 'RNDR')
 	public:
-		RenderManager();
+		RenderManager(Engine* engine);
 		void Initialize(RenderAPI renderApi);
 		void Dispose();
 
@@ -33,6 +34,7 @@ namespace Bambo
 		RendererImplementation* GetRenderer() { return m_renderer.get(); }
 		RenderAPI GetCurrentRenderAPI() const { return m_renderApiType; }
 	private:
+		Engine* m_engine;
 		FT_Library m_freeTypeHandle;
 		RenderStatistics m_renderStatistics;
 		RenderParameters m_renderParameters;

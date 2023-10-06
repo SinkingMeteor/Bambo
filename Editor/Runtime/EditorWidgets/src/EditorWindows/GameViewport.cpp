@@ -1,11 +1,13 @@
 #include "EditorWindows/GameViewport.h"
 #include "RenderManager.h"
-
+#include "EditorContext.h"
+#include "Engine.h"
 namespace BamboEditor
 {
-	GameViewportWindow::GameViewportWindow(SPtr<Bambo::Framebuffer> framebuffer) :
-		m_framebuffer(framebuffer),
+	GameViewportWindow::GameViewportWindow(EditorContext* editorContext, SPtr<Bambo::Framebuffer> framebuffer) :
 		m_windowName("Game viewport"),
+		m_framebuffer(framebuffer),
+		m_editorContext(editorContext),
 		m_isOpenedInfoPanel(false)
 	{}
 
@@ -38,7 +40,8 @@ namespace BamboEditor
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		viewportPanelSize.x -= ImGui::GetScrollX();
 		viewportPanelSize.y -= ImGui::GetScrollY();
-		Bambo::WindowManager* windowManager = Bambo::WindowManager::Get();
+		Bambo::WindowManager* windowManager = m_editorContext->Engine->GetWindowManager();
+
 		uint32 width = windowManager->GetWindowWidth();
 		uint32 height = windowManager->GetWindowHeight();
 
@@ -63,7 +66,7 @@ namespace BamboEditor
 
 	void GameViewportWindow::DrawMenuBar()
 	{
-		Bambo::RenderParameters& renderParameters = Bambo::RenderManager::Get()->GetRenderParameters();
+		Bambo::RenderParameters& renderParameters = m_editorContext->Engine->GetRenderManager()->GetRenderParameters();
 
 		if (ImGui::BeginMenuBar())
 		{
@@ -95,7 +98,7 @@ namespace BamboEditor
 			float deltaTime = Bambo::TimeManager::Get()->GetLastDeltaTime();
 			int32 fps = static_cast<int32>(1.0f / deltaTime);
 
-			Bambo::RenderStatistics& renderStatistics = Bambo::RenderManager::Get()->GetRenderStatistics();
+			Bambo::RenderStatistics& renderStatistics = m_editorContext->Engine->GetRenderManager()->GetRenderStatistics();
 
 			ImGui::Text("FPS: %i", fps);
 			ImGui::Text("Draw calls: %i", renderStatistics.DrawCalls);

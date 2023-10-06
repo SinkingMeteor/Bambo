@@ -1,16 +1,23 @@
 #include "DebugLineRenderer.h"
 #include "RenderManager.h"
 #include "World.h"
+#include "Engine.h"
 
 namespace Bambo
 {
-	DebugLineRenderer::DebugLineRenderer(SPtr<Shader> defaultShader) :
+	DebugLineRenderer::DebugLineRenderer(World* world, SPtr<Shader> defaultShader) :
 		Renderer(),
-		m_vbo(VertexBufferObject::CreateVertexBufferObject(4 * sizeof(QuadVertex))),
-		m_vao(VertexArrayObject::CreateVertexArrayObject()),
+		m_vbo(),
+		m_vao(),
 		m_renderVertices(),
 		m_lines()
 	{
+		Engine* engine = world->GetWorldContext()->Engine;
+		RenderAPI renderApi = engine->GetRenderManager()->GetCurrentRenderAPI();
+
+		m_vbo = VertexBufferObject::CreateVertexBufferObject(renderApi, LINE_VERTEX_COUNT * sizeof(QuadVertex));
+		m_vao = VertexArrayObject::CreateVertexArrayObject(renderApi);
+
 		m_defaultShader = defaultShader;
 
 		BAMBO_ASSERT(!m_defaultShader.expired() && m_defaultShader.lock(), "Default shader wasn't loaded")
@@ -31,6 +38,11 @@ namespace Bambo
 
 	void DebugLineRenderer::Render(World* world)
 	{
+		Engine* engine = world->GetWorldContext()->Engine;
+		BAMBO_ASSERT_S(engine);
+		RendererImplementation* renderer = engine->GetRenderManager()->GetRenderer();
+		BAMBO_ASSERT_S(renderer);
+
 		SPtr<Shader> defaultShader = m_defaultShader.lock();
 		BAMBO_ASSERT_S(defaultShader);
 
@@ -69,7 +81,7 @@ namespace Bambo
 
 			m_vbo->SetData(m_renderVertices.data(), LINE_VERTEX_COUNT * sizeof(QuadVertex));
 
-			RenderManager::Get()->GetRenderer()->Draw(m_vao, LINE_VERTEX_COUNT, RenderPrimitive::TriangleStrip);
+			renderer->Draw(m_vao, LINE_VERTEX_COUNT, RenderPrimitive::TriangleStrip);
 		}
 
 		m_lines.clear();

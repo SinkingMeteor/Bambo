@@ -5,9 +5,8 @@
 
 namespace Bambo
 {
-	SPtr<VertexBufferObject> VertexBufferObject::CreateVertexBufferObject(const void* data, uint32 byteSize)
+	SPtr<VertexBufferObject> VertexBufferObject::CreateVertexBufferObject(RenderAPI renderApi, const void* data, uint32 byteSize)
 	{
-		RenderAPI renderApi = RenderManager::Get()->GetCurrentRenderAPI();
 		switch (renderApi)
 		{
 		case RenderAPI::OpenGL: return std::make_shared<OpenGLVertexBufferObject>(data, byteSize);
@@ -16,9 +15,8 @@ namespace Bambo
 		return nullptr;
 	}
 
-	SPtr<VertexBufferObject> VertexBufferObject::CreateVertexBufferObject(uint32 byteSize)
+	SPtr<VertexBufferObject> VertexBufferObject::CreateVertexBufferObject(RenderAPI renderApi, uint32 byteSize)
 	{
-		RenderAPI renderApi = RenderManager::Get()->GetCurrentRenderAPI();
 		switch (renderApi)
 		{
 		case RenderAPI::OpenGL: return std::make_shared<OpenGLVertexBufferObject>(byteSize);

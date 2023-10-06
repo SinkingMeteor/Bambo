@@ -1,5 +1,11 @@
 #include "Engine.h"
 
+#include "Window.h"
+#include "Components/Components.h"
+#include "Time/TimeManager.h"
+#include "Resource/ResourceManager.h"
+#include "Components/ComponentFactory.h"
+
 namespace
 {
 	const constexpr float DESIRED_DELTA_TIME = 1.0f / 60.0f;
@@ -14,6 +20,13 @@ namespace
 
 namespace Bambo
 {
+	Engine::Engine() :
+		m_modules(),
+		m_audioManager(),
+		m_renderManager(this),
+		m_windowManager()
+	{}
+
 	void Engine::Initialize()
 	{
 		SingletonManager* singletonManager = SingletonManager::Get();
@@ -34,32 +47,19 @@ namespace Bambo
 		WindowSettings settings{ DEFAULT_WIDHT, DEFAULT_HEIGHT, DEFAULT_TITLE };
 		LoadConfigurationFile(settings);
 
-		WindowManager* windowManager = singletonManager->Register<WindowManager>();
-		BAMBO_ASSERT_S(windowManager)
+		m_windowManager.Initialize(settings, RenderAPI::OpenGL);
+		m_windowManager.GetWindow()->OnWindowResized().Bind(*this, &Engine::OnWindowResize);
 
-		RenderManager* renderManager = singletonManager->Register<RenderManager>();
-		BAMBO_ASSERT_S(renderManager)
+		m_renderManager.Initialize(RenderAPI::OpenGL);
+		m_renderManager.GetRenderer()->SetClearColor(Color{ 0.3f, 0.3f, 0.3f, 1.0f });
+		m_renderManager.GetRenderer()->SetViewport({ 0u , 0u }, { settings.Width, settings.Height });
 
-		windowManager->Initialize(settings);
-		windowManager->GetWindow().OnWindowResized().Bind(*this, &Engine::OnWindowResize);
-
-		renderManager->Initialize(RenderAPI::OpenGL);
-		renderManager->GetRenderer()->SetClearColor(Color{ 0.3f, 0.3f, 0.3f, 1.0f });
-		renderManager->GetRenderer()->SetViewport({ 0u , 0u }, { settings.Width, settings.Height });
-
-		AudioManager* audioManager = singletonManager->Register<AudioManager>();
-		BAMBO_ASSERT_S(audioManager)
-		audioManager->Initialize();
-	}
-
-	Window* Engine::GetWindow()
-	{
-		return &WindowManager::Get()->GetWindow();
+		m_audioManager.Initialize();
 	}
 
 	void Engine::AddModule(UPtr<Module> module)
 	{
-		module->OnAttach();
+		module->OnAttach(this);
 		m_modules.emplace_back(std::move(module));
 	}
 
@@ -73,7 +73,7 @@ namespace Bambo
 
 	int Engine::Run()
 	{
-		while (!WindowManager::Get()->WantsToClose())
+		while (!m_windowManager.WantsToClose())
 		{
 			float passedTime = TimeManager::Get()->MakeTick();
 
@@ -92,7 +92,7 @@ namespace Bambo
 				m_modules[i]->OnUpdate(DESIRED_DELTA_TIME);
 			}
 
-			RenderManager::Get()->OnStartFrame();
+			m_renderManager.OnStartFrame();
 
 			for (size_t i = 0; i < m_modules.size(); ++i)
 			{
@@ -114,7 +114,7 @@ namespace Bambo
 				m_modules[i]->OnGUIEnd();
 			}
 
-			WindowManager::Get()->Update();
+			m_windowManager.Update();
 		}
 
 		Dispose();
@@ -153,9 +153,10 @@ namespace Bambo
 
 	void Engine::OnWindowResize(uint32 width, uint32 height)
 	{
-		RendererImplementation* renderer = RenderManager::Get()->GetRenderer();
-		Window& window = WindowManager::Get()->GetWindow();
-		renderer->SetViewport(Vector2u{ 0u, 0u }, Vector2u{ window.GetWidth(), window.GetHeight() });
+		RendererImplementation* renderer = m_renderManager.GetRenderer();
+		Window* window = m_windowManager.GetWindow();
+
+		renderer->SetViewport(Vector2u{ 0u, 0u }, Vector2u{ window->GetWidth(), window->GetHeight() });
 	}
 
 	void Engine::Dispose()
@@ -165,8 +166,8 @@ namespace Bambo
 			m_modules[i]->OnDetach();
 		}
 
-		AudioManager::Get()->Dispose();
-		RenderManager::Get()->Dispose();
-		WindowManager::Get()->Dispose();
+		m_audioManager.Dispose();
+		m_renderManager.Dispose();
+		m_windowManager.Dispose();
 	}
 }

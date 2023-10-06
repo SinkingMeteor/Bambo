@@ -2,6 +2,7 @@
 #include "Essentials.h"
 #include "Resource/ResourceProvider.h"
 #include "Shader.h"
+#include "Engine.h"
 
 namespace Bambo
 {
@@ -9,12 +10,13 @@ namespace Bambo
 	{
 		using result_type = std::shared_ptr<Shader>;
 
-		result_type operator()(const std::size_t id, const std::string& shaderPath) const
+		result_type operator()(Engine* engine, const std::size_t id, const std::string& shaderPath) const
 		{
-			std::shared_ptr<Shader> shader = std::make_shared<Shader>(id);
+			SPtr<Shader> shader = std::make_shared<Shader>(engine->GetRenderManager()->GetCurrentRenderAPI(), id);
 			shader->LoadFromFile(shaderPath);
 			return shader;
 		}
+
 	};
 
 	using ShaderProvider = ResourceProvider<Shader, ShaderLoader>;

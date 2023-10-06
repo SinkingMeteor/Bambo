@@ -11,17 +11,20 @@ namespace
 
 namespace BamboEditor
 {
-	EditorModule::EditorModule(Bambo::Window* targetWindow) :
+	EditorModule::EditorModule() :
 		m_editorContext(),
+		m_editorConfig(),
 		m_states(),
-		m_guiWorld(targetWindow)
+		m_guiWorld()
 	{}
 
-	void EditorModule::OnAttach()
+	void EditorModule::OnAttach(Engine* engine)
 	{
+		m_editorContext.Engine = engine;
+
 		LoadEditorConfig();
 
-		m_guiWorld.Initialize();
+		m_guiWorld.Initialize(m_editorContext.Engine->GetWindowManager()->GetWindow());
 		m_editorContext.CurrentProject = std::make_unique<Project>();
 
 		m_states.AddState(std::make_shared<OpenProjectEditorState>(&m_editorContext, &m_editorConfig, &m_states));

@@ -1,14 +1,16 @@
 #pragma once
 #include "Essentials.h"
-#include "SingletonManager.h"
 #include "AudioDevice.h"
 
 namespace Bambo
 {
-	class AudioManager : public ISingleton
+	class AudioManager final
 	{
-		SINGLETON_BODY(AudioManager, 'AUDM')
 	public:
+		AudioManager() = default;
+		AudioManager(const AudioManager&) = delete;
+		AudioManager& operator=(const AudioManager&) = delete;
+
 		void Initialize();
 		void Dispose();
 	private:

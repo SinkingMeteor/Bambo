@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "VertexBufferObject.h"
-
+#include "RenderAPI.h"
 namespace Bambo
 {
 	class BAMBO_API VertexArrayObject
@@ -15,6 +15,6 @@ namespace Bambo
 		virtual void AddVertexBufferObject(SPtr<VertexBufferObject> vbo) = 0;
 		virtual ~VertexArrayObject() {}
 
-		static SPtr<VertexArrayObject> CreateVertexArrayObject();
+		static SPtr<VertexArrayObject> CreateVertexArrayObject(RenderAPI renderApi);
 	};
 }

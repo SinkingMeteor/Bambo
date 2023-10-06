@@ -33,7 +33,7 @@ namespace Bambo
 
 		OnWindowResizedDelegate& OnWindowResized() { return m_onWindowResized; }
 
-		static std::unique_ptr<Window> CreateBamboWindow(const WindowSettings& settings, OSType osType);
+		static std::unique_ptr<Window> CreateBamboWindow(const WindowSettings& settings, OSType osType, RenderAPI renderApi);
 	protected:
 		OnWindowResizedDelegate m_onWindowResized;
 	};

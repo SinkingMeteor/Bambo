@@ -8,15 +8,18 @@
 
 namespace BamboEditor
 {
+	class EditorContext;
+
 	class GameViewportWindow final : public GUIWindow
 	{
 	public:
-		GameViewportWindow(SPtr<Bambo::Framebuffer> framebuffer);
+		GameViewportWindow(EditorContext* editorContext, SPtr<Bambo::Framebuffer> framebuffer);
 		virtual void OnGUI() override;
 		virtual const std::string& GetWindowName() const override { return m_windowName; }
 	private:
 		std::string m_windowName;
 		SPtr<Bambo::Framebuffer> m_framebuffer;
+		EditorContext* m_editorContext;
 		bool m_isOpenedInfoPanel;
 
 		ImVec2 ResizeGameViewport();

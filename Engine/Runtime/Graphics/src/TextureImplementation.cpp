@@ -4,13 +4,13 @@
 #include "RenderAPI.h"
 namespace Bambo
 {
-	std::unique_ptr<TextureImplementation> TextureImplementation::CreateTexture()
+	std::unique_ptr<TextureImplementation> TextureImplementation::CreateTexture(RenderAPI renderApi)
 	{
-		RenderAPI renderApi = RenderManager::Get()->GetCurrentRenderAPI();
 		switch (renderApi)
 		{
 			case RenderAPI::OpenGL: return std::make_unique<OpenGLTexture>();
 		}
+
 		BAMBO_ASSERT(false, "Unknown render api")
 		return nullptr;
 	}

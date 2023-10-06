@@ -8,10 +8,13 @@ namespace Bambo
 	class BAMBO_API Input 
 	{
 	public:
-		static bool IsKeyPressed(int keyCode);
-		static bool IsKeyReleased(int keyCode);
-		static bool IsMouseButtonPressed(int mouseButton);
-		static bool IsMouseButtonReleased(int mouseButton);
-		static glm::vec2 GetMousePosition();
+		Input(WindowManager* windowManager) : m_windowManager(windowManager) {}
+		bool IsKeyPressed(int keyCode);
+		bool IsKeyReleased(int keyCode);
+		bool IsMouseButtonPressed(int mouseButton);
+		bool IsMouseButtonReleased(int mouseButton);
+		glm::vec2 GetMousePosition();
+	private:
+		WindowManager* m_windowManager;
 	};
 }

@@ -11,7 +11,7 @@ namespace Bambo
 
 		RESOURCE_BODY(Shader, AssetType::Shader)
 	public:
-		Shader(const std::size_t assetId = 0);
+		Shader(RenderAPI renderApi, const std::size_t assetId = 0);
 		Shader(const Shader&) = delete;
 		Shader& operator=(const Shader&) = delete;
 		void Use() { m_shaderImplementation->Use(); }

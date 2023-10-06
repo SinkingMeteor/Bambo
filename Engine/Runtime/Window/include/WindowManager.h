@@ -1,18 +1,21 @@
 #pragma once
 #include "Essentials.h"
 #include "Window.h"
-#include "SingletonManager.h"
+#include "RenderAPI.h"
+
 namespace Bambo
 {
-	class BAMBO_API WindowManager : public ISingleton
+	class BAMBO_API WindowManager final
 	{
-		SINGLETON_BODY(WindowManager, 'WNDM')
 	public:
-		void Initialize(const WindowSettings& settings);
+		WindowManager() = default;
+		WindowManager(const WindowManager&) = delete;
+		WindowManager& operator=(const WindowManager&) = delete;
+		void Initialize(const WindowSettings& settings, RenderAPI renderApi);
 		void Dispose();
 		bool WantsToClose() const { return m_window->WindowShouldClose(); }
 		void Update() { m_window->Update(); }
-		Window& GetWindow() { return *m_window; }
+		Window* GetWindow() { return m_window.get(); }
 		uint32 GetWindowWidth() const { return m_window->GetWidth(); }
 		uint32 GetWindowHeight() const { return m_window->GetHeight(); }
 	private:

@@ -26,6 +26,7 @@ namespace BamboEditor
 			}
 		}
 
+		ImGui::GetMainViewport();
 		ImGui::Button(assetName.c_str());
 		if (ImGui::BeginDragDropTarget())
 		{

@@ -1,6 +1,6 @@
 #pragma once
 #include "Essentials.h"
-
+#include "RenderAPI.h"
 namespace Bambo
 {
 	class BAMBO_API IndexBufferObject
@@ -16,6 +16,6 @@ namespace Bambo
 		virtual void Unbind() = 0;
 		virtual void SetIndices(const void* data, std::size_t byteSize) = 0;
 
-		static SPtr<IndexBufferObject> CreateIndexBuffer(std::size_t byteSize);
+		static SPtr<IndexBufferObject> CreateIndexBuffer(RenderAPI renderApi, std::size_t byteSize);
 	};
 }

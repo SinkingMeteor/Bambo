@@ -1,5 +1,5 @@
 #include "Font.h"
-#include "RenderManager.h"
+#include "Engine.h"
 
 DECLARE_LOG_CATEGORY_STATIC(LogFont)
 
@@ -16,9 +16,10 @@ namespace
 
 namespace Bambo
 {
-	Font::Font(std::size_t instanceID) :
+	Font::Font(Engine* engine, std::size_t instanceID) :
 		Resource(instanceID),
 		m_pages(),
+		m_engine(engine),
 		m_fontFace()
 	{
 	}
@@ -33,7 +34,7 @@ namespace Bambo
 
 	void Font::LoadFromFile(const std::string& fontFile)
 	{
-		FT_Library* ffHandle = RenderManager::Get()->GetFontHandle();
+		FT_Library* ffHandle = m_engine->GetRenderManager()->GetFontHandle();
 
 		if (FT_New_Face(*ffHandle, fontFile.c_str(), 0, &m_fontFace))
 		{
@@ -117,7 +118,7 @@ namespace Bambo
 			}
 		}
 			
-		page.FontTexture = std::make_shared<Texture2D>();
+		page.FontTexture = std::make_shared<Texture2D>(m_engine->GetRenderManager()->GetCurrentRenderAPI());
 
 		{
 			TextureBuffer globalTexBuffer{TexChannelsAmount::R};

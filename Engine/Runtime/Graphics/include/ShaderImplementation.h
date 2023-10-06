@@ -20,6 +20,6 @@ namespace Bambo
 		virtual void SetVector4f(const char* name, const glm::vec4& value) = 0;
 		virtual void SetMatrix4(const char* name, const glm::mat4& matrix) = 0;
 
-		static std::unique_ptr<ShaderImplementation> CreateInternalShader();
+		static std::unique_ptr<ShaderImplementation> CreateInternalShader(RenderAPI renderApi);
 	};
 }

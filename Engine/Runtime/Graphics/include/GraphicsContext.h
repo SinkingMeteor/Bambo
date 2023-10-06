@@ -13,6 +13,6 @@ namespace Bambo
 		virtual void Initialize() = 0;
 		virtual void SwapBuffers() = 0;
 
-		static std::unique_ptr<GraphicsContext> Create(void* windowPtr);
+		static std::unique_ptr<GraphicsContext> Create(RenderAPI renderApi, void* windowPtr);
 	};
 }

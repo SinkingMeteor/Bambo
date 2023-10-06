@@ -2,6 +2,8 @@
 #include "WorldSerialization.h"
 #include "RenderManager.h"
 #include "DrawDebugHelpers.h"
+#include "Engine.h"
+
 namespace
 {
 	const char* WORLD_NAME_KEY = "name";
@@ -13,22 +15,22 @@ DECLARE_LOG_CATEGORY_STATIC(WorldLog)
 
 namespace Bambo
 {
-	World::World(const WorldParameters& worldParameters) :
-		m_worldParameters(worldParameters),
+	World::World(const WorldContext& worldContext) :
+		m_worldParameters(worldContext),
 		m_gameObjectMap(),
 		m_root(),
 		m_spriteRenderer(),
 		m_debugLineRenderer(),
 		m_cameraManager(),
-		m_shaderProvider(),
-		m_textureProvider(),
-		m_fontProvider(),
+		m_shaderProvider(m_worldParameters.Engine),
+		m_textureProvider(m_worldParameters.Engine),
+		m_fontProvider(m_worldParameters.Engine),
 		m_globalMatrices()
 	{
 		SPtr<Shader> defaultSpriteShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / "Shaders/SpriteDefault/SpriteDefault.shader");
-		m_spriteRenderer = std::make_unique<SpriteRenderer>(defaultSpriteShader);
+		m_spriteRenderer = std::make_unique<SpriteRenderer>(this, defaultSpriteShader);
 		SPtr<Shader> defaultLineShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultShaderPath_A);
-		m_debugLineRenderer = std::make_unique<DebugLineRenderer>(defaultLineShader);
+		m_debugLineRenderer = std::make_unique<DebugLineRenderer>(this, defaultLineShader);
 
 		CreateRoot(IID::GenerateNew());
 		LoadWorld();
@@ -74,7 +76,7 @@ namespace Bambo
 
 		m_spriteRenderer->Render(this);
 
-		RenderParameters& renderParameters = RenderManager::Get()->GetRenderParameters();
+		RenderParameters& renderParameters = m_worldParameters.Engine->GetRenderManager()->GetRenderParameters();
 		if (renderParameters.DrawDebug)
 		{
 			m_debugLineRenderer->Render(this);

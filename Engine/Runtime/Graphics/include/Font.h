@@ -6,6 +6,9 @@
 
 namespace Bambo
 {
+	class RenderManager;
+	class Engine;
+
 	struct Glyph
 	{
 	public:
@@ -28,13 +31,14 @@ namespace Bambo
 	{
 		RESOURCE_BODY(Font, AssetType::Font)
 	public:
-		Font(std::size_t instanceID);
+		Font(Engine* engine, std::size_t instanceID);
 		virtual ~Font();
 		void LoadFromFile(const std::string& fontFile);
 		Page* GetPage(uint32 charSize);
 
 	private:
 		std::unordered_map<uint32, Page> m_pages;
+		Engine* m_engine;
 		FT_Face m_fontFace;
 
 		bool LoadPage(uint32 charSize);

@@ -2,9 +2,9 @@
 
 namespace Bambo
 {
-	void WindowManager::Initialize(const WindowSettings& windowSettings)
+	void WindowManager::Initialize(const WindowSettings& windowSettings, RenderAPI renderApi)
 	{
-		m_window = Window::CreateBamboWindow(windowSettings, OSType::Windows);
+		m_window = Window::CreateBamboWindow(windowSettings, OSType::Windows, renderApi);
 		m_window->Initialize();
 	}
 

@@ -5,9 +5,8 @@
 
 namespace Bambo
 {
-	SPtr<VertexArrayObject> VertexArrayObject::CreateVertexArrayObject()
+	SPtr<VertexArrayObject> VertexArrayObject::CreateVertexArrayObject(RenderAPI renderApi)
 	{
-		RenderAPI renderApi = RenderManager::Get()->GetCurrentRenderAPI();
 		switch (renderApi)
 		{
 		case RenderAPI::OpenGL: return std::make_shared<OpenGLVertexArrayObject>();

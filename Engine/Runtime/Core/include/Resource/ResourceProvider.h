@@ -1,14 +1,17 @@
 #pragma once
 #include "Essentials.h"
 #include "ResourceManager.h"
+#include "Engine.h"
 
 namespace Bambo 
 {
+	class Engine;
+
 	template<typename ResType, typename Loader>
 	class BAMBO_API ResourceProvider final
 	{
 	public:
-		ResourceProvider();
+		ResourceProvider(Engine* engine);
 		ResourceProvider(const ResourceProvider&) = delete;
 		ResourceProvider& operator=(const ResourceProvider&) = delete;
 		SPtr<ResType> Load(const std::filesystem::path& path);
@@ -18,12 +21,14 @@ namespace Bambo
 	private:
 		std::unordered_map<bambo_id, SPtr<ResType>> m_resourceMap;
 		Loader m_loader;
+		Engine* m_engine;
 	};
 
 	template<typename ResType, typename Loader>
-	ResourceProvider<ResType, Loader>::ResourceProvider() :
+	ResourceProvider<ResType, Loader>::ResourceProvider(Engine* engine) :
 		m_resourceMap(),
-		m_loader()
+		m_loader(),
+		m_engine(engine)
 	{}
 
 	template<typename ResType, typename Loader>
@@ -54,7 +59,7 @@ namespace Bambo
 			return GetResource(info.AssetId);
 		}
 
-		SPtr<ResType> resource = m_loader(info.AssetId, path.string());
+		SPtr<ResType> resource = m_loader(m_engine, info.AssetId, path.string());
 		m_resourceMap.emplace(info.AssetId, resource);
 		return resource;
 	}
@@ -73,7 +78,7 @@ namespace Bambo
 		BAMBO_ASSERT_S(info)
 		id = info->AssetId;
 
-		SPtr<ResType> resource = m_loader(id, info->FullPath.string());
+		SPtr<ResType> resource = m_loader(m_engine, id, info->FullPath.string());
 		m_resourceMap.emplace(id, resource);
 		return resource;
 	}

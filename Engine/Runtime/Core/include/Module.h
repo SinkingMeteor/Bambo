@@ -3,6 +3,8 @@
 
 namespace Bambo
 {
+	class Engine;
+
 	class BAMBO_API Module
 	{
 	public:
@@ -11,7 +13,7 @@ namespace Bambo
 
 		virtual int32 GetModuleName() const = 0;
 
-		virtual void OnAttach() {}
+		virtual void OnAttach(Engine* engine) {}
 		virtual void OnDetach() {}
 		virtual void OnUpdate(float deltaTIme) {}
 		virtual void OnRender() {}

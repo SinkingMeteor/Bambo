@@ -3,21 +3,29 @@
 #include "Components/SpriteComponent.h"
 #include "RenderManager.h"
 #include "World.h"
+#include "Engine.h"
 
 namespace Bambo
 {
 	DECLARE_LOG_CATEGORY_STATIC(SpriteRendererLog)
 
-	SpriteRenderer::SpriteRenderer(SPtr<Shader> defaultShader) :
+	SpriteRenderer::SpriteRenderer(World* world, SPtr<Shader> defaultShader) :
 		Renderer(),
-		m_vbo(VertexBufferObject::CreateVertexBufferObject(SPRITE_VERTEX_COUNT * sizeof(QuadVertex))),
-		m_vao(VertexArrayObject::CreateVertexArrayObject()),
-		m_ibo(IndexBufferObject::CreateIndexBuffer(INDEX_VERTEX_COUNT * sizeof(uint32))),
+		m_vbo(),
+		m_vao(),
+		m_ibo(),
 		m_renderVertices(),
 		m_sprites(),
 		m_cachedVertices(),
 		m_cachedIndices()
 	{
+		Engine* engine = world->GetWorldContext()->Engine;
+		RenderAPI renderApi = engine->GetRenderManager()->GetCurrentRenderAPI();
+
+		m_vbo = VertexBufferObject::CreateVertexBufferObject(renderApi, SPRITE_VERTEX_COUNT * sizeof(QuadVertex));
+		m_vao = VertexArrayObject::CreateVertexArrayObject(renderApi);
+		m_ibo = IndexBufferObject::CreateIndexBuffer(renderApi, INDEX_VERTEX_COUNT * sizeof(uint32));
+
 		m_defaultShader = defaultShader;
 
 		BAMBO_ASSERT(!m_defaultShader.expired() && m_defaultShader.lock(), "Default shader wasn't loaded")
@@ -38,6 +46,11 @@ namespace Bambo
 
 	void SpriteRenderer::Render(World* world)
 	{
+		Engine* engine = world->GetWorldContext()->Engine;
+		BAMBO_ASSERT_S(engine);
+		RendererImplementation* renderer = engine->GetRenderManager()->GetRenderer();
+		BAMBO_ASSERT_S(renderer);
+
 		const glm::mat4& projViewMat = world->GetCameraManager()->GetProjViewMatrix();
 		std::sort(m_sprites.begin(), m_sprites.end(), [](SpriteRenderRequest& r1, SpriteRenderRequest& r2) { return r1.SortingOrder < r2.SortingOrder; });
 
@@ -110,14 +123,14 @@ namespace Bambo
 			m_vbo->SetData(m_cachedVertices.data(), m_cachedVertices.size() * sizeof(QuadVertex));
 			m_ibo->SetIndices(m_cachedIndices.data(), m_cachedIndices.size());
 
-			RenderManager::Get()->GetRenderer()->DrawIndexed(m_vao, m_ibo, m_cachedIndices.size(), RenderPrimitive::Triangle);
+			renderer->DrawIndexed(m_vao, m_ibo, m_cachedIndices.size(), RenderPrimitive::Triangle);
 
 			m_cachedVertices.clear();
 			m_cachedIndices.clear();
 			--savedByBatching;
 		}
 		
-		RenderStatistics& renderStatistics = RenderManager::Get()->GetRenderStatistics();
+		RenderStatistics& renderStatistics = engine->GetRenderManager()->GetRenderStatistics();
 		renderStatistics.DrawCalls += drawCallCounter;
 		renderStatistics.SavedByBatching += savedByBatching;
 

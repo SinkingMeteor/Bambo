@@ -3,12 +3,12 @@
 
 namespace Bambo
 {
-	Texture2D::Texture2D(const std::size_t assetId) :
+	Texture2D::Texture2D(RenderAPI renderApi, const std::size_t assetId) :
 		Resource(assetId),
 		m_textureImplementation(),
 		m_textureRects()
 	{
-		m_textureImplementation = TextureImplementation::CreateTexture();
+		m_textureImplementation = TextureImplementation::CreateTexture(renderApi);
 	}
 
 	void Texture2D::AddSubTex(const RectUInt& rect, const TextureBuffer& buffer)

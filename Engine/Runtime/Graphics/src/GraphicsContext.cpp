@@ -1,13 +1,11 @@
 #include "OpenGL/OpenGLGraphicsContext.h"
 #include "GraphicsContext.h"
-#include "RenderManager.h"
 
 namespace Bambo
 {
-	std::unique_ptr<GraphicsContext> GraphicsContext::Create(void* windowPtr)
+	std::unique_ptr<GraphicsContext> GraphicsContext::Create(RenderAPI renderApi, void* windowPtr)
 	{
-		RenderAPI apiType = RenderManager::Get()->GetCurrentRenderAPI();
-		switch (apiType)
+		switch (renderApi)
 		{
 		case RenderAPI::OpenGL:  return std::make_unique<OpenGLGraphicsContext>(static_cast<GLFWwindow*>(windowPtr));
 		}

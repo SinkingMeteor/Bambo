@@ -1,12 +1,13 @@
 #include "WindowsWindow.h"
 namespace Bambo
 {
-	WindowsWindow::WindowsWindow(const WindowSettings& settings) :
+	WindowsWindow::WindowsWindow(const WindowSettings& settings, RenderAPI renderApi) :
 		m_window(nullptr),
 		m_width(settings.Width),
 		m_height(settings.Height),
 		m_title(settings.Title),
-		m_context()
+		m_context(),
+		m_renderApi(renderApi)
 	{}
 
 	WindowsWindow::~WindowsWindow()
@@ -38,7 +39,7 @@ namespace Bambo
 
 		glfwMakeContextCurrent(m_window);
 
-		m_context = GraphicsContext::Create(m_window);
+		m_context = GraphicsContext::Create(m_renderApi, m_window);
 		m_context->Initialize();
 
 		glfwSetWindowUserPointer(m_window, this);

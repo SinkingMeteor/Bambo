@@ -3,6 +3,7 @@
 #include "AudioFormatLoader.h"
 #include "AudioWavLoader.h"
 #include "Audio.h"
+#include "Engine.h"
 namespace Bambo
 {
 	struct BAMBO_API AudioLoader
@@ -16,7 +17,7 @@ namespace Bambo
 			m_loaders.emplace_back(std::make_shared<AudioWavLoader>());
 		}
 
-		result_type operator()(const std::size_t id, const std::string& path) const
+		result_type operator()(Engine* engine, const std::size_t id, const std::string& path) const
 		{
 			std::ifstream inStream{ path, std::ios::binary };
 			if (!inStream.is_open())

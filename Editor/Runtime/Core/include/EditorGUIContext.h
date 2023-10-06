@@ -8,8 +8,8 @@ namespace BamboEditor
 	class EditorGUIContext final
 	{
 	public:
-		EditorGUIContext(Bambo::Window* targetWindow) : m_targetWindow(targetWindow) {}
-		void Initialize();
+		EditorGUIContext();
+		void Initialize(Bambo::Window* targetWindow);
 		void StartFrame();
 		void EndFrame();
 		void Dispose();

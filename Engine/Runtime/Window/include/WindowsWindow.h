@@ -8,7 +8,7 @@ namespace Bambo
 	class BAMBO_API WindowsWindow final : public Window
 	{
 	public:
-		WindowsWindow(const WindowSettings& settings);
+		WindowsWindow(const WindowSettings& settings, RenderAPI renderApi);
 		virtual ~WindowsWindow();
 
 		virtual void Initialize() override;
@@ -27,5 +27,6 @@ namespace Bambo
 		uint32 m_height{ 1u };
 		std::string m_title{};
 		std::unique_ptr<GraphicsContext> m_context;
+		RenderAPI m_renderApi;
 	};
 }
