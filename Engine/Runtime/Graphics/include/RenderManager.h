@@ -6,7 +6,7 @@
 
 namespace Bambo
 {
-	class BAMBO_API RenderManager : public ISingleton
+	class BAMBO_API RenderManager final : public ISingleton
 	{
 		SINGLETON_BODY(RenderManager, 'RNDR')
 	public:

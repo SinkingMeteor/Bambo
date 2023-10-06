@@ -11,7 +11,7 @@ namespace Bambo
 		RectInt GlyphTexRect;
 	};
 
-	class BAMBO_API Text
+	class BAMBO_API Text final
 	{
 	public:
 		Text();

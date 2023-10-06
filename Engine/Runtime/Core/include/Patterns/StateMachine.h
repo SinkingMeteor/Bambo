@@ -16,7 +16,7 @@ namespace Bambo
 
 
 	template<typename T>
-	class BAMBO_API StateMachine
+	class BAMBO_API StateMachine final
 	{
 		static_assert(std::is_base_of<IState, T>::value, "Typename of statemachine is not child of IState");
 
