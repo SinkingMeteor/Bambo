@@ -17,9 +17,8 @@ namespace
 namespace Bambo
 {
 	Font::Font(Engine* engine, std::size_t instanceID) :
-		Resource(instanceID),
+		Resource(instanceID, engine),
 		m_pages(),
-		m_engine(engine),
 		m_fontFace()
 	{
 	}
@@ -118,7 +117,7 @@ namespace Bambo
 			}
 		}
 			
-		page.FontTexture = std::make_shared<Texture2D>(m_engine->GetRenderManager()->GetCurrentRenderAPI());
+		page.FontTexture = std::make_shared<Texture2D>(m_engine);
 
 		{
 			TextureBuffer globalTexBuffer{TexChannelsAmount::R};

@@ -3,6 +3,8 @@
 #include "Resource/ResourceInfo.h"
 namespace Bambo
 {
+	class Engine;
+
 	#define RESOURCE_BODY(ResourceTypename, EnumType) public:\
 	virtual std::size_t GetAssetTypeID() const override { return ResourceTypename::GetStaticID(); } \
 	static std::size_t GetStaticID() { return (std::size_t)EnumType; }
@@ -30,7 +32,8 @@ namespace Bambo
 
 	protected:
 		std::size_t m_instanceID;
+		Engine* m_engine;
 
-		Resource(std::size_t instanceID) : m_instanceID(instanceID) {}
+		Resource(std::size_t instanceID, Engine* engine) : m_instanceID(instanceID), m_engine(engine) {}
 	};
 }

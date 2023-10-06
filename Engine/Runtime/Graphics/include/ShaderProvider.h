@@ -12,7 +12,7 @@ namespace Bambo
 
 		result_type operator()(Engine* engine, const std::size_t id, const std::string& shaderPath) const
 		{
-			SPtr<Shader> shader = std::make_shared<Shader>(engine->GetRenderManager()->GetCurrentRenderAPI(), id);
+			SPtr<Shader> shader = std::make_shared<Shader>(engine, id);
 			shader->LoadFromFile(shaderPath);
 			return shader;
 		}

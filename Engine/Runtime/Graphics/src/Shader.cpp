@@ -1,11 +1,12 @@
 #include "Shader.h"
+#include "Engine.h"
 
 namespace Bambo 
 {
-	Shader::Shader(RenderAPI renderApi, const std::size_t assetId) :
-		Resource(assetId),
+	Shader::Shader(Engine* engine, const std::size_t assetId) :
+		Resource(assetId, engine),
 		m_shaderImplementation()
 	{
-		m_shaderImplementation = ShaderImplementation::CreateInternalShader(renderApi);
+		m_shaderImplementation = ShaderImplementation::CreateInternalShader(engine->GetRenderManager()->GetCurrentRenderAPI());
 	}
 }

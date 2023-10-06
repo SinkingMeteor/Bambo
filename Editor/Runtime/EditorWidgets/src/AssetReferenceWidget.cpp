@@ -8,7 +8,8 @@ namespace
 
 namespace BamboEditor
 {
-	AssetReferenceWidget::AssetReferenceWidget(Bambo::AssetType assetType, std::size_t assetId) :
+	AssetReferenceWidget::AssetReferenceWidget(Bambo::ResourceManager* resourceManager, Bambo::AssetType assetType, std::size_t assetId) :
+		m_resourceManager(resourceManager),
 		m_assetType(assetType),
 		m_assetId(assetId)
 	{}
@@ -19,7 +20,7 @@ namespace BamboEditor
 
 		if (m_assetId)
 		{
-			Bambo::ResourceInfo* info = Bambo::ResourceManager::Get()->GetResourceMetaFile(m_assetId);
+			Bambo::ResourceInfo* info = m_resourceManager->GetResourceMetaFile(m_assetId);
 			if (info)
 			{
 				assetName = info->FileName.string();

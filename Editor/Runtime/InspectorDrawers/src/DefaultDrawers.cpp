@@ -28,7 +28,9 @@ namespace BamboEditor
 		DrawInteger("Sorting order", &spriteComponent->GetSortingOrderRef());
 		DrawVector3("Origin", &spriteComponent->GetOriginRef());
 
-		AssetReferenceWidget texReference{ Bambo::AssetType::Texture2D };
+		Bambo::World* world = spriteComponent->GetOwner()->GetWorld();
+		Bambo::ResourceManager* resourceManager = world->GetWorldContext()->Engine->GetResourceManager();
+		AssetReferenceWidget texReference{ resourceManager, Bambo::AssetType::Texture2D };
 
 		if (spriteComponent->GetTexture())
 		{

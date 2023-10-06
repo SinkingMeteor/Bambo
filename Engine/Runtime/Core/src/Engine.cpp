@@ -24,7 +24,8 @@ namespace Bambo
 		m_modules(),
 		m_audioManager(),
 		m_renderManager(this),
-		m_windowManager()
+		m_windowManager(),
+		m_resourceManager()
 	{}
 
 	void Engine::Initialize()
@@ -33,9 +34,8 @@ namespace Bambo
 
 		Logger* logger = singletonManager->Register<Logger>();
 		BAMBO_ASSERT_S(logger)
-		ResourceManager* resourceManager = singletonManager->Register<ResourceManager>();
-		BAMBO_ASSERT_S(resourceManager)
-		resourceManager->ScanFiles(BamboPaths::EngineResourcesDir);
+
+		m_resourceManager.ScanFiles(BamboPaths::EngineResourcesDir);
 
 		TimeManager* timeManager = singletonManager->Register<TimeManager>();
 		BAMBO_ASSERT_S(timeManager)

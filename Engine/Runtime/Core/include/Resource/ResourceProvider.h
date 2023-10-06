@@ -52,7 +52,7 @@ namespace Bambo
 		ResourceInfo info{};
 		info.LoadInfo(metaPath);
 
-		BAMBO_ASSERT_S(ResourceManager::Get()->HasResourceMetaFile(info.AssetId));
+		BAMBO_ASSERT_S(m_engine->GetResourceManager()->HasResourceMetaFile(info.AssetId));
 
 		if (Contains(info.AssetId))
 		{
@@ -67,14 +67,15 @@ namespace Bambo
 	template<typename ResType, typename Loader>
 	SPtr<ResType> ResourceProvider<ResType, Loader>::Load(bambo_id id)
 	{
-		if (!ResourceManager::Get()->HasResourceMetaFile(id)) return nullptr;
+		ResourceManager* resourceManager = m_engine->GetResourceManager();
+		if (!resourceManager->HasResourceMetaFile(id)) return nullptr;
 
 		if (Contains(id))
 		{
 			return GetResource(id);
 		}
 
-		ResourceInfo* info = ResourceManager::Get()->GetResourceMetaFile(id);
+		ResourceInfo* info = resourceManager->GetResourceMetaFile(id);
 		BAMBO_ASSERT_S(info)
 		id = info->AssetId;
 

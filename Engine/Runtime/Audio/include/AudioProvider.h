@@ -41,7 +41,7 @@ namespace Bambo
 					{
 						return nullptr;
 					}
-					return std::make_shared<Audio>(id, rawData.Data, rawData.DataSize, rawData.SampleRate, rawData.Channels, rawData.Bps);
+					return std::make_shared<Audio>(engine, id, rawData.Data, rawData.DataSize, rawData.SampleRate, rawData.Channels, rawData.Bps);
 				}
 			}
 

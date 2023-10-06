@@ -1,14 +1,14 @@
 #include "Texture2D.h"
 #include "Utils.h"
-
+#include "Engine.h"
 namespace Bambo
 {
-	Texture2D::Texture2D(RenderAPI renderApi, const std::size_t assetId) :
-		Resource(assetId),
+	Texture2D::Texture2D(Engine* engine, const std::size_t assetId) :
+		Resource(assetId, engine),
 		m_textureImplementation(),
 		m_textureRects()
 	{
-		m_textureImplementation = TextureImplementation::CreateTexture(renderApi);
+		m_textureImplementation = TextureImplementation::CreateTexture(m_engine->GetRenderManager()->GetCurrentRenderAPI());
 	}
 
 	void Texture2D::AddSubTex(const RectUInt& rect, const TextureBuffer& buffer)

@@ -4,11 +4,9 @@
 #include "SingletonManager.h"
 namespace Bambo
 {
-	class BAMBO_API ResourceManager : public ISingleton
+	class BAMBO_API ResourceManager
 	{
 		using ResourceUniqueId = bambo_id;
-
-		SINGLETON_BODY(ResourceManager, 'RESM')
 	public:
 		ResourceManager();
 		void ScanFiles(const std::filesystem::path& startPath);

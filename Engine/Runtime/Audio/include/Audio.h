@@ -10,7 +10,7 @@ namespace Bambo
 	{
 		RESOURCE_BODY(Audio, AssetType::Audio)
 	public:
-		Audio(const std::size_t assetId, char* data, ALsizei dataSize, ALsizei sampleRate, int32 channels, int32 bps);
+		Audio(Engine* engine, const std::size_t assetId, char* data, ALsizei dataSize, ALsizei sampleRate, int32 channels, int32 bps);
 		~Audio();
 		Audio(const Audio& audio) = delete;
 		Audio& operator=(const Audio& audio) = delete;

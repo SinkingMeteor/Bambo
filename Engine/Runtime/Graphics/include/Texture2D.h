@@ -11,7 +11,7 @@ namespace Bambo
 		RESOURCE_BODY(Texture2D, AssetType::Texture2D)
 
 	public:
-		Texture2D(RenderAPI renderApi, const std::size_t assetId = 0);
+		Texture2D(Engine* engine, const std::size_t assetId = 0);
 		Texture2D(const Texture2D&) = delete;
 		Texture2D& operator=(const Texture2D&) = delete;
 

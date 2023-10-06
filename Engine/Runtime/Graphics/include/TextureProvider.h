@@ -12,7 +12,7 @@ namespace Bambo
 
 		result_type operator()(Engine* engine, const std::size_t id, const std::string& path) const
 		{
-			SPtr<Texture2D> texture = std::make_shared<Texture2D>(engine->GetRenderManager()->GetCurrentRenderAPI(), id);
+			SPtr<Texture2D> texture = std::make_shared<Texture2D>(engine, id);
 			texture->LoadFromFile(path);
 			return texture;
 		}
