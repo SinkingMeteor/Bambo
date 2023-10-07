@@ -95,4 +95,16 @@ namespace Bambo
 		}
 		return hash % SIZE;
 	}
+
+	std::u32string ToUtf32(const std::string& s)
+	{
+		std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
+		return conv.from_bytes(s);
+	}
+
+	std::string ToUtf8(const std::u32string& s)
+	{
+		std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
+		return conv.to_bytes(s);
+	}
 }

@@ -21,7 +21,7 @@ namespace Bambo
 		if (!world) return;
 		m_internalText.SetFont(world->GetFontProvider()->Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultFontPath_A));
 		m_shader = world->GetShaderProvider()->Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultFontShaderPath_A);
-		SetText("Hello world");
+		SetText(u8"Привет, мир!");
 	}
 
 	void TextComponent::OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex)

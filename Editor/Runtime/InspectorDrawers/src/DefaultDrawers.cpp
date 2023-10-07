@@ -2,10 +2,11 @@
 #include "AssetReferenceWidget.h"
 #include "GameObject.h"
 #include "World.h"
-
+#include "Utils.h"
 namespace
 {
 	const std::string NONE_TEXTURE = "No texture";
+	std::string tmpText{};
 }
 
 namespace BamboEditor

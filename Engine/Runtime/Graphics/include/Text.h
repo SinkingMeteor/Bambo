@@ -27,6 +27,7 @@ namespace Bambo
 		void SetFont(SPtr<Font> font);
 		void SetSize(uint32 charSize);
 		void SetText(const std::u32string& displayText);
+		void SetText(const std::string& utf8Text);
 		const std::vector<GlyphRenderData>& GetTextData();
 
 		void SetRebuildFlag() { m_needToRebuild = true; }

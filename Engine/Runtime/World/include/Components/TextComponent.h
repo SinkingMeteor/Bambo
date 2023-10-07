@@ -16,7 +16,7 @@ namespace Bambo
 		int32& GetSortingOrderRef() { return m_sortingOrder; }
 		void SetFont(SPtr<Font> font) { m_internalText.SetFont(font); }
 		void SetText(const std::u32string& text) { m_internalText.SetText(text); }
-		void SetText(const std::string& text) { m_internalText.SetText(std::u32string(text.begin(), text.end())); }
+		void SetText(const std::string& text) { m_internalText.SetText(text); }
 		void SetSortingOrder(int32 sortingOrder) { m_sortingOrder = sortingOrder; }
 		Text& GetInternalText() { return m_internalText; }
 

@@ -17,4 +17,7 @@ namespace Bambo
 	BAMBO_API void GetAvalaibleDisks(std::vector<std::string>& disks);
 	BAMBO_API int ConvertToInt(char* buffer, std::size_t len);
 	BAMBO_API bool MakeDirectory(const std::filesystem::path& path, const std::string& directoryName);
+	BAMBO_API std::u32string ToUtf32(const std::string& s);
+	BAMBO_API std::string ToUtf8(const std::u32string& s);
+
 }

@@ -12,6 +12,13 @@ namespace
 	constexpr uint32 MAX_SUPPORTED_SIZE = 4096u;
 
 	const std::vector<uint32> TEX_SIZES = { 2u, 4u, 8u, 16u, 32u, 64u, 128u, 256u, 512u, 1024u, 2048u, 4096u };
+	const std::vector<uint32> DEFAULT_GLYPH_RANGES =
+	{
+		0x0020u, 0x00FFu, // Basic Latin + Latin Supplement
+		0x0400u, 0x052Fu, // Cyrillic + Cyrillic Supplement
+		0x2DE0u, 0x2DFFu, // Cyrillic Extended-A
+		0xA640u, 0xA69Fu // Cyrillic Extended-B
+	};
 }
 
 namespace Bambo
@@ -67,33 +74,38 @@ namespace Bambo
 		uint32 texHeight = 0u;
 		uint32 maxGlyphHeight = 0u;
 
-		for (uint32 i = DEFAULT_UTF_START_INDEX; i < DEFAULT_UTF_END_INDEX; ++i)
+		for (uint32 j = 0; j < DEFAULT_GLYPH_RANGES.size(); j += 2)
 		{
-			if (FT_Load_Char(m_fontFace, i, FT_LOAD_RENDER))
+			for (uint32 i = DEFAULT_GLYPH_RANGES[j]; i < DEFAULT_GLYPH_RANGES[j + 1]; ++i)
 			{
-				Logger::Get()->Log(LogFont, Verbosity::Warning, "Can't load glyph with code %u", i);
-				continue;
+				if (FT_Load_Char(m_fontFace, i, FT_LOAD_RENDER))
+				{
+					Logger::Get()->Log(LogFont, Verbosity::Warning, "Can't load glyph with code %u", i);
+					continue;
+				}
+
+				Glyph glyph{};
+
+				FT_Vector advanceVec = m_fontFace->glyph->advance;
+
+				glyph.Advance.X = advanceVec.x >> 6;
+				glyph.Advance.Y = advanceVec.y >> 6;
+
+				glyph.TextureRect.Width = m_fontFace->glyph->bitmap.width;
+				glyph.TextureRect.Height = m_fontFace->glyph->bitmap.rows;
+
+				texWidth += glyph.TextureRect.Width + DEFAULT_GLYPH_PADDING * 2u;
+
+				maxGlyphHeight = std::max(maxGlyphHeight, glyph.TextureRect.Height);
+
+				glyph.Bearing.X = m_fontFace->glyph->metrics.horiBearingX >> 6;
+				glyph.Bearing.Y = glyph.TextureRect.Height - (m_fontFace->glyph->metrics.horiBearingY >> 6);
+
+				
+
+				page.Glyphs[i] = glyph;
+
 			}
-
-			Glyph glyph{};
-
-			FT_Vector advanceVec = m_fontFace->glyph->advance;
-
-			glyph.Advance.X = advanceVec.x >> 6;
-			glyph.Advance.Y = advanceVec.y >> 6;
-
-			glyph.TextureRect.Width = m_fontFace->glyph->bitmap.width;
-			glyph.TextureRect.Height = m_fontFace->glyph->bitmap.rows;
-
-			texWidth += glyph.TextureRect.Width + DEFAULT_GLYPH_PADDING * 2u;
-
-			maxGlyphHeight = std::max(maxGlyphHeight, glyph.TextureRect.Height);
-
-			glyph.Bearing.X = m_fontFace->glyph->bitmap_left;
-			glyph.Bearing.Y = m_fontFace->glyph->bitmap_top;
-
-			page.Glyphs[i] = glyph;
-
 		}
 
 		BAMBO_ASSERT_S(texWidth != 0u)
@@ -131,30 +143,33 @@ namespace Bambo
 		offset.X += DEFAULT_GLYPH_PADDING;
 		offset.Y += DEFAULT_GLYPH_PADDING;
 
-		for (uint32 i = 32; i < 128; ++i)
+		for (uint32 j = 0; j < DEFAULT_GLYPH_RANGES.size(); j += 2)
 		{
-			if (FT_Load_Char(m_fontFace, i, FT_LOAD_RENDER)) continue;
-			BAMBO_ASSERT_S(page.Glyphs.find(i) != page.Glyphs.end())
-
-			if (!m_fontFace->glyph->bitmap.buffer) continue;
-
-			Glyph& glyph = page.Glyphs[i];
-
-			int32 leftSpace = static_cast<int32>(texWidth) - offset.X;
-			if (leftSpace < static_cast<int32>(glyph.TextureRect.Width))
+			for (uint32 i = DEFAULT_GLYPH_RANGES[j]; i < DEFAULT_GLYPH_RANGES[j + 1]; ++i)
 			{
-				offset.Y += maxGlyphHeight;
-				offset.Y += DEFAULT_GLYPH_PADDING;
-				offset.X = DEFAULT_GLYPH_PADDING;
+				if (FT_Load_Char(m_fontFace, i, FT_LOAD_RENDER)) continue;
+				BAMBO_ASSERT_S(page.Glyphs.find(i) != page.Glyphs.end())
+
+				if (!m_fontFace->glyph->bitmap.buffer) continue;
+
+				Glyph& glyph = page.Glyphs[i];
+
+				int32 leftSpace = static_cast<int32>(texWidth) - offset.X;
+				if (leftSpace < static_cast<int32>(glyph.TextureRect.Width))
+				{
+					offset.Y += maxGlyphHeight;
+					offset.Y += DEFAULT_GLYPH_PADDING;
+					offset.X = DEFAULT_GLYPH_PADDING;
+				}
+
+				glyph.TextureRect.Left = offset.X;
+				glyph.TextureRect.Top = offset.Y;
+
+				page.FontTexture->AddSubTex(glyph.TextureRect, m_fontFace->glyph->bitmap.buffer, TexChannelsAmount::R);
+
+				offset.X += DEFAULT_GLYPH_PADDING;
+				offset.X += glyph.TextureRect.Width;
 			}
-
-			glyph.TextureRect.Left = offset.X;
-			glyph.TextureRect.Top = offset.Y;
-			
-			page.FontTexture->AddSubTex(glyph.TextureRect, m_fontFace->glyph->bitmap.buffer, TexChannelsAmount::R);
-
-			offset.X += DEFAULT_GLYPH_PADDING;
-			offset.X += glyph.TextureRect.Width;
 		}
 
 		m_pages[charSize] = std::move(page);

@@ -34,6 +34,12 @@ namespace Bambo
 		m_needToRebuild = true;
 	}
 
+	void Text::SetText(const std::string& utf8Text)
+	{
+		m_displayText = ToUtf32(utf8Text);
+		m_needToRebuild = true;
+	}
+
 	const std::vector<GlyphRenderData>& Text::GetTextData()
 	{
 		if (m_needToRebuild)
@@ -73,7 +79,7 @@ namespace Bambo
 			Glyph& glyph = it->second;
 
 			//@TODO: добавить rect всему тексту
-			renderData.GlyphWorldPos = {xPos, yPos, 0.0f};
+			renderData.GlyphWorldPos = {xPos + glyph.Bearing.X, yPos - glyph.Bearing.Y, 0.0f};
 			xPos += glyph.Advance.X;
 			if (xPos > m_textAreaRect.Width)
 			{

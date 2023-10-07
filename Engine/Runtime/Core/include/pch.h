@@ -21,6 +21,9 @@
 #include <type_traits>
 #include <fstream>
 #include <atomic>
+#include <locale>
+#include <codecvt>
+#include <iomanip>
 #include <sstream>
 #include <numeric>
 #pragma warning(push, 0)

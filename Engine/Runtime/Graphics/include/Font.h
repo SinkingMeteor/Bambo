@@ -15,7 +15,6 @@ namespace Bambo
 		RectUInt TextureRect{};
 		Vector2i Bearing{};
 		Vector2i Advance{};
-		float XOffset{};
 	};
 
 	struct Page
