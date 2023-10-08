@@ -95,7 +95,7 @@ namespace BamboEditor
 			ImGui::Text("Viewport info:");
 			ImGui::Separator();
 
-			float deltaTime = Bambo::TimeManager::Get()->GetLastDeltaTime();
+			float deltaTime = m_editorContext->Engine->GetTimeManager()->GetLastDeltaTime();
 			int32 fps = static_cast<int32>(1.0f / deltaTime);
 
 			Bambo::RenderStatistics& renderStatistics = m_editorContext->Engine->GetRenderManager()->GetRenderStatistics();

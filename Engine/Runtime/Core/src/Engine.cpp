@@ -2,7 +2,6 @@
 
 #include "Window.h"
 #include "Components/Components.h"
-#include "Time/TimeManager.h"
 #include "Resource/ResourceManager.h"
 #include "Components/ComponentFactory.h"
 
@@ -25,7 +24,8 @@ namespace Bambo
 		m_audioManager(),
 		m_renderManager(this),
 		m_windowManager(),
-		m_resourceManager()
+		m_resourceManager(),
+		m_timeManager()
 	{}
 
 	void Engine::Initialize()
@@ -37,8 +37,6 @@ namespace Bambo
 
 		m_resourceManager.ScanFiles(BamboPaths::EngineResourcesDir);
 
-		TimeManager* timeManager = singletonManager->Register<TimeManager>();
-		BAMBO_ASSERT_S(timeManager)
 		ComponentFactory* componentFactory = singletonManager->Register<ComponentFactory>();
 		componentFactory->Register(CameraComponent::GetTypeID(), []() { return std::make_unique<CameraComponent>(); });
 		componentFactory->Register(SpriteComponent::GetTypeID(), []() { return std::make_unique<SpriteComponent>(); });
@@ -75,7 +73,7 @@ namespace Bambo
 	{
 		while (!m_windowManager.WantsToClose())
 		{
-			float passedTime = TimeManager::Get()->MakeTick();
+			float passedTime = m_timeManager.MakeTick();
 
 			while (passedTime > DESIRED_DELTA_TIME)
 			{

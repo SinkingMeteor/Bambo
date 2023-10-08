@@ -5,9 +5,8 @@
 
 namespace Bambo
 {
-	class BAMBO_API TimeManager final : public ISingleton
+	class BAMBO_API TimeManager final
 	{
-		SINGLETON_BODY(TimeManager, 'TIME')
 	public:
 		TimeManager() :
 			m_mainTimer(),

@@ -6,6 +6,7 @@
 #include "AudioManager.h"
 #include "RenderManager.h"
 #include "Resource/ResourceManager.h"
+#include "Time/TimeManager.h"
 
 namespace Bambo
 {
@@ -25,6 +26,7 @@ namespace Bambo
 		RenderManager* GetRenderManager() { return &m_renderManager; }
 		WindowManager* GetWindowManager() { return &m_windowManager; }
 		ResourceManager* GetResourceManager() { return &m_resourceManager; }
+		TimeManager* GetTimeManager() { return &m_timeManager; }
 
 	private:
 		std::vector<UPtr<Module>> m_modules;
@@ -32,6 +34,7 @@ namespace Bambo
 		RenderManager m_renderManager;
 		WindowManager m_windowManager;
 		ResourceManager m_resourceManager;
+		TimeManager m_timeManager;
 
 		void LoadConfigurationFile(WindowSettings& windowSettings);
 		void OnWindowResize(uint32 width, uint32 height);
