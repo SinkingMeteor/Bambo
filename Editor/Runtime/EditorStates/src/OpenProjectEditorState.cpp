@@ -1,4 +1,4 @@
-#include "EditorStates/OpenProjectEditorState.h"
+#include "OpenProjectEditorState.h"
 
 namespace
 {

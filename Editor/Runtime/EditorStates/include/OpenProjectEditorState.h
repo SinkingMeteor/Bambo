@@ -1,6 +1,6 @@
 #pragma once
 #include "Essentials.h"
-#include "EditorStates/IEditorState.h"
+#include "IEditorState.h"
 #include "Patterns/StateMachine.h"
 #include "Project.h"
 #include "GUIWindow.h"

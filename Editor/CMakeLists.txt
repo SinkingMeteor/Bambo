@@ -24,6 +24,7 @@ add_subdirectory(Thirdparty/)
 
 set(BAMBO_EDITOR_MODULES 
 Runtime/Core
+Runtime/EditorStates
 Runtime/EditorWidgets
 Runtime/EditorWindows
 Runtime/InspectorDrawers)

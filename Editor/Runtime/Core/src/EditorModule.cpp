@@ -1,6 +1,6 @@
 #include "EditorModule.h"
-#include "EditorStates/MainEditorState.h"
-#include "EditorStates/OpenProjectEditorState.h"
+#include "MainEditorState.h"
+#include "OpenProjectEditorState.h"
 #include "InspectorDrawersRegistry.h"
 #include "DefaultDrawers.h"
 

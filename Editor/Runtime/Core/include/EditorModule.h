@@ -5,7 +5,7 @@
 #include "Project.h"
 #include "EditorPaths.h"
 #include "Patterns/StateMachine.h"
-#include "EditorStates/IEditorState.h"
+#include "IEditorState.h"
 #include "EditorContext.h"
 #include "EditorGUIContext.h"
 #include "Engine.h"

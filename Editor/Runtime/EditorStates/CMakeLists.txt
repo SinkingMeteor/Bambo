@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(MODULE_NAME CORE)
+set(MODULE_NAME EDITOR_STATES)
 
 set(CURRENT_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 set(BAMBO_${MODULE_NAME}_SOURCES
-${CURRENT_MODULE_DIR}/src/EditorModule.cpp
-${CURRENT_MODULE_DIR}/src/Project.cpp
-${CURRENT_MODULE_DIR}/src/EditorGUIContext.cpp
-${CURRENT_MODULE_DIR}/src/Main.cpp)
+${CURRENT_MODULE_DIR}/src/OpenProjectEditorState.cpp
+${CURRENT_MODULE_DIR}/src/MainEditorState.cpp)
 
 set(BAMBO_${MODULE_NAME}_PUBLIC_LIBS)
 
