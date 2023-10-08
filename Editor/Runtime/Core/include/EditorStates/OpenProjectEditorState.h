@@ -3,9 +3,9 @@
 #include "EditorStates/IEditorState.h"
 #include "Patterns/StateMachine.h"
 #include "Project.h"
-#include "EditorWindows/GUIWindow.h"
+#include "GUIWindow.h"
 #include "EditorContext.h"
-#include "EditorWindows/ProjectBrowser.h"
+#include "ProjectBrowser.h"
 
 namespace BamboEditor
 {

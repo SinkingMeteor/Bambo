@@ -1,4 +1,4 @@
-#include "EditorWindows/SceneHierarchy.h"
+#include "SceneHierarchy.h"
 
 namespace
 {

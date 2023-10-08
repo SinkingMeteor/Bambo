@@ -1,7 +1,7 @@
 #pragma once
 #include "Essentials.h"
 #include "EditorEssentials.h"
-#include "EditorWindows/GUIWindow.h"
+#include "GUIWindow.h"
 #include "World.h"
 #include "Components/Components.h"
 #include "EditorContext.h"

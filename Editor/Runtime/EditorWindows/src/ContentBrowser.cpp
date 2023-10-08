@@ -1,4 +1,4 @@
-#include "EditorWindows/ContentBrowser.h"
+#include "ContentBrowser.h"
 #include "EditorPaths.h"
 
 namespace

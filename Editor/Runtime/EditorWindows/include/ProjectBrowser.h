@@ -1,7 +1,7 @@
 #pragma once
 #include "Essentials.h"
 #include "EditorEssentials.h"
-#include "EditorWindows/GUIWindow.h"
+#include "GUIWindow.h"
 #include "Project.h"
 #include "Texture2D.h"
 #include "TextureProvider.h"

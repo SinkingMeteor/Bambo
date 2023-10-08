@@ -1,4 +1,4 @@
-#include "EditorWindows/ProjectBrowser.h"
+#include "ProjectBrowser.h"
 
 namespace
 {

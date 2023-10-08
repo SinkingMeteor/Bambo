@@ -1,12 +1,15 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(MODULE_NAME EDITOR_WIDGETS)
+set(MODULE_NAME EDITOR_WINDOWS)
 
 set(CURRENT_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 set(BAMBO_${MODULE_NAME}_SOURCES
-${CURRENT_MODULE_DIR}/src/FileBrowserWidget.cpp
-${CURRENT_MODULE_DIR}/src/AssetReferenceWidget.cpp)
+${CURRENT_MODULE_DIR}/src/SceneHierarchy.cpp
+${CURRENT_MODULE_DIR}/src/GameViewport.cpp
+${CURRENT_MODULE_DIR}/src/Inspector.cpp
+${CURRENT_MODULE_DIR}/src/ContentBrowser.cpp
+${CURRENT_MODULE_DIR}/src/ProjectBrowser.cpp)
 
 set(BAMBO_${MODULE_NAME}_PUBLIC_LIBS)
 set(BAMBO_${MODULE_NAME}_PRIVATE_LIBS imgui)

@@ -25,6 +25,7 @@ add_subdirectory(Thirdparty/)
 set(BAMBO_EDITOR_MODULES 
 Runtime/Core
 Runtime/EditorWidgets
+Runtime/EditorWindows
 Runtime/InspectorDrawers)
 
 foreach(MODULE ${BAMBO_EDITOR_MODULES})

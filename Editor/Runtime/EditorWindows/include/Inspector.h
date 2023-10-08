@@ -1,7 +1,7 @@
 #pragma once
 #include "Essentials.h"
 #include "EditorContext.h"
-#include "EditorWindows/GUIWindow.h"
+#include "GUIWindow.h"
 #include "DefaultDrawers.h"
 #include "InspectorDrawersRegistry.h"
 namespace BamboEditor

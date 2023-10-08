@@ -1,4 +1,4 @@
-#include "EditorWindows/Inspector.h"
+#include "Inspector.h"
 #include "InspectorDrawersRegistry.h"
 namespace BamboEditor
 {
