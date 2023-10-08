@@ -1,16 +1,13 @@
 #pragma once
 #include "Essentials.h"
-#include "SingletonManager.h"
 #include "Components/Components.h"
 
 using namespace Bambo;
 
 namespace BamboEditor
 {
-	class InspectorDrawersRegistry : public Bambo::ISingleton
+	class InspectorDrawersRegistry
 	{
-		SINGLETON_BODY(InspectorDrawersRegistry, 'INSP');	
-
 		using CompDrawerFunc = std::function<void(Bambo::Component*)>;
 
 	public:

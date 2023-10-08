@@ -6,12 +6,15 @@
 
 namespace BamboEditor
 {
+	class EditorModule;
+
 	struct EditorContext
 	{
 		SPtr<Project> CurrentProject{};
 		SPtr<Bambo::World> CurrentWorld{};
 		Bambo::IID SelectedGameObject{};
 		Bambo::Engine* Engine;
+		EditorModule* Editor;
 	};
 
 	struct EditorConfig

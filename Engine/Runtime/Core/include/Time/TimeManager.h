@@ -1,7 +1,6 @@
 #pragma once
 #include "Essentials.h"
 #include "Time/Timer.h"
-#include "SingletonManager.h"
 
 namespace Bambo
 {

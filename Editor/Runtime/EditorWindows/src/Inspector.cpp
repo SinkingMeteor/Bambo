@@ -1,5 +1,6 @@
 #include "Inspector.h"
 #include "InspectorDrawersRegistry.h"
+#include "EditorModule.h"
 namespace BamboEditor
 {
 	InspectorWindow::InspectorWindow(EditorContext* editorContext) :
@@ -26,7 +27,7 @@ namespace BamboEditor
 		DrawString("Name", &name);
 
 		DrawTransformComponent(gameObject->GetTransform());
-		InspectorDrawersRegistry* drawersRegistry = InspectorDrawersRegistry::Get();
+		InspectorDrawersRegistry* drawersRegistry = m_editorContext->Editor->GetDrawersRegistry();
 
 		std::vector<UPtr<Bambo::Component>>& components = gameObject->GetComponentsArray();
 

@@ -13,7 +13,6 @@ ${CURRENT_MODULE_DIR}/src/Log.cpp
 ${CURRENT_MODULE_DIR}/src/IID.cpp
 ${CURRENT_MODULE_DIR}/src/Color.cpp
 ${CURRENT_MODULE_DIR}/src/Utils.cpp
-${CURRENT_MODULE_DIR}/src/SingletonManager.cpp
 ${CURRENT_MODULE_DIR}/src/Time/Timer.cpp)
 
 set(BAMBO_${MODULE_NAME}_PUBLIC_LIBS)

@@ -8,6 +8,7 @@
 #include "IEditorState.h"
 #include "EditorContext.h"
 #include "EditorGUIContext.h"
+#include "InspectorDrawersRegistry.h"
 #include "Engine.h"
 
 namespace BamboEditor
@@ -24,12 +25,15 @@ namespace BamboEditor
 		virtual void OnGUIStart() override;
 		virtual void OnGUIEnd() override;
 		virtual void OnGUI() override;
+
+		InspectorDrawersRegistry* GetDrawersRegistry() { return &m_drawersRegistry; }
 	private:
 		EditorContext m_editorContext;
 		EditorConfig m_editorConfig;
 
 		Bambo::StateMachine<IEditorState> m_states;
 		EditorGUIContext m_guiWorld;
+		InspectorDrawersRegistry m_drawersRegistry;
 
 		void LoadEditorConfig();
 		void SaveEditorConfig();

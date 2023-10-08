@@ -1,7 +1,6 @@
 #pragma once
 #include "Essentials.h"
 #include "Window.h"
-#include "SingletonManager.h"
 #include "Component.h"
 namespace Bambo
 {

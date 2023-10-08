@@ -1,7 +1,6 @@
 #pragma once
 #include "Essentials.h"
 #include "ResourceInfo.h"
-#include "SingletonManager.h"
 namespace Bambo
 {
 	class BAMBO_API ResourceManager

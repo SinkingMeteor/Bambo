@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "SingletonManager.h"
 
 namespace Bambo
 {
@@ -14,11 +13,11 @@ namespace Bambo
 		Verbose
 	};
 
-	class BAMBO_API Logger final : public ISingleton
+	class BAMBO_API Logger final
 	{
-		SINGLETON_BODY(Logger, 'LOGG')
 	public:
-		Logger();
+		static Logger* Get();
+
 		void SetOutput(const std::filesystem::path& outputPath);
 		template<typename... Args>
 		void Log(const char* logScope, Verbosity verbosity, const char* format, Args&&...args);
@@ -26,6 +25,8 @@ namespace Bambo
 		void Log(const char* logScope, Verbosity verbosity, Args&&...args);
 		void Log(const char* logScope, Verbosity verbosity, const char* text);
 		void SetVerbosityLevel(Verbosity level) { m_verbosity = level; }
+	protected:
+		Logger();
 	private:
 		Verbosity m_verbosity;
 		std::ofstream m_outputFile;

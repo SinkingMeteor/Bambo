@@ -1,7 +1,6 @@
 #include "EditorModule.h"
 #include "MainEditorState.h"
 #include "OpenProjectEditorState.h"
-#include "InspectorDrawersRegistry.h"
 #include "DefaultDrawers.h"
 
 namespace
@@ -15,12 +14,14 @@ namespace BamboEditor
 		m_editorContext(),
 		m_editorConfig(),
 		m_states(),
-		m_guiWorld()
+		m_guiWorld(),
+		m_drawersRegistry()
 	{}
 
 	void EditorModule::OnAttach(Engine* engine)
 	{
 		m_editorContext.Engine = engine;
+		m_editorContext.Editor = this;
 
 		LoadEditorConfig();
 
@@ -30,10 +31,9 @@ namespace BamboEditor
 		m_states.AddState(std::make_shared<OpenProjectEditorState>(&m_editorContext, &m_editorConfig, &m_states));
 		m_states.AddState(std::make_shared<MainEditorState>(&m_editorContext));
 
-		InspectorDrawersRegistry* drawerRegistry = SingletonManager::Get()->Register<InspectorDrawersRegistry>();
-		drawerRegistry->Register(SpriteComponent::GetTypeID(), DrawSpriteComponent);
-		drawerRegistry->Register(CameraComponent::GetTypeID(), DrawCameraComponent);
-		drawerRegistry->Register(TextComponent::GetTypeID(), DrawTextComponent);
+		m_drawersRegistry.Register(SpriteComponent::GetTypeID(), DrawSpriteComponent);
+		m_drawersRegistry.Register(CameraComponent::GetTypeID(), DrawCameraComponent);
+		m_drawersRegistry.Register(TextComponent::GetTypeID(), DrawTextComponent);
 
 		m_states.EnterTo(static_cast<uint32>(EditorStateType::OpenProject));
 	}

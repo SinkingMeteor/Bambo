@@ -2,6 +2,13 @@
 
 namespace Bambo
 {
+	Logger* Logger::Get()
+	{
+		static Logger logger{};
+		return &logger;
+	}
+
+
 	Logger::Logger() :
 		m_verbosity(Verbosity::Info),
 		m_outputFile()

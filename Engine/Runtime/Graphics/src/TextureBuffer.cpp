@@ -12,11 +12,7 @@ namespace Bambo
 
 	void TextureBuffer::Create(const Vector2u& texSize, const ByteColor& fillColor)
 	{
-		if (texSize.X == 0 || texSize.Y == 0)
-		{
-			Logger::Get()->Log(LogTextureBuffer, Verbosity::Error, "Invalid size for texture buffer. X: %i, Y: %i", texSize.X, texSize.Y);
-			return;
-		}
+		if (texSize.X == 0 || texSize.Y == 0) return;
 
 		int32 channelsAmount = static_cast<int32>(m_channelsAmount);
 

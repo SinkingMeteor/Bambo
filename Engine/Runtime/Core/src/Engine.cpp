@@ -30,11 +30,6 @@ namespace Bambo
 
 	void Engine::Initialize()
 	{
-		SingletonManager* singletonManager = SingletonManager::Get();
-
-		Logger* logger = singletonManager->Register<Logger>();
-		BAMBO_ASSERT_S(logger)
-
 		m_resourceManager.ScanFiles(BamboPaths::EngineResourcesDir);
 
 		m_componentFactory.Register(CameraComponent::GetTypeID(), []() { return std::make_unique<CameraComponent>(); });
