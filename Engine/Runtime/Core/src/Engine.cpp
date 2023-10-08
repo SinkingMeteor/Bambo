@@ -3,7 +3,6 @@
 #include "Window.h"
 #include "Components/Components.h"
 #include "Resource/ResourceManager.h"
-#include "Components/ComponentFactory.h"
 
 namespace
 {
@@ -25,7 +24,8 @@ namespace Bambo
 		m_renderManager(this),
 		m_windowManager(),
 		m_resourceManager(),
-		m_timeManager()
+		m_timeManager(),
+		m_componentFactory()
 	{}
 
 	void Engine::Initialize()
@@ -37,10 +37,9 @@ namespace Bambo
 
 		m_resourceManager.ScanFiles(BamboPaths::EngineResourcesDir);
 
-		ComponentFactory* componentFactory = singletonManager->Register<ComponentFactory>();
-		componentFactory->Register(CameraComponent::GetTypeID(), []() { return std::make_unique<CameraComponent>(); });
-		componentFactory->Register(SpriteComponent::GetTypeID(), []() { return std::make_unique<SpriteComponent>(); });
-		componentFactory->Register(TextComponent::GetTypeID(), []() { return std::make_unique<TextComponent>(); });
+		m_componentFactory.Register(CameraComponent::GetTypeID(), []() { return std::make_unique<CameraComponent>(); });
+		m_componentFactory.Register(SpriteComponent::GetTypeID(), []() { return std::make_unique<SpriteComponent>(); });
+		m_componentFactory.Register(TextComponent::GetTypeID(), []() { return std::make_unique<TextComponent>(); });
 
 		WindowSettings settings{ DEFAULT_WIDHT, DEFAULT_HEIGHT, DEFAULT_TITLE };
 		LoadConfigurationFile(settings);

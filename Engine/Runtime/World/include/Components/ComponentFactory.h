@@ -5,11 +5,9 @@
 #include "Component.h"
 namespace Bambo
 {
-
-	class ComponentFactory : public ISingleton
+	class ComponentFactory
 	{
 		using CompFactoryFunc = std::function<UPtr<Component>()>;
-		SINGLETON_BODY(ComponentFactory, 'CMPF')
 	public:
 		ComponentFactory() = default;
 		void Register(std::size_t id, CompFactoryFunc factoryFunc);

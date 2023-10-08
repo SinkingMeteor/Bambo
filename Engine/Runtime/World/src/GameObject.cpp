@@ -36,7 +36,7 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_world)
 
 		nlohmann::json& componentsNode = node["components"];
-		ComponentFactory* factory = ComponentFactory::Get();
+		ComponentFactory* factory = m_world->GetWorldContext()->Engine->GetComponentFactory();
 		m_name = node["name"];
 
 		nlohmann::json& transformNode = node["transform"];
