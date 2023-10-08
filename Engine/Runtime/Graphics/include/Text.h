@@ -16,7 +16,9 @@ namespace Bambo
 	public:
 		Text();
 		SPtr<Font> GetFont() const { return m_font; }
-		const std::u32string GetText() const { return m_displayText; }
+		std::u32string* GetText32Ptr() { return &m_displayText; }
+		std::u32string GetText32() const { return m_displayText; }
+		std::string GetText8() const { return ToUtf8(m_displayText); }
 		uint32 GetTextSize() const { return m_charSize; }
 		uint32& GetTextSizeRef() { return m_charSize; }
 

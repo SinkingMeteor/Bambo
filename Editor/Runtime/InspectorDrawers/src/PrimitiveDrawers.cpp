@@ -58,11 +58,32 @@ namespace BamboEditor
 
     void DrawString(const char* name, std::string* str, ImGuiInputTextFlags flags)
     {
-        InputTextCallback_UserData cb_user_data{};
-        cb_user_data.Str = str;
+        InputTextCallback_UserData callbackData{};
+        callbackData.Str = str;
 
-        ImGui::InputText(name, (char*)str->c_str(), str->capacity() + 1, flags, InputTextCallback, &cb_user_data);
+        ImGui::InputText(name, (char*)str->c_str(), str->capacity() + 1, flags | ImGuiInputTextFlags_CallbackResize, InputTextCallback, &callbackData);
     }
+
+    bool DrawU32String(const char* name, std::u32string* str32, ImGuiInputTextFlags flags)
+    {
+        InputTextCallback_UserData callbackData{};
+
+        std::string str = Bambo::ToUtf8(*str32);
+        callbackData.Str = &str;
+
+        ImGui::InputText(name, (char*)str.c_str(), str.capacity() + 1, flags | ImGuiInputTextFlags_CallbackResize, InputTextCallback, &callbackData);
+
+        std::u32string newVal = Bambo::ToUtf32(str);
+
+        if (newVal != *str32)
+        {
+            *str32 = newVal;
+            return true;
+        }
+
+        return false;
+    }
+
 
     void DrawReadonlyString(const std::string* str)
     {

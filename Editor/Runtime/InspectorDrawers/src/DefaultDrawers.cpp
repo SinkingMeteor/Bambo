@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "World.h"
 #include "Utils.h"
+
 namespace
 {
 	const std::string NONE_TEXTURE = "No texture";
@@ -74,6 +75,11 @@ namespace BamboEditor
 		}
 
 		if (DrawUInteger("Size", &textComponent->GetInternalText().GetTextSizeRef()))
+		{
+			textComponent->GetInternalText().SetRebuildFlag();
+		}
+
+		if (DrawU32String("Content", textComponent->GetInternalText().GetText32Ptr()))
 		{
 			textComponent->GetInternalText().SetRebuildFlag();
 		}

@@ -69,7 +69,7 @@ namespace Bambo
 		node["name"] = "TextComponent";
 		node["fontID"] = m_internalText.GetFont()->GetAssetInstanceID();
 		node["textSize"] = m_internalText.GetTextSize();
-		node["text"] = m_internalText.GetText();
+		node["text"] = m_internalText.GetText8();
 		node["sortingOrder"] = m_sortingOrder;
 	}
 
@@ -80,7 +80,7 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_owner->GetWorld())
 
 		m_internalText.SetSize(node["textSize"].get<uint32>());
-		m_internalText.SetText(node["text"].get<std::u32string>());
+		m_internalText.SetText(node["text"].get<std::string>());
 		m_sortingOrder = node["sortingOrder"].get<int32>();
 
 		World* world = m_owner->GetWorld();
