@@ -24,17 +24,12 @@ namespace Bambo
 		m_renderManager(this),
 		m_windowManager(),
 		m_resourceManager(),
-		m_timeManager(),
-		m_componentFactory()
+		m_timeManager()
 	{}
 
 	void Engine::Initialize()
 	{
 		m_resourceManager.ScanFiles(BamboPaths::EngineResourcesDir);
-
-		m_componentFactory.Register(CameraComponent::GetTypeID(), []() { return std::make_unique<CameraComponent>(); });
-		m_componentFactory.Register(SpriteComponent::GetTypeID(), []() { return std::make_unique<SpriteComponent>(); });
-		m_componentFactory.Register(TextComponent::GetTypeID(), []() { return std::make_unique<TextComponent>(); });
 
 		WindowSettings settings{ DEFAULT_WIDHT, DEFAULT_HEIGHT, DEFAULT_TITLE };
 		LoadConfigurationFile(settings);

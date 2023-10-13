@@ -17,8 +17,18 @@ namespace Bambo
 
 		for (size_t i = 0; i < m_components.size(); ++i)
 		{
+			Bambo::Component* component = nullptr;
+
+			if (m_components[i]->GetID() == Bambo::SpriteComponent::GetTypeID() ||
+				m_components[i]->GetID() == Bambo::Area2DComponent::GetTypeID())
+			{
+				component = m_components[i].get();
+			}
+
+			if (!component) continue;
+
 			node["components"].push_back({});
-			m_components[i]->Serialize(node["components"].back());
+			component->Serialize(node["components"].back());
 		}
 
 		for (size_t i = 0; i < m_children.size(); ++i)
@@ -37,7 +47,6 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_world)
 
 		nlohmann::json& componentsNode = node["components"];
-		ComponentFactory* factory = m_world->GetWorldContext()->Engine->GetComponentFactory();
 		m_name = node["name"];
 
 		nlohmann::json& transformNode = node["transform"];
@@ -50,13 +59,27 @@ namespace Bambo
 			nlohmann::json& compNode = componentsNode.at(i);
 			std::size_t compHash = HashString(compNode["name"]);
 
-		
-			BAMBO_ASSERT_S(factory->IsRegistered(compHash))
+			UPtr<Component> comp{};
 
-			UPtr<Component> comp = factory->CreateComponent(compHash);
+			if (compHash == Bambo::SpriteComponent::GetTypeID())
+			{
+				comp = std::make_unique<SpriteComponent>();
+			}
+			else if (compHash == Bambo::Area2DComponent::GetTypeID())
+			{
+				comp = std::make_unique<Area2DComponent>();
+			}
+			else
+			{
+				continue;
+			}
+
+			BAMBO_ASSERT_S(comp.get())
+
 			comp->SetOwner(this);
 			comp->PostConstruct();
 			comp->Deserialize(compNode);
+
 			m_components.push_back(std::move(comp));
 		}
 

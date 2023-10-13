@@ -64,30 +64,4 @@ namespace Bambo
 			renderer->EnqueueSpriteToRender(request);
 		}
 	}
-
-	void TextComponent::Serialize(nlohmann::json& node)
-	{
-		Serialization::Serialize("TextComponent", node["name"]);
-		Serialization::Serialize(m_internalText.GetFont()->GetAssetInstanceID(), node["fontID"]);
-		Serialization::Serialize(m_internalText.GetTextSize(), node["textSize"]);
-		Serialization::Serialize(m_internalText.GetText8(), node["text"]);
-		Serialization::Serialize(m_sortingOrder, node["sortingOrder"]);
-	}
-
-	void TextComponent::Deserialize(nlohmann::json& node)
-	{
-		BAMBO_ASSERT_S(m_owner)
-		BAMBO_ASSERT_S(m_owner->IsValid())
-		BAMBO_ASSERT_S(m_owner->GetWorld())
-
-		m_internalText.SetSize(Serialization::Deserialize<uint32>(node["textSize"]));
-		m_internalText.SetText(Serialization::Deserialize<std::string>(node["text"]));
-		m_sortingOrder = Serialization::Deserialize<int32>(node["sortingOrder"]);
-
-		World* world = m_owner->GetWorld();
-		FontProvider* fontProvider = world->GetFontProvider();
-
-		std::size_t assetId = Serialization::Deserialize<std::size_t>(node["fontID"]);
-		m_internalText.SetFont(fontProvider->Load(assetId));
-	}
 }

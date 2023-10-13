@@ -6,6 +6,7 @@
 #include "BamboPaths.h"
 #include "RenderManager.h"
 #include "Engine.h"
+#include "DrawDebugHelpers.h"
 
 namespace BamboEditor
 {
@@ -57,6 +58,21 @@ namespace BamboEditor
 
 		if (m_editorContext->CurrentWorld)
 		{
+			if (m_editorContext->SelectedGameObject.IsValid())
+			{
+				Bambo::GameObject* selectedObj = m_editorContext->CurrentWorld->GetGameObject(m_editorContext->SelectedGameObject);
+				glm::vec3 pos = selectedObj->GetTransform()->GetPosition();
+				
+				Bambo::Vector3f fromH = Bambo::Vector3f{pos.x, pos.y, pos.z} - Bambo::Vector3f{ 10.0f, 0.0, 0.0f };
+				Bambo::Vector3f toH = Bambo::Vector3f{pos.x, pos.y, pos.z} + Bambo::Vector3f{ 10.0f, 0.0, 0.0f };
+
+				Bambo::Vector3f fromY = Bambo::Vector3f{ pos.x, pos.y, pos.z } - Bambo::Vector3f{ 0.0, 10.0f, 0.0f };
+				Bambo::Vector3f toY = Bambo::Vector3f{pos.x, pos.y, pos.z} + Bambo::Vector3f{ 0.0f, 10.0f, 0.0f };
+
+				DrawDebugLine(m_editorContext->CurrentWorld.get(), fromH, toH, Bambo::Color::Blue(), 4.0f);
+				DrawDebugLine(m_editorContext->CurrentWorld.get(), fromY, toY, Bambo::Color::Blue(), 4.0f);
+			}
+
 			m_editorContext->CurrentWorld->Render();
 		}
 

@@ -7,7 +7,6 @@
 #include "RenderManager.h"
 #include "Resource/ResourceManager.h"
 #include "Time/TimeManager.h"
-#include "Components/ComponentFactory.h"
 
 namespace Bambo
 {
@@ -28,7 +27,6 @@ namespace Bambo
 		WindowManager* GetWindowManager() { return &m_windowManager; }
 		ResourceManager* GetResourceManager() { return &m_resourceManager; }
 		TimeManager* GetTimeManager() { return &m_timeManager; }
-		ComponentFactory* GetComponentFactory() { return &m_componentFactory; }
 
 	private:
 		std::vector<UPtr<Module>> m_modules;
@@ -37,7 +35,6 @@ namespace Bambo
 		WindowManager m_windowManager;
 		ResourceManager m_resourceManager;
 		TimeManager m_timeManager;
-		ComponentFactory m_componentFactory;
 
 		void LoadConfigurationFile(WindowSettings& windowSettings);
 		void OnWindowResize(uint32 width, uint32 height);

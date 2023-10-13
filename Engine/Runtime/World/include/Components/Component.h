@@ -11,6 +11,11 @@ namespace Bambo
 		static std::size_t id = HashString(#Name); \
 		return id; \
 	}	\
+	virtual const std::string& GetName() const override \
+	{	\
+		static std::string name{#Name}; \
+		return name; \
+	}	\
 	virtual std::size_t GetID() const override \
 	{	\
 		return GetTypeID(); \
@@ -18,7 +23,7 @@ namespace Bambo
 
 class GameObject;
 
-	class Component : public ISerializable
+	class Component
 	{
 		friend class GameObject;
 	public:
@@ -43,6 +48,10 @@ class GameObject;
 		{
 			m_isValid = false;
 		}
+
+		virtual const std::string& GetName() const { return "Unknown component"; }
+		virtual void Serialize(nlohmann::json& node) {}
+		virtual void Deserialize(nlohmann::json& node) {}
 
 		virtual std::size_t GetID() const { return 0; }
 		GameObject* GetOwner() { return m_owner; }

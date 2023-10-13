@@ -94,4 +94,14 @@ namespace BamboEditor
     {
         ImGui::InputFloat3(name, glm::value_ptr(*vec3));
     }
+
+    void DrawRectFloat(const char* name, Bambo::RectFloat* rect)
+    {
+        ImGui::Text(name);
+        DrawFloat("Left", &rect->Left);
+        DrawFloat("Top", &rect->Top);
+        DrawFloat("Width", &rect->Width);
+        DrawFloat("Height", &rect->Height);
+    }
+
 }

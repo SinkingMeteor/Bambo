@@ -1,5 +1,5 @@
 #pragma once
-#include "pch.h"
+#include "Essentials.h"
 #include "glm.hpp"
 
 namespace Bambo
@@ -34,6 +34,27 @@ namespace Bambo
 				Deserialize<float>(node["x"]),
 				Deserialize<float>(node["y"]),
 				Deserialize<float>(node["z"])
+			};
+		}
+
+		template<>
+		inline BAMBO_API void Serialize<RectFloat>(const RectFloat& val, nlohmann::json& node)
+		{
+			Serialize(val.Left, node["left"]);
+			Serialize(val.Top, node["top"]);
+			Serialize(val.Width, node["width"]);
+			Serialize(val.Height, node["height"]);
+		}
+
+		template<>
+		inline BAMBO_API RectFloat Deserialize<RectFloat>(nlohmann::json& node)
+		{
+			return RectFloat
+			{
+				Deserialize<float>(node["left"]),
+				Deserialize<float>(node["top"]),
+				Deserialize<float>(node["width"]),
+				Deserialize<float>(node["height"])
 			};
 		}
 

@@ -32,8 +32,7 @@ namespace BamboEditor
 		m_states.AddState(std::make_shared<MainEditorState>(&m_editorContext));
 
 		m_drawersRegistry.Register(SpriteComponent::GetTypeID(), DrawSpriteComponent);
-		m_drawersRegistry.Register(CameraComponent::GetTypeID(), DrawCameraComponent);
-		m_drawersRegistry.Register(TextComponent::GetTypeID(), DrawTextComponent);
+		m_drawersRegistry.Register(Area2DComponent::GetTypeID(), DrawArea2DComponent);
 
 		m_states.EnterTo(static_cast<uint32>(EditorStateType::OpenProject));
 	}

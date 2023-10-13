@@ -71,7 +71,7 @@ namespace BamboEditor
 				if (ImGui::MenuItem("Empty")) { CreateEmpty(); }
 				if (ImGui::MenuItem("Camera")) { CreateCamera(); }
 				if (ImGui::MenuItem("Sprite")) { CreateSprite(); }
-				if (ImGui::MenuItem("Text")) { CreateText(); }
+				if (ImGui::MenuItem("Area2D")) { CreateArea2D(); }
 				ImGui::TreePop();
 			}
 
@@ -104,6 +104,11 @@ namespace BamboEditor
 	void SceneHierarchyWindow::CreateText()
 	{
 		CreateEmpty()->AddComponent<Bambo::TextComponent>();
+	}
+
+	void SceneHierarchyWindow::CreateArea2D()
+	{
+		CreateEmpty()->AddComponent<Bambo::Area2DComponent>();
 	}
 
 	bool SceneHierarchyWindow::DestroyObject(Bambo::IID id)

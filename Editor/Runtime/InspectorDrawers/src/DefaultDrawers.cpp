@@ -25,7 +25,6 @@ namespace BamboEditor
 	{
 		Bambo::SpriteComponent* spriteComponent = Bambo::Cast<Bambo::SpriteComponent>(component);
 
-		ImGui::Text("SpriteComponent");
 		DrawInteger("Rect index", &spriteComponent->GetRectIndexRef());
 		DrawInteger("Sorting order", &spriteComponent->GetSortingOrderRef());
 		DrawVector3("Origin", &spriteComponent->GetOriginRef());
@@ -50,6 +49,13 @@ namespace BamboEditor
 			Bambo::TextureProvider* textureProvider = component->GetOwner()->GetWorld()->GetTextureProvider();
 			spriteComponent->SetTexture(textureProvider->Load(texReference.GetAssetID()));
 		}
+	}
+
+	void DrawArea2DComponent(Bambo::Component* component)
+	{
+		Bambo::Area2DComponent* areaComponent = Bambo::Cast<Bambo::Area2DComponent>(component);
+		DrawRectFloat("Field", areaComponent->GetRectPtr());
+		DrawVector3("Origin", areaComponent->GetOriginPtr());
 	}
 
 	void DrawCameraComponent(Bambo::Component* component)

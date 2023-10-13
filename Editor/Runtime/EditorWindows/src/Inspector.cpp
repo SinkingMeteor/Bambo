@@ -33,7 +33,12 @@ namespace BamboEditor
 
 		for (size_t i = 0; i < components.size(); ++i)
 		{
-			drawersRegistry->DrawComponent(components[i]->GetID(), components[i].get());
+			DrawReadonlyString(&components[i]->GetName());
+
+			if (drawersRegistry->IsRegistered(components[i]->GetID()))
+			{
+				drawersRegistry->DrawComponent(components[i]->GetID(), components[i].get());
+			}
 		}
 
 		ImGui::End();

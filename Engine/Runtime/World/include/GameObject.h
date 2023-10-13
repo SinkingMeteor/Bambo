@@ -1,6 +1,5 @@
 #pragma once
 #include "Essentials.h"
-#include "Components/ComponentFactory.h"
 #include "Transform.h"
 namespace Bambo
 {
@@ -146,7 +145,7 @@ namespace Bambo
 		static_assert(std::is_base_of<Component, T>::value);
 		BAMBO_ASSERT_S(this && IsValid())
 
-			const T* ptr = GetComponentConst<T>();
+		const T* ptr = GetComponentConst<T>();
 		return ptr != nullptr;
 	}
 

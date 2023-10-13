@@ -11,4 +11,5 @@ namespace BamboEditor
     void DrawString(const char* name, std::string* str, ImGuiInputTextFlags flags = 0);
     void DrawReadonlyString(const std::string* str);
     void DrawVector3(const char* name, glm::vec3* vec3);
+    void DrawRectFloat(const char* name, Bambo::RectFloat* rect);
 }
