@@ -1,26 +1,9 @@
-#include "MathSerialization.h"
+#include "BaseSerialization.h"
 
 namespace Bambo
 {
 	namespace Serialization
 	{
-		void Serialize(const glm::vec3& vec, nlohmann::json& node)
-		{
-			node["x"] = vec.x;
-			node["y"] = vec.y;
-			node["z"] = vec.z;
-		}
-
-		void Deserialize(glm::vec3& vec, nlohmann::json& node)
-		{
-			vec = glm::vec3
-			{
-				node["x"].get<float>(),
-				node["y"].get<float>(),
-				node["z"].get<float>()
-			};
-		}
-
 		void Serialize(const glm::mat4& mat, nlohmann::json& node)
 		{
 			node["x0"] = mat[0].x;

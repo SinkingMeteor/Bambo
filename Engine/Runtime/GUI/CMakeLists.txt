@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(MODULE_NAME WINDOW)
+set(MODULE_NAME GUI)
 set(CURRENT_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 set(BAMBO_${MODULE_NAME}_SOURCES
-${CURRENT_MODULE_DIR}/src/WorldSerialization.cpp
-${CURRENT_MODULE_DIR}/src/BaseSerialization.cpp)
+${CURRENT_MODULE_DIR}/src/Widget.cpp)
 
 set(BAMBO_${MODULE_NAME}_PUBLIC_LIBS)
 set(BAMBO_${MODULE_NAME}_PRIVATE_LIBS)

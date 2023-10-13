@@ -28,6 +28,7 @@ Runtime/World
 Runtime/Window
 Runtime/Core
 Runtime/Serialization
+Runtime/GUI
 Runtime/Audio)
 
 foreach(MODULE ${BAMBO_ENGINE_MODULES})

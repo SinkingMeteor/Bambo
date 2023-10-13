@@ -1,7 +1,8 @@
 #include "GameObject.h"
 #include "Components/Components.h"
 #include "World.h"
-#include "MathSerialization.h"
+#include "BaseSerialization.h"
+
 namespace Bambo
 {
 	void GameObject::Serialize(nlohmann::json& node)
@@ -40,9 +41,9 @@ namespace Bambo
 		m_name = node["name"];
 
 		nlohmann::json& transformNode = node["transform"];
-		Serialization::Deserialize(m_transform.GetPositionRef(), transformNode["position"]);
-		Serialization::Deserialize(m_transform.GetRotationRef(), transformNode["rotation"]);
-		Serialization::Deserialize(m_transform.GetScaleRef(), transformNode["scale"]);
+		m_transform.SetPosition(Serialization::Deserialize<glm::vec3>(transformNode["position"]));
+		m_transform.SetRotation(Serialization::Deserialize<glm::vec3>(transformNode["rotation"]));
+		m_transform.SetScale(Serialization::Deserialize<glm::vec3>(transformNode["scale"]));
 
 		for (size_t i = 0; i < componentsNode.size(); ++i)
 		{

@@ -1,6 +1,6 @@
 #include "Components/SpriteComponent.h"
 #include "World.h"
-#include "MathSerialization.h"
+#include "BaseSerialization.h"
 
 namespace Bambo
 {
@@ -45,10 +45,10 @@ namespace Bambo
 
 	void SpriteComponent::Serialize(nlohmann::json& node)
 	{
-		node["name"] = "SpriteComponent";
-		node["textureID"] = m_texture->GetAssetInstanceID();
-		node["rectId"] = m_spriteRectIndex;
-		node["sortingOrder"] = m_sortingOrder;
+		Serialization::Serialize("SpriteComponent", node["name"]);
+		Serialization::Serialize(m_texture->GetAssetInstanceID(), node["textureID"]);
+		Serialization::Serialize(m_spriteRectIndex, node["rectId"]);
+		Serialization::Serialize(m_sortingOrder, node["sortingOrder"]);
 		Serialization::Serialize(m_origin, node["origin"]);
 	}
 
@@ -58,18 +58,14 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_owner->IsValid())
 		BAMBO_ASSERT_S(m_owner->GetWorld())
 
-		m_spriteRectIndex = node["rectId"].get<int32>();
-		nlohmann::json& sortingOrderNode = node["sortingOrder"];
-		if (!sortingOrderNode.is_null())
-		{
-			m_sortingOrder = sortingOrderNode.get<int32>();
-		}
-		Serialization::Deserialize(m_origin, node["origin"]);
+		m_spriteRectIndex = Serialization::Deserialize<int32>(node["rectId"]);
+		m_sortingOrder = Serialization::Deserialize<int32>(node["sortingOrder"]);
+		m_origin = Serialization::Deserialize<glm::vec3>(node["origin"]);
 
 		World* world = m_owner->GetWorld();
 		TextureProvider* textureProvider = world->GetTextureProvider();
-		std::size_t assetId = node["textureID"].get<std::size_t>();
 
+		std::size_t assetId = Serialization::Deserialize<std::size_t>(node["textureID"]);
 		m_texture = textureProvider->Load(assetId);
 	}
 }
