@@ -6,6 +6,12 @@
 #include "InspectorDrawersRegistry.h"
 namespace BamboEditor
 {
+	struct InspectorWindowData
+	{
+		std::string EnabledGameObjectLabel{ "Object is enabled" };
+		std::string DisabledGameObjectLabel{ "Object is disabled" };
+	};
+
 	class InspectorWindow : public GUIWindow
 	{
 	public:
@@ -15,5 +21,6 @@ namespace BamboEditor
 	private:
 		std::string m_windowName;
 		EditorContext* m_editorContext;
+		InspectorWindowData m_internalData;
 	};
 }

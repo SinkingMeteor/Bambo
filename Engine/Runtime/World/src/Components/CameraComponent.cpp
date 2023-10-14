@@ -4,7 +4,7 @@
 
 namespace Bambo
 {
-	void CameraComponent::OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex)
+	void CameraComponent::OnRender(const glm::mat4& ownerGlobalMatrix)
 	{
 		if (!m_owner) return;
 

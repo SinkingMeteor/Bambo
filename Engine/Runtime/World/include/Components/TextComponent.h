@@ -20,7 +20,7 @@ namespace Bambo
 		void SetSortingOrder(int32 sortingOrder) { m_sortingOrder = sortingOrder; }
 		Text& GetInternalText() { return m_internalText; }
 
-		virtual void OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex) override;
+		virtual void OnRender(const glm::mat4& ownerGlobalMatrix) override;
 		virtual void PostConstruct() override;
 	private:
 		Text m_internalText;

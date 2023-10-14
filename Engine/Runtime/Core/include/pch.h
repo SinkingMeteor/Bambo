@@ -30,6 +30,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "glm.hpp"
+#include "gtx/matrix_decompose.hpp"
 #include "gtc/quaternion.hpp"
 #include "gtc/type_ptr.hpp"
 #include "gtx/euler_angles.hpp"

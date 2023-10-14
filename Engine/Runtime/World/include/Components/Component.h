@@ -8,7 +8,7 @@ namespace Bambo
 #define COMPONENT_BODY(Name) public: \
 	static std::size_t GetTypeID() \
 	{	\
-		static std::size_t id = HashString(#Name); \
+		static std::size_t id = Bambo::HashString(#Name); \
 		return id; \
 	}	\
 	virtual const std::string& GetName() const override \
@@ -43,7 +43,7 @@ class GameObject;
 		}
 		virtual void Start() {}
 		virtual void Tick(float deltaSeconds) {}
-		virtual void OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex) {}
+		virtual void OnRender(const glm::mat4& ownerGlobalMatrix) {}
 		virtual void End() 
 		{
 			m_isValid = false;

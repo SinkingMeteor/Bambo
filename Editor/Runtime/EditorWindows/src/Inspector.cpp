@@ -5,7 +5,8 @@ namespace BamboEditor
 {
 	InspectorWindow::InspectorWindow(EditorContext* editorContext) :
 		m_windowName("Inspector"),
-		m_editorContext(editorContext)
+		m_editorContext(editorContext),
+		m_internalData()
 	{}
 	
 	void InspectorWindow::OnGUI()
@@ -23,8 +24,23 @@ namespace BamboEditor
 
 		Bambo::GameObject* gameObject = m_editorContext->CurrentWorld->GetGameObject(m_editorContext->SelectedGameObject);
 
+		bool isObjectDisabled = gameObject->HasProperty(Bambo::GameObject::IsDisabled);
+		std::string& label = isObjectDisabled ? m_internalData.DisabledGameObjectLabel : m_internalData.EnabledGameObjectLabel;
+
+		if (ImGui::Button(label.c_str()))
+		{
+			if (isObjectDisabled)
+			{
+				gameObject->RemoveProperty(Bambo::GameObject::IsDisabled);
+			}
+			else
+			{
+				gameObject->AddProperty(Bambo::GameObject::IsDisabled);
+			}
+		}
+
 		std::string& name = gameObject->GetName();
-		DrawString("Name", &name);
+		DrawString("GameObject: ", &name);
 
 		DrawTransformComponent(gameObject->GetTransform());
 		InspectorDrawersRegistry* drawersRegistry = m_editorContext->Editor->GetDrawersRegistry();

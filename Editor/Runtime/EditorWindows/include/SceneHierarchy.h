@@ -8,6 +8,12 @@
 
 namespace BamboEditor
 {
+	struct SceneHierarchyWindowData
+	{
+		Bambo::Color DisabledTextColor{ Bambo::Color::Red() };
+		Bambo::Color EnabledTextColor{ Bambo::Color::White() };
+	};
+
 	class SceneHierarchyWindow final : public GUIWindow
 	{
 	public:
@@ -17,8 +23,9 @@ namespace BamboEditor
 	private:
 		std::string m_windowName = "Hierarchy";
 		EditorContext* m_editorContext;
+		SceneHierarchyWindowData m_internalData;
 
-		void DisplayChildrenOf(const Bambo::GameObject* gameObject, ImGuiTreeNodeFlags additionalFlags = ImGuiBackendFlags_::ImGuiBackendFlags_None);
+		void DisplayChildrenOf(const Bambo::GameObject* gameObject, bool isDisabled, ImGuiTreeNodeFlags additionalFlags = 0);
 		Bambo::GameObject* CreateEmpty();
 
 		void CreateSprite();

@@ -25,18 +25,16 @@ namespace Bambo
 		SetText(u8"Привет, мир!");
 	}
 
-	void TextComponent::OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex)
+	void TextComponent::OnRender(const glm::mat4& ownerGlobalMatrix)
 	{
 		if (!m_owner) return;
 
 		World* world = m_owner->GetWorld();
 		if (!world) return;
 
-		glm::mat4 objectPos = globals[ownerMatIndex];
-
 #ifdef WITH_EDITOR
 		RectFloat textArea = m_internalText.GetAreaRect();
-		glm::vec4 selfWorldPos = objectPos * glm::vec4{ 1.0f };
+		glm::vec4 selfWorldPos = ownerGlobalMatrix * glm::vec4{ 1.0f };
 
 		textArea.Left = selfWorldPos.x;
 		textArea.Top = selfWorldPos.y;
@@ -59,7 +57,7 @@ namespace Bambo
 			request.Shader = m_shader;
 
 			Vector3f glyphWorldPos = textRenderData[i].GlyphWorldPos;
-			request.Model = glm::translate(objectPos, { glyphWorldPos.X, glyphWorldPos.Y, glyphWorldPos.Z });
+			request.Model = glm::translate(ownerGlobalMatrix, { glyphWorldPos.X, glyphWorldPos.Y, glyphWorldPos.Z });
 
 			renderer->EnqueueSpriteToRender(request);
 		}

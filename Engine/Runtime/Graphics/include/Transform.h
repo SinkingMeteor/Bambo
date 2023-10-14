@@ -19,6 +19,10 @@ namespace Bambo
 		glm::vec3 GetScale() const { return m_scale; }
 
 		glm::mat4& GetMatrix();
+		const glm::mat4& GetGlobalMatrix() const { return m_globalMatrix; }
+		void SetGlobalMatrix(const glm::mat4& globalMatrix);
+
+		glm::vec3 GetGlobalPosition() const;
 
 		bool IsNeedUpdate() const { return m_isNeedUpdate; }
 		void SetNeedUpdate() { m_isNeedUpdate = true; }
@@ -36,5 +40,6 @@ namespace Bambo
 		bool m_isNeedUpdate;
 
 		glm::mat4 m_matrix;
+		glm::mat4 m_globalMatrix;
 	};
 }

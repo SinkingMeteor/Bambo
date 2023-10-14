@@ -71,8 +71,6 @@ namespace Bambo
 		TextureProvider m_textureProvider;
 		FontProvider m_fontProvider;
 
-		std::vector<glm::mat4> m_globalMatrices;
-
 		GameObject* CreateGameObjectInternal(IID parent, IID id);
 		void LoadWorld();
 

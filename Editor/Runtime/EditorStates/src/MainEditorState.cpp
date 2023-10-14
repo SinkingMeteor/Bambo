@@ -58,10 +58,15 @@ namespace BamboEditor
 
 		if (m_editorContext->CurrentWorld)
 		{
+			//@TODO: Перенести в соответствующее окно
 			if (m_editorContext->SelectedGameObject.IsValid())
 			{
+				Bambo::GameObject* root = m_editorContext->CurrentWorld->GetRoot();
+				glm::mat4& rootMatrix = root->GetTransform()->GetMatrix();
+				glm::mat4 inversedRootMatrix = glm::inverse(rootMatrix);
+
 				Bambo::GameObject* selectedObj = m_editorContext->CurrentWorld->GetGameObject(m_editorContext->SelectedGameObject);
-				glm::vec3 pos = selectedObj->GetTransform()->GetPosition();
+				glm::vec3 pos = selectedObj->GetTransform()->GetGlobalPosition();
 				
 				DrawDebugRhombus(m_editorContext->CurrentWorld.get(), Vector3f{pos.x, pos.y, pos.z}, 10.0f, Bambo::Color::Cyan(), 3.0f);
 			}
@@ -108,7 +113,7 @@ namespace BamboEditor
 		m_editorContext->CurrentWorld = std::make_shared<Bambo::World>(parameters);
 		Bambo::GameObject* editorCamera = m_editorContext->CurrentWorld->CreateGameObject();
 		editorCamera->AddProperty(Bambo::GameObject::IsEditorOnly);
-		editorCamera->AddComponent<Bambo::CameraComponent>();
+		m_editorContext->EditorCamera = editorCamera->AddComponent<EditorCamera>();
 	}
 
 	void MainEditorState::SaveProject()

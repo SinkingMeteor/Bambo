@@ -5,18 +5,16 @@
 
 namespace Bambo
 {
-	void Area2DComponent::OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex)
+	void Area2DComponent::OnRender(const glm::mat4& ownerGlobalMatrix)
 	{
 		if (!m_owner) return;
 
 		World* world = m_owner->GetWorld();
 		if (!world) return;
 
-		glm::mat4 objectPos = globals[ownerMatIndex];
-
 #ifdef WITH_EDITOR
 
-		glm::vec4 selfWorldPos = glm::translate(globals[ownerMatIndex], glm::vec3{ 1.0f }) * glm::vec4{ 1.0f };
+		glm::vec4 selfWorldPos = glm::translate(ownerGlobalMatrix, glm::vec3{ 1.0f }) * glm::vec4{ 1.0f };
 		RectFloat rect{ selfWorldPos.x, selfWorldPos.y, Width, Height };
 
 		DrawDebugRect(world, rect, Color::Green());

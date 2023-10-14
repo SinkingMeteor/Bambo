@@ -42,7 +42,7 @@ namespace Bambo
 		virtual void Serialize(nlohmann::json& node) override;
 		virtual void Deserialize(nlohmann::json& node) override;
 		
-		virtual void OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex) override;
+		virtual void OnRender(const glm::mat4& ownerGlobalMatrix) override;
 		virtual void PostConstruct() override;
 	private:
 		SPtr<Texture2D> m_texture{ nullptr };

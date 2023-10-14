@@ -59,7 +59,7 @@ namespace Bambo
 
 		virtual void Start();
 		virtual void Tick(float deltaSeconds);
-		virtual void OnRender(std::vector<glm::mat4>& globals, int32 parentMatIndex);
+		virtual void OnRender(const glm::mat4& parentWorldMatrix);
 		virtual void End();
 		
 		bool operator==(const GameObject& go) { return m_id == go.m_id; }

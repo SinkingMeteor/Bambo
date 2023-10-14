@@ -24,8 +24,7 @@ namespace Bambo
 		m_cameraManager(),
 		m_shaderProvider(m_worldParameters.Engine),
 		m_textureProvider(m_worldParameters.Engine),
-		m_fontProvider(m_worldParameters.Engine),
-		m_globalMatrices()
+		m_fontProvider(m_worldParameters.Engine)
 	{
 		SPtr<Shader> defaultSpriteShader = m_shaderProvider.Load(BamboPaths::EngineResourcesDir / "Shaders/SpriteDefault/SpriteDefault.shader");
 		m_spriteRenderer = std::make_unique<SpriteRenderer>(this, defaultSpriteShader);
@@ -66,12 +65,11 @@ namespace Bambo
 	{
 		GameObject* root = GetGameObject(m_root);
 		
-		m_globalMatrices.push_back(root->GetTransform()->GetMatrix());
 		std::vector<IID>& children = root->GetChildren();
 		for (size_t i = 0; i < children.size(); ++i)
 		{
 			GameObject* child = GetGameObject(children[i]);
-			child->OnRender(m_globalMatrices, 0);
+			child->OnRender(root->GetTransform()->GetMatrix());
 		}
 
 		m_spriteRenderer->Render(this);
@@ -81,8 +79,6 @@ namespace Bambo
 		{
 			m_debugLineRenderer->Render(this);
 		}
-
-		m_globalMatrices.clear();
 	}
 
 	GameObject* World::CreateGameObject(IID parent, IID id)

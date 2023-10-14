@@ -6,7 +6,7 @@
 
 namespace Bambo
 {
-	struct BAMBO_API CameraComponent final : public Component
+	struct BAMBO_API CameraComponent : public Component
 	{
 		COMPONENT_BODY(CameraComponent)
 
@@ -16,7 +16,7 @@ namespace Bambo
 	private:
 		Camera m_camera;
 
-		virtual void OnRender(std::vector<glm::mat4>& globals, int32 ownerMatIndex) override;
+		virtual void OnRender(const glm::mat4& ownerGlobalMatrix) override;
 	};
 
 

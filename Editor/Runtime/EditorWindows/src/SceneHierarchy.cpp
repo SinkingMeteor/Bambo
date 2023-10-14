@@ -9,7 +9,8 @@ namespace BamboEditor
 {
 	SceneHierarchyWindow::SceneHierarchyWindow(EditorContext* editorContext) :
 		m_windowName("Hierarchy"),
-		m_editorContext(editorContext)
+		m_editorContext(editorContext),
+		m_internalData()
 	{}
 
 	void SceneHierarchyWindow::OnGUI()
@@ -52,7 +53,8 @@ namespace BamboEditor
 				ImGui::EndDragDropTarget();
 			}
 
-			DisplayChildrenOf(rootGo);
+			DisplayChildrenOf(rootGo, false);
+
 			ImGui::EndTable();
 		}
 
@@ -116,7 +118,7 @@ namespace BamboEditor
 		return true;
 	}
 
-	void SceneHierarchyWindow::DisplayChildrenOf(const Bambo::GameObject* gameObject, ImGuiTreeNodeFlags additionalFlags)
+	void SceneHierarchyWindow::DisplayChildrenOf(const Bambo::GameObject* gameObject, bool isDisabled, ImGuiTreeNodeFlags additionalFlags)
 	{
 		const std::vector<Bambo::IID>& children = gameObject->GetChildrenConst();
 
@@ -137,7 +139,7 @@ namespace BamboEditor
 
 			if (childGo->HasProperty(Bambo::GameObject::IsDisabled))
 			{
-				nodeFlags |= ImGuiTreeNodeFlags_Framed;
+				nodeFlags |= ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Bullet;
 			}
 
 			if (id == m_editorContext->SelectedGameObject)
@@ -148,6 +150,10 @@ namespace BamboEditor
 			ImGui::TableNextRow();
 			ImGui::TableNextColumn();
 
+			isDisabled |= childGo->HasProperty(Bambo::GameObject::IsDisabled);
+			ImVec4 color = isDisabled ? ColorToImGuiColor(m_internalData.DisabledTextColor) : ColorToImGuiColor(m_internalData.EnabledTextColor);
+
+			ImGui::PushStyleColor(ImGuiCol_Text, color);
 			bool isOpened = ImGui::TreeNodeEx((void*)(uintptr_t)id, nodeFlags, name.c_str());
 
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
@@ -178,12 +184,15 @@ namespace BamboEditor
 
 			if (!isOpened)
 			{
+				ImGui::PopStyleColor();
 				continue;
 			}
 
 
 			bool noChildren = childGo->GetChildrenCount() == 0;
-			DisplayChildrenOf(childGo, noChildren ? (ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet) : ImGuiBackendFlags_None);
+			DisplayChildrenOf(childGo, isDisabled,  noChildren ? (ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet) : ImGuiBackendFlags_None);
+
+			ImGui::PopStyleColor();
 			ImGui::TreePop();
 		}
 	}

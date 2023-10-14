@@ -18,7 +18,6 @@ namespace Bambo
 
 	void GameObject::Serialize(nlohmann::json& node)
 	{
-		if (HasProperty(IsEditorOnly)) return;
 
 		node["id"] = (uint64_t)m_id;
 		node["name"] = m_name;
@@ -46,10 +45,12 @@ namespace Bambo
 
 		for (size_t i = 0; i < m_children.size(); ++i)
 		{
-			node["children"].push_back({});
 			GameObject* child = m_world->GetGameObject(m_children[i]);
-
 			BAMBO_ASSERT_S(child)
+
+			if (child->HasProperty(IsEditorOnly)) continue;
+
+			node["children"].push_back({});
 
 			child->Serialize(node["children"].back());
 		}
@@ -164,22 +165,21 @@ namespace Bambo
 
 	}
 
-	void GameObject::OnRender(std::vector<glm::mat4>& globals, int32 parentMatIndex)
+	void GameObject::OnRender(const glm::mat4& parentWorldMatrix)
 	{
 		if (HasProperty(IsDisabled)) return;
 
-		globals.push_back(globals[parentMatIndex] * m_transform.GetMatrix());
-		int32 selfIndex = globals.size() - 1;
+		m_transform.SetGlobalMatrix(parentWorldMatrix * m_transform.GetMatrix());
 
 		for (size_t i = 0; i < m_components.size(); ++i)
 		{
-			m_components[i]->OnRender(globals, selfIndex);
+			m_components[i]->OnRender(m_transform.GetGlobalMatrix());
 		}
 
 		for (size_t i = 0; i < m_children.size(); ++i)
 		{
 			GameObject* childGo = m_world->GetGameObject(m_children[i]);
-			childGo->OnRender(globals, selfIndex);
+			childGo->OnRender(m_transform.GetGlobalMatrix());
 		}
 	}
 

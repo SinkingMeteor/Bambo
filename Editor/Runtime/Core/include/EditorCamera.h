@@ -1,14 +1,11 @@
 #pragma once
 #include "Essentials.h"
-#include "Components/Component.h"
+#include "Components/CameraComponent.h"
 
-namespace Bambo
+namespace BamboEditor
 {
-	class EditorCamera : public Component
+	class EditorCamera : public Bambo::CameraComponent
 	{
 		COMPONENT_BODY(EditorCamera)
-
-	public:
-
 	};
 }

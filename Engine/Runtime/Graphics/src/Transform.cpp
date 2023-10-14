@@ -13,7 +13,8 @@ namespace Bambo
 		m_rotation(rotation),
 		m_scale(scale),
 		m_isNeedUpdate(true),
-		m_matrix()
+		m_matrix(),
+		m_globalMatrix()
 	{}
 
 	glm::mat4& Transform::GetMatrix()
@@ -30,6 +31,21 @@ namespace Bambo
 		}
 
 		return m_matrix;
+	}
+
+	void Transform::SetGlobalMatrix(const glm::mat4& globalMatrix)
+	{
+		m_globalMatrix = globalMatrix;
+	}
+
+	glm::vec3 Transform::GetGlobalPosition() const
+	{
+		glm::vec3 worldPos{};
+		worldPos.x = m_globalMatrix[3].x;
+		worldPos.y = m_globalMatrix[3].y;
+		worldPos.z = m_globalMatrix[3].z;
+
+		return worldPos;
 	}
 
 	void Transform::SetPosition(const glm::vec3& position)
