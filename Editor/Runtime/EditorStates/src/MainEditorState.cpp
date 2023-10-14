@@ -63,14 +63,7 @@ namespace BamboEditor
 				Bambo::GameObject* selectedObj = m_editorContext->CurrentWorld->GetGameObject(m_editorContext->SelectedGameObject);
 				glm::vec3 pos = selectedObj->GetTransform()->GetPosition();
 				
-				Bambo::Vector3f fromH = Bambo::Vector3f{pos.x, pos.y, pos.z} - Bambo::Vector3f{ 10.0f, 0.0, 0.0f };
-				Bambo::Vector3f toH = Bambo::Vector3f{pos.x, pos.y, pos.z} + Bambo::Vector3f{ 10.0f, 0.0, 0.0f };
-
-				Bambo::Vector3f fromY = Bambo::Vector3f{ pos.x, pos.y, pos.z } - Bambo::Vector3f{ 0.0, 10.0f, 0.0f };
-				Bambo::Vector3f toY = Bambo::Vector3f{pos.x, pos.y, pos.z} + Bambo::Vector3f{ 0.0f, 10.0f, 0.0f };
-
-				DrawDebugLine(m_editorContext->CurrentWorld.get(), fromH, toH, Bambo::Color::Blue(), 4.0f);
-				DrawDebugLine(m_editorContext->CurrentWorld.get(), fromY, toY, Bambo::Color::Blue(), 4.0f);
+				DrawDebugRhombus(m_editorContext->CurrentWorld.get(), Vector3f{pos.x, pos.y, pos.z}, 10.0f, Bambo::Color::Cyan(), 3.0f);
 			}
 
 			m_editorContext->CurrentWorld->Render();
@@ -91,8 +84,8 @@ namespace BamboEditor
 		{
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("Save", "Ctrl+S")) { SaveProject(); }
-				if (ImGui::MenuItem("Close", "Ctrl+W")) { isToolActive = false; }
+				if (ImGui::MenuItem("Save")) { SaveProject(); }
+				if (ImGui::MenuItem("Close")) { isToolActive = false; }
 				ImGui::EndMenu();
 			}
 
@@ -103,8 +96,6 @@ namespace BamboEditor
 		{
 			window->OnGUI();
 		}
-
-		ImGui::ShowDemoWindow();
 	}
 
 	void MainEditorState::OpenWorld(const std::filesystem::path& worldPath)
@@ -115,6 +106,9 @@ namespace BamboEditor
 		parameters.Engine = m_editorContext->Engine;
 
 		m_editorContext->CurrentWorld = std::make_shared<Bambo::World>(parameters);
+		Bambo::GameObject* editorCamera = m_editorContext->CurrentWorld->CreateGameObject();
+		editorCamera->AddProperty(Bambo::GameObject::IsEditorOnly);
+		editorCamera->AddComponent<Bambo::CameraComponent>();
 	}
 
 	void MainEditorState::SaveProject()

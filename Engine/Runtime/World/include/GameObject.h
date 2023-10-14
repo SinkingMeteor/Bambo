@@ -11,16 +11,14 @@ namespace Bambo
 		using It = std::vector<IID>::iterator;
 
 	public:
+		enum Properties : uint32
+		{
+			IsEditorOnly = 1 << 0,
+			IsDisabled = 1 << 1
+		};
+
 		GameObject() = default;
-		GameObject(World* world, IID id) :
-			m_transform(),
-			m_components(),
-			m_children(),
-			m_parent(),
-			m_name("GameObject"),
-			m_id(id),
-			m_world(world)
-		{}
+		GameObject(World* world, IID id);
 
 		GameObject(const GameObject&) = delete;
 		GameObject& operator=(const GameObject&) = delete;
@@ -64,15 +62,13 @@ namespace Bambo
 		virtual void OnRender(std::vector<glm::mat4>& globals, int32 parentMatIndex);
 		virtual void End();
 		
-		bool operator==(const GameObject& go)
-		{
-			return m_id == go.m_id;
-		}
+		bool operator==(const GameObject& go) { return m_id == go.m_id; }
+		bool operator!=(const GameObject& go) { return m_id != go.m_id; }
 
-		bool operator!=(const GameObject& go)
-		{
-			return m_id != go.m_id;
-		}
+		Properties GetProperties() const { return m_properties; }
+		bool HasProperty(Properties property) const { return (m_properties & property) != 0; }
+		void AddProperty(Properties property) { m_properties = static_cast<Properties>(static_cast<uint32>(m_properties) | static_cast<uint32>(property)); }
+		void RemoveProperty(Properties property) { m_properties = static_cast<Properties>(static_cast<uint32>(m_properties) & ~static_cast<Properties>(property)); }
 
 		void Serialize(nlohmann::json& node);
 		void Deserialize(nlohmann::json& node);
@@ -83,6 +79,7 @@ namespace Bambo
 		std::vector<IID> m_children;
 		IID m_parent;
 		std::string m_name;
+		Properties m_properties;
 
 		IID m_id;
 		World* m_world;

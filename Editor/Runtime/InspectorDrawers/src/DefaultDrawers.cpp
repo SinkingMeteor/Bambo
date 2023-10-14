@@ -54,8 +54,8 @@ namespace BamboEditor
 	void DrawArea2DComponent(Bambo::Component* component)
 	{
 		Bambo::Area2DComponent* areaComponent = Bambo::Cast<Bambo::Area2DComponent>(component);
-		DrawRectFloat("Field", areaComponent->GetRectPtr());
-		DrawVector3("Origin", areaComponent->GetOriginPtr());
+		DrawFloat("Width", &areaComponent->Width);
+		DrawFloat("Height", &areaComponent->Height);
 	}
 
 	void DrawCameraComponent(Bambo::Component* component)

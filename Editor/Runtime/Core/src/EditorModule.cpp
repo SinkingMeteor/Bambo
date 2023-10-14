@@ -93,6 +93,17 @@ namespace BamboEditor
 		configStream.close();
 
 		m_editorConfig.Projects = configRoot["projectsPaths"].get<std::vector<std::string>>();
+
+		for (int32 i = 0; i < m_editorConfig.Projects.size(); ++i)
+		{
+			std::filesystem::path path{ m_editorConfig.Projects[i] };
+			if (std::filesystem::exists(path)) continue;
+		
+			std::size_t lastIndex = m_editorConfig.Projects.size() - 1;
+			std::swap(m_editorConfig.Projects[i], m_editorConfig.Projects[lastIndex]);
+			m_editorConfig.Projects.pop_back();
+			--i;
+		}
 	}
 
 	void EditorModule::SaveEditorConfig()

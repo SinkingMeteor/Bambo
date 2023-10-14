@@ -5,8 +5,21 @@
 
 namespace Bambo
 {
+	GameObject::GameObject(World* world, IID id) :
+		m_transform(),
+		m_components(),
+		m_children(),
+		m_parent(),
+		m_name("GameObject"),
+		m_properties(),
+		m_id(id),
+		m_world(world)
+	{}
+
 	void GameObject::Serialize(nlohmann::json& node)
 	{
+		if (HasProperty(IsEditorOnly)) return;
+
 		node["id"] = (uint64_t)m_id;
 		node["name"] = m_name;
 
@@ -153,6 +166,8 @@ namespace Bambo
 
 	void GameObject::OnRender(std::vector<glm::mat4>& globals, int32 parentMatIndex)
 	{
+		if (HasProperty(IsDisabled)) return;
+
 		globals.push_back(globals[parentMatIndex] * m_transform.GetMatrix());
 		int32 selfIndex = globals.size() - 1;
 

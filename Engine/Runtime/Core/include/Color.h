@@ -23,6 +23,7 @@ namespace Bambo
 		static Color Red();
 		static Color Green();
 		static Color Blue();
+		static Color Cyan();
 		static Color Black();
 		static Color Transparent();
 	};

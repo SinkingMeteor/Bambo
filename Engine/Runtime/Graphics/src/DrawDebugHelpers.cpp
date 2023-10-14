@@ -15,6 +15,21 @@ namespace Bambo
 		world->GetDebugLineRenderer()->EnqueueLineToRender(drawRequest);
 	}
 
+	void DrawDebugRhombus(World* world, const Vector3f& center, float radius, const Color& color, float thickness)
+	{
+		DebugLineRenderer* lineRenderer = world->GetDebugLineRenderer();
+
+		Vector3f left = center - Vector3f{ radius, 0.0f, 0.0f };
+		Vector3f right = center + Vector3f{ radius, 0.0f, 0.0f };
+		Vector3f top = center + Vector3f{ 0.0f, radius, 0.0f };
+		Vector3f bottom = center - Vector3f{ 0.0f, radius, 0.0f };
+
+		lineRenderer->EnqueueLineToRender(LineRenderRequest{ left, top, color, thickness });
+		lineRenderer->EnqueueLineToRender(LineRenderRequest{ top, right, color, thickness});
+		lineRenderer->EnqueueLineToRender(LineRenderRequest{ right, bottom, color, thickness });
+		lineRenderer->EnqueueLineToRender(LineRenderRequest{ bottom, left, color, thickness });
+	}
+
 	void DrawDebugRect(World* world, const RectFloat& rect, const Color& color, float thickness)
 	{
 		DebugLineRenderer* lineRenderer = world->GetDebugLineRenderer();

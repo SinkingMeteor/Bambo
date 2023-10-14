@@ -69,7 +69,6 @@ namespace BamboEditor
 			if (ImGui::TreeNode("Add"))
 			{
 				if (ImGui::MenuItem("Empty")) { CreateEmpty(); }
-				if (ImGui::MenuItem("Camera")) { CreateCamera(); }
 				if (ImGui::MenuItem("Sprite")) { CreateSprite(); }
 				if (ImGui::MenuItem("Area2D")) { CreateArea2D(); }
 				ImGui::TreePop();
@@ -89,11 +88,6 @@ namespace BamboEditor
 	Bambo::GameObject* SceneHierarchyWindow::CreateEmpty()
 	{
 		return m_editorContext->CurrentWorld->CreateGameObject(m_editorContext->SelectedGameObject);
-	}
-
-	void SceneHierarchyWindow::CreateCamera()
-	{
-		CreateEmpty()->AddComponent<Bambo::CameraComponent>();
 	}
 
 	void SceneHierarchyWindow::CreateSprite()
@@ -133,11 +127,18 @@ namespace BamboEditor
 			BAMBO_ASSERT_S(childGo)
 			BAMBO_ASSERT_S(childGo->IsValid())
 
+			if (childGo->HasProperty(Bambo::GameObject::IsEditorOnly)) continue;
+
 			Bambo::IID id = childGo->GetID();
 			std::string& name = childGo->GetName();
 
 			const static ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_OpenOnArrow;
 			ImGuiTreeNodeFlags nodeFlags = baseFlags | additionalFlags;
+
+			if (childGo->HasProperty(Bambo::GameObject::IsDisabled))
+			{
+				nodeFlags |= ImGuiTreeNodeFlags_Framed;
+			}
 
 			if (id == m_editorContext->SelectedGameObject)
 			{

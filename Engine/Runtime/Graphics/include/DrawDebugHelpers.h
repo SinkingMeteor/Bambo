@@ -4,6 +4,6 @@
 namespace Bambo
 {
 	void DrawDebugLine(World* world, const Vector3f& from, const Vector3f& to, const Color& color, float thickness = 1.0f);
-
+	void DrawDebugRhombus(World* world, const Vector3f& center, float radius, const Color& color, float thickness = 1.0f);
 	void DrawDebugRect(World* world, const RectFloat& rect, const Color& color, float thickness = 1.0f);
 }

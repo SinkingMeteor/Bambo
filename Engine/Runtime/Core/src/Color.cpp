@@ -32,6 +32,12 @@ namespace Bambo
 		return color;
 	}
 
+	Color Color::Cyan()
+	{
+		static Color color{ 0.0f, 1.0f, 1.0f, 1.0f };
+		return color;
+	}
+
 	Color Color::Black()
 	{
 		static Color color{ 0.0f, 0.0f, 0.0f, 1.0f };

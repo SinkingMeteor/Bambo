@@ -16,11 +16,8 @@ namespace Bambo
 
 #ifdef WITH_EDITOR
 
-		glm::vec4 selfWorldPos = glm::translate(globals[ownerMatIndex], GetOriginOffset()) * glm::vec4{ 1.0f };
-
-		RectFloat rect{ m_rect };
-		rect.Left = selfWorldPos.x;
-		rect.Top = selfWorldPos.y;
+		glm::vec4 selfWorldPos = glm::translate(globals[ownerMatIndex], glm::vec3{ 1.0f }) * glm::vec4{ 1.0f };
+		RectFloat rect{ selfWorldPos.x, selfWorldPos.y, Width, Height };
 
 		DrawDebugRect(world, rect, Color::Green());
 #endif
@@ -29,8 +26,8 @@ namespace Bambo
 	void Area2DComponent::Serialize(nlohmann::json& node)
 	{
 		Serialization::Serialize(GetName(), node["name"]);
-		Serialization::Serialize(m_origin, node["origin"]);
-		Serialization::Serialize(m_rect, node["rect"]);
+		Serialization::Serialize(Width, node["width"]);
+		Serialization::Serialize(Height, node["height"]);
 	}
 
 	void Area2DComponent::Deserialize(nlohmann::json& node)
@@ -39,7 +36,7 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_owner->IsValid())
 		BAMBO_ASSERT_S(m_owner->GetWorld())
 
-		m_rect = Serialization::Deserialize<RectFloat>(node["rect"]);
-		m_origin = Serialization::Deserialize<glm::vec3>(node["origin"]);
+		Width = Serialization::Deserialize<float>(node["width"]);
+		Height = Serialization::Deserialize<float>(node["height"]);
 	}
 }

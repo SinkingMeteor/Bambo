@@ -53,6 +53,7 @@ class GameObject;
 		virtual void Serialize(nlohmann::json& node) {}
 		virtual void Deserialize(nlohmann::json& node) {}
 
+
 		virtual std::size_t GetID() const { return 0; }
 		GameObject* GetOwner() { return m_owner; }
 	protected:
