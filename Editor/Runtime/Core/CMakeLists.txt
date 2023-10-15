@@ -7,6 +7,7 @@ set(CURRENT_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(BAMBO_${MODULE_NAME}_SOURCES
 ${CURRENT_MODULE_DIR}/src/EditorModule.cpp
 ${CURRENT_MODULE_DIR}/src/Project.cpp
+${CURRENT_MODULE_DIR}/src/EditorCamera.cpp
 ${CURRENT_MODULE_DIR}/src/EditorUtils.cpp
 ${CURRENT_MODULE_DIR}/src/EditorGUIContext.cpp
 ${CURRENT_MODULE_DIR}/src/Main.cpp)

@@ -24,7 +24,8 @@ namespace Bambo
 		m_renderManager(this),
 		m_windowManager(),
 		m_resourceManager(),
-		m_timeManager()
+		m_timeManager(),
+		m_inputManager(&m_windowManager)
 	{}
 
 	void Engine::Initialize()

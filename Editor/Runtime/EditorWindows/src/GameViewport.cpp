@@ -2,6 +2,8 @@
 #include "RenderManager.h"
 #include "EditorContext.h"
 #include "Engine.h"
+#include "DrawDebugHelpers.h"
+
 namespace BamboEditor
 {
 	GameViewportWindow::GameViewportWindow(EditorContext* editorContext, SPtr<Bambo::Framebuffer> framebuffer) :
@@ -28,6 +30,19 @@ namespace BamboEditor
 
 		uint64_t textureID = m_framebuffer->GetTextureID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+
+		if (m_editorContext->SelectedGameObject.IsValid())
+		{
+			Bambo::GameObject* root = m_editorContext->CurrentWorld->GetRoot();
+			glm::mat4& rootMatrix = root->GetTransform()->GetMatrix();
+			glm::mat4 inversedRootMatrix = glm::inverse(rootMatrix);
+
+			Bambo::GameObject* selectedObj = m_editorContext->CurrentWorld->GetGameObject(m_editorContext->SelectedGameObject);
+			glm::vec3 pos = selectedObj->GetTransform()->GetGlobalPosition();
+
+			Bambo::DrawDebugRhombus(m_editorContext->CurrentWorld.get(), Bambo::Vector3f{ pos.x, pos.y, pos.z }, 10.0f, Bambo::Color::Cyan(), 3.0f);
+		}
+
 
 		ImGui::End();
 
