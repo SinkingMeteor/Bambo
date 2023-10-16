@@ -20,10 +20,12 @@ namespace BamboEditor
 		std::string m_windowName;
 		SPtr<Bambo::Framebuffer> m_framebuffer;
 		EditorContext* m_editorContext;
+		float m_mouseScrollFactor = 1.0f;
 		bool m_isOpenedInfoPanel;
 
 		ImVec2 ResizeGameViewport();
 		void DrawInfoOverlay();
 		void DrawMenuBar();
+		void ProcessCameraMovement();
 	};
 }

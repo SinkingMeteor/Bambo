@@ -10,6 +10,7 @@ namespace BamboEditor
 		m_windowName("Game viewport"),
 		m_framebuffer(framebuffer),
 		m_editorContext(editorContext),
+		m_mouseScrollFactor(0.5f),
 		m_isOpenedInfoPanel(false)
 	{}
 
@@ -21,6 +22,7 @@ namespace BamboEditor
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollWithMouse);
 
 		DrawMenuBar();
+		ProcessCameraMovement();
 
 		ImVec2 viewportPanelSize = ResizeGameViewport();
 		ImVec2 windowSize = ImGui::GetWindowSize();
@@ -48,6 +50,22 @@ namespace BamboEditor
 
 		DrawInfoOverlay();
 
+	}
+
+	void GameViewportWindow::ProcessCameraMovement()
+	{
+		if (!m_editorContext->EditorCamera) return;
+
+		bool isFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
+		m_editorContext->EditorCamera->SetMovementEnabled(isFocused);
+
+		if (ImGui::IsMouseDown(ImGuiMouseButton_Right))
+		{
+			ImVec2 delta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Right);
+
+			Bambo::Transform* transform = m_editorContext->EditorCamera->GetOwner()->GetTransform();
+			transform->AddToPosition({ delta.x * 0.04f * m_mouseScrollFactor, -delta.y * 0.04f * m_mouseScrollFactor, 0.0f });
+		}
 	}
 
 	ImVec2 GameViewportWindow::ResizeGameViewport()
@@ -87,6 +105,22 @@ namespace BamboEditor
 		{
 			ImGui::Checkbox("Info", &m_isOpenedInfoPanel);
 			ImGui::Checkbox("Draw debug", &renderParameters.DrawDebug);
+
+			ImGui::SetNextItemWidth(80.0f);
+			ImGui::SliderFloat("Scroll speed", &m_mouseScrollFactor, 0.1f, 2.0f);
+
+			if (m_editorContext->EditorCamera)
+			{
+				ImGui::SetNextItemWidth(80.0f);
+				ImGui::SliderFloat("Camera speed", &m_editorContext->EditorCamera->GetCameraSpeedRef(), 25.0f, 200.0f);
+				if (ImGui::Button("Reset", ImVec2{ 60.0f, 0.0f }))
+				{
+					Bambo::Transform* transform = m_editorContext->EditorCamera->GetOwner()->GetTransform();
+					float zPos = transform->GetPosition().z;
+					transform->SetPosition(glm::vec3{ 0.0f, 0.0f, zPos });
+				}
+			}
+
 			ImGui::EndMenuBar();
 		}
 	}

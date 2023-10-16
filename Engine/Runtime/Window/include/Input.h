@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "glm.hpp"
 #include "GLFW/glfw3.h"
+#include "InputKey.h"
 #include "WindowManager.h"
 namespace Bambo 
 {
@@ -9,10 +10,10 @@ namespace Bambo
 	{
 	public:
 		Input(WindowManager* windowManager) : m_windowManager(windowManager) {}
-		bool IsKeyPressed(int keyCode);
-		bool IsKeyReleased(int keyCode);
-		bool IsMouseButtonPressed(int mouseButton);
-		bool IsMouseButtonReleased(int mouseButton);
+		bool IsKeyPressed(InputKey keyCode);
+		bool IsKeyReleased(InputKey keyCode);
+		bool IsMouseButtonPressed(InputKey mouseButton);
+		bool IsMouseButtonReleased(InputKey mouseButton);
 		glm::vec2 GetMousePosition();
 	private:
 		WindowManager* m_windowManager;
