@@ -2,6 +2,7 @@
 #include "Essentials.h"
 #include "Texture2D.h"
 #include "Components/Component.h"
+#include "Sprite.h"
 
 namespace Bambo
 {
@@ -11,32 +12,8 @@ namespace Bambo
 
 		SpriteComponent();
 
-		SPtr<Texture2D> GetTexture() const { return m_texture; }
-		RectInt GetRect() const 
-		{
-			if (!m_texture)
-			{
-				return RectInt{};
-			}
-
-			return m_texture->GetTextureRects()[m_spriteRectIndex];
-		}
-
-		int32& GetRectIndexRef() { return m_spriteRectIndex; }
+		Sprite& GetSprite() { return m_sprite; }
 		int32& GetSortingOrderRef() { return m_sortingOrder; }
-		glm::vec3& GetOriginRef() { return m_origin; }
-		glm::vec3 GetOrigin() const { return m_origin; }
-		glm::vec3 GetOriginOffset() const 
-		{
-			if (!m_texture) return glm::vec3{0.0f};
-
-			RectInt texRect = m_texture->GetTextureRect();
-			return glm::vec3{ -texRect.Width * m_origin.x, -texRect.Height * m_origin.y, 0.0f };
-		}
-
-		void SetOrigin(const glm::vec3& origin) { m_origin = origin; }
-		void SetTexture(SPtr<Texture2D> texture) { m_texture = texture; }
-		void SetRectIndex(int32 rectIndex) { m_spriteRectIndex = rectIndex; }
 		void SetSortingOrder(int32 sortingOrder) { m_sortingOrder = sortingOrder; }
 
 		virtual void Serialize(nlohmann::json& node) override;
@@ -45,9 +22,7 @@ namespace Bambo
 		virtual void OnRender(const glm::mat4& ownerGlobalMatrix) override;
 		virtual void PostConstruct() override;
 	private:
-		SPtr<Texture2D> m_texture{ nullptr };
-		glm::vec3 m_origin{ 0.5f, 0.5f, 0.5f };
-		int32 m_spriteRectIndex{ 0 };
+		Sprite m_sprite;
 		int32 m_sortingOrder{ 0 };
 	};
 }

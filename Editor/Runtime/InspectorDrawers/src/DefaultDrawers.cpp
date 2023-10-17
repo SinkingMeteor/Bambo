@@ -24,18 +24,19 @@ namespace BamboEditor
 	void DrawSpriteComponent(Bambo::Component* component)
 	{
 		Bambo::SpriteComponent* spriteComponent = Bambo::Cast<Bambo::SpriteComponent>(component);
+		Bambo::Sprite& sprite = spriteComponent->GetSprite();
 
-		DrawInteger("Rect index", &spriteComponent->GetRectIndexRef());
+		DrawInteger("Rect index", &sprite.GetRectIndexRef());
 		DrawInteger("Sorting order", &spriteComponent->GetSortingOrderRef());
-		DrawVector3("Origin", &spriteComponent->GetOriginRef());
+		DrawVector3("Origin", &sprite.GetOriginRef());
 
 		Bambo::World* world = spriteComponent->GetOwner()->GetWorld();
 		Bambo::ResourceManager* resourceManager = world->GetWorldContext()->Engine->GetResourceManager();
 		AssetReferenceWidget texReference{ resourceManager, Bambo::AssetType::Texture2D };
 
-		if (spriteComponent->GetTexture())
+		if (sprite.GetTexture())
 		{
-			texReference.SetAssetID(spriteComponent->GetTexture()->GetAssetInstanceID());
+			texReference.SetAssetID(sprite.GetTexture()->GetAssetInstanceID());
 		}
 
 		ImGui::Text("Texture");
@@ -47,7 +48,7 @@ namespace BamboEditor
 		if (cachedTex != texReference.GetAssetID())
 		{
 			Bambo::TextureProvider* textureProvider = component->GetOwner()->GetWorld()->GetTextureProvider();
-			spriteComponent->SetTexture(textureProvider->Load(texReference.GetAssetID()));
+			sprite.SetTexture(textureProvider->Load(texReference.GetAssetID()));
 		}
 	}
 
@@ -56,13 +57,6 @@ namespace BamboEditor
 		Bambo::Area2DComponent* areaComponent = Bambo::Cast<Bambo::Area2DComponent>(component);
 		DrawFloat("Width", &areaComponent->Width);
 		DrawFloat("Height", &areaComponent->Height);
-	}
-
-	void DrawCameraComponent(Bambo::Component* component)
-	{
-		Bambo::CameraComponent* cameraComponent = Bambo::Cast<Bambo::CameraComponent>(component);
-
-		ImGui::Text("CameraComponent");
 	}
 
 	void DrawTextComponent(Bambo::Component* component)

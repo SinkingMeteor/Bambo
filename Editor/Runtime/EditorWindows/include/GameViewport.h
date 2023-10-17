@@ -27,5 +27,6 @@ namespace BamboEditor
 		void DrawInfoOverlay();
 		void DrawMenuBar();
 		void ProcessCameraMovement();
+		void DrawSelectedItemRhombus();
 	};
 }

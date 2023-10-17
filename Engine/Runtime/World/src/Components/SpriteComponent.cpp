@@ -5,9 +5,8 @@
 namespace Bambo
 {
 	SpriteComponent::SpriteComponent() :
-		m_texture{},
-		m_origin{0.5f},
-		m_spriteRectIndex{0}
+		m_sprite(),
+		m_sortingOrder(0)
 	{}
 
 	void SpriteComponent::PostConstruct()
@@ -18,7 +17,7 @@ namespace Bambo
 
 		World* world = m_owner->GetWorld();
 		if (!world) return;
-		m_texture = world->GetTextureProvider()->Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultSpritePath_A);
+		m_sprite.SetTexture(world->GetTextureProvider()->Load(BamboPaths::EngineResourcesDir / BamboPaths::EngineDefaultSpritePath_A));
 	}
 
 	void SpriteComponent::OnRender(const glm::mat4& ownerGlobalMatrix)
@@ -30,14 +29,14 @@ namespace Bambo
 
 		SpriteRenderer* renderer = world->GetSpriteRenderer();
 
-		if (!m_texture) return;
+		if (!m_sprite.GetTexture()) return;
 
 		SpriteRenderRequest request{};
-		request.Texture = m_texture;
+		request.Texture = m_sprite.GetTexture();
 
-		int32 rectsAmount = m_texture->GetTextureRects().size();
-		request.Rect = m_texture->GetTextureRects()[std::clamp(m_spriteRectIndex, 0, rectsAmount - 1)];
-		request.Model = glm::translate(ownerGlobalMatrix, GetOriginOffset());
+		int32 rectsAmount = request.Texture->GetTextureRects().size();
+		request.Rect = request.Texture->GetTextureRects()[std::clamp(m_sprite.GetRectIndex(), 0, rectsAmount - 1)];
+		request.Model = glm::translate(ownerGlobalMatrix, m_sprite.GetOriginOffset());
 		request.SortingOrder = m_sortingOrder;
 
 		renderer->EnqueueSpriteToRender(request);
@@ -46,10 +45,10 @@ namespace Bambo
 	void SpriteComponent::Serialize(nlohmann::json& node)
 	{
 		Serialization::Serialize("SpriteComponent", node["name"]);
-		Serialization::Serialize(m_texture->GetAssetInstanceID(), node["textureID"]);
-		Serialization::Serialize(m_spriteRectIndex, node["rectId"]);
+		Serialization::Serialize(m_sprite.GetTexture()->GetAssetInstanceID(), node["textureID"]);
+		Serialization::Serialize(m_sprite.GetRectIndex(), node["rectId"]);
 		Serialization::Serialize(m_sortingOrder, node["sortingOrder"]);
-		Serialization::Serialize(m_origin, node["origin"]);
+		Serialization::Serialize(m_sprite.GetOrigin(), node["origin"]);
 	}
 
 	void SpriteComponent::Deserialize(nlohmann::json& node)
@@ -58,14 +57,14 @@ namespace Bambo
 		BAMBO_ASSERT_S(m_owner->IsValid())
 		BAMBO_ASSERT_S(m_owner->GetWorld())
 
-		m_spriteRectIndex = Serialization::Deserialize<int32>(node["rectId"]);
+		m_sprite.SetRectIndex(Serialization::Deserialize<int32>(node["rectId"]));
 		m_sortingOrder = Serialization::Deserialize<int32>(node["sortingOrder"]);
-		m_origin = Serialization::Deserialize<glm::vec3>(node["origin"]);
+		m_sprite.SetOrigin(Serialization::Deserialize<glm::vec3>(node["origin"]));
 
 		World* world = m_owner->GetWorld();
 		TextureProvider* textureProvider = world->GetTextureProvider();
 
 		std::size_t assetId = Serialization::Deserialize<std::size_t>(node["textureID"]);
-		m_texture = textureProvider->Load(assetId);
+		m_sprite.SetTexture(textureProvider->Load(assetId));
 	}
 }

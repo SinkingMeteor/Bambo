@@ -11,6 +11,7 @@ ${CURRENT_MODULE_DIR}/src/Shader.cpp
 ${CURRENT_MODULE_DIR}/src/Texture2D.cpp
 ${CURRENT_MODULE_DIR}/src/TextureBuffer.cpp
 ${CURRENT_MODULE_DIR}/src/Camera.cpp
+${CURRENT_MODULE_DIR}/src/Sprite.cpp
 ${CURRENT_MODULE_DIR}/src/SpriteRenderer.cpp
 ${CURRENT_MODULE_DIR}/src/OpenGL/OpenGLCheck.cpp
 ${CURRENT_MODULE_DIR}/src/DrawDebugHelpers.cpp
