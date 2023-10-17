@@ -51,8 +51,10 @@ namespace Bambo
 		RendererImplementation* renderer = engine->GetRenderManager()->GetRenderer();
 		BAMBO_ASSERT_S(renderer);
 
-		const glm::mat4& projViewMat = world->GetCameraManager()->GetProjViewMatrix();
 		std::sort(m_sprites.begin(), m_sprites.end(), [](SpriteRenderRequest& r1, SpriteRenderRequest& r2) { return r1.SortingOrder < r2.SortingOrder; });
+
+		const glm::mat4& projectionMatrix = world->GetCameraManager()->GetProjectionMatrix();
+		const glm::mat4& viewMatrix = world->GetCameraManager()->GetViewMatrix();
 
 		int32 drawCallCounter = 0;
 		int32 savedByBatching = 0;
@@ -68,7 +70,8 @@ namespace Bambo
 			}
 
 			currentShader->Use();
-			currentShader->SetMatrix4("projView", projViewMat);
+			currentShader->SetMatrix4("ViewMatrix", viewMatrix);
+			currentShader->SetMatrix4("ProjectionMatrix", projectionMatrix);
 
 			if (initSprite.Texture)
 			{

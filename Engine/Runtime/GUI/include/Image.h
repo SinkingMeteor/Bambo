@@ -3,9 +3,9 @@
 #include "Widget.h"
 namespace Bambo
 {
-	class BAMBO_API Button : public Widget
+	class BAMBO_API Image : public Widget
 	{
 	public:
-		Button() = default;
+		Image() = default;
 	};
 }

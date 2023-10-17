@@ -46,10 +46,12 @@ namespace Bambo
 		SPtr<Shader> defaultShader = m_defaultShader.lock();
 		BAMBO_ASSERT_S(defaultShader);
 
-		const glm::mat4& projViewMat = world->GetCameraManager()->GetProjViewMatrix();
+		const glm::mat4& projectionMatrix = world->GetCameraManager()->GetProjectionMatrix();
+		const glm::mat4& viewMatrix = world->GetCameraManager()->GetViewMatrix();
 
 		defaultShader->Use();
-		defaultShader->SetMatrix4("projView", projViewMat);
+		defaultShader->SetMatrix4("ViewMatrix", viewMatrix);
+		defaultShader->SetMatrix4("ProjectionMatrix", projectionMatrix);
 
 		for (size_t i = 0; i < m_lines.size(); ++i)
 		{

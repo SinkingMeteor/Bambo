@@ -6,11 +6,12 @@ layout (location = 2) in vec4 aColor;
 out vec2 TexCoords;
 out vec4 Color;
 
-uniform mat4 projView;
+uniform mat4 ProjectionMatrix;
+uniform mat4 ViewMatrix;
 
 void main()
 {
     Color = aColor;
     TexCoords = texCoords;
-    gl_Position = projView * vec4(aPos.x, aPos.y, aPos.z, 1.0);
+    gl_Position = ProjectionMatrix * ViewMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);
 }

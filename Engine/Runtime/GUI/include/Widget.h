@@ -7,14 +7,16 @@ namespace Bambo
 	{
 		COMPONENT_BODY(Widget)
 	public:
-		Widget() = default;
+		Widget();
 		virtual ~Widget() = default;
 
 		virtual void Update(float deltaTime) {}
-		virtual void Draw() {}
+		virtual void OnRender(const glm::mat4& ownerGlobalMatrix) override {}
 
 		virtual void OnClick() {};
 		virtual void OnHover() {};
 		virtual void OnUnhover() {};
+	protected:
+		RectFloat m_rect;
 	};
 }

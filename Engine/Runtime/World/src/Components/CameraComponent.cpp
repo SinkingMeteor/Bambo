@@ -21,8 +21,8 @@ namespace Bambo
 		glm::mat4 viewMat = m_owner->GetTransform()->GetMatrix();
 		m_owner->GetTransform()->AddToPosition(-cameraOffset);
 
-		viewMat = projMat * viewMat;
-		world->GetCameraManager()->SetProjViewMatrix(viewMat);
+		world->GetCameraManager()->SetProjectionMatrix(projMat);
+		world->GetCameraManager()->SetViewMatrix(viewMat);
 	}
 
 }

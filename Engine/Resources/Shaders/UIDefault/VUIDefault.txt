@@ -7,11 +7,10 @@ out vec2 TexCoords;
 out vec4 Color;
 
 uniform mat4 ProjectionMatrix;
-uniform mat4 ViewMatrix;
 
 void main()
 {
     Color = aColor;
     TexCoords = texCoords;
-    gl_Position = ProjectionMatrix * ViewMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);
+    gl_Position = ProjectionMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);
 }

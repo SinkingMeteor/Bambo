@@ -1,4 +1,4 @@
-#include "Button.h"
+#include "Image.h"
 
 namespace Bambo
 {
