@@ -123,6 +123,8 @@ namespace BamboEditor
 			}
 		}
 
+		Bambo::ResourceManager* resourceManager = m_editorContext->Engine->GetResourceManager();
+		resourceManager->ScanFiles(m_fileBrowserWidget.GetCurrentPath(), false);
 		m_fileBrowserWidget.Draw();
 
 		ImGui::EndChild();

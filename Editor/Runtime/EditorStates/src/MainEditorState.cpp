@@ -34,7 +34,7 @@ namespace BamboEditor
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_::ImGuiConfigFlags_DockingEnable;
 
-		m_editorContext->Engine->GetResourceManager()->ScanFiles(m_editorContext->CurrentProject->GetAssetsPath());
+		m_editorContext->Engine->GetResourceManager()->ScanFiles(m_editorContext->CurrentProject->GetAssetsPath(), true);
 		OpenWorld(m_editorContext->CurrentProject->GetStartupWorldPath());
 	}
 

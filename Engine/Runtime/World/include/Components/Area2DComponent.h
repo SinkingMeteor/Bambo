@@ -9,8 +9,8 @@ namespace Bambo
 		COMPONENT_BODY(Area2DComponent);
 
 	public:
-		float Width;
-		float Height;
+		float Width{};
+		float Height{};
 
 		Area2DComponent() = default;
 

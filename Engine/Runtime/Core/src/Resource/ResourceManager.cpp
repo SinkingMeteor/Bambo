@@ -12,7 +12,6 @@ namespace
 	std::size_t FILE_EXTENSION_SHADER = Bambo::ToId(".shader");
 	std::size_t FILE_EXTENSION_FONT = Bambo::ToId(".ttf");
 
-
 	Bambo::AssetType GetAssetType(const std::string& fileExtension)
 	{
 		std::size_t extensionId = Bambo::ToId(fileExtension);
@@ -33,29 +32,28 @@ namespace Bambo
 	{
 	}
 
-	void ResourceManager::ScanFiles(const std::filesystem::path& path)
+	void ResourceManager::ScanFiles(const std::filesystem::path& directory, bool isRecursive)
 	{
-		bool isDirectory = std::filesystem::is_directory(path);
+		if (!std::filesystem::is_directory(directory)) return;
 
-		if (isDirectory)
+		for (auto& directoryEntry : std::filesystem::directory_iterator(directory))
 		{
-			for (auto& directoryEntry : std::filesystem::directory_iterator(path))
+			const std::filesystem::path& childPath = directoryEntry.path();
+
+			if (directoryEntry.is_directory() && isRecursive)
 			{
-				const std::filesystem::path& childPath = directoryEntry.path();
-				ScanFiles(childPath);
+				ScanFiles(childPath, isRecursive);
 			}
 
-			return;
-		}
-	
-		std::filesystem::path filenameExtension = path.extension();
-		if (filenameExtension == META_FILE_PATH)
-		{
-			RegisterMetaFile(path);
-			return;
-		}
+			std::filesystem::path filenameExtension = childPath.extension();
+			if (filenameExtension == META_FILE_PATH)
+			{
+				RegisterMetaFile(childPath);
+				return;
+			}
 
-		RegisterFile(path);
+			RegisterFile(childPath);
+		}
 	}
 
 	void ResourceManager::RegisterMetaFile(const std::filesystem::path& metaFilePath)
@@ -94,7 +92,7 @@ namespace Bambo
 		bambo_id uniqueId = ToId(filePath.string());
 		bambo_id typeId = static_cast<bambo_id>(assetType);
 
-		BAMBO_ASSERT_S(m_resources.find(uniqueId) == m_resources.end())
+		if (m_resources.find(uniqueId) != m_resources.end()) return;
 
 		m_resources[uniqueId] = ResourceInfo::Create(uniqueId, typeId, filePath);
 

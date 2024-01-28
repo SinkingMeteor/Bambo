@@ -30,7 +30,7 @@ namespace Bambo
 
 	void Engine::Initialize()
 	{
-		m_resourceManager.ScanFiles(BamboPaths::EngineResourcesDir);
+		m_resourceManager.ScanFiles(BamboPaths::EngineResourcesDir, true);
 
 		WindowSettings settings{ DEFAULT_WIDHT, DEFAULT_HEIGHT, DEFAULT_TITLE };
 		LoadConfigurationFile(settings);

@@ -8,7 +8,7 @@ namespace Bambo
 		using ResourceUniqueId = bambo_id;
 	public:
 		ResourceManager();
-		void ScanFiles(const std::filesystem::path& startPath);
+		void ScanFiles(const std::filesystem::path& directory, bool isRecursive);
 		void RegisterMetaFile(const std::filesystem::path& metaFilePath);
 		void RegisterFile(const std::filesystem::path& filePath);
 		bool HasResourceMetaFile(ResourceUniqueId id);

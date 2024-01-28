@@ -57,11 +57,10 @@ class GameObject;
 		virtual std::size_t GetID() const { return 0; }
 		GameObject* GetOwner() { return m_owner; }
 	protected:
-		bool m_isValid;
+		bool m_isValid{};
+		GameObject* m_owner{};
 
 		Component() = default;
-		GameObject* m_owner;
-
 		void SetOwner(GameObject* owner) { m_owner = owner; }
 	};
 }

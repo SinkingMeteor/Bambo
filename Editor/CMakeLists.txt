@@ -85,3 +85,9 @@ add_custom_command(TARGET BamboEditor POST_BUILD
     ${CMAKE_CURRENT_LIST_DIR}/Resources
     ${Bambo_BINARY_DIR}/Editor/Resources
     COMMENT "Copying graphics resources")
+
+add_custom_command(TARGET BamboEditor POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${Bambo_BINARY_DIR}/Engine/Thirdparty/OpenAL/Lib/OpenAL32.dll
+    ${Bambo_BINARY_DIR}/Editor/
+    COMMENT "Copying OpenAL dll")
